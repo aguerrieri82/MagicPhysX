@@ -13,7 +13,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .csharp_entry_point_prefix("magicphysx_")
         .csharp_namespace("MagicPhysX")
         .csharp_class_name("NativeMethods")
-        .csharp_dll_name("libmagicphysx")
+        .csharp_dll_name("magicphysx")
         .csharp_class_accessibility("public")
         .generate_to_file(
             "./src/physx_ffi.rs",
