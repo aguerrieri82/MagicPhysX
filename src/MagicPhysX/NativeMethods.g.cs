@@ -7,11 +7,14 @@
 using System;
 using System.Runtime.InteropServices;
 
+
 namespace MagicPhysX
 {
     public static unsafe partial class NativeMethods
     {
         const string __DllName = "libmagicphysx";
+
+
 
         [DllImport(__DllName, EntryPoint = "magicphysx_physx_create_foundation", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxFoundation* physx_create_foundation();
@@ -10227,7 +10230,7 @@ namespace MagicPhysX
         InternalError = 32,
         Abort = 64,
         PerfWarning = 128,
-        MaskAll,
+        MaskAll = -1,
     }
 
     public enum PxConcreteType : int
@@ -10313,7 +10316,7 @@ namespace MagicPhysX
         Hairsystem = 9,
         Custom = 10,
         GeometryCount = 11,
-        Invalid,
+        Invalid = -1,
     }
 
     [Flags]
