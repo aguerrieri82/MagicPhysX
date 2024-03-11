@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 
-namespace MagicPhysX;
+namespace PhysX;
 
 public partial struct PxVec2
 {

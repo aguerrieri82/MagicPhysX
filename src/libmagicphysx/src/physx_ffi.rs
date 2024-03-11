@@ -7,7 +7,7 @@ use super::physx_sys::*;
 
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_physx_create_foundation(
+pub unsafe extern "C" fn physx_physx_create_foundation(
 
 ) -> *mut PxFoundation
 {
@@ -17,7 +17,7 @@ pub unsafe extern "C" fn magicphysx_physx_create_foundation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_physx_create_foundation_with_alloc(
+pub unsafe extern "C" fn physx_physx_create_foundation_with_alloc(
     allocator: *mut PxDefaultAllocator
 ) -> *mut PxFoundation
 {
@@ -27,7 +27,7 @@ pub unsafe extern "C" fn magicphysx_physx_create_foundation_with_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_physx_create_physics(
+pub unsafe extern "C" fn physx_physx_create_physics(
     foundation: *mut PxFoundation
 ) -> *mut PxPhysics
 {
@@ -37,7 +37,7 @@ pub unsafe extern "C" fn magicphysx_physx_create_physics(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_get_default_allocator(
+pub unsafe extern "C" fn physx_get_default_allocator(
 
 ) -> *mut PxDefaultAllocator
 {
@@ -47,7 +47,7 @@ pub unsafe extern "C" fn magicphysx_get_default_allocator(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_get_default_error_callback(
+pub unsafe extern "C" fn physx_get_default_error_callback(
 
 ) -> *mut PxDefaultErrorCallback
 {
@@ -57,7 +57,7 @@ pub unsafe extern "C" fn magicphysx_get_default_error_callback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_raycast_filter_callback(
+pub unsafe extern "C" fn physx_create_raycast_filter_callback(
     actor_to_ignore: *const PxRigidActor
 ) -> *mut PxQueryFilterCallback
 {
@@ -67,7 +67,7 @@ pub unsafe extern "C" fn magicphysx_create_raycast_filter_callback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_raycast_filter_callback_func(
+pub unsafe extern "C" fn physx_create_raycast_filter_callback_func(
     callback: RaycastHitCallback,
     userdata: *mut c_void
 ) -> *mut PxQueryFilterCallback
@@ -79,7 +79,7 @@ pub unsafe extern "C" fn magicphysx_create_raycast_filter_callback_func(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_raycast_buffer(
+pub unsafe extern "C" fn physx_create_raycast_buffer(
 
 ) -> *mut PxRaycastCallback
 {
@@ -89,7 +89,7 @@ pub unsafe extern "C" fn magicphysx_create_raycast_buffer(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_sweep_buffer(
+pub unsafe extern "C" fn physx_create_sweep_buffer(
 
 ) -> *mut PxSweepCallback
 {
@@ -99,7 +99,7 @@ pub unsafe extern "C" fn magicphysx_create_sweep_buffer(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_overlap_buffer(
+pub unsafe extern "C" fn physx_create_overlap_buffer(
 
 ) -> *mut PxOverlapCallback
 {
@@ -109,7 +109,7 @@ pub unsafe extern "C" fn magicphysx_create_overlap_buffer(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_raycast_callback(
+pub unsafe extern "C" fn physx_create_raycast_callback(
     process_touches_callback: RaycastProcessTouchesCallback,
     finalize_query_callback: FinalizeQueryCallback,
     touches_buffer: *mut PxRaycastHit,
@@ -127,7 +127,7 @@ pub unsafe extern "C" fn magicphysx_create_raycast_callback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_sweep_callback(
+pub unsafe extern "C" fn physx_create_sweep_callback(
     process_touches_callback: SweepProcessTouchesCallback,
     finalize_query_callback: FinalizeQueryCallback,
     touches_buffer: *mut PxSweepHit,
@@ -145,7 +145,7 @@ pub unsafe extern "C" fn magicphysx_create_sweep_callback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_overlap_callback(
+pub unsafe extern "C" fn physx_create_overlap_callback(
     process_touches_callback: OverlapProcessTouchesCallback,
     finalize_query_callback: FinalizeQueryCallback,
     touches_buffer: *mut PxOverlapHit,
@@ -163,7 +163,7 @@ pub unsafe extern "C" fn magicphysx_create_overlap_callback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_delete_raycast_callback(
+pub unsafe extern "C" fn physx_delete_raycast_callback(
     callback: *mut PxRaycastCallback
 )
 {
@@ -173,7 +173,7 @@ pub unsafe extern "C" fn magicphysx_delete_raycast_callback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_delete_sweep_callback(
+pub unsafe extern "C" fn physx_delete_sweep_callback(
     callback: *mut PxSweepCallback
 )
 {
@@ -183,7 +183,7 @@ pub unsafe extern "C" fn magicphysx_delete_sweep_callback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_delete_overlap_callback(
+pub unsafe extern "C" fn physx_delete_overlap_callback(
     callback: *mut PxOverlapCallback
 )
 {
@@ -193,7 +193,7 @@ pub unsafe extern "C" fn magicphysx_delete_overlap_callback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_alloc_callback(
+pub unsafe extern "C" fn physx_create_alloc_callback(
     alloc_callback: AllocCallback,
     dealloc_callback: DeallocCallback,
     userdata: *mut c_void
@@ -207,7 +207,7 @@ pub unsafe extern "C" fn magicphysx_create_alloc_callback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_profiler_callback(
+pub unsafe extern "C" fn physx_create_profiler_callback(
     zone_start_callback: ZoneStartCallback,
     zone_end_callback: ZoneEndCallback,
     userdata: *mut c_void
@@ -221,7 +221,7 @@ pub unsafe extern "C" fn magicphysx_create_profiler_callback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_get_alloc_callback_user_data(
+pub unsafe extern "C" fn physx_get_alloc_callback_user_data(
     alloc_callback: *mut PxAllocatorCallback
 ) -> *mut c_void
 {
@@ -231,7 +231,7 @@ pub unsafe extern "C" fn magicphysx_get_alloc_callback_user_data(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_error_callback(
+pub unsafe extern "C" fn physx_create_error_callback(
     error_callback: ErrorCallback,
     userdata: *mut c_void
 ) -> *mut PxErrorCallback
@@ -243,7 +243,7 @@ pub unsafe extern "C" fn magicphysx_create_error_callback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_assert_handler(
+pub unsafe extern "C" fn physx_create_assert_handler(
     error_callback: AssertHandler,
     userdata: *mut c_void
 ) -> *mut PxAssertHandler
@@ -255,7 +255,7 @@ pub unsafe extern "C" fn magicphysx_create_assert_handler(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_get_default_simulation_filter_shader(
+pub unsafe extern "C" fn physx_get_default_simulation_filter_shader(
 
 ) -> *mut c_void
 {
@@ -265,7 +265,7 @@ pub unsafe extern "C" fn magicphysx_get_default_simulation_filter_shader(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_create_simulation_event_callbacks(
+pub unsafe extern "C" fn physx_create_simulation_event_callbacks(
     callbacks: *const SimulationEventCallbackInfo
 ) -> *mut PxSimulationEventCallback
 {
@@ -275,7 +275,7 @@ pub unsafe extern "C" fn magicphysx_create_simulation_event_callbacks(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_get_simulation_event_info(
+pub unsafe extern "C" fn physx_get_simulation_event_info(
     callback: *mut PxSimulationEventCallback
 ) -> *mut SimulationEventCallbackInfo
 {
@@ -285,7 +285,7 @@ pub unsafe extern "C" fn magicphysx_get_simulation_event_info(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_destroy_simulation_event_callbacks(
+pub unsafe extern "C" fn physx_destroy_simulation_event_callbacks(
     callback: *mut PxSimulationEventCallback
 )
 {
@@ -295,7 +295,7 @@ pub unsafe extern "C" fn magicphysx_destroy_simulation_event_callbacks(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_enable_custom_filter_shader(
+pub unsafe extern "C" fn physx_enable_custom_filter_shader(
     scene_desc: *mut PxSceneDesc,
     shader: SimulationFilterShader,
     call_default_filter_shader_first: u32
@@ -309,7 +309,7 @@ pub unsafe extern "C" fn magicphysx_enable_custom_filter_shader(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAssertHandler_opCall_mut(
+pub unsafe extern "C" fn physx_PxAssertHandler_opCall_mut(
     self_: *mut PxAssertHandler,
     expr: *const i8,
     file: *const i8,
@@ -327,7 +327,7 @@ pub unsafe extern "C" fn magicphysx_PxAssertHandler_opCall_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAllocatorCallback_delete(
+pub unsafe extern "C" fn physx_PxAllocatorCallback_delete(
     self_: *mut PxAllocatorCallback
 )
 {
@@ -337,7 +337,7 @@ pub unsafe extern "C" fn magicphysx_PxAllocatorCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAllocatorCallback_allocate_mut(
+pub unsafe extern "C" fn physx_PxAllocatorCallback_allocate_mut(
     self_: *mut PxAllocatorCallback,
     size: usize,
     typeName: *const c_char,
@@ -355,7 +355,7 @@ pub unsafe extern "C" fn magicphysx_PxAllocatorCallback_allocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAllocatorCallback_deallocate_mut(
+pub unsafe extern "C" fn physx_PxAllocatorCallback_deallocate_mut(
     self_: *mut PxAllocatorCallback,
     ptr: *mut c_void
 )
@@ -367,7 +367,7 @@ pub unsafe extern "C" fn magicphysx_PxAllocatorCallback_deallocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAssertHandler_delete(
+pub unsafe extern "C" fn physx_PxAssertHandler_delete(
     self_: *mut PxAssertHandler
 )
 {
@@ -377,7 +377,7 @@ pub unsafe extern "C" fn magicphysx_PxAssertHandler_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetAssertHandler(
+pub unsafe extern "C" fn physx_phys_PxGetAssertHandler(
 
 ) -> *mut PxAssertHandler
 {
@@ -387,7 +387,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetAssertHandler(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSetAssertHandler(
+pub unsafe extern "C" fn physx_phys_PxSetAssertHandler(
     handler: *mut PxAssertHandler
 )
 {
@@ -397,7 +397,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSetAssertHandler(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFoundation_release_mut(
+pub unsafe extern "C" fn physx_PxFoundation_release_mut(
     self_: *mut PxFoundation
 )
 {
@@ -407,7 +407,7 @@ pub unsafe extern "C" fn magicphysx_PxFoundation_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFoundation_getErrorCallback_mut(
+pub unsafe extern "C" fn physx_PxFoundation_getErrorCallback_mut(
     self_: *mut PxFoundation
 ) -> *mut PxErrorCallback
 {
@@ -417,7 +417,7 @@ pub unsafe extern "C" fn magicphysx_PxFoundation_getErrorCallback_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFoundation_setErrorLevel_mut(
+pub unsafe extern "C" fn physx_PxFoundation_setErrorLevel_mut(
     self_: *mut PxFoundation,
     mask: u32
 )
@@ -429,7 +429,7 @@ pub unsafe extern "C" fn magicphysx_PxFoundation_setErrorLevel_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFoundation_getErrorLevel(
+pub unsafe extern "C" fn physx_PxFoundation_getErrorLevel(
     self_: *const PxFoundation
 ) -> u32
 {
@@ -439,7 +439,7 @@ pub unsafe extern "C" fn magicphysx_PxFoundation_getErrorLevel(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFoundation_getAllocatorCallback_mut(
+pub unsafe extern "C" fn physx_PxFoundation_getAllocatorCallback_mut(
     self_: *mut PxFoundation
 ) -> *mut PxAllocatorCallback
 {
@@ -449,7 +449,7 @@ pub unsafe extern "C" fn magicphysx_PxFoundation_getAllocatorCallback_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFoundation_getReportAllocationNames(
+pub unsafe extern "C" fn physx_PxFoundation_getReportAllocationNames(
     self_: *const PxFoundation
 ) -> bool
 {
@@ -459,7 +459,7 @@ pub unsafe extern "C" fn magicphysx_PxFoundation_getReportAllocationNames(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFoundation_setReportAllocationNames_mut(
+pub unsafe extern "C" fn physx_PxFoundation_setReportAllocationNames_mut(
     self_: *mut PxFoundation,
     value: bool
 )
@@ -471,7 +471,7 @@ pub unsafe extern "C" fn magicphysx_PxFoundation_setReportAllocationNames_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFoundation_registerAllocationListener_mut(
+pub unsafe extern "C" fn physx_PxFoundation_registerAllocationListener_mut(
     self_: *mut PxFoundation,
     listener: *mut PxAllocationListener
 )
@@ -483,7 +483,7 @@ pub unsafe extern "C" fn magicphysx_PxFoundation_registerAllocationListener_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFoundation_deregisterAllocationListener_mut(
+pub unsafe extern "C" fn physx_PxFoundation_deregisterAllocationListener_mut(
     self_: *mut PxFoundation,
     listener: *mut PxAllocationListener
 )
@@ -495,7 +495,7 @@ pub unsafe extern "C" fn magicphysx_PxFoundation_deregisterAllocationListener_mu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFoundation_registerErrorCallback_mut(
+pub unsafe extern "C" fn physx_PxFoundation_registerErrorCallback_mut(
     self_: *mut PxFoundation,
     callback: *mut PxErrorCallback
 )
@@ -507,7 +507,7 @@ pub unsafe extern "C" fn magicphysx_PxFoundation_registerErrorCallback_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFoundation_deregisterErrorCallback_mut(
+pub unsafe extern "C" fn physx_PxFoundation_deregisterErrorCallback_mut(
     self_: *mut PxFoundation,
     callback: *mut PxErrorCallback
 )
@@ -519,7 +519,7 @@ pub unsafe extern "C" fn magicphysx_PxFoundation_deregisterErrorCallback_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateFoundation(
+pub unsafe extern "C" fn physx_phys_PxCreateFoundation(
     version: u32,
     allocator: *mut PxAllocatorCallback,
     errorCallback: *mut PxErrorCallback
@@ -533,7 +533,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateFoundation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSetFoundationInstance(
+pub unsafe extern "C" fn physx_phys_PxSetFoundationInstance(
     foundation: *mut PxFoundation
 )
 {
@@ -543,7 +543,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSetFoundationInstance(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetFoundation(
+pub unsafe extern "C" fn physx_phys_PxGetFoundation(
 
 ) -> *mut PxFoundation
 {
@@ -553,7 +553,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetFoundation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetProfilerCallback(
+pub unsafe extern "C" fn physx_phys_PxGetProfilerCallback(
 
 ) -> *mut PxProfilerCallback
 {
@@ -563,7 +563,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetProfilerCallback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSetProfilerCallback(
+pub unsafe extern "C" fn physx_phys_PxSetProfilerCallback(
     profiler: *mut PxProfilerCallback
 )
 {
@@ -573,7 +573,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSetProfilerCallback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetAllocatorCallback(
+pub unsafe extern "C" fn physx_phys_PxGetAllocatorCallback(
 
 ) -> *mut PxAllocatorCallback
 {
@@ -583,7 +583,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetAllocatorCallback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetBroadcastAllocator(
+pub unsafe extern "C" fn physx_phys_PxGetBroadcastAllocator(
 
 ) -> *mut PxAllocatorCallback
 {
@@ -593,7 +593,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetBroadcastAllocator(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetErrorCallback(
+pub unsafe extern "C" fn physx_phys_PxGetErrorCallback(
 
 ) -> *mut PxErrorCallback
 {
@@ -603,7 +603,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetErrorCallback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetBroadcastError(
+pub unsafe extern "C" fn physx_phys_PxGetBroadcastError(
 
 ) -> *mut PxErrorCallback
 {
@@ -613,7 +613,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetBroadcastError(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetWarnOnceTimeStamp(
+pub unsafe extern "C" fn physx_phys_PxGetWarnOnceTimeStamp(
 
 ) -> u32
 {
@@ -623,7 +623,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetWarnOnceTimeStamp(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxDecFoundationRefCount(
+pub unsafe extern "C" fn physx_phys_PxDecFoundationRefCount(
 
 )
 {
@@ -633,7 +633,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxDecFoundationRefCount(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxIncFoundationRefCount(
+pub unsafe extern "C" fn physx_phys_PxIncFoundationRefCount(
 
 )
 {
@@ -643,7 +643,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxIncFoundationRefCount(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAllocator_new(
+pub unsafe extern "C" fn physx_PxAllocator_new(
     anon_param0: *const c_char
 ) -> PxAllocator
 {
@@ -653,7 +653,7 @@ pub unsafe extern "C" fn magicphysx_PxAllocator_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAllocator_allocate_mut(
+pub unsafe extern "C" fn physx_PxAllocator_allocate_mut(
     self_: *mut PxAllocator,
     size: usize,
     file: *const c_char,
@@ -669,7 +669,7 @@ pub unsafe extern "C" fn magicphysx_PxAllocator_allocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAllocator_deallocate_mut(
+pub unsafe extern "C" fn physx_PxAllocator_deallocate_mut(
     self_: *mut PxAllocator,
     ptr: *mut c_void
 )
@@ -681,7 +681,7 @@ pub unsafe extern "C" fn magicphysx_PxAllocator_deallocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRawAllocator_new(
+pub unsafe extern "C" fn physx_PxRawAllocator_new(
     anon_param0: *const c_char
 ) -> PxRawAllocator
 {
@@ -691,7 +691,7 @@ pub unsafe extern "C" fn magicphysx_PxRawAllocator_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRawAllocator_allocate_mut(
+pub unsafe extern "C" fn physx_PxRawAllocator_allocate_mut(
     self_: *mut PxRawAllocator,
     size: usize,
     anon_param1: *const c_char,
@@ -707,7 +707,7 @@ pub unsafe extern "C" fn magicphysx_PxRawAllocator_allocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRawAllocator_deallocate_mut(
+pub unsafe extern "C" fn physx_PxRawAllocator_deallocate_mut(
     self_: *mut PxRawAllocator,
     ptr: *mut c_void
 )
@@ -719,7 +719,7 @@ pub unsafe extern "C" fn magicphysx_PxRawAllocator_deallocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVirtualAllocatorCallback_delete(
+pub unsafe extern "C" fn physx_PxVirtualAllocatorCallback_delete(
     self_: *mut PxVirtualAllocatorCallback
 )
 {
@@ -729,7 +729,7 @@ pub unsafe extern "C" fn magicphysx_PxVirtualAllocatorCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVirtualAllocatorCallback_allocate_mut(
+pub unsafe extern "C" fn physx_PxVirtualAllocatorCallback_allocate_mut(
     self_: *mut PxVirtualAllocatorCallback,
     size: usize,
     group: i32,
@@ -747,7 +747,7 @@ pub unsafe extern "C" fn magicphysx_PxVirtualAllocatorCallback_allocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVirtualAllocatorCallback_deallocate_mut(
+pub unsafe extern "C" fn physx_PxVirtualAllocatorCallback_deallocate_mut(
     self_: *mut PxVirtualAllocatorCallback,
     ptr: *mut c_void
 )
@@ -759,7 +759,7 @@ pub unsafe extern "C" fn magicphysx_PxVirtualAllocatorCallback_deallocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVirtualAllocator_new(
+pub unsafe extern "C" fn physx_PxVirtualAllocator_new(
     callback: *mut PxVirtualAllocatorCallback,
     group: i32
 ) -> PxVirtualAllocator
@@ -771,7 +771,7 @@ pub unsafe extern "C" fn magicphysx_PxVirtualAllocator_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVirtualAllocator_allocate_mut(
+pub unsafe extern "C" fn physx_PxVirtualAllocator_allocate_mut(
     self_: *mut PxVirtualAllocator,
     size: usize,
     file: *const c_char,
@@ -787,7 +787,7 @@ pub unsafe extern "C" fn magicphysx_PxVirtualAllocator_allocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVirtualAllocator_deallocate_mut(
+pub unsafe extern "C" fn physx_PxVirtualAllocator_deallocate_mut(
     self_: *mut PxVirtualAllocator,
     ptr: *mut c_void
 )
@@ -799,7 +799,7 @@ pub unsafe extern "C" fn magicphysx_PxVirtualAllocator_deallocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTempAllocatorChunk_new(
+pub unsafe extern "C" fn physx_PxTempAllocatorChunk_new(
 
 ) -> PxTempAllocatorChunk
 {
@@ -809,7 +809,7 @@ pub unsafe extern "C" fn magicphysx_PxTempAllocatorChunk_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTempAllocator_new(
+pub unsafe extern "C" fn physx_PxTempAllocator_new(
     anon_param0: *const c_char
 ) -> PxTempAllocator
 {
@@ -819,7 +819,7 @@ pub unsafe extern "C" fn magicphysx_PxTempAllocator_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTempAllocator_allocate_mut(
+pub unsafe extern "C" fn physx_PxTempAllocator_allocate_mut(
     self_: *mut PxTempAllocator,
     size: usize,
     file: *const c_char,
@@ -835,7 +835,7 @@ pub unsafe extern "C" fn magicphysx_PxTempAllocator_allocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTempAllocator_deallocate_mut(
+pub unsafe extern "C" fn physx_PxTempAllocator_deallocate_mut(
     self_: *mut PxTempAllocator,
     ptr: *mut c_void
 )
@@ -847,7 +847,7 @@ pub unsafe extern "C" fn magicphysx_PxTempAllocator_deallocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxMemZero(
+pub unsafe extern "C" fn physx_phys_PxMemZero(
     dest: *mut c_void,
     count: u32
 ) -> *mut c_void
@@ -859,7 +859,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxMemZero(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxMemSet(
+pub unsafe extern "C" fn physx_phys_PxMemSet(
     dest: *mut c_void,
     c: i32,
     count: u32
@@ -873,7 +873,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxMemSet(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxMemCopy(
+pub unsafe extern "C" fn physx_phys_PxMemCopy(
     dest: *mut c_void,
     src: *const c_void,
     count: u32
@@ -887,7 +887,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxMemCopy(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxMemMove(
+pub unsafe extern "C" fn physx_phys_PxMemMove(
     dest: *mut c_void,
     src: *const c_void,
     count: u32
@@ -901,7 +901,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxMemMove(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxMarkSerializedMemory(
+pub unsafe extern "C" fn physx_phys_PxMarkSerializedMemory(
     ptr: *mut c_void,
     byteSize: u32
 )
@@ -913,7 +913,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxMarkSerializedMemory(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxMemoryBarrier(
+pub unsafe extern "C" fn physx_phys_PxMemoryBarrier(
 
 )
 {
@@ -923,7 +923,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxMemoryBarrier(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxHighestSetBitUnsafe(
+pub unsafe extern "C" fn physx_phys_PxHighestSetBitUnsafe(
     v: u32
 ) -> u32
 {
@@ -933,7 +933,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxHighestSetBitUnsafe(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxLowestSetBitUnsafe(
+pub unsafe extern "C" fn physx_phys_PxLowestSetBitUnsafe(
     v: u32
 ) -> u32
 {
@@ -943,7 +943,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxLowestSetBitUnsafe(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCountLeadingZeros(
+pub unsafe extern "C" fn physx_phys_PxCountLeadingZeros(
     v: u32
 ) -> u32
 {
@@ -953,7 +953,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCountLeadingZeros(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxPrefetchLine(
+pub unsafe extern "C" fn physx_phys_PxPrefetchLine(
     ptr: *const c_void,
     offset: u32
 )
@@ -965,7 +965,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxPrefetchLine(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxPrefetch(
+pub unsafe extern "C" fn physx_phys_PxPrefetch(
     ptr: *const c_void,
     count: u32
 )
@@ -977,7 +977,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxPrefetch(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxBitCount(
+pub unsafe extern "C" fn physx_phys_PxBitCount(
     v: u32
 ) -> u32
 {
@@ -987,7 +987,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxBitCount(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxIsPowerOfTwo(
+pub unsafe extern "C" fn physx_phys_PxIsPowerOfTwo(
     x: u32
 ) -> bool
 {
@@ -997,7 +997,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxIsPowerOfTwo(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxNextPowerOfTwo(
+pub unsafe extern "C" fn physx_phys_PxNextPowerOfTwo(
     x: u32
 ) -> u32
 {
@@ -1007,7 +1007,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxNextPowerOfTwo(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxLowestSetBit(
+pub unsafe extern "C" fn physx_phys_PxLowestSetBit(
     x: u32
 ) -> u32
 {
@@ -1017,7 +1017,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxLowestSetBit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxHighestSetBit(
+pub unsafe extern "C" fn physx_phys_PxHighestSetBit(
     x: u32
 ) -> u32
 {
@@ -1027,7 +1027,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxHighestSetBit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxILog2(
+pub unsafe extern "C" fn physx_phys_PxILog2(
     num: u32
 ) -> u32
 {
@@ -1037,7 +1037,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxILog2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_new(
+pub unsafe extern "C" fn physx_PxVec3_new(
 
 ) -> PxVec3
 {
@@ -1047,7 +1047,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_new_1(
+pub unsafe extern "C" fn physx_PxVec3_new_1(
     anon_param0: PxZERO
 ) -> PxVec3
 {
@@ -1057,7 +1057,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_new_2(
+pub unsafe extern "C" fn physx_PxVec3_new_2(
     a: f32
 ) -> PxVec3
 {
@@ -1067,7 +1067,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_new_3(
+pub unsafe extern "C" fn physx_PxVec3_new_3(
     nx: f32,
     ny: f32,
     nz: f32
@@ -1081,7 +1081,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_new_3(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_isZero(
+pub unsafe extern "C" fn physx_PxVec3_isZero(
     self_: *const PxVec3
 ) -> bool
 {
@@ -1091,7 +1091,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_isZero(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_isFinite(
+pub unsafe extern "C" fn physx_PxVec3_isFinite(
     self_: *const PxVec3
 ) -> bool
 {
@@ -1101,7 +1101,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_isFinite(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_isNormalized(
+pub unsafe extern "C" fn physx_PxVec3_isNormalized(
     self_: *const PxVec3
 ) -> bool
 {
@@ -1111,7 +1111,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_isNormalized(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_magnitudeSquared(
+pub unsafe extern "C" fn physx_PxVec3_magnitudeSquared(
     self_: *const PxVec3
 ) -> f32
 {
@@ -1121,7 +1121,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_magnitudeSquared(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_magnitude(
+pub unsafe extern "C" fn physx_PxVec3_magnitude(
     self_: *const PxVec3
 ) -> f32
 {
@@ -1131,7 +1131,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_magnitude(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_dot(
+pub unsafe extern "C" fn physx_PxVec3_dot(
     self_: *const PxVec3,
     v: *const PxVec3
 ) -> f32
@@ -1143,7 +1143,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_dot(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_cross(
+pub unsafe extern "C" fn physx_PxVec3_cross(
     self_: *const PxVec3,
     v: *const PxVec3
 ) -> PxVec3
@@ -1155,7 +1155,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_cross(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_getNormalized(
+pub unsafe extern "C" fn physx_PxVec3_getNormalized(
     self_: *const PxVec3
 ) -> PxVec3
 {
@@ -1165,7 +1165,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_getNormalized(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_normalize_mut(
+pub unsafe extern "C" fn physx_PxVec3_normalize_mut(
     self_: *mut PxVec3
 ) -> f32
 {
@@ -1175,7 +1175,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_normalize_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_normalizeSafe_mut(
+pub unsafe extern "C" fn physx_PxVec3_normalizeSafe_mut(
     self_: *mut PxVec3
 ) -> f32
 {
@@ -1185,7 +1185,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_normalizeSafe_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_normalizeFast_mut(
+pub unsafe extern "C" fn physx_PxVec3_normalizeFast_mut(
     self_: *mut PxVec3
 ) -> f32
 {
@@ -1195,7 +1195,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_normalizeFast_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_multiply(
+pub unsafe extern "C" fn physx_PxVec3_multiply(
     self_: *const PxVec3,
     a: *const PxVec3
 ) -> PxVec3
@@ -1207,7 +1207,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_multiply(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_minimum(
+pub unsafe extern "C" fn physx_PxVec3_minimum(
     self_: *const PxVec3,
     v: *const PxVec3
 ) -> PxVec3
@@ -1219,7 +1219,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_minimum(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_minElement(
+pub unsafe extern "C" fn physx_PxVec3_minElement(
     self_: *const PxVec3
 ) -> f32
 {
@@ -1229,7 +1229,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_minElement(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_maximum(
+pub unsafe extern "C" fn physx_PxVec3_maximum(
     self_: *const PxVec3,
     v: *const PxVec3
 ) -> PxVec3
@@ -1241,7 +1241,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_maximum(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_maxElement(
+pub unsafe extern "C" fn physx_PxVec3_maxElement(
     self_: *const PxVec3
 ) -> f32
 {
@@ -1251,7 +1251,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_maxElement(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3_abs(
+pub unsafe extern "C" fn physx_PxVec3_abs(
     self_: *const PxVec3
 ) -> PxVec3
 {
@@ -1261,7 +1261,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3_abs(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3Padded_new_alloc(
+pub unsafe extern "C" fn physx_PxVec3Padded_new_alloc(
 
 ) -> *mut PxVec3Padded
 {
@@ -1271,7 +1271,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3Padded_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3Padded_delete(
+pub unsafe extern "C" fn physx_PxVec3Padded_delete(
     self_: *mut PxVec3Padded
 )
 {
@@ -1281,7 +1281,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3Padded_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3Padded_new_alloc_1(
+pub unsafe extern "C" fn physx_PxVec3Padded_new_alloc_1(
     p: *const PxVec3
 ) -> *mut PxVec3Padded
 {
@@ -1291,7 +1291,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3Padded_new_alloc_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec3Padded_new_alloc_2(
+pub unsafe extern "C" fn physx_PxVec3Padded_new_alloc_2(
     f: f32
 ) -> *mut PxVec3Padded
 {
@@ -1301,7 +1301,7 @@ pub unsafe extern "C" fn magicphysx_PxVec3Padded_new_alloc_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_new(
+pub unsafe extern "C" fn physx_PxQuat_new(
 
 ) -> PxQuat
 {
@@ -1311,7 +1311,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_new_1(
+pub unsafe extern "C" fn physx_PxQuat_new_1(
     anon_param0: PxIDENTITY
 ) -> PxQuat
 {
@@ -1321,7 +1321,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_new_2(
+pub unsafe extern "C" fn physx_PxQuat_new_2(
     r: f32
 ) -> PxQuat
 {
@@ -1331,7 +1331,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_new_3(
+pub unsafe extern "C" fn physx_PxQuat_new_3(
     nx: f32,
     ny: f32,
     nz: f32,
@@ -1347,7 +1347,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_new_3(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_new_4(
+pub unsafe extern "C" fn physx_PxQuat_new_4(
     angleRadians: f32,
     unitAxis: *const PxVec3
 ) -> PxQuat
@@ -1359,7 +1359,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_new_4(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_new_5(
+pub unsafe extern "C" fn physx_PxQuat_new_5(
     m: *const PxMat33
 ) -> PxQuat
 {
@@ -1369,7 +1369,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_new_5(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_isIdentity(
+pub unsafe extern "C" fn physx_PxQuat_isIdentity(
     self_: *const PxQuat
 ) -> bool
 {
@@ -1379,7 +1379,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_isIdentity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_isFinite(
+pub unsafe extern "C" fn physx_PxQuat_isFinite(
     self_: *const PxQuat
 ) -> bool
 {
@@ -1389,7 +1389,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_isFinite(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_isUnit(
+pub unsafe extern "C" fn physx_PxQuat_isUnit(
     self_: *const PxQuat
 ) -> bool
 {
@@ -1399,7 +1399,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_isUnit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_isSane(
+pub unsafe extern "C" fn physx_PxQuat_isSane(
     self_: *const PxQuat
 ) -> bool
 {
@@ -1409,7 +1409,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_isSane(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_toRadiansAndUnitAxis(
+pub unsafe extern "C" fn physx_PxQuat_toRadiansAndUnitAxis(
     self_: *const PxQuat,
     angle: *mut f32,
     axis: *mut PxVec3
@@ -1423,7 +1423,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_toRadiansAndUnitAxis(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_getAngle(
+pub unsafe extern "C" fn physx_PxQuat_getAngle(
     self_: *const PxQuat
 ) -> f32
 {
@@ -1433,7 +1433,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_getAngle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_getAngle_1(
+pub unsafe extern "C" fn physx_PxQuat_getAngle_1(
     self_: *const PxQuat,
     q: *const PxQuat
 ) -> f32
@@ -1445,7 +1445,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_getAngle_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_magnitudeSquared(
+pub unsafe extern "C" fn physx_PxQuat_magnitudeSquared(
     self_: *const PxQuat
 ) -> f32
 {
@@ -1455,7 +1455,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_magnitudeSquared(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_dot(
+pub unsafe extern "C" fn physx_PxQuat_dot(
     self_: *const PxQuat,
     v: *const PxQuat
 ) -> f32
@@ -1467,7 +1467,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_dot(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_getNormalized(
+pub unsafe extern "C" fn physx_PxQuat_getNormalized(
     self_: *const PxQuat
 ) -> PxQuat
 {
@@ -1477,7 +1477,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_getNormalized(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_magnitude(
+pub unsafe extern "C" fn physx_PxQuat_magnitude(
     self_: *const PxQuat
 ) -> f32
 {
@@ -1487,7 +1487,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_magnitude(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_normalize_mut(
+pub unsafe extern "C" fn physx_PxQuat_normalize_mut(
     self_: *mut PxQuat
 ) -> f32
 {
@@ -1497,7 +1497,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_normalize_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_getConjugate(
+pub unsafe extern "C" fn physx_PxQuat_getConjugate(
     self_: *const PxQuat
 ) -> PxQuat
 {
@@ -1507,7 +1507,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_getConjugate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_getImaginaryPart(
+pub unsafe extern "C" fn physx_PxQuat_getImaginaryPart(
     self_: *const PxQuat
 ) -> PxVec3
 {
@@ -1517,7 +1517,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_getImaginaryPart(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_getBasisVector0(
+pub unsafe extern "C" fn physx_PxQuat_getBasisVector0(
     self_: *const PxQuat
 ) -> PxVec3
 {
@@ -1527,7 +1527,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_getBasisVector0(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_getBasisVector1(
+pub unsafe extern "C" fn physx_PxQuat_getBasisVector1(
     self_: *const PxQuat
 ) -> PxVec3
 {
@@ -1537,7 +1537,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_getBasisVector1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_getBasisVector2(
+pub unsafe extern "C" fn physx_PxQuat_getBasisVector2(
     self_: *const PxQuat
 ) -> PxVec3
 {
@@ -1547,7 +1547,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_getBasisVector2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_rotate(
+pub unsafe extern "C" fn physx_PxQuat_rotate(
     self_: *const PxQuat,
     v: *const PxVec3
 ) -> PxVec3
@@ -1559,7 +1559,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_rotate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQuat_rotateInv(
+pub unsafe extern "C" fn physx_PxQuat_rotateInv(
     self_: *const PxQuat,
     v: *const PxVec3
 ) -> PxVec3
@@ -1571,7 +1571,7 @@ pub unsafe extern "C" fn magicphysx_PxQuat_rotateInv(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_new(
+pub unsafe extern "C" fn physx_PxTransform_new(
 
 ) -> PxTransform
 {
@@ -1581,7 +1581,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_new_1(
+pub unsafe extern "C" fn physx_PxTransform_new_1(
     position: *const PxVec3
 ) -> PxTransform
 {
@@ -1591,7 +1591,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_new_2(
+pub unsafe extern "C" fn physx_PxTransform_new_2(
     anon_param0: PxIDENTITY
 ) -> PxTransform
 {
@@ -1601,7 +1601,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_new_3(
+pub unsafe extern "C" fn physx_PxTransform_new_3(
     orientation: *const PxQuat
 ) -> PxTransform
 {
@@ -1611,7 +1611,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_new_3(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_new_4(
+pub unsafe extern "C" fn physx_PxTransform_new_4(
     x: f32,
     y: f32,
     z: f32,
@@ -1627,7 +1627,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_new_4(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_new_5(
+pub unsafe extern "C" fn physx_PxTransform_new_5(
     p0: *const PxVec3,
     q0: *const PxQuat
 ) -> PxTransform
@@ -1639,7 +1639,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_new_5(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_new_6(
+pub unsafe extern "C" fn physx_PxTransform_new_6(
     m: *const PxMat44
 ) -> PxTransform
 {
@@ -1649,7 +1649,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_new_6(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_getInverse(
+pub unsafe extern "C" fn physx_PxTransform_getInverse(
     self_: *const PxTransform
 ) -> PxTransform
 {
@@ -1659,7 +1659,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_getInverse(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_transform(
+pub unsafe extern "C" fn physx_PxTransform_transform(
     self_: *const PxTransform,
     input: *const PxVec3
 ) -> PxVec3
@@ -1671,7 +1671,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_transform(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_transformInv(
+pub unsafe extern "C" fn physx_PxTransform_transformInv(
     self_: *const PxTransform,
     input: *const PxVec3
 ) -> PxVec3
@@ -1683,7 +1683,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_transformInv(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_rotate(
+pub unsafe extern "C" fn physx_PxTransform_rotate(
     self_: *const PxTransform,
     input: *const PxVec3
 ) -> PxVec3
@@ -1695,7 +1695,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_rotate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_rotateInv(
+pub unsafe extern "C" fn physx_PxTransform_rotateInv(
     self_: *const PxTransform,
     input: *const PxVec3
 ) -> PxVec3
@@ -1707,7 +1707,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_rotateInv(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_transform_1(
+pub unsafe extern "C" fn physx_PxTransform_transform_1(
     self_: *const PxTransform,
     src: *const PxTransform
 ) -> PxTransform
@@ -1719,7 +1719,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_transform_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_isValid(
+pub unsafe extern "C" fn physx_PxTransform_isValid(
     self_: *const PxTransform
 ) -> bool
 {
@@ -1729,7 +1729,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_isSane(
+pub unsafe extern "C" fn physx_PxTransform_isSane(
     self_: *const PxTransform
 ) -> bool
 {
@@ -1739,7 +1739,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_isSane(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_isFinite(
+pub unsafe extern "C" fn physx_PxTransform_isFinite(
     self_: *const PxTransform
 ) -> bool
 {
@@ -1749,7 +1749,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_isFinite(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_transformInv_1(
+pub unsafe extern "C" fn physx_PxTransform_transformInv_1(
     self_: *const PxTransform,
     src: *const PxTransform
 ) -> PxTransform
@@ -1761,7 +1761,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_transformInv_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTransform_getNormalized(
+pub unsafe extern "C" fn physx_PxTransform_getNormalized(
     self_: *const PxTransform
 ) -> PxTransform
 {
@@ -1771,7 +1771,7 @@ pub unsafe extern "C" fn magicphysx_PxTransform_getNormalized(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_new(
+pub unsafe extern "C" fn physx_PxMat33_new(
 
 ) -> PxMat33
 {
@@ -1781,7 +1781,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_new_1(
+pub unsafe extern "C" fn physx_PxMat33_new_1(
     anon_param0: PxIDENTITY
 ) -> PxMat33
 {
@@ -1791,7 +1791,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_new_2(
+pub unsafe extern "C" fn physx_PxMat33_new_2(
     anon_param0: PxZERO
 ) -> PxMat33
 {
@@ -1801,7 +1801,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_new_3(
+pub unsafe extern "C" fn physx_PxMat33_new_3(
     col0: *const PxVec3,
     col1: *const PxVec3,
     col2: *const PxVec3
@@ -1815,7 +1815,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_new_3(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_new_4(
+pub unsafe extern "C" fn physx_PxMat33_new_4(
     r: f32
 ) -> PxMat33
 {
@@ -1825,7 +1825,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_new_4(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_new_5(
+pub unsafe extern "C" fn physx_PxMat33_new_5(
     values: *mut f32
 ) -> PxMat33
 {
@@ -1835,7 +1835,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_new_5(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_new_6(
+pub unsafe extern "C" fn physx_PxMat33_new_6(
     q: *const PxQuat
 ) -> PxMat33
 {
@@ -1845,7 +1845,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_new_6(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_createDiagonal(
+pub unsafe extern "C" fn physx_PxMat33_createDiagonal(
     d: *const PxVec3
 ) -> PxMat33
 {
@@ -1855,7 +1855,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_createDiagonal(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_outer(
+pub unsafe extern "C" fn physx_PxMat33_outer(
     a: *const PxVec3,
     b: *const PxVec3
 ) -> PxMat33
@@ -1867,7 +1867,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_outer(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_getTranspose(
+pub unsafe extern "C" fn physx_PxMat33_getTranspose(
     self_: *const PxMat33
 ) -> PxMat33
 {
@@ -1877,7 +1877,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_getTranspose(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_getInverse(
+pub unsafe extern "C" fn physx_PxMat33_getInverse(
     self_: *const PxMat33
 ) -> PxMat33
 {
@@ -1887,7 +1887,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_getInverse(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_getDeterminant(
+pub unsafe extern "C" fn physx_PxMat33_getDeterminant(
     self_: *const PxMat33
 ) -> f32
 {
@@ -1897,7 +1897,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_getDeterminant(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_transform(
+pub unsafe extern "C" fn physx_PxMat33_transform(
     self_: *const PxMat33,
     other: *const PxVec3
 ) -> PxVec3
@@ -1909,7 +1909,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_transform(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_transformTranspose(
+pub unsafe extern "C" fn physx_PxMat33_transformTranspose(
     self_: *const PxMat33,
     other: *const PxVec3
 ) -> PxVec3
@@ -1921,7 +1921,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_transformTranspose(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat33_front(
+pub unsafe extern "C" fn physx_PxMat33_front(
     self_: *const PxMat33
 ) -> *const f32
 {
@@ -1931,7 +1931,7 @@ pub unsafe extern "C" fn magicphysx_PxMat33_front(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_new(
+pub unsafe extern "C" fn physx_PxBounds3_new(
 
 ) -> PxBounds3
 {
@@ -1941,7 +1941,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_new_1(
+pub unsafe extern "C" fn physx_PxBounds3_new_1(
     minimum: *const PxVec3,
     maximum: *const PxVec3
 ) -> PxBounds3
@@ -1953,7 +1953,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_empty(
+pub unsafe extern "C" fn physx_PxBounds3_empty(
 
 ) -> PxBounds3
 {
@@ -1963,7 +1963,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_empty(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_boundsOfPoints(
+pub unsafe extern "C" fn physx_PxBounds3_boundsOfPoints(
     v0: *const PxVec3,
     v1: *const PxVec3
 ) -> PxBounds3
@@ -1975,7 +1975,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_boundsOfPoints(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_centerExtents(
+pub unsafe extern "C" fn physx_PxBounds3_centerExtents(
     center: *const PxVec3,
     extent: *const PxVec3
 ) -> PxBounds3
@@ -1987,7 +1987,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_centerExtents(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_basisExtent(
+pub unsafe extern "C" fn physx_PxBounds3_basisExtent(
     center: *const PxVec3,
     basis: *const PxMat33,
     extent: *const PxVec3
@@ -2001,7 +2001,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_basisExtent(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_poseExtent(
+pub unsafe extern "C" fn physx_PxBounds3_poseExtent(
     pose: *const PxTransform,
     extent: *const PxVec3
 ) -> PxBounds3
@@ -2013,7 +2013,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_poseExtent(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_transformSafe(
+pub unsafe extern "C" fn physx_PxBounds3_transformSafe(
     matrix: *const PxMat33,
     bounds: *const PxBounds3
 ) -> PxBounds3
@@ -2025,7 +2025,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_transformSafe(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_transformFast(
+pub unsafe extern "C" fn physx_PxBounds3_transformFast(
     matrix: *const PxMat33,
     bounds: *const PxBounds3
 ) -> PxBounds3
@@ -2037,7 +2037,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_transformFast(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_transformSafe_1(
+pub unsafe extern "C" fn physx_PxBounds3_transformSafe_1(
     transform: *const PxTransform,
     bounds: *const PxBounds3
 ) -> PxBounds3
@@ -2049,7 +2049,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_transformSafe_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_transformFast_1(
+pub unsafe extern "C" fn physx_PxBounds3_transformFast_1(
     transform: *const PxTransform,
     bounds: *const PxBounds3
 ) -> PxBounds3
@@ -2061,7 +2061,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_transformFast_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_setEmpty_mut(
+pub unsafe extern "C" fn physx_PxBounds3_setEmpty_mut(
     self_: *mut PxBounds3
 )
 {
@@ -2071,7 +2071,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_setEmpty_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_setMaximal_mut(
+pub unsafe extern "C" fn physx_PxBounds3_setMaximal_mut(
     self_: *mut PxBounds3
 )
 {
@@ -2081,7 +2081,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_setMaximal_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_include_mut(
+pub unsafe extern "C" fn physx_PxBounds3_include_mut(
     self_: *mut PxBounds3,
     v: *const PxVec3
 )
@@ -2093,7 +2093,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_include_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_include_mut_1(
+pub unsafe extern "C" fn physx_PxBounds3_include_mut_1(
     self_: *mut PxBounds3,
     b: *const PxBounds3
 )
@@ -2105,7 +2105,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_include_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_isEmpty(
+pub unsafe extern "C" fn physx_PxBounds3_isEmpty(
     self_: *const PxBounds3
 ) -> bool
 {
@@ -2115,7 +2115,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_isEmpty(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_intersects(
+pub unsafe extern "C" fn physx_PxBounds3_intersects(
     self_: *const PxBounds3,
     b: *const PxBounds3
 ) -> bool
@@ -2127,7 +2127,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_intersects(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_intersects1D(
+pub unsafe extern "C" fn physx_PxBounds3_intersects1D(
     self_: *const PxBounds3,
     a: *const PxBounds3,
     axis: u32
@@ -2141,7 +2141,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_intersects1D(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_contains(
+pub unsafe extern "C" fn physx_PxBounds3_contains(
     self_: *const PxBounds3,
     v: *const PxVec3
 ) -> bool
@@ -2153,7 +2153,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_contains(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_isInside(
+pub unsafe extern "C" fn physx_PxBounds3_isInside(
     self_: *const PxBounds3,
     box_: *const PxBounds3
 ) -> bool
@@ -2165,7 +2165,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_isInside(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_getCenter(
+pub unsafe extern "C" fn physx_PxBounds3_getCenter(
     self_: *const PxBounds3
 ) -> PxVec3
 {
@@ -2175,7 +2175,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_getCenter(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_getCenter_1(
+pub unsafe extern "C" fn physx_PxBounds3_getCenter_1(
     self_: *const PxBounds3,
     axis: u32
 ) -> f32
@@ -2187,7 +2187,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_getCenter_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_getExtents(
+pub unsafe extern "C" fn physx_PxBounds3_getExtents(
     self_: *const PxBounds3,
     axis: u32
 ) -> f32
@@ -2199,7 +2199,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_getExtents(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_getDimensions(
+pub unsafe extern "C" fn physx_PxBounds3_getDimensions(
     self_: *const PxBounds3
 ) -> PxVec3
 {
@@ -2209,7 +2209,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_getDimensions(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_getExtents_1(
+pub unsafe extern "C" fn physx_PxBounds3_getExtents_1(
     self_: *const PxBounds3
 ) -> PxVec3
 {
@@ -2219,7 +2219,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_getExtents_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_scaleSafe_mut(
+pub unsafe extern "C" fn physx_PxBounds3_scaleSafe_mut(
     self_: *mut PxBounds3,
     scale: f32
 )
@@ -2231,7 +2231,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_scaleSafe_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_scaleFast_mut(
+pub unsafe extern "C" fn physx_PxBounds3_scaleFast_mut(
     self_: *mut PxBounds3,
     scale: f32
 )
@@ -2243,7 +2243,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_scaleFast_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_fattenSafe_mut(
+pub unsafe extern "C" fn physx_PxBounds3_fattenSafe_mut(
     self_: *mut PxBounds3,
     distance: f32
 )
@@ -2255,7 +2255,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_fattenSafe_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_fattenFast_mut(
+pub unsafe extern "C" fn physx_PxBounds3_fattenFast_mut(
     self_: *mut PxBounds3,
     distance: f32
 )
@@ -2267,7 +2267,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_fattenFast_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_isFinite(
+pub unsafe extern "C" fn physx_PxBounds3_isFinite(
     self_: *const PxBounds3
 ) -> bool
 {
@@ -2277,7 +2277,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_isFinite(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_isValid(
+pub unsafe extern "C" fn physx_PxBounds3_isValid(
     self_: *const PxBounds3
 ) -> bool
 {
@@ -2287,7 +2287,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBounds3_closestPoint(
+pub unsafe extern "C" fn physx_PxBounds3_closestPoint(
     self_: *const PxBounds3,
     p: *const PxVec3
 ) -> PxVec3
@@ -2299,7 +2299,7 @@ pub unsafe extern "C" fn magicphysx_PxBounds3_closestPoint(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxErrorCallback_delete(
+pub unsafe extern "C" fn physx_PxErrorCallback_delete(
     self_: *mut PxErrorCallback
 )
 {
@@ -2309,7 +2309,7 @@ pub unsafe extern "C" fn magicphysx_PxErrorCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxErrorCallback_reportError_mut(
+pub unsafe extern "C" fn physx_PxErrorCallback_reportError_mut(
     self_: *mut PxErrorCallback,
     code: PxErrorCode,
     message: *const c_char,
@@ -2327,7 +2327,7 @@ pub unsafe extern "C" fn magicphysx_PxErrorCallback_reportError_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAllocationListener_onAllocation_mut(
+pub unsafe extern "C" fn physx_PxAllocationListener_onAllocation_mut(
     self_: *mut PxAllocationListener,
     size: usize,
     typeName: *const c_char,
@@ -2347,7 +2347,7 @@ pub unsafe extern "C" fn magicphysx_PxAllocationListener_onAllocation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAllocationListener_onDeallocation_mut(
+pub unsafe extern "C" fn physx_PxAllocationListener_onDeallocation_mut(
     self_: *mut PxAllocationListener,
     allocatedMemory: *mut c_void
 )
@@ -2359,7 +2359,7 @@ pub unsafe extern "C" fn magicphysx_PxAllocationListener_onDeallocation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadcastingAllocator_new_alloc(
+pub unsafe extern "C" fn physx_PxBroadcastingAllocator_new_alloc(
     allocator: *mut PxAllocatorCallback,
     error: *mut PxErrorCallback
 ) -> *mut PxBroadcastingAllocator
@@ -2371,7 +2371,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadcastingAllocator_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadcastingAllocator_delete(
+pub unsafe extern "C" fn physx_PxBroadcastingAllocator_delete(
     self_: *mut PxBroadcastingAllocator
 )
 {
@@ -2381,7 +2381,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadcastingAllocator_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadcastingAllocator_allocate_mut(
+pub unsafe extern "C" fn physx_PxBroadcastingAllocator_allocate_mut(
     self_: *mut PxBroadcastingAllocator,
     size: usize,
     typeName: *const c_char,
@@ -2399,7 +2399,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadcastingAllocator_allocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadcastingAllocator_deallocate_mut(
+pub unsafe extern "C" fn physx_PxBroadcastingAllocator_deallocate_mut(
     self_: *mut PxBroadcastingAllocator,
     ptr: *mut c_void
 )
@@ -2411,7 +2411,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadcastingAllocator_deallocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadcastingErrorCallback_new_alloc(
+pub unsafe extern "C" fn physx_PxBroadcastingErrorCallback_new_alloc(
     errorCallback: *mut PxErrorCallback
 ) -> *mut PxBroadcastingErrorCallback
 {
@@ -2421,7 +2421,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadcastingErrorCallback_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadcastingErrorCallback_delete(
+pub unsafe extern "C" fn physx_PxBroadcastingErrorCallback_delete(
     self_: *mut PxBroadcastingErrorCallback
 )
 {
@@ -2431,7 +2431,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadcastingErrorCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadcastingErrorCallback_reportError_mut(
+pub unsafe extern "C" fn physx_PxBroadcastingErrorCallback_reportError_mut(
     self_: *mut PxBroadcastingErrorCallback,
     code: PxErrorCode,
     message: *const c_char,
@@ -2449,7 +2449,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadcastingErrorCallback_reportError_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxEnableFPExceptions(
+pub unsafe extern "C" fn physx_phys_PxEnableFPExceptions(
 
 )
 {
@@ -2459,7 +2459,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxEnableFPExceptions(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxDisableFPExceptions(
+pub unsafe extern "C" fn physx_phys_PxDisableFPExceptions(
 
 )
 {
@@ -2469,7 +2469,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxDisableFPExceptions(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxInputStream_read_mut(
+pub unsafe extern "C" fn physx_PxInputStream_read_mut(
     self_: *mut PxInputStream,
     dest: *mut c_void,
     count: u32
@@ -2483,7 +2483,7 @@ pub unsafe extern "C" fn magicphysx_PxInputStream_read_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxInputStream_delete(
+pub unsafe extern "C" fn physx_PxInputStream_delete(
     self_: *mut PxInputStream
 )
 {
@@ -2493,7 +2493,7 @@ pub unsafe extern "C" fn magicphysx_PxInputStream_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxInputData_getLength(
+pub unsafe extern "C" fn physx_PxInputData_getLength(
     self_: *const PxInputData
 ) -> u32
 {
@@ -2503,7 +2503,7 @@ pub unsafe extern "C" fn magicphysx_PxInputData_getLength(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxInputData_seek_mut(
+pub unsafe extern "C" fn physx_PxInputData_seek_mut(
     self_: *mut PxInputData,
     offset: u32
 )
@@ -2515,7 +2515,7 @@ pub unsafe extern "C" fn magicphysx_PxInputData_seek_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxInputData_tell(
+pub unsafe extern "C" fn physx_PxInputData_tell(
     self_: *const PxInputData
 ) -> u32
 {
@@ -2525,7 +2525,7 @@ pub unsafe extern "C" fn magicphysx_PxInputData_tell(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxInputData_delete(
+pub unsafe extern "C" fn physx_PxInputData_delete(
     self_: *mut PxInputData
 )
 {
@@ -2535,7 +2535,7 @@ pub unsafe extern "C" fn magicphysx_PxInputData_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxOutputStream_write_mut(
+pub unsafe extern "C" fn physx_PxOutputStream_write_mut(
     self_: *mut PxOutputStream,
     src: *const c_void,
     count: u32
@@ -2549,7 +2549,7 @@ pub unsafe extern "C" fn magicphysx_PxOutputStream_write_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxOutputStream_delete(
+pub unsafe extern "C" fn physx_PxOutputStream_delete(
     self_: *mut PxOutputStream
 )
 {
@@ -2559,7 +2559,7 @@ pub unsafe extern "C" fn magicphysx_PxOutputStream_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_new(
+pub unsafe extern "C" fn physx_PxVec4_new(
 
 ) -> PxVec4
 {
@@ -2569,7 +2569,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_new_1(
+pub unsafe extern "C" fn physx_PxVec4_new_1(
     anon_param0: PxZERO
 ) -> PxVec4
 {
@@ -2579,7 +2579,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_new_2(
+pub unsafe extern "C" fn physx_PxVec4_new_2(
     a: f32
 ) -> PxVec4
 {
@@ -2589,7 +2589,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_new_3(
+pub unsafe extern "C" fn physx_PxVec4_new_3(
     nx: f32,
     ny: f32,
     nz: f32,
@@ -2605,7 +2605,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_new_3(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_new_4(
+pub unsafe extern "C" fn physx_PxVec4_new_4(
     v: *const PxVec3,
     nw: f32
 ) -> PxVec4
@@ -2617,7 +2617,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_new_4(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_new_5(
+pub unsafe extern "C" fn physx_PxVec4_new_5(
     v: *const f32
 ) -> PxVec4
 {
@@ -2627,7 +2627,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_new_5(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_isZero(
+pub unsafe extern "C" fn physx_PxVec4_isZero(
     self_: *const PxVec4
 ) -> bool
 {
@@ -2637,7 +2637,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_isZero(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_isFinite(
+pub unsafe extern "C" fn physx_PxVec4_isFinite(
     self_: *const PxVec4
 ) -> bool
 {
@@ -2647,7 +2647,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_isFinite(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_isNormalized(
+pub unsafe extern "C" fn physx_PxVec4_isNormalized(
     self_: *const PxVec4
 ) -> bool
 {
@@ -2657,7 +2657,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_isNormalized(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_magnitudeSquared(
+pub unsafe extern "C" fn physx_PxVec4_magnitudeSquared(
     self_: *const PxVec4
 ) -> f32
 {
@@ -2667,7 +2667,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_magnitudeSquared(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_magnitude(
+pub unsafe extern "C" fn physx_PxVec4_magnitude(
     self_: *const PxVec4
 ) -> f32
 {
@@ -2677,7 +2677,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_magnitude(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_dot(
+pub unsafe extern "C" fn physx_PxVec4_dot(
     self_: *const PxVec4,
     v: *const PxVec4
 ) -> f32
@@ -2689,7 +2689,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_dot(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_getNormalized(
+pub unsafe extern "C" fn physx_PxVec4_getNormalized(
     self_: *const PxVec4
 ) -> PxVec4
 {
@@ -2699,7 +2699,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_getNormalized(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_normalize_mut(
+pub unsafe extern "C" fn physx_PxVec4_normalize_mut(
     self_: *mut PxVec4
 ) -> f32
 {
@@ -2709,7 +2709,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_normalize_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_multiply(
+pub unsafe extern "C" fn physx_PxVec4_multiply(
     self_: *const PxVec4,
     a: *const PxVec4
 ) -> PxVec4
@@ -2721,7 +2721,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_multiply(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_minimum(
+pub unsafe extern "C" fn physx_PxVec4_minimum(
     self_: *const PxVec4,
     v: *const PxVec4
 ) -> PxVec4
@@ -2733,7 +2733,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_minimum(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_maximum(
+pub unsafe extern "C" fn physx_PxVec4_maximum(
     self_: *const PxVec4,
     v: *const PxVec4
 ) -> PxVec4
@@ -2745,7 +2745,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_maximum(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec4_getXYZ(
+pub unsafe extern "C" fn physx_PxVec4_getXYZ(
     self_: *const PxVec4
 ) -> PxVec3
 {
@@ -2755,7 +2755,7 @@ pub unsafe extern "C" fn magicphysx_PxVec4_getXYZ(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_new(
+pub unsafe extern "C" fn physx_PxMat44_new(
 
 ) -> PxMat44
 {
@@ -2765,7 +2765,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_new_1(
+pub unsafe extern "C" fn physx_PxMat44_new_1(
     anon_param0: PxIDENTITY
 ) -> PxMat44
 {
@@ -2775,7 +2775,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_new_2(
+pub unsafe extern "C" fn physx_PxMat44_new_2(
     anon_param0: PxZERO
 ) -> PxMat44
 {
@@ -2785,7 +2785,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_new_3(
+pub unsafe extern "C" fn physx_PxMat44_new_3(
     col0: *const PxVec4,
     col1: *const PxVec4,
     col2: *const PxVec4,
@@ -2801,7 +2801,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_new_3(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_new_4(
+pub unsafe extern "C" fn physx_PxMat44_new_4(
     r: f32
 ) -> PxMat44
 {
@@ -2811,7 +2811,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_new_4(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_new_5(
+pub unsafe extern "C" fn physx_PxMat44_new_5(
     col0: *const PxVec3,
     col1: *const PxVec3,
     col2: *const PxVec3,
@@ -2827,7 +2827,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_new_5(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_new_6(
+pub unsafe extern "C" fn physx_PxMat44_new_6(
     values: *mut f32
 ) -> PxMat44
 {
@@ -2837,7 +2837,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_new_6(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_new_7(
+pub unsafe extern "C" fn physx_PxMat44_new_7(
     q: *const PxQuat
 ) -> PxMat44
 {
@@ -2847,7 +2847,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_new_7(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_new_8(
+pub unsafe extern "C" fn physx_PxMat44_new_8(
     diagonal: *const PxVec4
 ) -> PxMat44
 {
@@ -2857,7 +2857,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_new_8(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_new_9(
+pub unsafe extern "C" fn physx_PxMat44_new_9(
     axes: *const PxMat33,
     position: *const PxVec3
 ) -> PxMat44
@@ -2869,7 +2869,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_new_9(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_new_10(
+pub unsafe extern "C" fn physx_PxMat44_new_10(
     t: *const PxTransform
 ) -> PxMat44
 {
@@ -2879,7 +2879,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_new_10(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_getTranspose(
+pub unsafe extern "C" fn physx_PxMat44_getTranspose(
     self_: *const PxMat44
 ) -> PxMat44
 {
@@ -2889,7 +2889,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_getTranspose(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_transform(
+pub unsafe extern "C" fn physx_PxMat44_transform(
     self_: *const PxMat44,
     other: *const PxVec4
 ) -> PxVec4
@@ -2901,7 +2901,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_transform(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_transform_1(
+pub unsafe extern "C" fn physx_PxMat44_transform_1(
     self_: *const PxMat44,
     other: *const PxVec3
 ) -> PxVec3
@@ -2913,7 +2913,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_transform_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_rotate(
+pub unsafe extern "C" fn physx_PxMat44_rotate(
     self_: *const PxMat44,
     other: *const PxVec4
 ) -> PxVec4
@@ -2925,7 +2925,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_rotate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_rotate_1(
+pub unsafe extern "C" fn physx_PxMat44_rotate_1(
     self_: *const PxMat44,
     other: *const PxVec3
 ) -> PxVec3
@@ -2937,7 +2937,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_rotate_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_getBasis(
+pub unsafe extern "C" fn physx_PxMat44_getBasis(
     self_: *const PxMat44,
     num: u32
 ) -> PxVec3
@@ -2949,7 +2949,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_getBasis(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_getPosition(
+pub unsafe extern "C" fn physx_PxMat44_getPosition(
     self_: *const PxMat44
 ) -> PxVec3
 {
@@ -2959,7 +2959,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_getPosition(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_setPosition_mut(
+pub unsafe extern "C" fn physx_PxMat44_setPosition_mut(
     self_: *mut PxMat44,
     position: *const PxVec3
 )
@@ -2971,7 +2971,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_setPosition_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_front(
+pub unsafe extern "C" fn physx_PxMat44_front(
     self_: *const PxMat44
 ) -> *const f32
 {
@@ -2981,7 +2981,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_front(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_scale_mut(
+pub unsafe extern "C" fn physx_PxMat44_scale_mut(
     self_: *mut PxMat44,
     p: *const PxVec4
 )
@@ -2993,7 +2993,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_scale_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_inverseRT(
+pub unsafe extern "C" fn physx_PxMat44_inverseRT(
     self_: *const PxMat44
 ) -> PxMat44
 {
@@ -3003,7 +3003,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_inverseRT(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMat44_isFinite(
+pub unsafe extern "C" fn physx_PxMat44_isFinite(
     self_: *const PxMat44
 ) -> bool
 {
@@ -3013,7 +3013,7 @@ pub unsafe extern "C" fn magicphysx_PxMat44_isFinite(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_new(
+pub unsafe extern "C" fn physx_PxPlane_new(
 
 ) -> PxPlane
 {
@@ -3023,7 +3023,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_new_1(
+pub unsafe extern "C" fn physx_PxPlane_new_1(
     nx: f32,
     ny: f32,
     nz: f32,
@@ -3039,7 +3039,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_new_2(
+pub unsafe extern "C" fn physx_PxPlane_new_2(
     normal: *const PxVec3,
     distance: f32
 ) -> PxPlane
@@ -3051,7 +3051,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_new_3(
+pub unsafe extern "C" fn physx_PxPlane_new_3(
     point: *const PxVec3,
     normal: *const PxVec3
 ) -> PxPlane
@@ -3063,7 +3063,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_new_3(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_new_4(
+pub unsafe extern "C" fn physx_PxPlane_new_4(
     p0: *const PxVec3,
     p1: *const PxVec3,
     p2: *const PxVec3
@@ -3077,7 +3077,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_new_4(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_distance(
+pub unsafe extern "C" fn physx_PxPlane_distance(
     self_: *const PxPlane,
     p: *const PxVec3
 ) -> f32
@@ -3089,7 +3089,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_distance(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_contains(
+pub unsafe extern "C" fn physx_PxPlane_contains(
     self_: *const PxPlane,
     p: *const PxVec3
 ) -> bool
@@ -3101,7 +3101,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_contains(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_project(
+pub unsafe extern "C" fn physx_PxPlane_project(
     self_: *const PxPlane,
     p: *const PxVec3
 ) -> PxVec3
@@ -3113,7 +3113,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_project(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_pointInPlane(
+pub unsafe extern "C" fn physx_PxPlane_pointInPlane(
     self_: *const PxPlane
 ) -> PxVec3
 {
@@ -3123,7 +3123,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_pointInPlane(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_normalize_mut(
+pub unsafe extern "C" fn physx_PxPlane_normalize_mut(
     self_: *mut PxPlane
 )
 {
@@ -3133,7 +3133,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_normalize_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_transform(
+pub unsafe extern "C" fn physx_PxPlane_transform(
     self_: *const PxPlane,
     pose: *const PxTransform
 ) -> PxPlane
@@ -3145,7 +3145,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_transform(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlane_inverseTransform(
+pub unsafe extern "C" fn physx_PxPlane_inverseTransform(
     self_: *const PxPlane,
     pose: *const PxTransform
 ) -> PxPlane
@@ -3157,7 +3157,7 @@ pub unsafe extern "C" fn magicphysx_PxPlane_inverseTransform(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxShortestRotation(
+pub unsafe extern "C" fn physx_phys_PxShortestRotation(
     from: *const PxVec3,
     target: *const PxVec3
 ) -> PxQuat
@@ -3169,7 +3169,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxShortestRotation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxDiagonalize(
+pub unsafe extern "C" fn physx_phys_PxDiagonalize(
     m: *const PxMat33,
     axes: *mut PxQuat
 ) -> PxVec3
@@ -3181,7 +3181,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxDiagonalize(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxTransformFromSegment(
+pub unsafe extern "C" fn physx_phys_PxTransformFromSegment(
     p0: *const PxVec3,
     p1: *const PxVec3,
     halfHeight: *mut f32
@@ -3195,7 +3195,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxTransformFromSegment(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxTransformFromPlaneEquation(
+pub unsafe extern "C" fn physx_phys_PxTransformFromPlaneEquation(
     plane: *const PxPlane
 ) -> PxTransform
 {
@@ -3205,7 +3205,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxTransformFromPlaneEquation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxPlaneEquationFromTransform(
+pub unsafe extern "C" fn physx_phys_PxPlaneEquationFromTransform(
     pose: *const PxTransform
 ) -> PxPlane
 {
@@ -3215,7 +3215,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxPlaneEquationFromTransform(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSlerp(
+pub unsafe extern "C" fn physx_phys_PxSlerp(
     t: f32,
     left: *const PxQuat,
     right: *const PxQuat
@@ -3229,7 +3229,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSlerp(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxIntegrateTransform(
+pub unsafe extern "C" fn physx_phys_PxIntegrateTransform(
     curTrans: *const PxTransform,
     linvel: *const PxVec3,
     angvel: *const PxVec3,
@@ -3247,7 +3247,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxIntegrateTransform(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxExp(
+pub unsafe extern "C" fn physx_phys_PxExp(
     v: *const PxVec3
 ) -> PxQuat
 {
@@ -3257,7 +3257,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxExp(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxOptimizeBoundingBox(
+pub unsafe extern "C" fn physx_phys_PxOptimizeBoundingBox(
     basis: *mut PxMat33
 ) -> PxVec3
 {
@@ -3267,7 +3267,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxOptimizeBoundingBox(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxLog(
+pub unsafe extern "C" fn physx_phys_PxLog(
     q: *const PxQuat
 ) -> PxVec3
 {
@@ -3277,7 +3277,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxLog(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxLargestAxis(
+pub unsafe extern "C" fn physx_phys_PxLargestAxis(
     v: *const PxVec3
 ) -> u32
 {
@@ -3287,7 +3287,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxLargestAxis(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxTanHalf(
+pub unsafe extern "C" fn physx_phys_PxTanHalf(
     sin: f32,
     cos: f32
 ) -> f32
@@ -3299,7 +3299,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxTanHalf(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxEllipseClamp(
+pub unsafe extern "C" fn physx_phys_PxEllipseClamp(
     point: *const PxVec3,
     radii: *const PxVec3
 ) -> PxVec3
@@ -3311,7 +3311,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxEllipseClamp(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSeparateSwingTwist(
+pub unsafe extern "C" fn physx_phys_PxSeparateSwingTwist(
     q: *const PxQuat,
     swing: *mut PxQuat,
     twist: *mut PxQuat
@@ -3325,7 +3325,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSeparateSwingTwist(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxComputeAngle(
+pub unsafe extern "C" fn physx_phys_PxComputeAngle(
     v0: *const PxVec3,
     v1: *const PxVec3
 ) -> f32
@@ -3337,7 +3337,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxComputeAngle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxComputeBasisVectors(
+pub unsafe extern "C" fn physx_phys_PxComputeBasisVectors(
     dir: *const PxVec3,
     right: *mut PxVec3,
     up: *mut PxVec3
@@ -3351,7 +3351,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxComputeBasisVectors(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxComputeBasisVectors_1(
+pub unsafe extern "C" fn physx_phys_PxComputeBasisVectors_1(
     p0: *const PxVec3,
     p1: *const PxVec3,
     dir: *mut PxVec3,
@@ -3369,7 +3369,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxComputeBasisVectors_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetNextIndex3(
+pub unsafe extern "C" fn physx_phys_PxGetNextIndex3(
     i: u32
 ) -> u32
 {
@@ -3379,7 +3379,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetNextIndex3(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_computeBarycentric(
+pub unsafe extern "C" fn physx_phys_computeBarycentric(
     a: *const PxVec3,
     b: *const PxVec3,
     c: *const PxVec3,
@@ -3399,7 +3399,7 @@ pub unsafe extern "C" fn magicphysx_phys_computeBarycentric(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_computeBarycentric_1(
+pub unsafe extern "C" fn physx_phys_computeBarycentric_1(
     a: *const PxVec3,
     b: *const PxVec3,
     c: *const PxVec3,
@@ -3417,7 +3417,7 @@ pub unsafe extern "C" fn magicphysx_phys_computeBarycentric_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_Interpolation_PxLerp(
+pub unsafe extern "C" fn physx_Interpolation_PxLerp(
     a: f32,
     b: f32,
     t: f32
@@ -3431,7 +3431,7 @@ pub unsafe extern "C" fn magicphysx_Interpolation_PxLerp(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_Interpolation_PxBiLerp(
+pub unsafe extern "C" fn physx_Interpolation_PxBiLerp(
     f00: f32,
     f10: f32,
     f01: f32,
@@ -3451,7 +3451,7 @@ pub unsafe extern "C" fn magicphysx_Interpolation_PxBiLerp(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_Interpolation_PxTriLerp(
+pub unsafe extern "C" fn physx_Interpolation_PxTriLerp(
     f000: f32,
     f100: f32,
     f010: f32,
@@ -3481,7 +3481,7 @@ pub unsafe extern "C" fn magicphysx_Interpolation_PxTriLerp(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_Interpolation_PxSDFIdx(
+pub unsafe extern "C" fn physx_Interpolation_PxSDFIdx(
     i: u32,
     j: u32,
     k: u32,
@@ -3499,7 +3499,7 @@ pub unsafe extern "C" fn magicphysx_Interpolation_PxSDFIdx(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_Interpolation_PxSDFSampleImpl(
+pub unsafe extern "C" fn physx_Interpolation_PxSDFSampleImpl(
     sdf: *const f32,
     localPos: *const PxVec3,
     sdfBoxLower: *const PxVec3,
@@ -3527,7 +3527,7 @@ pub unsafe extern "C" fn magicphysx_Interpolation_PxSDFSampleImpl(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSdfSample(
+pub unsafe extern "C" fn physx_phys_PxSdfSample(
     sdf: *const f32,
     localPos: *const PxVec3,
     sdfBoxLower: *const PxVec3,
@@ -3557,7 +3557,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSdfSample(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMutexImpl_new_alloc(
+pub unsafe extern "C" fn physx_PxMutexImpl_new_alloc(
 
 ) -> *mut PxMutexImpl
 {
@@ -3567,7 +3567,7 @@ pub unsafe extern "C" fn magicphysx_PxMutexImpl_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMutexImpl_delete(
+pub unsafe extern "C" fn physx_PxMutexImpl_delete(
     self_: *mut PxMutexImpl
 )
 {
@@ -3577,7 +3577,7 @@ pub unsafe extern "C" fn magicphysx_PxMutexImpl_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMutexImpl_lock_mut(
+pub unsafe extern "C" fn physx_PxMutexImpl_lock_mut(
     self_: *mut PxMutexImpl
 )
 {
@@ -3587,7 +3587,7 @@ pub unsafe extern "C" fn magicphysx_PxMutexImpl_lock_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMutexImpl_trylock_mut(
+pub unsafe extern "C" fn physx_PxMutexImpl_trylock_mut(
     self_: *mut PxMutexImpl
 ) -> bool
 {
@@ -3597,7 +3597,7 @@ pub unsafe extern "C" fn magicphysx_PxMutexImpl_trylock_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMutexImpl_unlock_mut(
+pub unsafe extern "C" fn physx_PxMutexImpl_unlock_mut(
     self_: *mut PxMutexImpl
 )
 {
@@ -3607,7 +3607,7 @@ pub unsafe extern "C" fn magicphysx_PxMutexImpl_unlock_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMutexImpl_getSize(
+pub unsafe extern "C" fn physx_PxMutexImpl_getSize(
 
 ) -> u32
 {
@@ -3617,7 +3617,7 @@ pub unsafe extern "C" fn magicphysx_PxMutexImpl_getSize(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxReadWriteLock_new_alloc(
+pub unsafe extern "C" fn physx_PxReadWriteLock_new_alloc(
 
 ) -> *mut PxReadWriteLock
 {
@@ -3627,7 +3627,7 @@ pub unsafe extern "C" fn magicphysx_PxReadWriteLock_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxReadWriteLock_delete(
+pub unsafe extern "C" fn physx_PxReadWriteLock_delete(
     self_: *mut PxReadWriteLock
 )
 {
@@ -3637,7 +3637,7 @@ pub unsafe extern "C" fn magicphysx_PxReadWriteLock_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxReadWriteLock_lockReader_mut(
+pub unsafe extern "C" fn physx_PxReadWriteLock_lockReader_mut(
     self_: *mut PxReadWriteLock,
     takeLock: bool
 )
@@ -3649,7 +3649,7 @@ pub unsafe extern "C" fn magicphysx_PxReadWriteLock_lockReader_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxReadWriteLock_lockWriter_mut(
+pub unsafe extern "C" fn physx_PxReadWriteLock_lockWriter_mut(
     self_: *mut PxReadWriteLock
 )
 {
@@ -3659,7 +3659,7 @@ pub unsafe extern "C" fn magicphysx_PxReadWriteLock_lockWriter_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxReadWriteLock_unlockReader_mut(
+pub unsafe extern "C" fn physx_PxReadWriteLock_unlockReader_mut(
     self_: *mut PxReadWriteLock
 )
 {
@@ -3669,7 +3669,7 @@ pub unsafe extern "C" fn magicphysx_PxReadWriteLock_unlockReader_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxReadWriteLock_unlockWriter_mut(
+pub unsafe extern "C" fn physx_PxReadWriteLock_unlockWriter_mut(
     self_: *mut PxReadWriteLock
 )
 {
@@ -3679,7 +3679,7 @@ pub unsafe extern "C" fn magicphysx_PxReadWriteLock_unlockWriter_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxProfilerCallback_zoneStart_mut(
+pub unsafe extern "C" fn physx_PxProfilerCallback_zoneStart_mut(
     self_: *mut PxProfilerCallback,
     eventName: *const c_char,
     detached: bool,
@@ -3695,7 +3695,7 @@ pub unsafe extern "C" fn magicphysx_PxProfilerCallback_zoneStart_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxProfilerCallback_zoneEnd_mut(
+pub unsafe extern "C" fn physx_PxProfilerCallback_zoneEnd_mut(
     self_: *mut PxProfilerCallback,
     profilerData: *mut c_void,
     eventName: *const c_char,
@@ -3713,7 +3713,7 @@ pub unsafe extern "C" fn magicphysx_PxProfilerCallback_zoneEnd_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxProfileScoped_new_alloc(
+pub unsafe extern "C" fn physx_PxProfileScoped_new_alloc(
     callback: *mut PxProfilerCallback,
     eventName: *const c_char,
     detached: bool,
@@ -3729,7 +3729,7 @@ pub unsafe extern "C" fn magicphysx_PxProfileScoped_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxProfileScoped_delete(
+pub unsafe extern "C" fn physx_PxProfileScoped_delete(
     self_: *mut PxProfileScoped
 )
 {
@@ -3739,7 +3739,7 @@ pub unsafe extern "C" fn magicphysx_PxProfileScoped_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSListEntry_new(
+pub unsafe extern "C" fn physx_PxSListEntry_new(
 
 ) -> PxSListEntry
 {
@@ -3749,7 +3749,7 @@ pub unsafe extern "C" fn magicphysx_PxSListEntry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSListEntry_next_mut(
+pub unsafe extern "C" fn physx_PxSListEntry_next_mut(
     self_: *mut PxSListEntry
 ) -> *mut PxSListEntry
 {
@@ -3759,7 +3759,7 @@ pub unsafe extern "C" fn magicphysx_PxSListEntry_next_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSListImpl_new_alloc(
+pub unsafe extern "C" fn physx_PxSListImpl_new_alloc(
 
 ) -> *mut PxSListImpl
 {
@@ -3769,7 +3769,7 @@ pub unsafe extern "C" fn magicphysx_PxSListImpl_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSListImpl_delete(
+pub unsafe extern "C" fn physx_PxSListImpl_delete(
     self_: *mut PxSListImpl
 )
 {
@@ -3779,7 +3779,7 @@ pub unsafe extern "C" fn magicphysx_PxSListImpl_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSListImpl_push_mut(
+pub unsafe extern "C" fn physx_PxSListImpl_push_mut(
     self_: *mut PxSListImpl,
     entry: *mut PxSListEntry
 )
@@ -3791,7 +3791,7 @@ pub unsafe extern "C" fn magicphysx_PxSListImpl_push_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSListImpl_pop_mut(
+pub unsafe extern "C" fn physx_PxSListImpl_pop_mut(
     self_: *mut PxSListImpl
 ) -> *mut PxSListEntry
 {
@@ -3801,7 +3801,7 @@ pub unsafe extern "C" fn magicphysx_PxSListImpl_pop_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSListImpl_flush_mut(
+pub unsafe extern "C" fn physx_PxSListImpl_flush_mut(
     self_: *mut PxSListImpl
 ) -> *mut PxSListEntry
 {
@@ -3811,7 +3811,7 @@ pub unsafe extern "C" fn magicphysx_PxSListImpl_flush_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSListImpl_getSize(
+pub unsafe extern "C" fn physx_PxSListImpl_getSize(
 
 ) -> u32
 {
@@ -3821,7 +3821,7 @@ pub unsafe extern "C" fn magicphysx_PxSListImpl_getSize(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSyncImpl_new_alloc(
+pub unsafe extern "C" fn physx_PxSyncImpl_new_alloc(
 
 ) -> *mut PxSyncImpl
 {
@@ -3831,7 +3831,7 @@ pub unsafe extern "C" fn magicphysx_PxSyncImpl_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSyncImpl_delete(
+pub unsafe extern "C" fn physx_PxSyncImpl_delete(
     self_: *mut PxSyncImpl
 )
 {
@@ -3841,7 +3841,7 @@ pub unsafe extern "C" fn magicphysx_PxSyncImpl_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSyncImpl_wait_mut(
+pub unsafe extern "C" fn physx_PxSyncImpl_wait_mut(
     self_: *mut PxSyncImpl,
     milliseconds: u32
 ) -> bool
@@ -3853,7 +3853,7 @@ pub unsafe extern "C" fn magicphysx_PxSyncImpl_wait_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSyncImpl_set_mut(
+pub unsafe extern "C" fn physx_PxSyncImpl_set_mut(
     self_: *mut PxSyncImpl
 )
 {
@@ -3863,7 +3863,7 @@ pub unsafe extern "C" fn magicphysx_PxSyncImpl_set_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSyncImpl_reset_mut(
+pub unsafe extern "C" fn physx_PxSyncImpl_reset_mut(
     self_: *mut PxSyncImpl
 )
 {
@@ -3873,7 +3873,7 @@ pub unsafe extern "C" fn magicphysx_PxSyncImpl_reset_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSyncImpl_getSize(
+pub unsafe extern "C" fn physx_PxSyncImpl_getSize(
 
 ) -> u32
 {
@@ -3883,7 +3883,7 @@ pub unsafe extern "C" fn magicphysx_PxSyncImpl_getSize(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRunnable_new_alloc(
+pub unsafe extern "C" fn physx_PxRunnable_new_alloc(
 
 ) -> *mut PxRunnable
 {
@@ -3893,7 +3893,7 @@ pub unsafe extern "C" fn magicphysx_PxRunnable_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRunnable_delete(
+pub unsafe extern "C" fn physx_PxRunnable_delete(
     self_: *mut PxRunnable
 )
 {
@@ -3903,7 +3903,7 @@ pub unsafe extern "C" fn magicphysx_PxRunnable_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRunnable_execute_mut(
+pub unsafe extern "C" fn physx_PxRunnable_execute_mut(
     self_: *mut PxRunnable
 )
 {
@@ -3913,7 +3913,7 @@ pub unsafe extern "C" fn magicphysx_PxRunnable_execute_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxTlsAlloc(
+pub unsafe extern "C" fn physx_phys_PxTlsAlloc(
 
 ) -> u32
 {
@@ -3923,7 +3923,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxTlsAlloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxTlsFree(
+pub unsafe extern "C" fn physx_phys_PxTlsFree(
     index: u32
 )
 {
@@ -3933,7 +3933,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxTlsFree(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxTlsGet(
+pub unsafe extern "C" fn physx_phys_PxTlsGet(
     index: u32
 ) -> *mut c_void
 {
@@ -3943,7 +3943,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxTlsGet(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxTlsGetValue(
+pub unsafe extern "C" fn physx_phys_PxTlsGetValue(
     index: u32
 ) -> usize
 {
@@ -3953,7 +3953,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxTlsGetValue(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxTlsSet(
+pub unsafe extern "C" fn physx_phys_PxTlsSet(
     index: u32,
     value: *mut c_void
 ) -> u32
@@ -3965,7 +3965,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxTlsSet(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxTlsSetValue(
+pub unsafe extern "C" fn physx_phys_PxTlsSetValue(
     index: u32,
     value: usize
 ) -> u32
@@ -3977,7 +3977,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxTlsSetValue(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCounterFrequencyToTensOfNanos_new(
+pub unsafe extern "C" fn physx_PxCounterFrequencyToTensOfNanos_new(
     inNum: u64,
     inDenom: u64
 ) -> PxCounterFrequencyToTensOfNanos
@@ -3989,7 +3989,7 @@ pub unsafe extern "C" fn magicphysx_PxCounterFrequencyToTensOfNanos_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCounterFrequencyToTensOfNanos_toTensOfNanos(
+pub unsafe extern "C" fn physx_PxCounterFrequencyToTensOfNanos_toTensOfNanos(
     self_: *const PxCounterFrequencyToTensOfNanos,
     inCounter: u64
 ) -> u64
@@ -4001,7 +4001,7 @@ pub unsafe extern "C" fn magicphysx_PxCounterFrequencyToTensOfNanos_toTensOfNano
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTime_getBootCounterFrequency(
+pub unsafe extern "C" fn physx_PxTime_getBootCounterFrequency(
 
 ) -> *const PxCounterFrequencyToTensOfNanos
 {
@@ -4011,7 +4011,7 @@ pub unsafe extern "C" fn magicphysx_PxTime_getBootCounterFrequency(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTime_getCounterFrequency(
+pub unsafe extern "C" fn physx_PxTime_getCounterFrequency(
 
 ) -> PxCounterFrequencyToTensOfNanos
 {
@@ -4021,7 +4021,7 @@ pub unsafe extern "C" fn magicphysx_PxTime_getCounterFrequency(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTime_getCurrentCounterValue(
+pub unsafe extern "C" fn physx_PxTime_getCurrentCounterValue(
 
 ) -> u64
 {
@@ -4031,7 +4031,7 @@ pub unsafe extern "C" fn magicphysx_PxTime_getCurrentCounterValue(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTime_getCurrentTimeInTensOfNanoSeconds(
+pub unsafe extern "C" fn physx_PxTime_getCurrentTimeInTensOfNanoSeconds(
 
 ) -> u64
 {
@@ -4041,7 +4041,7 @@ pub unsafe extern "C" fn magicphysx_PxTime_getCurrentTimeInTensOfNanoSeconds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTime_new(
+pub unsafe extern "C" fn physx_PxTime_new(
 
 ) -> PxTime
 {
@@ -4051,7 +4051,7 @@ pub unsafe extern "C" fn magicphysx_PxTime_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTime_getElapsedSeconds_mut(
+pub unsafe extern "C" fn physx_PxTime_getElapsedSeconds_mut(
     self_: *mut PxTime
 ) -> f64
 {
@@ -4061,7 +4061,7 @@ pub unsafe extern "C" fn magicphysx_PxTime_getElapsedSeconds_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTime_peekElapsedSeconds_mut(
+pub unsafe extern "C" fn physx_PxTime_peekElapsedSeconds_mut(
     self_: *mut PxTime
 ) -> f64
 {
@@ -4071,7 +4071,7 @@ pub unsafe extern "C" fn magicphysx_PxTime_peekElapsedSeconds_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTime_getLastTime(
+pub unsafe extern "C" fn physx_PxTime_getLastTime(
     self_: *const PxTime
 ) -> f64
 {
@@ -4081,7 +4081,7 @@ pub unsafe extern "C" fn magicphysx_PxTime_getLastTime(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_new(
+pub unsafe extern "C" fn physx_PxVec2_new(
 
 ) -> PxVec2
 {
@@ -4091,7 +4091,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_new_1(
+pub unsafe extern "C" fn physx_PxVec2_new_1(
     anon_param0: PxZERO
 ) -> PxVec2
 {
@@ -4101,7 +4101,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_new_2(
+pub unsafe extern "C" fn physx_PxVec2_new_2(
     a: f32
 ) -> PxVec2
 {
@@ -4111,7 +4111,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_new_3(
+pub unsafe extern "C" fn physx_PxVec2_new_3(
     nx: f32,
     ny: f32
 ) -> PxVec2
@@ -4123,7 +4123,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_new_3(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_isZero(
+pub unsafe extern "C" fn physx_PxVec2_isZero(
     self_: *const PxVec2
 ) -> bool
 {
@@ -4133,7 +4133,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_isZero(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_isFinite(
+pub unsafe extern "C" fn physx_PxVec2_isFinite(
     self_: *const PxVec2
 ) -> bool
 {
@@ -4143,7 +4143,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_isFinite(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_isNormalized(
+pub unsafe extern "C" fn physx_PxVec2_isNormalized(
     self_: *const PxVec2
 ) -> bool
 {
@@ -4153,7 +4153,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_isNormalized(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_magnitudeSquared(
+pub unsafe extern "C" fn physx_PxVec2_magnitudeSquared(
     self_: *const PxVec2
 ) -> f32
 {
@@ -4163,7 +4163,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_magnitudeSquared(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_magnitude(
+pub unsafe extern "C" fn physx_PxVec2_magnitude(
     self_: *const PxVec2
 ) -> f32
 {
@@ -4173,7 +4173,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_magnitude(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_dot(
+pub unsafe extern "C" fn physx_PxVec2_dot(
     self_: *const PxVec2,
     v: *const PxVec2
 ) -> f32
@@ -4185,7 +4185,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_dot(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_getNormalized(
+pub unsafe extern "C" fn physx_PxVec2_getNormalized(
     self_: *const PxVec2
 ) -> PxVec2
 {
@@ -4195,7 +4195,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_getNormalized(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_normalize_mut(
+pub unsafe extern "C" fn physx_PxVec2_normalize_mut(
     self_: *mut PxVec2
 ) -> f32
 {
@@ -4205,7 +4205,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_normalize_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_multiply(
+pub unsafe extern "C" fn physx_PxVec2_multiply(
     self_: *const PxVec2,
     a: *const PxVec2
 ) -> PxVec2
@@ -4217,7 +4217,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_multiply(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_minimum(
+pub unsafe extern "C" fn physx_PxVec2_minimum(
     self_: *const PxVec2,
     v: *const PxVec2
 ) -> PxVec2
@@ -4229,7 +4229,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_minimum(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_minElement(
+pub unsafe extern "C" fn physx_PxVec2_minElement(
     self_: *const PxVec2
 ) -> f32
 {
@@ -4239,7 +4239,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_minElement(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_maximum(
+pub unsafe extern "C" fn physx_PxVec2_maximum(
     self_: *const PxVec2,
     v: *const PxVec2
 ) -> PxVec2
@@ -4251,7 +4251,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_maximum(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxVec2_maxElement(
+pub unsafe extern "C" fn physx_PxVec2_maxElement(
     self_: *const PxVec2
 ) -> f32
 {
@@ -4261,7 +4261,7 @@ pub unsafe extern "C" fn magicphysx_PxVec2_maxElement(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxStridedData_new(
+pub unsafe extern "C" fn physx_PxStridedData_new(
 
 ) -> PxStridedData
 {
@@ -4271,7 +4271,7 @@ pub unsafe extern "C" fn magicphysx_PxStridedData_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoundedData_new(
+pub unsafe extern "C" fn physx_PxBoundedData_new(
 
 ) -> PxBoundedData
 {
@@ -4281,7 +4281,7 @@ pub unsafe extern "C" fn magicphysx_PxBoundedData_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDebugPoint_new(
+pub unsafe extern "C" fn physx_PxDebugPoint_new(
     p: *const PxVec3,
     c: *const u32
 ) -> PxDebugPoint
@@ -4293,7 +4293,7 @@ pub unsafe extern "C" fn magicphysx_PxDebugPoint_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDebugLine_new(
+pub unsafe extern "C" fn physx_PxDebugLine_new(
     p0: *const PxVec3,
     p1: *const PxVec3,
     c: *const u32
@@ -4307,7 +4307,7 @@ pub unsafe extern "C" fn magicphysx_PxDebugLine_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDebugTriangle_new(
+pub unsafe extern "C" fn physx_PxDebugTriangle_new(
     p0: *const PxVec3,
     p1: *const PxVec3,
     p2: *const PxVec3,
@@ -4323,7 +4323,7 @@ pub unsafe extern "C" fn magicphysx_PxDebugTriangle_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDebugText_new(
+pub unsafe extern "C" fn physx_PxDebugText_new(
 
 ) -> PxDebugText
 {
@@ -4333,7 +4333,7 @@ pub unsafe extern "C" fn magicphysx_PxDebugText_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDebugText_new_1(
+pub unsafe extern "C" fn physx_PxDebugText_new_1(
     pos: *const PxVec3,
     sz: *const f32,
     clr: *const u32,
@@ -4349,7 +4349,7 @@ pub unsafe extern "C" fn magicphysx_PxDebugText_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_delete(
+pub unsafe extern "C" fn physx_PxRenderBuffer_delete(
     self_: *mut PxRenderBuffer
 )
 {
@@ -4359,7 +4359,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getNbPoints(
+pub unsafe extern "C" fn physx_PxRenderBuffer_getNbPoints(
     self_: *const PxRenderBuffer
 ) -> u32
 {
@@ -4369,7 +4369,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getNbPoints(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getPoints(
+pub unsafe extern "C" fn physx_PxRenderBuffer_getPoints(
     self_: *const PxRenderBuffer
 ) -> *const PxDebugPoint
 {
@@ -4379,7 +4379,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getPoints(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_addPoint_mut(
+pub unsafe extern "C" fn physx_PxRenderBuffer_addPoint_mut(
     self_: *mut PxRenderBuffer,
     point: *const PxDebugPoint
 )
@@ -4391,7 +4391,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_addPoint_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getNbLines(
+pub unsafe extern "C" fn physx_PxRenderBuffer_getNbLines(
     self_: *const PxRenderBuffer
 ) -> u32
 {
@@ -4401,7 +4401,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getNbLines(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getLines(
+pub unsafe extern "C" fn physx_PxRenderBuffer_getLines(
     self_: *const PxRenderBuffer
 ) -> *const PxDebugLine
 {
@@ -4411,7 +4411,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getLines(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_addLine_mut(
+pub unsafe extern "C" fn physx_PxRenderBuffer_addLine_mut(
     self_: *mut PxRenderBuffer,
     line: *const PxDebugLine
 )
@@ -4423,7 +4423,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_addLine_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_reserveLines_mut(
+pub unsafe extern "C" fn physx_PxRenderBuffer_reserveLines_mut(
     self_: *mut PxRenderBuffer,
     nbLines: u32
 ) -> *mut PxDebugLine
@@ -4435,7 +4435,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_reserveLines_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_reservePoints_mut(
+pub unsafe extern "C" fn physx_PxRenderBuffer_reservePoints_mut(
     self_: *mut PxRenderBuffer,
     nbLines: u32
 ) -> *mut PxDebugPoint
@@ -4447,7 +4447,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_reservePoints_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getNbTriangles(
+pub unsafe extern "C" fn physx_PxRenderBuffer_getNbTriangles(
     self_: *const PxRenderBuffer
 ) -> u32
 {
@@ -4457,7 +4457,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getNbTriangles(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getTriangles(
+pub unsafe extern "C" fn physx_PxRenderBuffer_getTriangles(
     self_: *const PxRenderBuffer
 ) -> *const PxDebugTriangle
 {
@@ -4467,7 +4467,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_getTriangles(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_addTriangle_mut(
+pub unsafe extern "C" fn physx_PxRenderBuffer_addTriangle_mut(
     self_: *mut PxRenderBuffer,
     triangle: *const PxDebugTriangle
 )
@@ -4479,7 +4479,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_addTriangle_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_append_mut(
+pub unsafe extern "C" fn physx_PxRenderBuffer_append_mut(
     self_: *mut PxRenderBuffer,
     other: *const PxRenderBuffer
 )
@@ -4491,7 +4491,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_append_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_clear_mut(
+pub unsafe extern "C" fn physx_PxRenderBuffer_clear_mut(
     self_: *mut PxRenderBuffer
 )
 {
@@ -4501,7 +4501,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_clear_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_shift_mut(
+pub unsafe extern "C" fn physx_PxRenderBuffer_shift_mut(
     self_: *mut PxRenderBuffer,
     delta: *const PxVec3
 )
@@ -4513,7 +4513,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_shift_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRenderBuffer_empty(
+pub unsafe extern "C" fn physx_PxRenderBuffer_empty(
     self_: *const PxRenderBuffer
 ) -> bool
 {
@@ -4523,7 +4523,7 @@ pub unsafe extern "C" fn magicphysx_PxRenderBuffer_empty(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxProcessPxBaseCallback_delete(
+pub unsafe extern "C" fn physx_PxProcessPxBaseCallback_delete(
     self_: *mut PxProcessPxBaseCallback
 )
 {
@@ -4533,7 +4533,7 @@ pub unsafe extern "C" fn magicphysx_PxProcessPxBaseCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxProcessPxBaseCallback_process_mut(
+pub unsafe extern "C" fn physx_PxProcessPxBaseCallback_process_mut(
     self_: *mut PxProcessPxBaseCallback,
     anon_param0: *mut PxBase
 )
@@ -4545,7 +4545,7 @@ pub unsafe extern "C" fn magicphysx_PxProcessPxBaseCallback_process_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationContext_registerReference_mut(
+pub unsafe extern "C" fn physx_PxSerializationContext_registerReference_mut(
     self_: *mut PxSerializationContext,
     base: *mut PxBase,
     kind: u32,
@@ -4561,7 +4561,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationContext_registerReference_mut
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationContext_getCollection(
+pub unsafe extern "C" fn physx_PxSerializationContext_getCollection(
     self_: *const PxSerializationContext
 ) -> *const PxCollection
 {
@@ -4571,7 +4571,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationContext_getCollection(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationContext_writeData_mut(
+pub unsafe extern "C" fn physx_PxSerializationContext_writeData_mut(
     self_: *mut PxSerializationContext,
     data: *const c_void,
     size: u32
@@ -4585,7 +4585,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationContext_writeData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationContext_alignData_mut(
+pub unsafe extern "C" fn physx_PxSerializationContext_alignData_mut(
     self_: *mut PxSerializationContext,
     alignment: u32
 )
@@ -4597,7 +4597,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationContext_alignData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationContext_writeName_mut(
+pub unsafe extern "C" fn physx_PxSerializationContext_writeName_mut(
     self_: *mut PxSerializationContext,
     name: *const c_char
 )
@@ -4609,7 +4609,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationContext_writeName_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDeserializationContext_resolveReference(
+pub unsafe extern "C" fn physx_PxDeserializationContext_resolveReference(
     self_: *const PxDeserializationContext,
     kind: u32,
     reference: usize
@@ -4623,7 +4623,7 @@ pub unsafe extern "C" fn magicphysx_PxDeserializationContext_resolveReference(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDeserializationContext_readName_mut(
+pub unsafe extern "C" fn physx_PxDeserializationContext_readName_mut(
     self_: *mut PxDeserializationContext,
     name: *mut *const c_char
 )
@@ -4635,7 +4635,7 @@ pub unsafe extern "C" fn magicphysx_PxDeserializationContext_readName_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDeserializationContext_alignExtraData_mut(
+pub unsafe extern "C" fn physx_PxDeserializationContext_alignExtraData_mut(
     self_: *mut PxDeserializationContext,
     alignment: u32
 )
@@ -4647,7 +4647,7 @@ pub unsafe extern "C" fn magicphysx_PxDeserializationContext_alignExtraData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_registerSerializer_mut(
+pub unsafe extern "C" fn physx_PxSerializationRegistry_registerSerializer_mut(
     self_: *mut PxSerializationRegistry,
     type_: u16,
     serializer: *mut PxSerializer
@@ -4661,7 +4661,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_registerSerializer_m
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_unregisterSerializer_mut(
+pub unsafe extern "C" fn physx_PxSerializationRegistry_unregisterSerializer_mut(
     self_: *mut PxSerializationRegistry,
     type_: u16
 ) -> *mut PxSerializer
@@ -4673,7 +4673,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_unregisterSerializer
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_getSerializer(
+pub unsafe extern "C" fn physx_PxSerializationRegistry_getSerializer(
     self_: *const PxSerializationRegistry,
     type_: u16
 ) -> *const PxSerializer
@@ -4685,7 +4685,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_getSerializer(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_registerRepXSerializer_mut(
+pub unsafe extern "C" fn physx_PxSerializationRegistry_registerRepXSerializer_mut(
     self_: *mut PxSerializationRegistry,
     type_: u16,
     serializer: *mut PxRepXSerializer
@@ -4699,7 +4699,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_registerRepXSerializ
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_unregisterRepXSerializer_mut(
+pub unsafe extern "C" fn physx_PxSerializationRegistry_unregisterRepXSerializer_mut(
     self_: *mut PxSerializationRegistry,
     type_: u16
 ) -> *mut PxRepXSerializer
@@ -4711,7 +4711,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_unregisterRepXSerial
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_getRepXSerializer(
+pub unsafe extern "C" fn physx_PxSerializationRegistry_getRepXSerializer(
     self_: *const PxSerializationRegistry,
     typeName: *const c_char
 ) -> *mut PxRepXSerializer
@@ -4723,7 +4723,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_getRepXSerializer(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_release_mut(
+pub unsafe extern "C" fn physx_PxSerializationRegistry_release_mut(
     self_: *mut PxSerializationRegistry
 )
 {
@@ -4733,7 +4733,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializationRegistry_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_add_mut(
+pub unsafe extern "C" fn physx_PxCollection_add_mut(
     self_: *mut PxCollection,
     object: *mut PxBase,
     id: u64
@@ -4747,7 +4747,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_add_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_remove_mut(
+pub unsafe extern "C" fn physx_PxCollection_remove_mut(
     self_: *mut PxCollection,
     object: *mut PxBase
 )
@@ -4759,7 +4759,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_remove_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_contains(
+pub unsafe extern "C" fn physx_PxCollection_contains(
     self_: *const PxCollection,
     object: *mut PxBase
 ) -> bool
@@ -4771,7 +4771,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_contains(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_addId_mut(
+pub unsafe extern "C" fn physx_PxCollection_addId_mut(
     self_: *mut PxCollection,
     object: *mut PxBase,
     id: u64
@@ -4785,7 +4785,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_addId_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_removeId_mut(
+pub unsafe extern "C" fn physx_PxCollection_removeId_mut(
     self_: *mut PxCollection,
     id: u64
 )
@@ -4797,7 +4797,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_removeId_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_add_mut_1(
+pub unsafe extern "C" fn physx_PxCollection_add_mut_1(
     self_: *mut PxCollection,
     collection: *mut PxCollection
 )
@@ -4809,7 +4809,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_add_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_remove_mut_1(
+pub unsafe extern "C" fn physx_PxCollection_remove_mut_1(
     self_: *mut PxCollection,
     collection: *mut PxCollection
 )
@@ -4821,7 +4821,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_remove_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_getNbObjects(
+pub unsafe extern "C" fn physx_PxCollection_getNbObjects(
     self_: *const PxCollection
 ) -> u32
 {
@@ -4831,7 +4831,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_getNbObjects(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_getObject(
+pub unsafe extern "C" fn physx_PxCollection_getObject(
     self_: *const PxCollection,
     index: u32
 ) -> *mut PxBase
@@ -4843,7 +4843,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_getObject(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_getObjects(
+pub unsafe extern "C" fn physx_PxCollection_getObjects(
     self_: *const PxCollection,
     userBuffer: *mut *mut PxBase,
     bufferSize: u32,
@@ -4859,7 +4859,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_getObjects(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_find(
+pub unsafe extern "C" fn physx_PxCollection_find(
     self_: *const PxCollection,
     id: u64
 ) -> *mut PxBase
@@ -4871,7 +4871,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_find(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_getNbIds(
+pub unsafe extern "C" fn physx_PxCollection_getNbIds(
     self_: *const PxCollection
 ) -> u32
 {
@@ -4881,7 +4881,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_getNbIds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_getIds(
+pub unsafe extern "C" fn physx_PxCollection_getIds(
     self_: *const PxCollection,
     userBuffer: *mut u64,
     bufferSize: u32,
@@ -4897,7 +4897,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_getIds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_getId(
+pub unsafe extern "C" fn physx_PxCollection_getId(
     self_: *const PxCollection,
     object: *const PxBase
 ) -> u64
@@ -4909,7 +4909,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_getId(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollection_release_mut(
+pub unsafe extern "C" fn physx_PxCollection_release_mut(
     self_: *mut PxCollection
 )
 {
@@ -4919,7 +4919,7 @@ pub unsafe extern "C" fn magicphysx_PxCollection_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateCollection(
+pub unsafe extern "C" fn physx_phys_PxCreateCollection(
 
 ) -> *mut PxCollection
 {
@@ -4929,7 +4929,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateCollection(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBase_release_mut(
+pub unsafe extern "C" fn physx_PxBase_release_mut(
     self_: *mut PxBase
 )
 {
@@ -4939,7 +4939,7 @@ pub unsafe extern "C" fn magicphysx_PxBase_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBase_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxBase_getConcreteTypeName(
     self_: *const PxBase
 ) -> *const c_char
 {
@@ -4949,7 +4949,7 @@ pub unsafe extern "C" fn magicphysx_PxBase_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBase_getConcreteType(
+pub unsafe extern "C" fn physx_PxBase_getConcreteType(
     self_: *const PxBase
 ) -> u16
 {
@@ -4959,7 +4959,7 @@ pub unsafe extern "C" fn magicphysx_PxBase_getConcreteType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBase_setBaseFlag_mut(
+pub unsafe extern "C" fn physx_PxBase_setBaseFlag_mut(
     self_: *mut PxBase,
     flag: PxBaseFlag,
     value: bool
@@ -4973,7 +4973,7 @@ pub unsafe extern "C" fn magicphysx_PxBase_setBaseFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBase_setBaseFlags_mut(
+pub unsafe extern "C" fn physx_PxBase_setBaseFlags_mut(
     self_: *mut PxBase,
     inFlags: PxBaseFlags
 )
@@ -4985,7 +4985,7 @@ pub unsafe extern "C" fn magicphysx_PxBase_setBaseFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBase_getBaseFlags(
+pub unsafe extern "C" fn physx_PxBase_getBaseFlags(
     self_: *const PxBase
 ) -> PxBaseFlags
 {
@@ -4995,7 +4995,7 @@ pub unsafe extern "C" fn magicphysx_PxBase_getBaseFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBase_isReleasable(
+pub unsafe extern "C" fn physx_PxBase_isReleasable(
     self_: *const PxBase
 ) -> bool
 {
@@ -5005,7 +5005,7 @@ pub unsafe extern "C" fn magicphysx_PxBase_isReleasable(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRefCounted_release_mut(
+pub unsafe extern "C" fn physx_PxRefCounted_release_mut(
     self_: *mut PxRefCounted
 )
 {
@@ -5015,7 +5015,7 @@ pub unsafe extern "C" fn magicphysx_PxRefCounted_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRefCounted_getReferenceCount(
+pub unsafe extern "C" fn physx_PxRefCounted_getReferenceCount(
     self_: *const PxRefCounted
 ) -> u32
 {
@@ -5025,7 +5025,7 @@ pub unsafe extern "C" fn magicphysx_PxRefCounted_getReferenceCount(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRefCounted_acquireReference_mut(
+pub unsafe extern "C" fn physx_PxRefCounted_acquireReference_mut(
     self_: *mut PxRefCounted
 )
 {
@@ -5035,7 +5035,7 @@ pub unsafe extern "C" fn magicphysx_PxRefCounted_acquireReference_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTolerancesScale_new(
+pub unsafe extern "C" fn physx_PxTolerancesScale_new(
     defaultLength: f32,
     defaultSpeed: f32
 ) -> PxTolerancesScale
@@ -5047,7 +5047,7 @@ pub unsafe extern "C" fn magicphysx_PxTolerancesScale_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTolerancesScale_isValid(
+pub unsafe extern "C" fn physx_PxTolerancesScale_isValid(
     self_: *const PxTolerancesScale
 ) -> bool
 {
@@ -5057,7 +5057,7 @@ pub unsafe extern "C" fn magicphysx_PxTolerancesScale_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxStringTable_allocateStr_mut(
+pub unsafe extern "C" fn physx_PxStringTable_allocateStr_mut(
     self_: *mut PxStringTable,
     inSrc: *const c_char
 ) -> *const c_char
@@ -5069,7 +5069,7 @@ pub unsafe extern "C" fn magicphysx_PxStringTable_allocateStr_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxStringTable_release_mut(
+pub unsafe extern "C" fn physx_PxStringTable_release_mut(
     self_: *mut PxStringTable
 )
 {
@@ -5079,7 +5079,7 @@ pub unsafe extern "C" fn magicphysx_PxStringTable_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializer_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxSerializer_getConcreteTypeName(
     self_: *const PxSerializer
 ) -> *const c_char
 {
@@ -5089,7 +5089,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializer_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializer_requiresObjects(
+pub unsafe extern "C" fn physx_PxSerializer_requiresObjects(
     self_: *const PxSerializer,
     anon_param0: *mut PxBase,
     anon_param1: *mut PxProcessPxBaseCallback
@@ -5103,7 +5103,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializer_requiresObjects(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializer_isSubordinate(
+pub unsafe extern "C" fn physx_PxSerializer_isSubordinate(
     self_: *const PxSerializer
 ) -> bool
 {
@@ -5113,7 +5113,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializer_isSubordinate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializer_exportExtraData(
+pub unsafe extern "C" fn physx_PxSerializer_exportExtraData(
     self_: *const PxSerializer,
     anon_param0: *mut PxBase,
     anon_param1: *mut PxSerializationContext
@@ -5127,7 +5127,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializer_exportExtraData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializer_exportData(
+pub unsafe extern "C" fn physx_PxSerializer_exportData(
     self_: *const PxSerializer,
     anon_param0: *mut PxBase,
     anon_param1: *mut PxSerializationContext
@@ -5141,7 +5141,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializer_exportData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializer_registerReferences(
+pub unsafe extern "C" fn physx_PxSerializer_registerReferences(
     self_: *const PxSerializer,
     obj: *mut PxBase,
     s: *mut PxSerializationContext
@@ -5155,7 +5155,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializer_registerReferences(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializer_getClassSize(
+pub unsafe extern "C" fn physx_PxSerializer_getClassSize(
     self_: *const PxSerializer
 ) -> usize
 {
@@ -5165,7 +5165,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializer_getClassSize(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializer_createObject(
+pub unsafe extern "C" fn physx_PxSerializer_createObject(
     self_: *const PxSerializer,
     address: *mut *mut u8,
     context: *mut PxDeserializationContext
@@ -5179,7 +5179,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializer_createObject(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerializer_delete(
+pub unsafe extern "C" fn physx_PxSerializer_delete(
     self_: *mut PxSerializer
 )
 {
@@ -5189,7 +5189,7 @@ pub unsafe extern "C" fn magicphysx_PxSerializer_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxInsertionCallback_buildObjectFromData_mut(
+pub unsafe extern "C" fn physx_PxInsertionCallback_buildObjectFromData_mut(
     self_: *mut PxInsertionCallback,
     type_: PxConcreteType,
     data: *mut c_void
@@ -5203,7 +5203,7 @@ pub unsafe extern "C" fn magicphysx_PxInsertionCallback_buildObjectFromData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_setCpuDispatcher_mut(
+pub unsafe extern "C" fn physx_PxTaskManager_setCpuDispatcher_mut(
     self_: *mut PxTaskManager,
     ref_: *mut PxCpuDispatcher
 )
@@ -5215,7 +5215,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_setCpuDispatcher_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_getCpuDispatcher(
+pub unsafe extern "C" fn physx_PxTaskManager_getCpuDispatcher(
     self_: *const PxTaskManager
 ) -> *mut PxCpuDispatcher
 {
@@ -5225,7 +5225,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_getCpuDispatcher(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_resetDependencies_mut(
+pub unsafe extern "C" fn physx_PxTaskManager_resetDependencies_mut(
     self_: *mut PxTaskManager
 )
 {
@@ -5235,7 +5235,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_resetDependencies_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_startSimulation_mut(
+pub unsafe extern "C" fn physx_PxTaskManager_startSimulation_mut(
     self_: *mut PxTaskManager
 )
 {
@@ -5245,7 +5245,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_startSimulation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_stopSimulation_mut(
+pub unsafe extern "C" fn physx_PxTaskManager_stopSimulation_mut(
     self_: *mut PxTaskManager
 )
 {
@@ -5255,7 +5255,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_stopSimulation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_taskCompleted_mut(
+pub unsafe extern "C" fn physx_PxTaskManager_taskCompleted_mut(
     self_: *mut PxTaskManager,
     task: *mut PxTask
 )
@@ -5267,7 +5267,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_taskCompleted_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_getNamedTask_mut(
+pub unsafe extern "C" fn physx_PxTaskManager_getNamedTask_mut(
     self_: *mut PxTaskManager,
     name: *const c_char
 ) -> u32
@@ -5279,7 +5279,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_getNamedTask_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_submitNamedTask_mut(
+pub unsafe extern "C" fn physx_PxTaskManager_submitNamedTask_mut(
     self_: *mut PxTaskManager,
     task: *mut PxTask,
     name: *const c_char,
@@ -5295,7 +5295,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_submitNamedTask_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_submitUnnamedTask_mut(
+pub unsafe extern "C" fn physx_PxTaskManager_submitUnnamedTask_mut(
     self_: *mut PxTaskManager,
     task: *mut PxTask,
     type_: PxTaskType
@@ -5309,7 +5309,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_submitUnnamedTask_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_getTaskFromID_mut(
+pub unsafe extern "C" fn physx_PxTaskManager_getTaskFromID_mut(
     self_: *mut PxTaskManager,
     id: u32
 ) -> *mut PxTask
@@ -5321,7 +5321,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_getTaskFromID_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_release_mut(
+pub unsafe extern "C" fn physx_PxTaskManager_release_mut(
     self_: *mut PxTaskManager
 )
 {
@@ -5331,7 +5331,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTaskManager_createTaskManager(
+pub unsafe extern "C" fn physx_PxTaskManager_createTaskManager(
     errorCallback: *mut PxErrorCallback,
     anon_param1: *mut PxCpuDispatcher
 ) -> *mut PxTaskManager
@@ -5343,7 +5343,7 @@ pub unsafe extern "C" fn magicphysx_PxTaskManager_createTaskManager(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCpuDispatcher_submitTask_mut(
+pub unsafe extern "C" fn physx_PxCpuDispatcher_submitTask_mut(
     self_: *mut PxCpuDispatcher,
     task: *mut PxBaseTask
 )
@@ -5355,7 +5355,7 @@ pub unsafe extern "C" fn magicphysx_PxCpuDispatcher_submitTask_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCpuDispatcher_getWorkerCount(
+pub unsafe extern "C" fn physx_PxCpuDispatcher_getWorkerCount(
     self_: *const PxCpuDispatcher
 ) -> u32
 {
@@ -5365,7 +5365,7 @@ pub unsafe extern "C" fn magicphysx_PxCpuDispatcher_getWorkerCount(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCpuDispatcher_delete(
+pub unsafe extern "C" fn physx_PxCpuDispatcher_delete(
     self_: *mut PxCpuDispatcher
 )
 {
@@ -5375,7 +5375,7 @@ pub unsafe extern "C" fn magicphysx_PxCpuDispatcher_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBaseTask_run_mut(
+pub unsafe extern "C" fn physx_PxBaseTask_run_mut(
     self_: *mut PxBaseTask
 )
 {
@@ -5385,7 +5385,7 @@ pub unsafe extern "C" fn magicphysx_PxBaseTask_run_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBaseTask_getName(
+pub unsafe extern "C" fn physx_PxBaseTask_getName(
     self_: *const PxBaseTask
 ) -> *const c_char
 {
@@ -5395,7 +5395,7 @@ pub unsafe extern "C" fn magicphysx_PxBaseTask_getName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBaseTask_addReference_mut(
+pub unsafe extern "C" fn physx_PxBaseTask_addReference_mut(
     self_: *mut PxBaseTask
 )
 {
@@ -5405,7 +5405,7 @@ pub unsafe extern "C" fn magicphysx_PxBaseTask_addReference_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBaseTask_removeReference_mut(
+pub unsafe extern "C" fn physx_PxBaseTask_removeReference_mut(
     self_: *mut PxBaseTask
 )
 {
@@ -5415,7 +5415,7 @@ pub unsafe extern "C" fn magicphysx_PxBaseTask_removeReference_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBaseTask_getReference(
+pub unsafe extern "C" fn physx_PxBaseTask_getReference(
     self_: *const PxBaseTask
 ) -> i32
 {
@@ -5425,7 +5425,7 @@ pub unsafe extern "C" fn magicphysx_PxBaseTask_getReference(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBaseTask_release_mut(
+pub unsafe extern "C" fn physx_PxBaseTask_release_mut(
     self_: *mut PxBaseTask
 )
 {
@@ -5435,7 +5435,7 @@ pub unsafe extern "C" fn magicphysx_PxBaseTask_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBaseTask_getTaskManager(
+pub unsafe extern "C" fn physx_PxBaseTask_getTaskManager(
     self_: *const PxBaseTask
 ) -> *mut PxTaskManager
 {
@@ -5445,7 +5445,7 @@ pub unsafe extern "C" fn magicphysx_PxBaseTask_getTaskManager(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBaseTask_setContextId_mut(
+pub unsafe extern "C" fn physx_PxBaseTask_setContextId_mut(
     self_: *mut PxBaseTask,
     id: u64
 )
@@ -5457,7 +5457,7 @@ pub unsafe extern "C" fn magicphysx_PxBaseTask_setContextId_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBaseTask_getContextId(
+pub unsafe extern "C" fn physx_PxBaseTask_getContextId(
     self_: *const PxBaseTask
 ) -> u64
 {
@@ -5467,7 +5467,7 @@ pub unsafe extern "C" fn magicphysx_PxBaseTask_getContextId(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTask_release_mut(
+pub unsafe extern "C" fn physx_PxTask_release_mut(
     self_: *mut PxTask
 )
 {
@@ -5477,7 +5477,7 @@ pub unsafe extern "C" fn magicphysx_PxTask_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTask_finishBefore_mut(
+pub unsafe extern "C" fn physx_PxTask_finishBefore_mut(
     self_: *mut PxTask,
     taskID: u32
 )
@@ -5489,7 +5489,7 @@ pub unsafe extern "C" fn magicphysx_PxTask_finishBefore_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTask_startAfter_mut(
+pub unsafe extern "C" fn physx_PxTask_startAfter_mut(
     self_: *mut PxTask,
     taskID: u32
 )
@@ -5501,7 +5501,7 @@ pub unsafe extern "C" fn magicphysx_PxTask_startAfter_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTask_addReference_mut(
+pub unsafe extern "C" fn physx_PxTask_addReference_mut(
     self_: *mut PxTask
 )
 {
@@ -5511,7 +5511,7 @@ pub unsafe extern "C" fn magicphysx_PxTask_addReference_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTask_removeReference_mut(
+pub unsafe extern "C" fn physx_PxTask_removeReference_mut(
     self_: *mut PxTask
 )
 {
@@ -5521,7 +5521,7 @@ pub unsafe extern "C" fn magicphysx_PxTask_removeReference_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTask_getReference(
+pub unsafe extern "C" fn physx_PxTask_getReference(
     self_: *const PxTask
 ) -> i32
 {
@@ -5531,7 +5531,7 @@ pub unsafe extern "C" fn magicphysx_PxTask_getReference(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTask_getTaskID(
+pub unsafe extern "C" fn physx_PxTask_getTaskID(
     self_: *const PxTask
 ) -> u32
 {
@@ -5541,7 +5541,7 @@ pub unsafe extern "C" fn magicphysx_PxTask_getTaskID(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTask_submitted_mut(
+pub unsafe extern "C" fn physx_PxTask_submitted_mut(
     self_: *mut PxTask
 )
 {
@@ -5551,7 +5551,7 @@ pub unsafe extern "C" fn magicphysx_PxTask_submitted_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLightCpuTask_setContinuation_mut(
+pub unsafe extern "C" fn physx_PxLightCpuTask_setContinuation_mut(
     self_: *mut PxLightCpuTask,
     tm: *mut PxTaskManager,
     c: *mut PxBaseTask
@@ -5565,7 +5565,7 @@ pub unsafe extern "C" fn magicphysx_PxLightCpuTask_setContinuation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLightCpuTask_setContinuation_mut_1(
+pub unsafe extern "C" fn physx_PxLightCpuTask_setContinuation_mut_1(
     self_: *mut PxLightCpuTask,
     c: *mut PxBaseTask
 )
@@ -5577,7 +5577,7 @@ pub unsafe extern "C" fn magicphysx_PxLightCpuTask_setContinuation_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLightCpuTask_getContinuation(
+pub unsafe extern "C" fn physx_PxLightCpuTask_getContinuation(
     self_: *const PxLightCpuTask
 ) -> *mut PxBaseTask
 {
@@ -5587,7 +5587,7 @@ pub unsafe extern "C" fn magicphysx_PxLightCpuTask_getContinuation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLightCpuTask_removeReference_mut(
+pub unsafe extern "C" fn physx_PxLightCpuTask_removeReference_mut(
     self_: *mut PxLightCpuTask
 )
 {
@@ -5597,7 +5597,7 @@ pub unsafe extern "C" fn magicphysx_PxLightCpuTask_removeReference_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLightCpuTask_getReference(
+pub unsafe extern "C" fn physx_PxLightCpuTask_getReference(
     self_: *const PxLightCpuTask
 ) -> i32
 {
@@ -5607,7 +5607,7 @@ pub unsafe extern "C" fn magicphysx_PxLightCpuTask_getReference(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLightCpuTask_addReference_mut(
+pub unsafe extern "C" fn physx_PxLightCpuTask_addReference_mut(
     self_: *mut PxLightCpuTask
 )
 {
@@ -5617,7 +5617,7 @@ pub unsafe extern "C" fn magicphysx_PxLightCpuTask_addReference_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLightCpuTask_release_mut(
+pub unsafe extern "C" fn physx_PxLightCpuTask_release_mut(
     self_: *mut PxLightCpuTask
 )
 {
@@ -5627,7 +5627,7 @@ pub unsafe extern "C" fn magicphysx_PxLightCpuTask_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometry_getType(
+pub unsafe extern "C" fn physx_PxGeometry_getType(
     self_: *const PxGeometry
 ) -> PxGeometryType
 {
@@ -5637,7 +5637,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometry_getType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxGeometry_new(
+pub unsafe extern "C" fn physx_PxBoxGeometry_new(
     hx: f32,
     hy: f32,
     hz: f32
@@ -5651,7 +5651,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxGeometry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxGeometry_new_1(
+pub unsafe extern "C" fn physx_PxBoxGeometry_new_1(
     halfExtents_: PxVec3
 ) -> PxBoxGeometry
 {
@@ -5661,7 +5661,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxGeometry_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxGeometry_isValid(
+pub unsafe extern "C" fn physx_PxBoxGeometry_isValid(
     self_: *const PxBoxGeometry
 ) -> bool
 {
@@ -5671,7 +5671,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxGeometry_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVHRaycastCallback_delete(
+pub unsafe extern "C" fn physx_PxBVHRaycastCallback_delete(
     self_: *mut PxBVHRaycastCallback
 )
 {
@@ -5681,7 +5681,7 @@ pub unsafe extern "C" fn magicphysx_PxBVHRaycastCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVHRaycastCallback_reportHit_mut(
+pub unsafe extern "C" fn physx_PxBVHRaycastCallback_reportHit_mut(
     self_: *mut PxBVHRaycastCallback,
     boundsIndex: u32,
     distance: *mut f32
@@ -5695,7 +5695,7 @@ pub unsafe extern "C" fn magicphysx_PxBVHRaycastCallback_reportHit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVHOverlapCallback_delete(
+pub unsafe extern "C" fn physx_PxBVHOverlapCallback_delete(
     self_: *mut PxBVHOverlapCallback
 )
 {
@@ -5705,7 +5705,7 @@ pub unsafe extern "C" fn magicphysx_PxBVHOverlapCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVHOverlapCallback_reportHit_mut(
+pub unsafe extern "C" fn physx_PxBVHOverlapCallback_reportHit_mut(
     self_: *mut PxBVHOverlapCallback,
     boundsIndex: u32
 ) -> bool
@@ -5717,7 +5717,7 @@ pub unsafe extern "C" fn magicphysx_PxBVHOverlapCallback_reportHit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVHTraversalCallback_delete(
+pub unsafe extern "C" fn physx_PxBVHTraversalCallback_delete(
     self_: *mut PxBVHTraversalCallback
 )
 {
@@ -5727,7 +5727,7 @@ pub unsafe extern "C" fn magicphysx_PxBVHTraversalCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVHTraversalCallback_visitNode_mut(
+pub unsafe extern "C" fn physx_PxBVHTraversalCallback_visitNode_mut(
     self_: *mut PxBVHTraversalCallback,
     bounds: *const PxBounds3
 ) -> bool
@@ -5739,7 +5739,7 @@ pub unsafe extern "C" fn magicphysx_PxBVHTraversalCallback_visitNode_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVHTraversalCallback_reportLeaf_mut(
+pub unsafe extern "C" fn physx_PxBVHTraversalCallback_reportLeaf_mut(
     self_: *mut PxBVHTraversalCallback,
     nbPrims: u32,
     prims: *const u32
@@ -5753,7 +5753,7 @@ pub unsafe extern "C" fn magicphysx_PxBVHTraversalCallback_reportLeaf_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_raycast(
+pub unsafe extern "C" fn physx_PxBVH_raycast(
     self_: *const PxBVH,
     origin: *const PxVec3,
     unitDir: *const PxVec3,
@@ -5773,7 +5773,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_raycast(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_sweep(
+pub unsafe extern "C" fn physx_PxBVH_sweep(
     self_: *const PxBVH,
     geom: *const PxGeometry,
     pose: *const PxTransform,
@@ -5795,7 +5795,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_sweep(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_overlap(
+pub unsafe extern "C" fn physx_PxBVH_overlap(
     self_: *const PxBVH,
     geom: *const PxGeometry,
     pose: *const PxTransform,
@@ -5813,7 +5813,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_overlap(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_cull(
+pub unsafe extern "C" fn physx_PxBVH_cull(
     self_: *const PxBVH,
     nbPlanes: u32,
     planes: *const PxPlane,
@@ -5831,7 +5831,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_cull(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_getNbBounds(
+pub unsafe extern "C" fn physx_PxBVH_getNbBounds(
     self_: *const PxBVH
 ) -> u32
 {
@@ -5841,7 +5841,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_getNbBounds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_getBounds(
+pub unsafe extern "C" fn physx_PxBVH_getBounds(
     self_: *const PxBVH
 ) -> *const PxBounds3
 {
@@ -5851,7 +5851,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_getBounds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_getBoundsForModification_mut(
+pub unsafe extern "C" fn physx_PxBVH_getBoundsForModification_mut(
     self_: *mut PxBVH
 ) -> *mut PxBounds3
 {
@@ -5861,7 +5861,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_getBoundsForModification_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_refit_mut(
+pub unsafe extern "C" fn physx_PxBVH_refit_mut(
     self_: *mut PxBVH
 )
 {
@@ -5871,7 +5871,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_refit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_updateBounds_mut(
+pub unsafe extern "C" fn physx_PxBVH_updateBounds_mut(
     self_: *mut PxBVH,
     boundsIndex: u32,
     newBounds: *const PxBounds3
@@ -5885,7 +5885,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_updateBounds_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_partialRefit_mut(
+pub unsafe extern "C" fn physx_PxBVH_partialRefit_mut(
     self_: *mut PxBVH
 )
 {
@@ -5895,7 +5895,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_partialRefit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_traverse(
+pub unsafe extern "C" fn physx_PxBVH_traverse(
     self_: *const PxBVH,
     cb: *mut PxBVHTraversalCallback
 ) -> bool
@@ -5907,7 +5907,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_traverse(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxBVH_getConcreteTypeName(
     self_: *const PxBVH
 ) -> *const c_char
 {
@@ -5917,7 +5917,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleGeometry_new(
+pub unsafe extern "C" fn physx_PxCapsuleGeometry_new(
     radius_: f32,
     halfHeight_: f32
 ) -> PxCapsuleGeometry
@@ -5929,7 +5929,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleGeometry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleGeometry_isValid(
+pub unsafe extern "C" fn physx_PxCapsuleGeometry_isValid(
     self_: *const PxCapsuleGeometry
 ) -> bool
 {
@@ -5939,7 +5939,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleGeometry_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMesh_getNbVertices(
+pub unsafe extern "C" fn physx_PxConvexMesh_getNbVertices(
     self_: *const PxConvexMesh
 ) -> u32
 {
@@ -5949,7 +5949,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMesh_getNbVertices(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMesh_getVertices(
+pub unsafe extern "C" fn physx_PxConvexMesh_getVertices(
     self_: *const PxConvexMesh
 ) -> *const PxVec3
 {
@@ -5959,7 +5959,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMesh_getVertices(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMesh_getIndexBuffer(
+pub unsafe extern "C" fn physx_PxConvexMesh_getIndexBuffer(
     self_: *const PxConvexMesh
 ) -> *const u8
 {
@@ -5969,7 +5969,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMesh_getIndexBuffer(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMesh_getNbPolygons(
+pub unsafe extern "C" fn physx_PxConvexMesh_getNbPolygons(
     self_: *const PxConvexMesh
 ) -> u32
 {
@@ -5979,7 +5979,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMesh_getNbPolygons(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMesh_getPolygonData(
+pub unsafe extern "C" fn physx_PxConvexMesh_getPolygonData(
     self_: *const PxConvexMesh,
     index: u32,
     data: *mut PxHullPolygon
@@ -5993,7 +5993,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMesh_getPolygonData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMesh_release_mut(
+pub unsafe extern "C" fn physx_PxConvexMesh_release_mut(
     self_: *mut PxConvexMesh
 )
 {
@@ -6003,7 +6003,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMesh_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMesh_getMassInformation(
+pub unsafe extern "C" fn physx_PxConvexMesh_getMassInformation(
     self_: *const PxConvexMesh,
     mass: *mut f32,
     localInertia: *mut PxMat33,
@@ -6019,7 +6019,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMesh_getMassInformation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMesh_getLocalBounds(
+pub unsafe extern "C" fn physx_PxConvexMesh_getLocalBounds(
     self_: *const PxConvexMesh
 ) -> PxBounds3
 {
@@ -6029,7 +6029,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMesh_getLocalBounds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMesh_getSDF(
+pub unsafe extern "C" fn physx_PxConvexMesh_getSDF(
     self_: *const PxConvexMesh
 ) -> *const f32
 {
@@ -6039,7 +6039,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMesh_getSDF(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMesh_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxConvexMesh_getConcreteTypeName(
     self_: *const PxConvexMesh
 ) -> *const c_char
 {
@@ -6049,7 +6049,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMesh_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMesh_isGpuCompatible(
+pub unsafe extern "C" fn physx_PxConvexMesh_isGpuCompatible(
     self_: *const PxConvexMesh
 ) -> bool
 {
@@ -6059,7 +6059,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMesh_isGpuCompatible(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshScale_new(
+pub unsafe extern "C" fn physx_PxMeshScale_new(
 
 ) -> PxMeshScale
 {
@@ -6069,7 +6069,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshScale_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshScale_new_1(
+pub unsafe extern "C" fn physx_PxMeshScale_new_1(
     r: f32
 ) -> PxMeshScale
 {
@@ -6079,7 +6079,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshScale_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshScale_new_2(
+pub unsafe extern "C" fn physx_PxMeshScale_new_2(
     s: *const PxVec3
 ) -> PxMeshScale
 {
@@ -6089,7 +6089,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshScale_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshScale_new_3(
+pub unsafe extern "C" fn physx_PxMeshScale_new_3(
     s: *const PxVec3,
     r: *const PxQuat
 ) -> PxMeshScale
@@ -6101,7 +6101,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshScale_new_3(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshScale_isIdentity(
+pub unsafe extern "C" fn physx_PxMeshScale_isIdentity(
     self_: *const PxMeshScale
 ) -> bool
 {
@@ -6111,7 +6111,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshScale_isIdentity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshScale_getInverse(
+pub unsafe extern "C" fn physx_PxMeshScale_getInverse(
     self_: *const PxMeshScale
 ) -> PxMeshScale
 {
@@ -6121,7 +6121,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshScale_getInverse(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshScale_toMat33(
+pub unsafe extern "C" fn physx_PxMeshScale_toMat33(
     self_: *const PxMeshScale
 ) -> PxMat33
 {
@@ -6131,7 +6131,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshScale_toMat33(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshScale_hasNegativeDeterminant(
+pub unsafe extern "C" fn physx_PxMeshScale_hasNegativeDeterminant(
     self_: *const PxMeshScale
 ) -> bool
 {
@@ -6141,7 +6141,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshScale_hasNegativeDeterminant(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshScale_transform(
+pub unsafe extern "C" fn physx_PxMeshScale_transform(
     self_: *const PxMeshScale,
     v: *const PxVec3
 ) -> PxVec3
@@ -6153,7 +6153,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshScale_transform(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshScale_isValidForTriangleMesh(
+pub unsafe extern "C" fn physx_PxMeshScale_isValidForTriangleMesh(
     self_: *const PxMeshScale
 ) -> bool
 {
@@ -6163,7 +6163,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshScale_isValidForTriangleMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshScale_isValidForConvexMesh(
+pub unsafe extern "C" fn physx_PxMeshScale_isValidForConvexMesh(
     self_: *const PxMeshScale
 ) -> bool
 {
@@ -6173,7 +6173,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshScale_isValidForConvexMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMeshGeometry_new(
+pub unsafe extern "C" fn physx_PxConvexMeshGeometry_new(
     mesh: *mut PxConvexMesh,
     scaling: *const PxMeshScale,
     flags: PxConvexMeshGeometryFlags
@@ -6187,7 +6187,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMeshGeometry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMeshGeometry_isValid(
+pub unsafe extern "C" fn physx_PxConvexMeshGeometry_isValid(
     self_: *const PxConvexMeshGeometry
 ) -> bool
 {
@@ -6197,7 +6197,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMeshGeometry_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSphereGeometry_new(
+pub unsafe extern "C" fn physx_PxSphereGeometry_new(
     ir: f32
 ) -> PxSphereGeometry
 {
@@ -6207,7 +6207,7 @@ pub unsafe extern "C" fn magicphysx_PxSphereGeometry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSphereGeometry_isValid(
+pub unsafe extern "C" fn physx_PxSphereGeometry_isValid(
     self_: *const PxSphereGeometry
 ) -> bool
 {
@@ -6217,7 +6217,7 @@ pub unsafe extern "C" fn magicphysx_PxSphereGeometry_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlaneGeometry_new(
+pub unsafe extern "C" fn physx_PxPlaneGeometry_new(
 
 ) -> PxPlaneGeometry
 {
@@ -6227,7 +6227,7 @@ pub unsafe extern "C" fn magicphysx_PxPlaneGeometry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPlaneGeometry_isValid(
+pub unsafe extern "C" fn physx_PxPlaneGeometry_isValid(
     self_: *const PxPlaneGeometry
 ) -> bool
 {
@@ -6237,7 +6237,7 @@ pub unsafe extern "C" fn magicphysx_PxPlaneGeometry_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMeshGeometry_new(
+pub unsafe extern "C" fn physx_PxTriangleMeshGeometry_new(
     mesh: *mut PxTriangleMesh,
     scaling: *const PxMeshScale,
     flags: PxMeshGeometryFlags
@@ -6251,7 +6251,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMeshGeometry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMeshGeometry_isValid(
+pub unsafe extern "C" fn physx_PxTriangleMeshGeometry_isValid(
     self_: *const PxTriangleMeshGeometry
 ) -> bool
 {
@@ -6261,7 +6261,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMeshGeometry_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightFieldGeometry_new(
+pub unsafe extern "C" fn physx_PxHeightFieldGeometry_new(
     hf: *mut PxHeightField,
     flags: PxMeshGeometryFlags,
     heightScale_: f32,
@@ -6279,7 +6279,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightFieldGeometry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightFieldGeometry_isValid(
+pub unsafe extern "C" fn physx_PxHeightFieldGeometry_isValid(
     self_: *const PxHeightFieldGeometry
 ) -> bool
 {
@@ -6289,7 +6289,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightFieldGeometry_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleSystemGeometry_new(
+pub unsafe extern "C" fn physx_PxParticleSystemGeometry_new(
 
 ) -> PxParticleSystemGeometry
 {
@@ -6299,7 +6299,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleSystemGeometry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleSystemGeometry_isValid(
+pub unsafe extern "C" fn physx_PxParticleSystemGeometry_isValid(
     self_: *const PxParticleSystemGeometry
 ) -> bool
 {
@@ -6309,7 +6309,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleSystemGeometry_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHairSystemGeometry_new(
+pub unsafe extern "C" fn physx_PxHairSystemGeometry_new(
 
 ) -> PxHairSystemGeometry
 {
@@ -6319,7 +6319,7 @@ pub unsafe extern "C" fn magicphysx_PxHairSystemGeometry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHairSystemGeometry_isValid(
+pub unsafe extern "C" fn physx_PxHairSystemGeometry_isValid(
     self_: *const PxHairSystemGeometry
 ) -> bool
 {
@@ -6329,7 +6329,7 @@ pub unsafe extern "C" fn magicphysx_PxHairSystemGeometry_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshGeometry_new(
+pub unsafe extern "C" fn physx_PxTetrahedronMeshGeometry_new(
     mesh: *mut PxTetrahedronMesh
 ) -> PxTetrahedronMeshGeometry
 {
@@ -6339,7 +6339,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshGeometry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshGeometry_isValid(
+pub unsafe extern "C" fn physx_PxTetrahedronMeshGeometry_isValid(
     self_: *const PxTetrahedronMeshGeometry
 ) -> bool
 {
@@ -6349,7 +6349,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshGeometry_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQueryHit_new(
+pub unsafe extern "C" fn physx_PxQueryHit_new(
 
 ) -> PxQueryHit
 {
@@ -6359,7 +6359,7 @@ pub unsafe extern "C" fn magicphysx_PxQueryHit_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLocationHit_new(
+pub unsafe extern "C" fn physx_PxLocationHit_new(
 
 ) -> PxLocationHit
 {
@@ -6369,7 +6369,7 @@ pub unsafe extern "C" fn magicphysx_PxLocationHit_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLocationHit_hadInitialOverlap(
+pub unsafe extern "C" fn physx_PxLocationHit_hadInitialOverlap(
     self_: *const PxLocationHit
 ) -> bool
 {
@@ -6379,7 +6379,7 @@ pub unsafe extern "C" fn magicphysx_PxLocationHit_hadInitialOverlap(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeomRaycastHit_new(
+pub unsafe extern "C" fn physx_PxGeomRaycastHit_new(
 
 ) -> PxGeomRaycastHit
 {
@@ -6389,7 +6389,7 @@ pub unsafe extern "C" fn magicphysx_PxGeomRaycastHit_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeomOverlapHit_new(
+pub unsafe extern "C" fn physx_PxGeomOverlapHit_new(
 
 ) -> PxGeomOverlapHit
 {
@@ -6399,7 +6399,7 @@ pub unsafe extern "C" fn magicphysx_PxGeomOverlapHit_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeomSweepHit_new(
+pub unsafe extern "C" fn physx_PxGeomSweepHit_new(
 
 ) -> PxGeomSweepHit
 {
@@ -6409,7 +6409,7 @@ pub unsafe extern "C" fn magicphysx_PxGeomSweepHit_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeomIndexPair_new(
+pub unsafe extern "C" fn physx_PxGeomIndexPair_new(
 
 ) -> PxGeomIndexPair
 {
@@ -6419,7 +6419,7 @@ pub unsafe extern "C" fn magicphysx_PxGeomIndexPair_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeomIndexPair_new_1(
+pub unsafe extern "C" fn physx_PxGeomIndexPair_new_1(
     _id0: u32,
     _id1: u32
 ) -> PxGeomIndexPair
@@ -6431,7 +6431,7 @@ pub unsafe extern "C" fn magicphysx_PxGeomIndexPair_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCustomGeometry_getUniqueID(
+pub unsafe extern "C" fn physx_phys_PxCustomGeometry_getUniqueID(
 
 ) -> u32
 {
@@ -6441,7 +6441,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCustomGeometry_getUniqueID(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometryType_new(
+pub unsafe extern "C" fn physx_PxCustomGeometryType_new(
 
 ) -> PxCustomGeometryType
 {
@@ -6451,7 +6451,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometryType_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometryType_INVALID(
+pub unsafe extern "C" fn physx_PxCustomGeometryType_INVALID(
 
 ) -> PxCustomGeometryType
 {
@@ -6461,7 +6461,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometryType_INVALID(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_getCustomType(
+pub unsafe extern "C" fn physx_PxCustomGeometryCallbacks_getCustomType(
     self_: *const PxCustomGeometryCallbacks
 ) -> PxCustomGeometryType
 {
@@ -6471,7 +6471,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_getCustomType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_getLocalBounds(
+pub unsafe extern "C" fn physx_PxCustomGeometryCallbacks_getLocalBounds(
     self_: *const PxCustomGeometryCallbacks,
     geometry: *const PxGeometry
 ) -> PxBounds3
@@ -6483,7 +6483,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_getLocalBounds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_raycast(
+pub unsafe extern "C" fn physx_PxCustomGeometryCallbacks_raycast(
     self_: *const PxCustomGeometryCallbacks,
     origin: *const PxVec3,
     unitDir: *const PxVec3,
@@ -6513,7 +6513,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_raycast(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_overlap(
+pub unsafe extern "C" fn physx_PxCustomGeometryCallbacks_overlap(
     self_: *const PxCustomGeometryCallbacks,
     geom0: *const PxGeometry,
     pose0: *const PxTransform,
@@ -6533,7 +6533,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_overlap(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_sweep(
+pub unsafe extern "C" fn physx_PxCustomGeometryCallbacks_sweep(
     self_: *const PxCustomGeometryCallbacks,
     unitDir: *const PxVec3,
     maxDist: f32,
@@ -6563,7 +6563,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_sweep(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_computeMassProperties(
+pub unsafe extern "C" fn physx_PxCustomGeometryCallbacks_computeMassProperties(
     self_: *const PxCustomGeometryCallbacks,
     geometry: *const PxGeometry,
     massProperties: *mut PxMassProperties
@@ -6577,7 +6577,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_computeMassPropert
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_usePersistentContactManifold(
+pub unsafe extern "C" fn physx_PxCustomGeometryCallbacks_usePersistentContactManifold(
     self_: *const PxCustomGeometryCallbacks,
     geometry: *const PxGeometry,
     breakingThreshold: *mut f32
@@ -6591,7 +6591,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_usePersistentConta
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_delete(
+pub unsafe extern "C" fn physx_PxCustomGeometryCallbacks_delete(
     self_: *mut PxCustomGeometryCallbacks
 )
 {
@@ -6601,7 +6601,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometryCallbacks_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometry_new(
+pub unsafe extern "C" fn physx_PxCustomGeometry_new(
 
 ) -> PxCustomGeometry
 {
@@ -6611,7 +6611,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometry_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometry_new_1(
+pub unsafe extern "C" fn physx_PxCustomGeometry_new_1(
     _callbacks: *mut PxCustomGeometryCallbacks
 ) -> PxCustomGeometry
 {
@@ -6621,7 +6621,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometry_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometry_isValid(
+pub unsafe extern "C" fn physx_PxCustomGeometry_isValid(
     self_: *const PxCustomGeometry
 ) -> bool
 {
@@ -6631,7 +6631,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometry_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomGeometry_getCustomType(
+pub unsafe extern "C" fn physx_PxCustomGeometry_getCustomType(
     self_: *const PxCustomGeometry
 ) -> PxCustomGeometryType
 {
@@ -6641,7 +6641,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomGeometry_getCustomType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_getType(
+pub unsafe extern "C" fn physx_PxGeometryHolder_getType(
     self_: *const PxGeometryHolder
 ) -> PxGeometryType
 {
@@ -6651,7 +6651,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_getType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_any_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_any_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxGeometry
 {
@@ -6661,7 +6661,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_any_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_any(
+pub unsafe extern "C" fn physx_PxGeometryHolder_any(
     self_: *const PxGeometryHolder
 ) -> *const PxGeometry
 {
@@ -6671,7 +6671,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_any(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_sphere_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_sphere_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxSphereGeometry
 {
@@ -6681,7 +6681,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_sphere_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_sphere(
+pub unsafe extern "C" fn physx_PxGeometryHolder_sphere(
     self_: *const PxGeometryHolder
 ) -> *const PxSphereGeometry
 {
@@ -6691,7 +6691,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_sphere(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_plane_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_plane_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxPlaneGeometry
 {
@@ -6701,7 +6701,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_plane_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_plane(
+pub unsafe extern "C" fn physx_PxGeometryHolder_plane(
     self_: *const PxGeometryHolder
 ) -> *const PxPlaneGeometry
 {
@@ -6711,7 +6711,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_plane(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_capsule_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_capsule_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxCapsuleGeometry
 {
@@ -6721,7 +6721,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_capsule_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_capsule(
+pub unsafe extern "C" fn physx_PxGeometryHolder_capsule(
     self_: *const PxGeometryHolder
 ) -> *const PxCapsuleGeometry
 {
@@ -6731,7 +6731,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_capsule(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_box_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_box_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxBoxGeometry
 {
@@ -6741,7 +6741,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_box_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_box(
+pub unsafe extern "C" fn physx_PxGeometryHolder_box(
     self_: *const PxGeometryHolder
 ) -> *const PxBoxGeometry
 {
@@ -6751,7 +6751,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_box(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_convexMesh_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_convexMesh_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxConvexMeshGeometry
 {
@@ -6761,7 +6761,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_convexMesh_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_convexMesh(
+pub unsafe extern "C" fn physx_PxGeometryHolder_convexMesh(
     self_: *const PxGeometryHolder
 ) -> *const PxConvexMeshGeometry
 {
@@ -6771,7 +6771,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_convexMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_tetMesh_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_tetMesh_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxTetrahedronMeshGeometry
 {
@@ -6781,7 +6781,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_tetMesh_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_tetMesh(
+pub unsafe extern "C" fn physx_PxGeometryHolder_tetMesh(
     self_: *const PxGeometryHolder
 ) -> *const PxTetrahedronMeshGeometry
 {
@@ -6791,7 +6791,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_tetMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_triangleMesh_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_triangleMesh_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxTriangleMeshGeometry
 {
@@ -6801,7 +6801,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_triangleMesh_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_triangleMesh(
+pub unsafe extern "C" fn physx_PxGeometryHolder_triangleMesh(
     self_: *const PxGeometryHolder
 ) -> *const PxTriangleMeshGeometry
 {
@@ -6811,7 +6811,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_triangleMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_heightField_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_heightField_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxHeightFieldGeometry
 {
@@ -6821,7 +6821,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_heightField_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_heightField(
+pub unsafe extern "C" fn physx_PxGeometryHolder_heightField(
     self_: *const PxGeometryHolder
 ) -> *const PxHeightFieldGeometry
 {
@@ -6831,7 +6831,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_heightField(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_particleSystem_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_particleSystem_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxParticleSystemGeometry
 {
@@ -6841,7 +6841,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_particleSystem_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_particleSystem(
+pub unsafe extern "C" fn physx_PxGeometryHolder_particleSystem(
     self_: *const PxGeometryHolder
 ) -> *const PxParticleSystemGeometry
 {
@@ -6851,7 +6851,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_particleSystem(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_hairSystem_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_hairSystem_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxHairSystemGeometry
 {
@@ -6861,7 +6861,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_hairSystem_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_hairSystem(
+pub unsafe extern "C" fn physx_PxGeometryHolder_hairSystem(
     self_: *const PxGeometryHolder
 ) -> *const PxHairSystemGeometry
 {
@@ -6871,7 +6871,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_hairSystem(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_custom_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_custom_mut(
     self_: *mut PxGeometryHolder
 ) -> *mut PxCustomGeometry
 {
@@ -6881,7 +6881,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_custom_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_custom(
+pub unsafe extern "C" fn physx_PxGeometryHolder_custom(
     self_: *const PxGeometryHolder
 ) -> *const PxCustomGeometry
 {
@@ -6891,7 +6891,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_custom(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_storeAny_mut(
+pub unsafe extern "C" fn physx_PxGeometryHolder_storeAny_mut(
     self_: *mut PxGeometryHolder,
     geometry: *const PxGeometry
 )
@@ -6903,7 +6903,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_storeAny_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_new(
+pub unsafe extern "C" fn physx_PxGeometryHolder_new(
 
 ) -> PxGeometryHolder
 {
@@ -6913,7 +6913,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryHolder_new_1(
+pub unsafe extern "C" fn physx_PxGeometryHolder_new_1(
     geometry: *const PxGeometry
 ) -> PxGeometryHolder
 {
@@ -6923,7 +6923,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryHolder_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryQuery_raycast(
+pub unsafe extern "C" fn physx_PxGeometryQuery_raycast(
     origin: *const PxVec3,
     unitDir: *const PxVec3,
     geom: *const PxGeometry,
@@ -6953,7 +6953,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryQuery_raycast(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryQuery_overlap(
+pub unsafe extern "C" fn physx_PxGeometryQuery_overlap(
     geom0: *const PxGeometry,
     pose0: *const PxTransform,
     geom1: *const PxGeometry,
@@ -6973,7 +6973,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryQuery_overlap(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryQuery_sweep(
+pub unsafe extern "C" fn physx_PxGeometryQuery_sweep(
     unitDir: *const PxVec3,
     maxDist: f32,
     geom0: *const PxGeometry,
@@ -7003,7 +7003,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryQuery_sweep(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryQuery_computePenetration(
+pub unsafe extern "C" fn physx_PxGeometryQuery_computePenetration(
     direction: *mut PxVec3,
     depth: *mut f32,
     geom0: *const PxGeometry,
@@ -7025,7 +7025,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryQuery_computePenetration(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryQuery_pointDistance(
+pub unsafe extern "C" fn physx_PxGeometryQuery_pointDistance(
     point: *const PxVec3,
     geom: *const PxGeometry,
     pose: *const PxTransform,
@@ -7045,7 +7045,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryQuery_pointDistance(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryQuery_computeGeomBounds(
+pub unsafe extern "C" fn physx_PxGeometryQuery_computeGeomBounds(
     bounds: *mut PxBounds3,
     geom: *const PxGeometry,
     pose: *const PxTransform,
@@ -7065,7 +7065,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryQuery_computeGeomBounds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGeometryQuery_isValid(
+pub unsafe extern "C" fn physx_PxGeometryQuery_isValid(
     geom: *const PxGeometry
 ) -> bool
 {
@@ -7075,7 +7075,7 @@ pub unsafe extern "C" fn magicphysx_PxGeometryQuery_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightFieldSample_tessFlag(
+pub unsafe extern "C" fn physx_PxHeightFieldSample_tessFlag(
     self_: *const PxHeightFieldSample
 ) -> u8
 {
@@ -7085,7 +7085,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightFieldSample_tessFlag(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightFieldSample_setTessFlag_mut(
+pub unsafe extern "C" fn physx_PxHeightFieldSample_setTessFlag_mut(
     self_: *mut PxHeightFieldSample
 )
 {
@@ -7095,7 +7095,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightFieldSample_setTessFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightFieldSample_clearTessFlag_mut(
+pub unsafe extern "C" fn physx_PxHeightFieldSample_clearTessFlag_mut(
     self_: *mut PxHeightFieldSample
 )
 {
@@ -7105,7 +7105,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightFieldSample_clearTessFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_release_mut(
+pub unsafe extern "C" fn physx_PxHeightField_release_mut(
     self_: *mut PxHeightField
 )
 {
@@ -7115,7 +7115,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_saveCells(
+pub unsafe extern "C" fn physx_PxHeightField_saveCells(
     self_: *const PxHeightField,
     destBuffer: *mut c_void,
     destBufferSize: u32
@@ -7129,7 +7129,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_saveCells(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_modifySamples_mut(
+pub unsafe extern "C" fn physx_PxHeightField_modifySamples_mut(
     self_: *mut PxHeightField,
     startCol: i32,
     startRow: i32,
@@ -7147,7 +7147,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_modifySamples_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getNbRows(
+pub unsafe extern "C" fn physx_PxHeightField_getNbRows(
     self_: *const PxHeightField
 ) -> u32
 {
@@ -7157,7 +7157,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getNbRows(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getNbColumns(
+pub unsafe extern "C" fn physx_PxHeightField_getNbColumns(
     self_: *const PxHeightField
 ) -> u32
 {
@@ -7167,7 +7167,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getNbColumns(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getFormat(
+pub unsafe extern "C" fn physx_PxHeightField_getFormat(
     self_: *const PxHeightField
 ) -> PxHeightFieldFormat
 {
@@ -7177,7 +7177,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getFormat(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getSampleStride(
+pub unsafe extern "C" fn physx_PxHeightField_getSampleStride(
     self_: *const PxHeightField
 ) -> u32
 {
@@ -7187,7 +7187,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getSampleStride(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getConvexEdgeThreshold(
+pub unsafe extern "C" fn physx_PxHeightField_getConvexEdgeThreshold(
     self_: *const PxHeightField
 ) -> f32
 {
@@ -7197,7 +7197,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getConvexEdgeThreshold(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getFlags(
+pub unsafe extern "C" fn physx_PxHeightField_getFlags(
     self_: *const PxHeightField
 ) -> PxHeightFieldFlags
 {
@@ -7207,7 +7207,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getHeight(
+pub unsafe extern "C" fn physx_PxHeightField_getHeight(
     self_: *const PxHeightField,
     x: f32,
     z: f32
@@ -7221,7 +7221,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getHeight(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getTriangleMaterialIndex(
+pub unsafe extern "C" fn physx_PxHeightField_getTriangleMaterialIndex(
     self_: *const PxHeightField,
     triangleIndex: u32
 ) -> u16
@@ -7233,7 +7233,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getTriangleMaterialIndex(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getTriangleNormal(
+pub unsafe extern "C" fn physx_PxHeightField_getTriangleNormal(
     self_: *const PxHeightField,
     triangleIndex: u32
 ) -> PxVec3
@@ -7245,7 +7245,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getTriangleNormal(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getSample(
+pub unsafe extern "C" fn physx_PxHeightField_getSample(
     self_: *const PxHeightField,
     row: u32,
     column: u32
@@ -7259,7 +7259,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getSample(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getTimestamp(
+pub unsafe extern "C" fn physx_PxHeightField_getTimestamp(
     self_: *const PxHeightField
 ) -> u32
 {
@@ -7269,7 +7269,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getTimestamp(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightField_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxHeightField_getConcreteTypeName(
     self_: *const PxHeightField
 ) -> *const c_char
 {
@@ -7279,7 +7279,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightField_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightFieldDesc_new(
+pub unsafe extern "C" fn physx_PxHeightFieldDesc_new(
 
 ) -> PxHeightFieldDesc
 {
@@ -7289,7 +7289,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightFieldDesc_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightFieldDesc_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxHeightFieldDesc_setToDefault_mut(
     self_: *mut PxHeightFieldDesc
 )
 {
@@ -7299,7 +7299,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightFieldDesc_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxHeightFieldDesc_isValid(
+pub unsafe extern "C" fn physx_PxHeightFieldDesc_isValid(
     self_: *const PxHeightFieldDesc
 ) -> bool
 {
@@ -7309,7 +7309,7 @@ pub unsafe extern "C" fn magicphysx_PxHeightFieldDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshQuery_getTriangle(
+pub unsafe extern "C" fn physx_PxMeshQuery_getTriangle(
     triGeom: *const PxTriangleMeshGeometry,
     transform: *const PxTransform,
     triangleIndex: u32,
@@ -7329,7 +7329,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshQuery_getTriangle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshQuery_getTriangle_1(
+pub unsafe extern "C" fn physx_PxMeshQuery_getTriangle_1(
     hfGeom: *const PxHeightFieldGeometry,
     transform: *const PxTransform,
     triangleIndex: u32,
@@ -7349,7 +7349,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshQuery_getTriangle_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshQuery_findOverlapTriangleMesh(
+pub unsafe extern "C" fn physx_PxMeshQuery_findOverlapTriangleMesh(
     geom: *const PxGeometry,
     geomPose: *const PxTransform,
     meshGeom: *const PxTriangleMeshGeometry,
@@ -7375,7 +7375,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshQuery_findOverlapTriangleMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshQuery_findOverlapHeightField(
+pub unsafe extern "C" fn physx_PxMeshQuery_findOverlapHeightField(
     geom: *const PxGeometry,
     geomPose: *const PxTransform,
     hfGeom: *const PxHeightFieldGeometry,
@@ -7401,7 +7401,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshQuery_findOverlapHeightField(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshQuery_sweep(
+pub unsafe extern "C" fn physx_PxMeshQuery_sweep(
     unitDir: *const PxVec3,
     distance: f32,
     geom: *const PxGeometry,
@@ -7433,7 +7433,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshQuery_sweep(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimpleTriangleMesh_new(
+pub unsafe extern "C" fn physx_PxSimpleTriangleMesh_new(
 
 ) -> PxSimpleTriangleMesh
 {
@@ -7443,7 +7443,7 @@ pub unsafe extern "C" fn magicphysx_PxSimpleTriangleMesh_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimpleTriangleMesh_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxSimpleTriangleMesh_setToDefault_mut(
     self_: *mut PxSimpleTriangleMesh
 )
 {
@@ -7453,7 +7453,7 @@ pub unsafe extern "C" fn magicphysx_PxSimpleTriangleMesh_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimpleTriangleMesh_isValid(
+pub unsafe extern "C" fn physx_PxSimpleTriangleMesh_isValid(
     self_: *const PxSimpleTriangleMesh
 ) -> bool
 {
@@ -7463,7 +7463,7 @@ pub unsafe extern "C" fn magicphysx_PxSimpleTriangleMesh_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangle_new_alloc(
+pub unsafe extern "C" fn physx_PxTriangle_new_alloc(
 
 ) -> *mut PxTriangle
 {
@@ -7473,7 +7473,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangle_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangle_new_alloc_1(
+pub unsafe extern "C" fn physx_PxTriangle_new_alloc_1(
     p0: *const PxVec3,
     p1: *const PxVec3,
     p2: *const PxVec3
@@ -7487,7 +7487,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangle_new_alloc_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangle_delete(
+pub unsafe extern "C" fn physx_PxTriangle_delete(
     self_: *mut PxTriangle
 )
 {
@@ -7497,7 +7497,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangle_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangle_normal(
+pub unsafe extern "C" fn physx_PxTriangle_normal(
     self_: *const PxTriangle,
     _normal: *mut PxVec3
 )
@@ -7509,7 +7509,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangle_normal(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangle_denormalizedNormal(
+pub unsafe extern "C" fn physx_PxTriangle_denormalizedNormal(
     self_: *const PxTriangle,
     _normal: *mut PxVec3
 )
@@ -7521,7 +7521,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangle_denormalizedNormal(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangle_area(
+pub unsafe extern "C" fn physx_PxTriangle_area(
     self_: *const PxTriangle
 ) -> f32
 {
@@ -7531,7 +7531,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangle_area(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangle_pointFromUV(
+pub unsafe extern "C" fn physx_PxTriangle_pointFromUV(
     self_: *const PxTriangle,
     u: f32,
     v: f32
@@ -7545,7 +7545,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangle_pointFromUV(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTrianglePadded_new_alloc(
+pub unsafe extern "C" fn physx_PxTrianglePadded_new_alloc(
 
 ) -> *mut PxTrianglePadded
 {
@@ -7555,7 +7555,7 @@ pub unsafe extern "C" fn magicphysx_PxTrianglePadded_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTrianglePadded_delete(
+pub unsafe extern "C" fn physx_PxTrianglePadded_delete(
     self_: *mut PxTrianglePadded
 )
 {
@@ -7565,7 +7565,7 @@ pub unsafe extern "C" fn magicphysx_PxTrianglePadded_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getNbVertices(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getNbVertices(
     self_: *const PxTriangleMesh
 ) -> u32
 {
@@ -7575,7 +7575,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getNbVertices(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getVertices(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getVertices(
     self_: *const PxTriangleMesh
 ) -> *const PxVec3
 {
@@ -7585,7 +7585,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getVertices(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getVerticesForModification_mut(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getVerticesForModification_mut(
     self_: *mut PxTriangleMesh
 ) -> *mut PxVec3
 {
@@ -7595,7 +7595,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getVerticesForModification_mu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_refitBVH_mut(
+pub unsafe extern "C" fn physx_PxTriangleMesh_refitBVH_mut(
     self_: *mut PxTriangleMesh
 ) -> PxBounds3
 {
@@ -7605,7 +7605,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_refitBVH_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getNbTriangles(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getNbTriangles(
     self_: *const PxTriangleMesh
 ) -> u32
 {
@@ -7615,7 +7615,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getNbTriangles(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getTriangles(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getTriangles(
     self_: *const PxTriangleMesh
 ) -> *const c_void
 {
@@ -7625,7 +7625,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getTriangles(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getTriangleMeshFlags(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getTriangleMeshFlags(
     self_: *const PxTriangleMesh
 ) -> PxTriangleMeshFlags
 {
@@ -7635,7 +7635,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getTriangleMeshFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getTrianglesRemap(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getTrianglesRemap(
     self_: *const PxTriangleMesh
 ) -> *const u32
 {
@@ -7645,7 +7645,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getTrianglesRemap(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_release_mut(
+pub unsafe extern "C" fn physx_PxTriangleMesh_release_mut(
     self_: *mut PxTriangleMesh
 )
 {
@@ -7655,7 +7655,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getTriangleMaterialIndex(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getTriangleMaterialIndex(
     self_: *const PxTriangleMesh,
     triangleIndex: u32
 ) -> u16
@@ -7667,7 +7667,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getTriangleMaterialIndex(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getLocalBounds(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getLocalBounds(
     self_: *const PxTriangleMesh
 ) -> PxBounds3
 {
@@ -7677,7 +7677,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getLocalBounds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getSDF(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getSDF(
     self_: *const PxTriangleMesh
 ) -> *const f32
 {
@@ -7687,7 +7687,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getSDF(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getSDFDimensions(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getSDFDimensions(
     self_: *const PxTriangleMesh,
     numX: *mut u32,
     numY: *mut u32,
@@ -7703,7 +7703,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getSDFDimensions(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_setPreferSDFProjection_mut(
+pub unsafe extern "C" fn physx_PxTriangleMesh_setPreferSDFProjection_mut(
     self_: *mut PxTriangleMesh,
     preferProjection: bool
 )
@@ -7715,7 +7715,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_setPreferSDFProjection_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getPreferSDFProjection(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getPreferSDFProjection(
     self_: *const PxTriangleMesh
 ) -> bool
 {
@@ -7725,7 +7725,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getPreferSDFProjection(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getMassInformation(
+pub unsafe extern "C" fn physx_PxTriangleMesh_getMassInformation(
     self_: *const PxTriangleMesh,
     mass: *mut f32,
     localInertia: *mut PxMat33,
@@ -7741,7 +7741,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMesh_getMassInformation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedron_new_alloc(
+pub unsafe extern "C" fn physx_PxTetrahedron_new_alloc(
 
 ) -> *mut PxTetrahedron
 {
@@ -7751,7 +7751,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedron_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedron_new_alloc_1(
+pub unsafe extern "C" fn physx_PxTetrahedron_new_alloc_1(
     p0: *const PxVec3,
     p1: *const PxVec3,
     p2: *const PxVec3,
@@ -7767,7 +7767,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedron_new_alloc_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedron_delete(
+pub unsafe extern "C" fn physx_PxTetrahedron_delete(
     self_: *mut PxTetrahedron
 )
 {
@@ -7777,7 +7777,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedron_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSoftBodyAuxData_release_mut(
+pub unsafe extern "C" fn physx_PxSoftBodyAuxData_release_mut(
     self_: *mut PxSoftBodyAuxData
 )
 {
@@ -7787,7 +7787,7 @@ pub unsafe extern "C" fn magicphysx_PxSoftBodyAuxData_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getNbVertices(
+pub unsafe extern "C" fn physx_PxTetrahedronMesh_getNbVertices(
     self_: *const PxTetrahedronMesh
 ) -> u32
 {
@@ -7797,7 +7797,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getNbVertices(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getVertices(
+pub unsafe extern "C" fn physx_PxTetrahedronMesh_getVertices(
     self_: *const PxTetrahedronMesh
 ) -> *const PxVec3
 {
@@ -7807,7 +7807,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getVertices(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getNbTetrahedrons(
+pub unsafe extern "C" fn physx_PxTetrahedronMesh_getNbTetrahedrons(
     self_: *const PxTetrahedronMesh
 ) -> u32
 {
@@ -7817,7 +7817,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getNbTetrahedrons(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getTetrahedrons(
+pub unsafe extern "C" fn physx_PxTetrahedronMesh_getTetrahedrons(
     self_: *const PxTetrahedronMesh
 ) -> *const c_void
 {
@@ -7827,7 +7827,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getTetrahedrons(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getTetrahedronMeshFlags(
+pub unsafe extern "C" fn physx_PxTetrahedronMesh_getTetrahedronMeshFlags(
     self_: *const PxTetrahedronMesh
 ) -> PxTetrahedronMeshFlags
 {
@@ -7837,7 +7837,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getTetrahedronMeshFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getTetrahedraRemap(
+pub unsafe extern "C" fn physx_PxTetrahedronMesh_getTetrahedraRemap(
     self_: *const PxTetrahedronMesh
 ) -> *const u32
 {
@@ -7847,7 +7847,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getTetrahedraRemap(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getLocalBounds(
+pub unsafe extern "C" fn physx_PxTetrahedronMesh_getLocalBounds(
     self_: *const PxTetrahedronMesh
 ) -> PxBounds3
 {
@@ -7857,7 +7857,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_getLocalBounds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_release_mut(
+pub unsafe extern "C" fn physx_PxTetrahedronMesh_release_mut(
     self_: *mut PxTetrahedronMesh
 )
 {
@@ -7867,7 +7867,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMesh_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getCollisionMesh(
+pub unsafe extern "C" fn physx_PxSoftBodyMesh_getCollisionMesh(
     self_: *const PxSoftBodyMesh
 ) -> *const PxTetrahedronMesh
 {
@@ -7877,7 +7877,7 @@ pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getCollisionMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getCollisionMesh_mut(
+pub unsafe extern "C" fn physx_PxSoftBodyMesh_getCollisionMesh_mut(
     self_: *mut PxSoftBodyMesh
 ) -> *mut PxTetrahedronMesh
 {
@@ -7887,7 +7887,7 @@ pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getCollisionMesh_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getSimulationMesh(
+pub unsafe extern "C" fn physx_PxSoftBodyMesh_getSimulationMesh(
     self_: *const PxSoftBodyMesh
 ) -> *const PxTetrahedronMesh
 {
@@ -7897,7 +7897,7 @@ pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getSimulationMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getSimulationMesh_mut(
+pub unsafe extern "C" fn physx_PxSoftBodyMesh_getSimulationMesh_mut(
     self_: *mut PxSoftBodyMesh
 ) -> *mut PxTetrahedronMesh
 {
@@ -7907,7 +7907,7 @@ pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getSimulationMesh_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getSoftBodyAuxData(
+pub unsafe extern "C" fn physx_PxSoftBodyMesh_getSoftBodyAuxData(
     self_: *const PxSoftBodyMesh
 ) -> *const PxSoftBodyAuxData
 {
@@ -7917,7 +7917,7 @@ pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getSoftBodyAuxData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getSoftBodyAuxData_mut(
+pub unsafe extern "C" fn physx_PxSoftBodyMesh_getSoftBodyAuxData_mut(
     self_: *mut PxSoftBodyMesh
 ) -> *mut PxSoftBodyAuxData
 {
@@ -7927,7 +7927,7 @@ pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_getSoftBodyAuxData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_release_mut(
+pub unsafe extern "C" fn physx_PxSoftBodyMesh_release_mut(
     self_: *mut PxSoftBodyMesh
 )
 {
@@ -7937,7 +7937,7 @@ pub unsafe extern "C" fn magicphysx_PxSoftBodyMesh_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollisionMeshMappingData_release_mut(
+pub unsafe extern "C" fn physx_PxCollisionMeshMappingData_release_mut(
     self_: *mut PxCollisionMeshMappingData
 )
 {
@@ -7947,7 +7947,7 @@ pub unsafe extern "C" fn magicphysx_PxCollisionMeshMappingData_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollisionTetrahedronMeshData_getMesh(
+pub unsafe extern "C" fn physx_PxCollisionTetrahedronMeshData_getMesh(
     self_: *const PxCollisionTetrahedronMeshData
 ) -> *const PxTetrahedronMeshData
 {
@@ -7957,7 +7957,7 @@ pub unsafe extern "C" fn magicphysx_PxCollisionTetrahedronMeshData_getMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollisionTetrahedronMeshData_getMesh_mut(
+pub unsafe extern "C" fn physx_PxCollisionTetrahedronMeshData_getMesh_mut(
     self_: *mut PxCollisionTetrahedronMeshData
 ) -> *mut PxTetrahedronMeshData
 {
@@ -7967,7 +7967,7 @@ pub unsafe extern "C" fn magicphysx_PxCollisionTetrahedronMeshData_getMesh_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollisionTetrahedronMeshData_getData(
+pub unsafe extern "C" fn physx_PxCollisionTetrahedronMeshData_getData(
     self_: *const PxCollisionTetrahedronMeshData
 ) -> *const PxSoftBodyCollisionData
 {
@@ -7977,7 +7977,7 @@ pub unsafe extern "C" fn magicphysx_PxCollisionTetrahedronMeshData_getData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollisionTetrahedronMeshData_getData_mut(
+pub unsafe extern "C" fn physx_PxCollisionTetrahedronMeshData_getData_mut(
     self_: *mut PxCollisionTetrahedronMeshData
 ) -> *mut PxSoftBodyCollisionData
 {
@@ -7987,7 +7987,7 @@ pub unsafe extern "C" fn magicphysx_PxCollisionTetrahedronMeshData_getData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCollisionTetrahedronMeshData_release_mut(
+pub unsafe extern "C" fn physx_PxCollisionTetrahedronMeshData_release_mut(
     self_: *mut PxCollisionTetrahedronMeshData
 )
 {
@@ -7997,7 +7997,7 @@ pub unsafe extern "C" fn magicphysx_PxCollisionTetrahedronMeshData_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationTetrahedronMeshData_getMesh_mut(
+pub unsafe extern "C" fn physx_PxSimulationTetrahedronMeshData_getMesh_mut(
     self_: *mut PxSimulationTetrahedronMeshData
 ) -> *mut PxTetrahedronMeshData
 {
@@ -8007,7 +8007,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationTetrahedronMeshData_getMesh_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationTetrahedronMeshData_getData_mut(
+pub unsafe extern "C" fn physx_PxSimulationTetrahedronMeshData_getData_mut(
     self_: *mut PxSimulationTetrahedronMeshData
 ) -> *mut PxSoftBodySimulationData
 {
@@ -8017,7 +8017,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationTetrahedronMeshData_getData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationTetrahedronMeshData_release_mut(
+pub unsafe extern "C" fn physx_PxSimulationTetrahedronMeshData_release_mut(
     self_: *mut PxSimulationTetrahedronMeshData
 )
 {
@@ -8027,7 +8027,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationTetrahedronMeshData_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_release_mut(
+pub unsafe extern "C" fn physx_PxActor_release_mut(
     self_: *mut PxActor
 )
 {
@@ -8037,7 +8037,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_getType(
+pub unsafe extern "C" fn physx_PxActor_getType(
     self_: *const PxActor
 ) -> PxActorType
 {
@@ -8047,7 +8047,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_getType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_getScene(
+pub unsafe extern "C" fn physx_PxActor_getScene(
     self_: *const PxActor
 ) -> *mut PxScene
 {
@@ -8057,7 +8057,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_getScene(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_setName_mut(
+pub unsafe extern "C" fn physx_PxActor_setName_mut(
     self_: *mut PxActor,
     name: *const c_char
 )
@@ -8069,7 +8069,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_setName_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_getName(
+pub unsafe extern "C" fn physx_PxActor_getName(
     self_: *const PxActor
 ) -> *const c_char
 {
@@ -8079,7 +8079,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_getName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_getWorldBounds(
+pub unsafe extern "C" fn physx_PxActor_getWorldBounds(
     self_: *const PxActor,
     inflation: f32
 ) -> PxBounds3
@@ -8091,7 +8091,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_getWorldBounds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_setActorFlag_mut(
+pub unsafe extern "C" fn physx_PxActor_setActorFlag_mut(
     self_: *mut PxActor,
     flag: PxActorFlag,
     value: bool
@@ -8105,7 +8105,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_setActorFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_setActorFlags_mut(
+pub unsafe extern "C" fn physx_PxActor_setActorFlags_mut(
     self_: *mut PxActor,
     inFlags: PxActorFlags
 )
@@ -8117,7 +8117,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_setActorFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_getActorFlags(
+pub unsafe extern "C" fn physx_PxActor_getActorFlags(
     self_: *const PxActor
 ) -> PxActorFlags
 {
@@ -8127,7 +8127,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_getActorFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_setDominanceGroup_mut(
+pub unsafe extern "C" fn physx_PxActor_setDominanceGroup_mut(
     self_: *mut PxActor,
     dominanceGroup: u8
 )
@@ -8139,7 +8139,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_setDominanceGroup_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_getDominanceGroup(
+pub unsafe extern "C" fn physx_PxActor_getDominanceGroup(
     self_: *const PxActor
 ) -> u8
 {
@@ -8149,7 +8149,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_getDominanceGroup(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_setOwnerClient_mut(
+pub unsafe extern "C" fn physx_PxActor_setOwnerClient_mut(
     self_: *mut PxActor,
     inClient: u8
 )
@@ -8161,7 +8161,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_setOwnerClient_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_getOwnerClient(
+pub unsafe extern "C" fn physx_PxActor_getOwnerClient(
     self_: *const PxActor
 ) -> u8
 {
@@ -8171,7 +8171,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_getOwnerClient(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActor_getAggregate(
+pub unsafe extern "C" fn physx_PxActor_getAggregate(
     self_: *const PxActor
 ) -> *mut PxAggregate
 {
@@ -8181,7 +8181,7 @@ pub unsafe extern "C" fn magicphysx_PxActor_getAggregate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetAggregateFilterHint(
+pub unsafe extern "C" fn physx_phys_PxGetAggregateFilterHint(
     type_: PxAggregateType,
     enableSelfCollision: bool
 ) -> u32
@@ -8193,7 +8193,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetAggregateFilterHint(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetAggregateSelfCollisionBit(
+pub unsafe extern "C" fn physx_phys_PxGetAggregateSelfCollisionBit(
     hint: u32
 ) -> u32
 {
@@ -8203,7 +8203,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetAggregateSelfCollisionBit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetAggregateType(
+pub unsafe extern "C" fn physx_phys_PxGetAggregateType(
     hint: u32
 ) -> PxAggregateType
 {
@@ -8213,7 +8213,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetAggregateType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAggregate_release_mut(
+pub unsafe extern "C" fn physx_PxAggregate_release_mut(
     self_: *mut PxAggregate
 )
 {
@@ -8223,7 +8223,7 @@ pub unsafe extern "C" fn magicphysx_PxAggregate_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAggregate_addActor_mut(
+pub unsafe extern "C" fn physx_PxAggregate_addActor_mut(
     self_: *mut PxAggregate,
     actor: *mut PxActor,
     bvh: *const PxBVH
@@ -8237,7 +8237,7 @@ pub unsafe extern "C" fn magicphysx_PxAggregate_addActor_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAggregate_removeActor_mut(
+pub unsafe extern "C" fn physx_PxAggregate_removeActor_mut(
     self_: *mut PxAggregate,
     actor: *mut PxActor
 ) -> bool
@@ -8249,7 +8249,7 @@ pub unsafe extern "C" fn magicphysx_PxAggregate_removeActor_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAggregate_addArticulation_mut(
+pub unsafe extern "C" fn physx_PxAggregate_addArticulation_mut(
     self_: *mut PxAggregate,
     articulation: *mut PxArticulationReducedCoordinate
 ) -> bool
@@ -8261,7 +8261,7 @@ pub unsafe extern "C" fn magicphysx_PxAggregate_addArticulation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAggregate_removeArticulation_mut(
+pub unsafe extern "C" fn physx_PxAggregate_removeArticulation_mut(
     self_: *mut PxAggregate,
     articulation: *mut PxArticulationReducedCoordinate
 ) -> bool
@@ -8273,7 +8273,7 @@ pub unsafe extern "C" fn magicphysx_PxAggregate_removeArticulation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAggregate_getNbActors(
+pub unsafe extern "C" fn physx_PxAggregate_getNbActors(
     self_: *const PxAggregate
 ) -> u32
 {
@@ -8283,7 +8283,7 @@ pub unsafe extern "C" fn magicphysx_PxAggregate_getNbActors(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAggregate_getMaxNbShapes(
+pub unsafe extern "C" fn physx_PxAggregate_getMaxNbShapes(
     self_: *const PxAggregate
 ) -> u32
 {
@@ -8293,7 +8293,7 @@ pub unsafe extern "C" fn magicphysx_PxAggregate_getMaxNbShapes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAggregate_getActors(
+pub unsafe extern "C" fn physx_PxAggregate_getActors(
     self_: *const PxAggregate,
     userBuffer: *mut *mut PxActor,
     bufferSize: u32,
@@ -8309,7 +8309,7 @@ pub unsafe extern "C" fn magicphysx_PxAggregate_getActors(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAggregate_getScene_mut(
+pub unsafe extern "C" fn physx_PxAggregate_getScene_mut(
     self_: *mut PxAggregate
 ) -> *mut PxScene
 {
@@ -8319,7 +8319,7 @@ pub unsafe extern "C" fn magicphysx_PxAggregate_getScene_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAggregate_getSelfCollision(
+pub unsafe extern "C" fn physx_PxAggregate_getSelfCollision(
     self_: *const PxAggregate
 ) -> bool
 {
@@ -8329,7 +8329,7 @@ pub unsafe extern "C" fn magicphysx_PxAggregate_getSelfCollision(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAggregate_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxAggregate_getConcreteTypeName(
     self_: *const PxAggregate
 ) -> *const c_char
 {
@@ -8339,7 +8339,7 @@ pub unsafe extern "C" fn magicphysx_PxAggregate_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintInvMassScale_new(
+pub unsafe extern "C" fn physx_PxConstraintInvMassScale_new(
 
 ) -> PxConstraintInvMassScale
 {
@@ -8349,7 +8349,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintInvMassScale_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintInvMassScale_new_1(
+pub unsafe extern "C" fn physx_PxConstraintInvMassScale_new_1(
     lin0: f32,
     ang0: f32,
     lin1: f32,
@@ -8365,7 +8365,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintInvMassScale_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeJointFrames_mut(
+pub unsafe extern "C" fn physx_PxConstraintVisualizer_visualizeJointFrames_mut(
     self_: *mut PxConstraintVisualizer,
     parent: *const PxTransform,
     child: *const PxTransform
@@ -8379,7 +8379,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeJointFrames_
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeLinearLimit_mut(
+pub unsafe extern "C" fn physx_PxConstraintVisualizer_visualizeLinearLimit_mut(
     self_: *mut PxConstraintVisualizer,
     t0: *const PxTransform,
     t1: *const PxTransform,
@@ -8397,7 +8397,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeLinearLimit_
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeAngularLimit_mut(
+pub unsafe extern "C" fn physx_PxConstraintVisualizer_visualizeAngularLimit_mut(
     self_: *mut PxConstraintVisualizer,
     t0: *const PxTransform,
     lower: f32,
@@ -8415,7 +8415,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeAngularLimit
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeLimitCone_mut(
+pub unsafe extern "C" fn physx_PxConstraintVisualizer_visualizeLimitCone_mut(
     self_: *mut PxConstraintVisualizer,
     t: *const PxTransform,
     tanQSwingY: f32,
@@ -8433,7 +8433,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeLimitCone_mu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeDoubleCone_mut(
+pub unsafe extern "C" fn physx_PxConstraintVisualizer_visualizeDoubleCone_mut(
     self_: *mut PxConstraintVisualizer,
     t: *const PxTransform,
     angle: f32,
@@ -8449,7 +8449,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeDoubleCone_m
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeLine_mut(
+pub unsafe extern "C" fn physx_PxConstraintVisualizer_visualizeLine_mut(
     self_: *mut PxConstraintVisualizer,
     p0: *const PxVec3,
     p1: *const PxVec3,
@@ -8465,7 +8465,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintVisualizer_visualizeLine_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintConnector_prepareData_mut(
+pub unsafe extern "C" fn physx_PxConstraintConnector_prepareData_mut(
     self_: *mut PxConstraintConnector
 ) -> *mut c_void
 {
@@ -8475,7 +8475,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintConnector_prepareData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintConnector_onConstraintRelease_mut(
+pub unsafe extern "C" fn physx_PxConstraintConnector_onConstraintRelease_mut(
     self_: *mut PxConstraintConnector
 )
 {
@@ -8485,7 +8485,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintConnector_onConstraintRelease_mu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintConnector_onComShift_mut(
+pub unsafe extern "C" fn physx_PxConstraintConnector_onComShift_mut(
     self_: *mut PxConstraintConnector,
     actor: u32
 )
@@ -8497,7 +8497,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintConnector_onComShift_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintConnector_onOriginShift_mut(
+pub unsafe extern "C" fn physx_PxConstraintConnector_onOriginShift_mut(
     self_: *mut PxConstraintConnector,
     shift: *const PxVec3
 )
@@ -8509,7 +8509,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintConnector_onOriginShift_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintConnector_getSerializable_mut(
+pub unsafe extern "C" fn physx_PxConstraintConnector_getSerializable_mut(
     self_: *mut PxConstraintConnector
 ) -> *mut PxBase
 {
@@ -8519,7 +8519,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintConnector_getSerializable_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintConnector_getConstantBlock(
+pub unsafe extern "C" fn physx_PxConstraintConnector_getConstantBlock(
     self_: *const PxConstraintConnector
 ) -> *const c_void
 {
@@ -8529,7 +8529,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintConnector_getConstantBlock(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintConnector_connectToConstraint_mut(
+pub unsafe extern "C" fn physx_PxConstraintConnector_connectToConstraint_mut(
     self_: *mut PxConstraintConnector,
     anon_param0: *mut PxConstraint
 )
@@ -8541,7 +8541,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintConnector_connectToConstraint_mu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintConnector_delete(
+pub unsafe extern "C" fn physx_PxConstraintConnector_delete(
     self_: *mut PxConstraintConnector
 )
 {
@@ -8551,7 +8551,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintConnector_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSolverBody_new(
+pub unsafe extern "C" fn physx_PxSolverBody_new(
 
 ) -> PxSolverBody
 {
@@ -8561,7 +8561,7 @@ pub unsafe extern "C" fn magicphysx_PxSolverBody_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSolverBodyData_projectVelocity(
+pub unsafe extern "C" fn physx_PxSolverBodyData_projectVelocity(
     self_: *const PxSolverBodyData,
     lin: *const PxVec3,
     ang: *const PxVec3
@@ -8575,7 +8575,7 @@ pub unsafe extern "C" fn magicphysx_PxSolverBodyData_projectVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSolverConstraintPrepDesc_delete(
+pub unsafe extern "C" fn physx_PxSolverConstraintPrepDesc_delete(
     self_: *mut PxSolverConstraintPrepDesc
 )
 {
@@ -8585,7 +8585,7 @@ pub unsafe extern "C" fn magicphysx_PxSolverConstraintPrepDesc_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintAllocator_reserveConstraintData_mut(
+pub unsafe extern "C" fn physx_PxConstraintAllocator_reserveConstraintData_mut(
     self_: *mut PxConstraintAllocator,
     byteSize: u32
 ) -> *mut u8
@@ -8597,7 +8597,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintAllocator_reserveConstraintData_
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintAllocator_reserveFrictionData_mut(
+pub unsafe extern "C" fn physx_PxConstraintAllocator_reserveFrictionData_mut(
     self_: *mut PxConstraintAllocator,
     byteSize: u32
 ) -> *mut u8
@@ -8609,7 +8609,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintAllocator_reserveFrictionData_mu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintAllocator_delete(
+pub unsafe extern "C" fn physx_PxConstraintAllocator_delete(
     self_: *mut PxConstraintAllocator
 )
 {
@@ -8619,7 +8619,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintAllocator_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLimit_new(
+pub unsafe extern "C" fn physx_PxArticulationLimit_new(
 
 ) -> PxArticulationLimit
 {
@@ -8629,7 +8629,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLimit_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLimit_new_1(
+pub unsafe extern "C" fn physx_PxArticulationLimit_new_1(
     low_: f32,
     high_: f32
 ) -> PxArticulationLimit
@@ -8641,7 +8641,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLimit_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationDrive_new(
+pub unsafe extern "C" fn physx_PxArticulationDrive_new(
 
 ) -> PxArticulationDrive
 {
@@ -8651,7 +8651,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationDrive_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationDrive_new_1(
+pub unsafe extern "C" fn physx_PxArticulationDrive_new_1(
     stiffness_: f32,
     damping_: f32,
     maxForce_: f32,
@@ -8667,7 +8667,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationDrive_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTGSSolverBodyVel_projectVelocity(
+pub unsafe extern "C" fn physx_PxTGSSolverBodyVel_projectVelocity(
     self_: *const PxTGSSolverBodyVel,
     lin: *const PxVec3,
     ang: *const PxVec3
@@ -8681,7 +8681,7 @@ pub unsafe extern "C" fn magicphysx_PxTGSSolverBodyVel_projectVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTGSSolverBodyData_projectVelocity(
+pub unsafe extern "C" fn physx_PxTGSSolverBodyData_projectVelocity(
     self_: *const PxTGSSolverBodyData,
     linear: *const PxVec3,
     angular: *const PxVec3
@@ -8695,7 +8695,7 @@ pub unsafe extern "C" fn magicphysx_PxTGSSolverBodyData_projectVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTGSSolverConstraintPrepDesc_delete(
+pub unsafe extern "C" fn physx_PxTGSSolverConstraintPrepDesc_delete(
     self_: *mut PxTGSSolverConstraintPrepDesc
 )
 {
@@ -8705,7 +8705,7 @@ pub unsafe extern "C" fn magicphysx_PxTGSSolverConstraintPrepDesc_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_setRestLength_mut(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_setRestLength_mut(
     self_: *mut PxArticulationAttachment,
     restLength: f32
 )
@@ -8717,7 +8717,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_setRestLength_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getRestLength(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_getRestLength(
     self_: *const PxArticulationAttachment
 ) -> f32
 {
@@ -8727,7 +8727,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getRestLength(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_setLimitParameters_mut(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_setLimitParameters_mut(
     self_: *mut PxArticulationAttachment,
     parameters: *const PxArticulationTendonLimit
 )
@@ -8739,7 +8739,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_setLimitParameters_
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getLimitParameters(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_getLimitParameters(
     self_: *const PxArticulationAttachment
 ) -> PxArticulationTendonLimit
 {
@@ -8749,7 +8749,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getLimitParameters(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_setRelativeOffset_mut(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_setRelativeOffset_mut(
     self_: *mut PxArticulationAttachment,
     offset: *const PxVec3
 )
@@ -8761,7 +8761,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_setRelativeOffset_m
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getRelativeOffset(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_getRelativeOffset(
     self_: *const PxArticulationAttachment
 ) -> PxVec3
 {
@@ -8771,7 +8771,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getRelativeOffset(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_setCoefficient_mut(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_setCoefficient_mut(
     self_: *mut PxArticulationAttachment,
     coefficient: f32
 )
@@ -8783,7 +8783,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_setCoefficient_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getCoefficient(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_getCoefficient(
     self_: *const PxArticulationAttachment
 ) -> f32
 {
@@ -8793,7 +8793,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getCoefficient(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getLink(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_getLink(
     self_: *const PxArticulationAttachment
 ) -> *mut PxArticulationLink
 {
@@ -8803,7 +8803,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getLink(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getParent(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_getParent(
     self_: *const PxArticulationAttachment
 ) -> *mut PxArticulationAttachment
 {
@@ -8813,7 +8813,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getParent(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_isLeaf(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_isLeaf(
     self_: *const PxArticulationAttachment
 ) -> bool
 {
@@ -8823,7 +8823,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_isLeaf(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getTendon(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_getTendon(
     self_: *const PxArticulationAttachment
 ) -> *mut PxArticulationSpatialTendon
 {
@@ -8833,7 +8833,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getTendon(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_release_mut(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_release_mut(
     self_: *mut PxArticulationAttachment
 )
 {
@@ -8843,7 +8843,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxArticulationAttachment_getConcreteTypeName(
     self_: *const PxArticulationAttachment
 ) -> *const c_char
 {
@@ -8853,7 +8853,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationAttachment_getConcreteTypeName
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_setCoefficient_mut(
+pub unsafe extern "C" fn physx_PxArticulationTendonJoint_setCoefficient_mut(
     self_: *mut PxArticulationTendonJoint,
     axis: PxArticulationAxis,
     coefficient: f32,
@@ -8869,7 +8869,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_setCoefficient_mut
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_getCoefficient(
+pub unsafe extern "C" fn physx_PxArticulationTendonJoint_getCoefficient(
     self_: *const PxArticulationTendonJoint,
     axis: *mut PxArticulationAxis,
     coefficient: *mut f32,
@@ -8885,7 +8885,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_getCoefficient(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_getLink(
+pub unsafe extern "C" fn physx_PxArticulationTendonJoint_getLink(
     self_: *const PxArticulationTendonJoint
 ) -> *mut PxArticulationLink
 {
@@ -8895,7 +8895,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_getLink(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_getParent(
+pub unsafe extern "C" fn physx_PxArticulationTendonJoint_getParent(
     self_: *const PxArticulationTendonJoint
 ) -> *mut PxArticulationTendonJoint
 {
@@ -8905,7 +8905,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_getParent(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_getTendon(
+pub unsafe extern "C" fn physx_PxArticulationTendonJoint_getTendon(
     self_: *const PxArticulationTendonJoint
 ) -> *mut PxArticulationFixedTendon
 {
@@ -8915,7 +8915,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_getTendon(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_release_mut(
+pub unsafe extern "C" fn physx_PxArticulationTendonJoint_release_mut(
     self_: *mut PxArticulationTendonJoint
 )
 {
@@ -8925,7 +8925,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxArticulationTendonJoint_getConcreteTypeName(
     self_: *const PxArticulationTendonJoint
 ) -> *const c_char
 {
@@ -8935,7 +8935,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendonJoint_getConcreteTypeNam
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendon_setStiffness_mut(
+pub unsafe extern "C" fn physx_PxArticulationTendon_setStiffness_mut(
     self_: *mut PxArticulationTendon,
     stiffness: f32
 )
@@ -8947,7 +8947,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendon_setStiffness_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendon_getStiffness(
+pub unsafe extern "C" fn physx_PxArticulationTendon_getStiffness(
     self_: *const PxArticulationTendon
 ) -> f32
 {
@@ -8957,7 +8957,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendon_getStiffness(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendon_setDamping_mut(
+pub unsafe extern "C" fn physx_PxArticulationTendon_setDamping_mut(
     self_: *mut PxArticulationTendon,
     damping: f32
 )
@@ -8969,7 +8969,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendon_setDamping_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendon_getDamping(
+pub unsafe extern "C" fn physx_PxArticulationTendon_getDamping(
     self_: *const PxArticulationTendon
 ) -> f32
 {
@@ -8979,7 +8979,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendon_getDamping(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendon_setLimitStiffness_mut(
+pub unsafe extern "C" fn physx_PxArticulationTendon_setLimitStiffness_mut(
     self_: *mut PxArticulationTendon,
     stiffness: f32
 )
@@ -8991,7 +8991,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendon_setLimitStiffness_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendon_getLimitStiffness(
+pub unsafe extern "C" fn physx_PxArticulationTendon_getLimitStiffness(
     self_: *const PxArticulationTendon
 ) -> f32
 {
@@ -9001,7 +9001,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendon_getLimitStiffness(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendon_setOffset_mut(
+pub unsafe extern "C" fn physx_PxArticulationTendon_setOffset_mut(
     self_: *mut PxArticulationTendon,
     offset: f32,
     autowake: bool
@@ -9015,7 +9015,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendon_setOffset_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendon_getOffset(
+pub unsafe extern "C" fn physx_PxArticulationTendon_getOffset(
     self_: *const PxArticulationTendon
 ) -> f32
 {
@@ -9025,7 +9025,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendon_getOffset(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendon_getArticulation(
+pub unsafe extern "C" fn physx_PxArticulationTendon_getArticulation(
     self_: *const PxArticulationTendon
 ) -> *mut PxArticulationReducedCoordinate
 {
@@ -9035,7 +9035,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendon_getArticulation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationTendon_release_mut(
+pub unsafe extern "C" fn physx_PxArticulationTendon_release_mut(
     self_: *mut PxArticulationTendon
 )
 {
@@ -9045,7 +9045,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationTendon_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSpatialTendon_createAttachment_mut(
+pub unsafe extern "C" fn physx_PxArticulationSpatialTendon_createAttachment_mut(
     self_: *mut PxArticulationSpatialTendon,
     parent: *mut PxArticulationAttachment,
     coefficient: f32,
@@ -9063,7 +9063,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSpatialTendon_createAttachment
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSpatialTendon_getAttachments(
+pub unsafe extern "C" fn physx_PxArticulationSpatialTendon_getAttachments(
     self_: *const PxArticulationSpatialTendon,
     userBuffer: *mut *mut PxArticulationAttachment,
     bufferSize: u32,
@@ -9079,7 +9079,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSpatialTendon_getAttachments(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSpatialTendon_getNbAttachments(
+pub unsafe extern "C" fn physx_PxArticulationSpatialTendon_getNbAttachments(
     self_: *const PxArticulationSpatialTendon
 ) -> u32
 {
@@ -9089,7 +9089,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSpatialTendon_getNbAttachments
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSpatialTendon_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxArticulationSpatialTendon_getConcreteTypeName(
     self_: *const PxArticulationSpatialTendon
 ) -> *const c_char
 {
@@ -9099,7 +9099,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSpatialTendon_getConcreteTypeN
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_createTendonJoint_mut(
+pub unsafe extern "C" fn physx_PxArticulationFixedTendon_createTendonJoint_mut(
     self_: *mut PxArticulationFixedTendon,
     parent: *mut PxArticulationTendonJoint,
     axis: PxArticulationAxis,
@@ -9119,7 +9119,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_createTendonJoint_
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_getTendonJoints(
+pub unsafe extern "C" fn physx_PxArticulationFixedTendon_getTendonJoints(
     self_: *const PxArticulationFixedTendon,
     userBuffer: *mut *mut PxArticulationTendonJoint,
     bufferSize: u32,
@@ -9135,7 +9135,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_getTendonJoints(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_getNbTendonJoints(
+pub unsafe extern "C" fn physx_PxArticulationFixedTendon_getNbTendonJoints(
     self_: *const PxArticulationFixedTendon
 ) -> u32
 {
@@ -9145,7 +9145,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_getNbTendonJoints(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_setRestLength_mut(
+pub unsafe extern "C" fn physx_PxArticulationFixedTendon_setRestLength_mut(
     self_: *mut PxArticulationFixedTendon,
     restLength: f32
 )
@@ -9157,7 +9157,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_setRestLength_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_getRestLength(
+pub unsafe extern "C" fn physx_PxArticulationFixedTendon_getRestLength(
     self_: *const PxArticulationFixedTendon
 ) -> f32
 {
@@ -9167,7 +9167,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_getRestLength(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_setLimitParameters_mut(
+pub unsafe extern "C" fn physx_PxArticulationFixedTendon_setLimitParameters_mut(
     self_: *mut PxArticulationFixedTendon,
     parameter: *const PxArticulationTendonLimit
 )
@@ -9179,7 +9179,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_setLimitParameters
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_getLimitParameters(
+pub unsafe extern "C" fn physx_PxArticulationFixedTendon_getLimitParameters(
     self_: *const PxArticulationFixedTendon
 ) -> PxArticulationTendonLimit
 {
@@ -9189,7 +9189,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_getLimitParameters
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxArticulationFixedTendon_getConcreteTypeName(
     self_: *const PxArticulationFixedTendon
 ) -> *const c_char
 {
@@ -9199,7 +9199,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationFixedTendon_getConcreteTypeNam
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationCache_new(
+pub unsafe extern "C" fn physx_PxArticulationCache_new(
 
 ) -> PxArticulationCache
 {
@@ -9209,7 +9209,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationCache_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationCache_release_mut(
+pub unsafe extern "C" fn physx_PxArticulationCache_release_mut(
     self_: *mut PxArticulationCache
 )
 {
@@ -9219,7 +9219,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationCache_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSensor_release_mut(
+pub unsafe extern "C" fn physx_PxArticulationSensor_release_mut(
     self_: *mut PxArticulationSensor
 )
 {
@@ -9229,7 +9229,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSensor_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getForces(
+pub unsafe extern "C" fn physx_PxArticulationSensor_getForces(
     self_: *const PxArticulationSensor
 ) -> PxSpatialForce
 {
@@ -9239,7 +9239,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getForces(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getRelativePose(
+pub unsafe extern "C" fn physx_PxArticulationSensor_getRelativePose(
     self_: *const PxArticulationSensor
 ) -> PxTransform
 {
@@ -9249,7 +9249,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getRelativePose(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSensor_setRelativePose_mut(
+pub unsafe extern "C" fn physx_PxArticulationSensor_setRelativePose_mut(
     self_: *mut PxArticulationSensor,
     pose: *const PxTransform
 )
@@ -9261,7 +9261,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSensor_setRelativePose_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getLink(
+pub unsafe extern "C" fn physx_PxArticulationSensor_getLink(
     self_: *const PxArticulationSensor
 ) -> *mut PxArticulationLink
 {
@@ -9271,7 +9271,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getLink(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getIndex(
+pub unsafe extern "C" fn physx_PxArticulationSensor_getIndex(
     self_: *const PxArticulationSensor
 ) -> u32
 {
@@ -9281,7 +9281,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getIndex(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getArticulation(
+pub unsafe extern "C" fn physx_PxArticulationSensor_getArticulation(
     self_: *const PxArticulationSensor
 ) -> *mut PxArticulationReducedCoordinate
 {
@@ -9291,7 +9291,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getArticulation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getFlags(
+pub unsafe extern "C" fn physx_PxArticulationSensor_getFlags(
     self_: *const PxArticulationSensor
 ) -> PxArticulationSensorFlags
 {
@@ -9301,7 +9301,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSensor_setFlag_mut(
+pub unsafe extern "C" fn physx_PxArticulationSensor_setFlag_mut(
     self_: *mut PxArticulationSensor,
     flag: PxArticulationSensorFlag,
     enabled: bool
@@ -9315,7 +9315,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSensor_setFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxArticulationSensor_getConcreteTypeName(
     self_: *const PxArticulationSensor
 ) -> *const c_char
 {
@@ -9325,7 +9325,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationSensor_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getScene(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getScene(
     self_: *const PxArticulationReducedCoordinate
 ) -> *mut PxScene
 {
@@ -9335,7 +9335,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getScene(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setSolverIterationCounts_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setSolverIterationCounts_mut(
     self_: *mut PxArticulationReducedCoordinate,
     minPositionIters: u32,
     minVelocityIters: u32
@@ -9349,7 +9349,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setSolverIte
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getSolverIterationCounts(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getSolverIterationCounts(
     self_: *const PxArticulationReducedCoordinate,
     minPositionIters: *mut u32,
     minVelocityIters: *mut u32
@@ -9363,7 +9363,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getSolverIte
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_isSleeping(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_isSleeping(
     self_: *const PxArticulationReducedCoordinate
 ) -> bool
 {
@@ -9373,7 +9373,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_isSleeping(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setSleepThreshold_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setSleepThreshold_mut(
     self_: *mut PxArticulationReducedCoordinate,
     threshold: f32
 )
@@ -9385,7 +9385,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setSleepThre
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getSleepThreshold(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getSleepThreshold(
     self_: *const PxArticulationReducedCoordinate
 ) -> f32
 {
@@ -9395,7 +9395,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getSleepThre
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setStabilizationThreshold_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setStabilizationThreshold_mut(
     self_: *mut PxArticulationReducedCoordinate,
     threshold: f32
 )
@@ -9407,7 +9407,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setStabiliza
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getStabilizationThreshold(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getStabilizationThreshold(
     self_: *const PxArticulationReducedCoordinate
 ) -> f32
 {
@@ -9417,7 +9417,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getStabiliza
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setWakeCounter_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setWakeCounter_mut(
     self_: *mut PxArticulationReducedCoordinate,
     wakeCounterValue: f32
 )
@@ -9429,7 +9429,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setWakeCount
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getWakeCounter(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getWakeCounter(
     self_: *const PxArticulationReducedCoordinate
 ) -> f32
 {
@@ -9439,7 +9439,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getWakeCount
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_wakeUp_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_wakeUp_mut(
     self_: *mut PxArticulationReducedCoordinate
 )
 {
@@ -9449,7 +9449,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_wakeUp_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_putToSleep_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_putToSleep_mut(
     self_: *mut PxArticulationReducedCoordinate
 )
 {
@@ -9459,7 +9459,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_putToSleep_m
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setMaxCOMLinearVelocity_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setMaxCOMLinearVelocity_mut(
     self_: *mut PxArticulationReducedCoordinate,
     maxLinearVelocity: f32
 )
@@ -9471,7 +9471,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setMaxCOMLin
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getMaxCOMLinearVelocity(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getMaxCOMLinearVelocity(
     self_: *const PxArticulationReducedCoordinate
 ) -> f32
 {
@@ -9481,7 +9481,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getMaxCOMLin
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setMaxCOMAngularVelocity_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setMaxCOMAngularVelocity_mut(
     self_: *mut PxArticulationReducedCoordinate,
     maxAngularVelocity: f32
 )
@@ -9493,7 +9493,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setMaxCOMAng
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getMaxCOMAngularVelocity(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getMaxCOMAngularVelocity(
     self_: *const PxArticulationReducedCoordinate
 ) -> f32
 {
@@ -9503,7 +9503,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getMaxCOMAng
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_createLink_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_createLink_mut(
     self_: *mut PxArticulationReducedCoordinate,
     parent: *mut PxArticulationLink,
     pose: *const PxTransform
@@ -9517,7 +9517,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_createLink_m
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_release_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_release_mut(
     self_: *mut PxArticulationReducedCoordinate
 )
 {
@@ -9527,7 +9527,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbLinks(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getNbLinks(
     self_: *const PxArticulationReducedCoordinate
 ) -> u32
 {
@@ -9537,7 +9537,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbLinks(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getLinks(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getLinks(
     self_: *const PxArticulationReducedCoordinate,
     userBuffer: *mut *mut PxArticulationLink,
     bufferSize: u32,
@@ -9553,7 +9553,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getLinks(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbShapes(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getNbShapes(
     self_: *const PxArticulationReducedCoordinate
 ) -> u32
 {
@@ -9563,7 +9563,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbShapes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setName_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setName_mut(
     self_: *mut PxArticulationReducedCoordinate,
     name: *const c_char
 )
@@ -9575,7 +9575,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setName_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getName(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getName(
     self_: *const PxArticulationReducedCoordinate
 ) -> *const c_char
 {
@@ -9585,7 +9585,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getWorldBounds(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getWorldBounds(
     self_: *const PxArticulationReducedCoordinate,
     inflation: f32
 ) -> PxBounds3
@@ -9597,7 +9597,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getWorldBoun
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getAggregate(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getAggregate(
     self_: *const PxArticulationReducedCoordinate
 ) -> *mut PxAggregate
 {
@@ -9607,7 +9607,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getAggregate
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setArticulationFlags_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setArticulationFlags_mut(
     self_: *mut PxArticulationReducedCoordinate,
     flags: PxArticulationFlags
 )
@@ -9619,7 +9619,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setArticulat
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setArticulationFlag_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setArticulationFlag_mut(
     self_: *mut PxArticulationReducedCoordinate,
     flag: PxArticulationFlag,
     value: bool
@@ -9633,7 +9633,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setArticulat
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getArticulationFlags(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getArticulationFlags(
     self_: *const PxArticulationReducedCoordinate
 ) -> PxArticulationFlags
 {
@@ -9643,7 +9643,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getArticulat
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getDofs(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getDofs(
     self_: *const PxArticulationReducedCoordinate
 ) -> u32
 {
@@ -9653,7 +9653,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getDofs(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_createCache(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_createCache(
     self_: *const PxArticulationReducedCoordinate
 ) -> *mut PxArticulationCache
 {
@@ -9663,7 +9663,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_createCache(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getCacheDataSize(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getCacheDataSize(
     self_: *const PxArticulationReducedCoordinate
 ) -> u32
 {
@@ -9673,7 +9673,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getCacheData
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_zeroCache(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_zeroCache(
     self_: *const PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache
 )
@@ -9685,7 +9685,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_zeroCache(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_applyCache_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_applyCache_mut(
     self_: *mut PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache,
     flags: PxArticulationCacheFlags,
@@ -9701,7 +9701,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_applyCache_m
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_copyInternalStateToCache(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_copyInternalStateToCache(
     self_: *const PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache,
     flags: PxArticulationCacheFlags
@@ -9715,7 +9715,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_copyInternal
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_packJointData(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_packJointData(
     self_: *const PxArticulationReducedCoordinate,
     maximum: *const f32,
     reduced: *mut f32
@@ -9729,7 +9729,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_packJointDat
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_unpackJointData(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_unpackJointData(
     self_: *const PxArticulationReducedCoordinate,
     reduced: *const f32,
     maximum: *mut f32
@@ -9743,7 +9743,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_unpackJointD
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_commonInit(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_commonInit(
     self_: *const PxArticulationReducedCoordinate
 )
 {
@@ -9753,7 +9753,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_commonInit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeGeneralizedGravityForce(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_computeGeneralizedGravityForce(
     self_: *const PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache
 )
@@ -9765,7 +9765,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeGener
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeCoriolisAndCentrifugalForce(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_computeCoriolisAndCentrifugalForce(
     self_: *const PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache
 )
@@ -9777,7 +9777,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeCorio
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeGeneralizedExternalForce(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_computeGeneralizedExternalForce(
     self_: *const PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache
 )
@@ -9789,7 +9789,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeGener
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeJointAcceleration(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_computeJointAcceleration(
     self_: *const PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache
 )
@@ -9801,7 +9801,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeJoint
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeJointForce(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_computeJointForce(
     self_: *const PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache
 )
@@ -9813,7 +9813,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeJoint
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeDenseJacobian(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_computeDenseJacobian(
     self_: *const PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache,
     nRows: *mut u32,
@@ -9829,7 +9829,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeDense
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeCoefficientMatrix(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_computeCoefficientMatrix(
     self_: *const PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache
 )
@@ -9841,7 +9841,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeCoeff
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeLambda(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_computeLambda(
     self_: *const PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache,
     initialState: *mut PxArticulationCache,
@@ -9859,7 +9859,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeLambd
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeGeneralizedMassMatrix(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_computeGeneralizedMassMatrix(
     self_: *const PxArticulationReducedCoordinate,
     cache: *mut PxArticulationCache
 )
@@ -9871,7 +9871,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_computeGener
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_addLoopJoint_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_addLoopJoint_mut(
     self_: *mut PxArticulationReducedCoordinate,
     joint: *mut PxConstraint
 )
@@ -9883,7 +9883,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_addLoopJoint
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_removeLoopJoint_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_removeLoopJoint_mut(
     self_: *mut PxArticulationReducedCoordinate,
     joint: *mut PxConstraint
 )
@@ -9895,7 +9895,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_removeLoopJo
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbLoopJoints(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getNbLoopJoints(
     self_: *const PxArticulationReducedCoordinate
 ) -> u32
 {
@@ -9905,7 +9905,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbLoopJoi
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getLoopJoints(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getLoopJoints(
     self_: *const PxArticulationReducedCoordinate,
     userBuffer: *mut *mut PxConstraint,
     bufferSize: u32,
@@ -9921,7 +9921,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getLoopJoint
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getCoefficientMatrixSize(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getCoefficientMatrixSize(
     self_: *const PxArticulationReducedCoordinate
 ) -> u32
 {
@@ -9931,7 +9931,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getCoefficie
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setRootGlobalPose_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setRootGlobalPose_mut(
     self_: *mut PxArticulationReducedCoordinate,
     pose: *const PxTransform,
     autowake: bool
@@ -9945,7 +9945,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setRootGloba
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getRootGlobalPose(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getRootGlobalPose(
     self_: *const PxArticulationReducedCoordinate
 ) -> PxTransform
 {
@@ -9955,7 +9955,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getRootGloba
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setRootLinearVelocity_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setRootLinearVelocity_mut(
     self_: *mut PxArticulationReducedCoordinate,
     linearVelocity: *const PxVec3,
     autowake: bool
@@ -9969,7 +9969,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setRootLinea
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getRootLinearVelocity(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getRootLinearVelocity(
     self_: *const PxArticulationReducedCoordinate
 ) -> PxVec3
 {
@@ -9979,7 +9979,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getRootLinea
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setRootAngularVelocity_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_setRootAngularVelocity_mut(
     self_: *mut PxArticulationReducedCoordinate,
     angularVelocity: *const PxVec3,
     autowake: bool
@@ -9993,7 +9993,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_setRootAngul
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getRootAngularVelocity(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getRootAngularVelocity(
     self_: *const PxArticulationReducedCoordinate
 ) -> PxVec3
 {
@@ -10003,7 +10003,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getRootAngul
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getLinkAcceleration_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getLinkAcceleration_mut(
     self_: *mut PxArticulationReducedCoordinate,
     linkId: u32
 ) -> PxSpatialVelocity
@@ -10015,7 +10015,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getLinkAccel
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getGpuArticulationIndex_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getGpuArticulationIndex_mut(
     self_: *mut PxArticulationReducedCoordinate
 ) -> u32
 {
@@ -10025,7 +10025,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getGpuArticu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_createSpatialTendon_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_createSpatialTendon_mut(
     self_: *mut PxArticulationReducedCoordinate
 ) -> *mut PxArticulationSpatialTendon
 {
@@ -10035,7 +10035,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_createSpatia
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_createFixedTendon_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_createFixedTendon_mut(
     self_: *mut PxArticulationReducedCoordinate
 ) -> *mut PxArticulationFixedTendon
 {
@@ -10045,7 +10045,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_createFixedT
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_createSensor_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_createSensor_mut(
     self_: *mut PxArticulationReducedCoordinate,
     link: *mut PxArticulationLink,
     relativePose: *const PxTransform
@@ -10059,7 +10059,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_createSensor
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getSpatialTendons(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getSpatialTendons(
     self_: *const PxArticulationReducedCoordinate,
     userBuffer: *mut *mut PxArticulationSpatialTendon,
     bufferSize: u32,
@@ -10075,7 +10075,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getSpatialTe
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbSpatialTendons_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getNbSpatialTendons_mut(
     self_: *mut PxArticulationReducedCoordinate
 ) -> u32
 {
@@ -10085,7 +10085,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbSpatial
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getFixedTendons(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getFixedTendons(
     self_: *const PxArticulationReducedCoordinate,
     userBuffer: *mut *mut PxArticulationFixedTendon,
     bufferSize: u32,
@@ -10101,7 +10101,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getFixedTend
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbFixedTendons_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getNbFixedTendons_mut(
     self_: *mut PxArticulationReducedCoordinate
 ) -> u32
 {
@@ -10111,7 +10111,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbFixedTe
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getSensors(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getSensors(
     self_: *const PxArticulationReducedCoordinate,
     userBuffer: *mut *mut PxArticulationSensor,
     bufferSize: u32,
@@ -10127,7 +10127,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getSensors(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbSensors_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_getNbSensors_mut(
     self_: *mut PxArticulationReducedCoordinate
 ) -> u32
 {
@@ -10137,7 +10137,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_getNbSensors
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_updateKinematic_mut(
+pub unsafe extern "C" fn physx_PxArticulationReducedCoordinate_updateKinematic_mut(
     self_: *mut PxArticulationReducedCoordinate,
     flags: PxArticulationKinematicFlags
 )
@@ -10149,7 +10149,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationReducedCoordinate_updateKinema
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getParentArticulationLink(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getParentArticulationLink(
     self_: *const PxArticulationJointReducedCoordinate
 ) -> *mut PxArticulationLink
 {
@@ -10159,7 +10159,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getPare
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setParentPose_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setParentPose_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     pose: *const PxTransform
 )
@@ -10171,7 +10171,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setPare
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getParentPose(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getParentPose(
     self_: *const PxArticulationJointReducedCoordinate
 ) -> PxTransform
 {
@@ -10181,7 +10181,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getPare
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getChildArticulationLink(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getChildArticulationLink(
     self_: *const PxArticulationJointReducedCoordinate
 ) -> *mut PxArticulationLink
 {
@@ -10191,7 +10191,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getChil
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setChildPose_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setChildPose_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     pose: *const PxTransform
 )
@@ -10203,7 +10203,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setChil
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getChildPose(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getChildPose(
     self_: *const PxArticulationJointReducedCoordinate
 ) -> PxTransform
 {
@@ -10213,7 +10213,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getChil
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setJointType_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setJointType_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     jointType: PxArticulationJointType
 )
@@ -10225,7 +10225,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setJoin
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getJointType(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getJointType(
     self_: *const PxArticulationJointReducedCoordinate
 ) -> PxArticulationJointType
 {
@@ -10235,7 +10235,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getJoin
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setMotion_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setMotion_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis,
     motion: PxArticulationMotion
@@ -10249,7 +10249,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setMoti
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getMotion(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getMotion(
     self_: *const PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis
 ) -> PxArticulationMotion
@@ -10261,7 +10261,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getMoti
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setLimitParams_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setLimitParams_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis,
     limit: *const PxArticulationLimit
@@ -10275,7 +10275,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setLimi
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getLimitParams(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getLimitParams(
     self_: *const PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis
 ) -> PxArticulationLimit
@@ -10287,7 +10287,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getLimi
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setDriveParams_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setDriveParams_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis,
     drive: *const PxArticulationDrive
@@ -10301,7 +10301,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setDriv
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getDriveParams(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getDriveParams(
     self_: *const PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis
 ) -> PxArticulationDrive
@@ -10313,7 +10313,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getDriv
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setDriveTarget_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setDriveTarget_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis,
     target: f32,
@@ -10329,7 +10329,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setDriv
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getDriveTarget(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getDriveTarget(
     self_: *const PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis
 ) -> f32
@@ -10341,7 +10341,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getDriv
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setDriveVelocity_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setDriveVelocity_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis,
     targetVel: f32,
@@ -10357,7 +10357,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setDriv
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getDriveVelocity(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getDriveVelocity(
     self_: *const PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis
 ) -> f32
@@ -10369,7 +10369,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getDriv
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setArmature_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setArmature_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis,
     armature: f32
@@ -10383,7 +10383,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setArma
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getArmature(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getArmature(
     self_: *const PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis
 ) -> f32
@@ -10395,7 +10395,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getArma
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setFrictionCoefficient_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setFrictionCoefficient_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     coefficient: f32
 )
@@ -10407,7 +10407,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setFric
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getFrictionCoefficient(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getFrictionCoefficient(
     self_: *const PxArticulationJointReducedCoordinate
 ) -> f32
 {
@@ -10417,7 +10417,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getFric
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setMaxJointVelocity_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setMaxJointVelocity_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     maxJointV: f32
 )
@@ -10429,7 +10429,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setMaxJ
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getMaxJointVelocity(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getMaxJointVelocity(
     self_: *const PxArticulationJointReducedCoordinate
 ) -> f32
 {
@@ -10439,7 +10439,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getMaxJ
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setJointPosition_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setJointPosition_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis,
     jointPos: f32
@@ -10453,7 +10453,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setJoin
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getJointPosition(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getJointPosition(
     self_: *const PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis
 ) -> f32
@@ -10465,7 +10465,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getJoin
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setJointVelocity_mut(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_setJointVelocity_mut(
     self_: *mut PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis,
     jointVel: f32
@@ -10479,7 +10479,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_setJoin
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getJointVelocity(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getJointVelocity(
     self_: *const PxArticulationJointReducedCoordinate,
     axis: PxArticulationAxis
 ) -> f32
@@ -10491,7 +10491,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getJoin
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxArticulationJointReducedCoordinate_getConcreteTypeName(
     self_: *const PxArticulationJointReducedCoordinate
 ) -> *const c_char
 {
@@ -10501,7 +10501,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationJointReducedCoordinate_getConc
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_release_mut(
+pub unsafe extern "C" fn physx_PxShape_release_mut(
     self_: *mut PxShape
 )
 {
@@ -10511,7 +10511,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setGeometry_mut(
+pub unsafe extern "C" fn physx_PxShape_setGeometry_mut(
     self_: *mut PxShape,
     geometry: *const PxGeometry
 )
@@ -10523,7 +10523,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setGeometry_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getGeometry(
+pub unsafe extern "C" fn physx_PxShape_getGeometry(
     self_: *const PxShape
 ) -> *const PxGeometry
 {
@@ -10533,7 +10533,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getGeometry(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getActor(
+pub unsafe extern "C" fn physx_PxShape_getActor(
     self_: *const PxShape
 ) -> *mut PxRigidActor
 {
@@ -10543,7 +10543,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getActor(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setLocalPose_mut(
+pub unsafe extern "C" fn physx_PxShape_setLocalPose_mut(
     self_: *mut PxShape,
     pose: *const PxTransform
 )
@@ -10555,7 +10555,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setLocalPose_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getLocalPose(
+pub unsafe extern "C" fn physx_PxShape_getLocalPose(
     self_: *const PxShape
 ) -> PxTransform
 {
@@ -10565,7 +10565,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getLocalPose(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setSimulationFilterData_mut(
+pub unsafe extern "C" fn physx_PxShape_setSimulationFilterData_mut(
     self_: *mut PxShape,
     data: *const PxFilterData
 )
@@ -10577,7 +10577,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setSimulationFilterData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getSimulationFilterData(
+pub unsafe extern "C" fn physx_PxShape_getSimulationFilterData(
     self_: *const PxShape
 ) -> PxFilterData
 {
@@ -10587,7 +10587,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getSimulationFilterData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setQueryFilterData_mut(
+pub unsafe extern "C" fn physx_PxShape_setQueryFilterData_mut(
     self_: *mut PxShape,
     data: *const PxFilterData
 )
@@ -10599,7 +10599,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setQueryFilterData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getQueryFilterData(
+pub unsafe extern "C" fn physx_PxShape_getQueryFilterData(
     self_: *const PxShape
 ) -> PxFilterData
 {
@@ -10609,7 +10609,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getQueryFilterData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setMaterials_mut(
+pub unsafe extern "C" fn physx_PxShape_setMaterials_mut(
     self_: *mut PxShape,
     materials: *const *mut PxMaterial,
     materialCount: u16
@@ -10623,7 +10623,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setMaterials_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getNbMaterials(
+pub unsafe extern "C" fn physx_PxShape_getNbMaterials(
     self_: *const PxShape
 ) -> u16
 {
@@ -10633,7 +10633,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getNbMaterials(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getMaterials(
+pub unsafe extern "C" fn physx_PxShape_getMaterials(
     self_: *const PxShape,
     userBuffer: *mut *mut PxMaterial,
     bufferSize: u32,
@@ -10649,7 +10649,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getMaterials(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getMaterialFromInternalFaceIndex(
+pub unsafe extern "C" fn physx_PxShape_getMaterialFromInternalFaceIndex(
     self_: *const PxShape,
     faceIndex: u32
 ) -> *mut PxBaseMaterial
@@ -10661,7 +10661,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getMaterialFromInternalFaceIndex(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setContactOffset_mut(
+pub unsafe extern "C" fn physx_PxShape_setContactOffset_mut(
     self_: *mut PxShape,
     contactOffset: f32
 )
@@ -10673,7 +10673,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setContactOffset_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getContactOffset(
+pub unsafe extern "C" fn physx_PxShape_getContactOffset(
     self_: *const PxShape
 ) -> f32
 {
@@ -10683,7 +10683,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getContactOffset(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setRestOffset_mut(
+pub unsafe extern "C" fn physx_PxShape_setRestOffset_mut(
     self_: *mut PxShape,
     restOffset: f32
 )
@@ -10695,7 +10695,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setRestOffset_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getRestOffset(
+pub unsafe extern "C" fn physx_PxShape_getRestOffset(
     self_: *const PxShape
 ) -> f32
 {
@@ -10705,7 +10705,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getRestOffset(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setDensityForFluid_mut(
+pub unsafe extern "C" fn physx_PxShape_setDensityForFluid_mut(
     self_: *mut PxShape,
     densityForFluid: f32
 )
@@ -10717,7 +10717,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setDensityForFluid_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getDensityForFluid(
+pub unsafe extern "C" fn physx_PxShape_getDensityForFluid(
     self_: *const PxShape
 ) -> f32
 {
@@ -10727,7 +10727,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getDensityForFluid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setTorsionalPatchRadius_mut(
+pub unsafe extern "C" fn physx_PxShape_setTorsionalPatchRadius_mut(
     self_: *mut PxShape,
     radius: f32
 )
@@ -10739,7 +10739,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setTorsionalPatchRadius_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getTorsionalPatchRadius(
+pub unsafe extern "C" fn physx_PxShape_getTorsionalPatchRadius(
     self_: *const PxShape
 ) -> f32
 {
@@ -10749,7 +10749,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getTorsionalPatchRadius(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setMinTorsionalPatchRadius_mut(
+pub unsafe extern "C" fn physx_PxShape_setMinTorsionalPatchRadius_mut(
     self_: *mut PxShape,
     radius: f32
 )
@@ -10761,7 +10761,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setMinTorsionalPatchRadius_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getMinTorsionalPatchRadius(
+pub unsafe extern "C" fn physx_PxShape_getMinTorsionalPatchRadius(
     self_: *const PxShape
 ) -> f32
 {
@@ -10771,7 +10771,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getMinTorsionalPatchRadius(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setFlag_mut(
+pub unsafe extern "C" fn physx_PxShape_setFlag_mut(
     self_: *mut PxShape,
     flag: PxShapeFlag,
     value: bool
@@ -10785,7 +10785,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setFlags_mut(
+pub unsafe extern "C" fn physx_PxShape_setFlags_mut(
     self_: *mut PxShape,
     inFlags: PxShapeFlags
 )
@@ -10797,7 +10797,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getFlags(
+pub unsafe extern "C" fn physx_PxShape_getFlags(
     self_: *const PxShape
 ) -> PxShapeFlags
 {
@@ -10807,7 +10807,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_isExclusive(
+pub unsafe extern "C" fn physx_PxShape_isExclusive(
     self_: *const PxShape
 ) -> bool
 {
@@ -10817,7 +10817,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_isExclusive(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_setName_mut(
+pub unsafe extern "C" fn physx_PxShape_setName_mut(
     self_: *mut PxShape,
     name: *const c_char
 )
@@ -10829,7 +10829,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_setName_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getName(
+pub unsafe extern "C" fn physx_PxShape_getName(
     self_: *const PxShape
 ) -> *const c_char
 {
@@ -10839,7 +10839,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShape_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxShape_getConcreteTypeName(
     self_: *const PxShape
 ) -> *const c_char
 {
@@ -10849,7 +10849,7 @@ pub unsafe extern "C" fn magicphysx_PxShape_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActor_release_mut(
+pub unsafe extern "C" fn physx_PxRigidActor_release_mut(
     self_: *mut PxRigidActor
 )
 {
@@ -10859,7 +10859,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActor_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActor_getInternalActorIndex(
+pub unsafe extern "C" fn physx_PxRigidActor_getInternalActorIndex(
     self_: *const PxRigidActor
 ) -> u32
 {
@@ -10869,7 +10869,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActor_getInternalActorIndex(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActor_getGlobalPose(
+pub unsafe extern "C" fn physx_PxRigidActor_getGlobalPose(
     self_: *const PxRigidActor
 ) -> PxTransform
 {
@@ -10879,7 +10879,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActor_getGlobalPose(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActor_setGlobalPose_mut(
+pub unsafe extern "C" fn physx_PxRigidActor_setGlobalPose_mut(
     self_: *mut PxRigidActor,
     pose: *const PxTransform,
     autowake: bool
@@ -10893,7 +10893,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActor_setGlobalPose_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActor_attachShape_mut(
+pub unsafe extern "C" fn physx_PxRigidActor_attachShape_mut(
     self_: *mut PxRigidActor,
     shape: *mut PxShape
 ) -> bool
@@ -10905,7 +10905,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActor_attachShape_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActor_detachShape_mut(
+pub unsafe extern "C" fn physx_PxRigidActor_detachShape_mut(
     self_: *mut PxRigidActor,
     shape: *mut PxShape,
     wakeOnLostTouch: bool
@@ -10919,7 +10919,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActor_detachShape_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActor_getNbShapes(
+pub unsafe extern "C" fn physx_PxRigidActor_getNbShapes(
     self_: *const PxRigidActor
 ) -> u32
 {
@@ -10929,7 +10929,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActor_getNbShapes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActor_getShapes(
+pub unsafe extern "C" fn physx_PxRigidActor_getShapes(
     self_: *const PxRigidActor,
     userBuffer: *mut *mut PxShape,
     bufferSize: u32,
@@ -10945,7 +10945,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActor_getShapes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActor_getNbConstraints(
+pub unsafe extern "C" fn physx_PxRigidActor_getNbConstraints(
     self_: *const PxRigidActor
 ) -> u32
 {
@@ -10955,7 +10955,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActor_getNbConstraints(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActor_getConstraints(
+pub unsafe extern "C" fn physx_PxRigidActor_getConstraints(
     self_: *const PxRigidActor,
     userBuffer: *mut *mut PxConstraint,
     bufferSize: u32,
@@ -10971,7 +10971,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActor_getConstraints(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxNodeIndex_new(
+pub unsafe extern "C" fn physx_PxNodeIndex_new(
     id: u32,
     articLinkId: u32
 ) -> PxNodeIndex
@@ -10983,7 +10983,7 @@ pub unsafe extern "C" fn magicphysx_PxNodeIndex_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxNodeIndex_new_1(
+pub unsafe extern "C" fn physx_PxNodeIndex_new_1(
     id: u32
 ) -> PxNodeIndex
 {
@@ -10993,7 +10993,7 @@ pub unsafe extern "C" fn magicphysx_PxNodeIndex_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxNodeIndex_index(
+pub unsafe extern "C" fn physx_PxNodeIndex_index(
     self_: *const PxNodeIndex
 ) -> u32
 {
@@ -11003,7 +11003,7 @@ pub unsafe extern "C" fn magicphysx_PxNodeIndex_index(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxNodeIndex_articulationLinkId(
+pub unsafe extern "C" fn physx_PxNodeIndex_articulationLinkId(
     self_: *const PxNodeIndex
 ) -> u32
 {
@@ -11013,7 +11013,7 @@ pub unsafe extern "C" fn magicphysx_PxNodeIndex_articulationLinkId(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxNodeIndex_isArticulation(
+pub unsafe extern "C" fn physx_PxNodeIndex_isArticulation(
     self_: *const PxNodeIndex
 ) -> u32
 {
@@ -11023,7 +11023,7 @@ pub unsafe extern "C" fn magicphysx_PxNodeIndex_isArticulation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxNodeIndex_isStaticBody(
+pub unsafe extern "C" fn physx_PxNodeIndex_isStaticBody(
     self_: *const PxNodeIndex
 ) -> bool
 {
@@ -11033,7 +11033,7 @@ pub unsafe extern "C" fn magicphysx_PxNodeIndex_isStaticBody(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxNodeIndex_isValid(
+pub unsafe extern "C" fn physx_PxNodeIndex_isValid(
     self_: *const PxNodeIndex
 ) -> bool
 {
@@ -11043,7 +11043,7 @@ pub unsafe extern "C" fn magicphysx_PxNodeIndex_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxNodeIndex_setIndices_mut(
+pub unsafe extern "C" fn physx_PxNodeIndex_setIndices_mut(
     self_: *mut PxNodeIndex,
     index: u32,
     articLinkId: u32
@@ -11057,7 +11057,7 @@ pub unsafe extern "C" fn magicphysx_PxNodeIndex_setIndices_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxNodeIndex_setIndices_mut_1(
+pub unsafe extern "C" fn physx_PxNodeIndex_setIndices_mut_1(
     self_: *mut PxNodeIndex,
     index: u32
 )
@@ -11069,7 +11069,7 @@ pub unsafe extern "C" fn magicphysx_PxNodeIndex_setIndices_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxNodeIndex_getInd(
+pub unsafe extern "C" fn physx_PxNodeIndex_getInd(
     self_: *const PxNodeIndex
 ) -> u64
 {
@@ -11079,7 +11079,7 @@ pub unsafe extern "C" fn magicphysx_PxNodeIndex_getInd(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setCMassLocalPose_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setCMassLocalPose_mut(
     self_: *mut PxRigidBody,
     pose: *const PxTransform
 )
@@ -11091,7 +11091,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setCMassLocalPose_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getCMassLocalPose(
+pub unsafe extern "C" fn physx_PxRigidBody_getCMassLocalPose(
     self_: *const PxRigidBody
 ) -> PxTransform
 {
@@ -11101,7 +11101,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getCMassLocalPose(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setMass_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setMass_mut(
     self_: *mut PxRigidBody,
     mass: f32
 )
@@ -11113,7 +11113,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setMass_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getMass(
+pub unsafe extern "C" fn physx_PxRigidBody_getMass(
     self_: *const PxRigidBody
 ) -> f32
 {
@@ -11123,7 +11123,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getMass(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getInvMass(
+pub unsafe extern "C" fn physx_PxRigidBody_getInvMass(
     self_: *const PxRigidBody
 ) -> f32
 {
@@ -11133,7 +11133,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getInvMass(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setMassSpaceInertiaTensor_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setMassSpaceInertiaTensor_mut(
     self_: *mut PxRigidBody,
     m: *const PxVec3
 )
@@ -11145,7 +11145,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setMassSpaceInertiaTensor_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getMassSpaceInertiaTensor(
+pub unsafe extern "C" fn physx_PxRigidBody_getMassSpaceInertiaTensor(
     self_: *const PxRigidBody
 ) -> PxVec3
 {
@@ -11155,7 +11155,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getMassSpaceInertiaTensor(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getMassSpaceInvInertiaTensor(
+pub unsafe extern "C" fn physx_PxRigidBody_getMassSpaceInvInertiaTensor(
     self_: *const PxRigidBody
 ) -> PxVec3
 {
@@ -11165,7 +11165,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getMassSpaceInvInertiaTensor(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setLinearDamping_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setLinearDamping_mut(
     self_: *mut PxRigidBody,
     linDamp: f32
 )
@@ -11177,7 +11177,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setLinearDamping_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getLinearDamping(
+pub unsafe extern "C" fn physx_PxRigidBody_getLinearDamping(
     self_: *const PxRigidBody
 ) -> f32
 {
@@ -11187,7 +11187,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getLinearDamping(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setAngularDamping_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setAngularDamping_mut(
     self_: *mut PxRigidBody,
     angDamp: f32
 )
@@ -11199,7 +11199,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setAngularDamping_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getAngularDamping(
+pub unsafe extern "C" fn physx_PxRigidBody_getAngularDamping(
     self_: *const PxRigidBody
 ) -> f32
 {
@@ -11209,7 +11209,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getAngularDamping(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getLinearVelocity(
+pub unsafe extern "C" fn physx_PxRigidBody_getLinearVelocity(
     self_: *const PxRigidBody
 ) -> PxVec3
 {
@@ -11219,7 +11219,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getLinearVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getAngularVelocity(
+pub unsafe extern "C" fn physx_PxRigidBody_getAngularVelocity(
     self_: *const PxRigidBody
 ) -> PxVec3
 {
@@ -11229,7 +11229,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getAngularVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setMaxLinearVelocity_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setMaxLinearVelocity_mut(
     self_: *mut PxRigidBody,
     maxLinVel: f32
 )
@@ -11241,7 +11241,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setMaxLinearVelocity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getMaxLinearVelocity(
+pub unsafe extern "C" fn physx_PxRigidBody_getMaxLinearVelocity(
     self_: *const PxRigidBody
 ) -> f32
 {
@@ -11251,7 +11251,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getMaxLinearVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setMaxAngularVelocity_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setMaxAngularVelocity_mut(
     self_: *mut PxRigidBody,
     maxAngVel: f32
 )
@@ -11263,7 +11263,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setMaxAngularVelocity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getMaxAngularVelocity(
+pub unsafe extern "C" fn physx_PxRigidBody_getMaxAngularVelocity(
     self_: *const PxRigidBody
 ) -> f32
 {
@@ -11273,7 +11273,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getMaxAngularVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_addForce_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_addForce_mut(
     self_: *mut PxRigidBody,
     force: *const PxVec3,
     mode: PxForceMode,
@@ -11289,7 +11289,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_addForce_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_addTorque_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_addTorque_mut(
     self_: *mut PxRigidBody,
     torque: *const PxVec3,
     mode: PxForceMode,
@@ -11305,7 +11305,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_addTorque_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_clearForce_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_clearForce_mut(
     self_: *mut PxRigidBody,
     mode: PxForceMode
 )
@@ -11317,7 +11317,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_clearForce_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_clearTorque_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_clearTorque_mut(
     self_: *mut PxRigidBody,
     mode: PxForceMode
 )
@@ -11329,7 +11329,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_clearTorque_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setForceAndTorque_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setForceAndTorque_mut(
     self_: *mut PxRigidBody,
     force: *const PxVec3,
     torque: *const PxVec3,
@@ -11345,7 +11345,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setForceAndTorque_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setRigidBodyFlag_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setRigidBodyFlag_mut(
     self_: *mut PxRigidBody,
     flag: PxRigidBodyFlag,
     value: bool
@@ -11359,7 +11359,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setRigidBodyFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setRigidBodyFlags_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setRigidBodyFlags_mut(
     self_: *mut PxRigidBody,
     inFlags: PxRigidBodyFlags
 )
@@ -11371,7 +11371,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setRigidBodyFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getRigidBodyFlags(
+pub unsafe extern "C" fn physx_PxRigidBody_getRigidBodyFlags(
     self_: *const PxRigidBody
 ) -> PxRigidBodyFlags
 {
@@ -11381,7 +11381,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getRigidBodyFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setMinCCDAdvanceCoefficient_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setMinCCDAdvanceCoefficient_mut(
     self_: *mut PxRigidBody,
     advanceCoefficient: f32
 )
@@ -11393,7 +11393,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setMinCCDAdvanceCoefficient_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getMinCCDAdvanceCoefficient(
+pub unsafe extern "C" fn physx_PxRigidBody_getMinCCDAdvanceCoefficient(
     self_: *const PxRigidBody
 ) -> f32
 {
@@ -11403,7 +11403,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getMinCCDAdvanceCoefficient(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setMaxDepenetrationVelocity_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setMaxDepenetrationVelocity_mut(
     self_: *mut PxRigidBody,
     biasClamp: f32
 )
@@ -11415,7 +11415,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setMaxDepenetrationVelocity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getMaxDepenetrationVelocity(
+pub unsafe extern "C" fn physx_PxRigidBody_getMaxDepenetrationVelocity(
     self_: *const PxRigidBody
 ) -> f32
 {
@@ -11425,7 +11425,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getMaxDepenetrationVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setMaxContactImpulse_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setMaxContactImpulse_mut(
     self_: *mut PxRigidBody,
     maxImpulse: f32
 )
@@ -11437,7 +11437,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setMaxContactImpulse_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getMaxContactImpulse(
+pub unsafe extern "C" fn physx_PxRigidBody_getMaxContactImpulse(
     self_: *const PxRigidBody
 ) -> f32
 {
@@ -11447,7 +11447,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getMaxContactImpulse(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_setContactSlopCoefficient_mut(
+pub unsafe extern "C" fn physx_PxRigidBody_setContactSlopCoefficient_mut(
     self_: *mut PxRigidBody,
     slopCoefficient: f32
 )
@@ -11459,7 +11459,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_setContactSlopCoefficient_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getContactSlopCoefficient(
+pub unsafe extern "C" fn physx_PxRigidBody_getContactSlopCoefficient(
     self_: *const PxRigidBody
 ) -> f32
 {
@@ -11469,7 +11469,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getContactSlopCoefficient(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBody_getInternalIslandNodeIndex(
+pub unsafe extern "C" fn physx_PxRigidBody_getInternalIslandNodeIndex(
     self_: *const PxRigidBody
 ) -> PxNodeIndex
 {
@@ -11479,7 +11479,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBody_getInternalIslandNodeIndex(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_release_mut(
+pub unsafe extern "C" fn physx_PxArticulationLink_release_mut(
     self_: *mut PxArticulationLink
 )
 {
@@ -11489,7 +11489,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_getArticulation(
+pub unsafe extern "C" fn physx_PxArticulationLink_getArticulation(
     self_: *const PxArticulationLink
 ) -> *mut PxArticulationReducedCoordinate
 {
@@ -11499,7 +11499,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_getArticulation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_getInboundJoint(
+pub unsafe extern "C" fn physx_PxArticulationLink_getInboundJoint(
     self_: *const PxArticulationLink
 ) -> *mut PxArticulationJointReducedCoordinate
 {
@@ -11509,7 +11509,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_getInboundJoint(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_getInboundJointDof(
+pub unsafe extern "C" fn physx_PxArticulationLink_getInboundJointDof(
     self_: *const PxArticulationLink
 ) -> u32
 {
@@ -11519,7 +11519,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_getInboundJointDof(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_getNbChildren(
+pub unsafe extern "C" fn physx_PxArticulationLink_getNbChildren(
     self_: *const PxArticulationLink
 ) -> u32
 {
@@ -11529,7 +11529,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_getNbChildren(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_getLinkIndex(
+pub unsafe extern "C" fn physx_PxArticulationLink_getLinkIndex(
     self_: *const PxArticulationLink
 ) -> u32
 {
@@ -11539,7 +11539,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_getLinkIndex(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_getChildren(
+pub unsafe extern "C" fn physx_PxArticulationLink_getChildren(
     self_: *const PxArticulationLink,
     userBuffer: *mut *mut PxArticulationLink,
     bufferSize: u32,
@@ -11555,7 +11555,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_getChildren(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_setCfmScale_mut(
+pub unsafe extern "C" fn physx_PxArticulationLink_setCfmScale_mut(
     self_: *mut PxArticulationLink,
     cfm: f32
 )
@@ -11567,7 +11567,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_setCfmScale_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_getCfmScale(
+pub unsafe extern "C" fn physx_PxArticulationLink_getCfmScale(
     self_: *const PxArticulationLink
 ) -> f32
 {
@@ -11577,7 +11577,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_getCfmScale(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_getLinearVelocity(
+pub unsafe extern "C" fn physx_PxArticulationLink_getLinearVelocity(
     self_: *const PxArticulationLink
 ) -> PxVec3
 {
@@ -11587,7 +11587,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_getLinearVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_getAngularVelocity(
+pub unsafe extern "C" fn physx_PxArticulationLink_getAngularVelocity(
     self_: *const PxArticulationLink
 ) -> PxVec3
 {
@@ -11597,7 +11597,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_getAngularVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxArticulationLink_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxArticulationLink_getConcreteTypeName(
     self_: *const PxArticulationLink
 ) -> *const c_char
 {
@@ -11607,7 +11607,7 @@ pub unsafe extern "C" fn magicphysx_PxArticulationLink_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConeLimitedConstraint_new(
+pub unsafe extern "C" fn physx_PxConeLimitedConstraint_new(
 
 ) -> PxConeLimitedConstraint
 {
@@ -11617,7 +11617,7 @@ pub unsafe extern "C" fn magicphysx_PxConeLimitedConstraint_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_release_mut(
+pub unsafe extern "C" fn physx_PxConstraint_release_mut(
     self_: *mut PxConstraint
 )
 {
@@ -11627,7 +11627,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_getScene(
+pub unsafe extern "C" fn physx_PxConstraint_getScene(
     self_: *const PxConstraint
 ) -> *mut PxScene
 {
@@ -11637,7 +11637,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_getScene(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_getActors(
+pub unsafe extern "C" fn physx_PxConstraint_getActors(
     self_: *const PxConstraint,
     actor0: *mut *mut PxRigidActor,
     actor1: *mut *mut PxRigidActor
@@ -11651,7 +11651,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_getActors(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_setActors_mut(
+pub unsafe extern "C" fn physx_PxConstraint_setActors_mut(
     self_: *mut PxConstraint,
     actor0: *mut PxRigidActor,
     actor1: *mut PxRigidActor
@@ -11665,7 +11665,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_setActors_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_markDirty_mut(
+pub unsafe extern "C" fn physx_PxConstraint_markDirty_mut(
     self_: *mut PxConstraint
 )
 {
@@ -11675,7 +11675,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_markDirty_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_getFlags(
+pub unsafe extern "C" fn physx_PxConstraint_getFlags(
     self_: *const PxConstraint
 ) -> PxConstraintFlags
 {
@@ -11685,7 +11685,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_getFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_setFlags_mut(
+pub unsafe extern "C" fn physx_PxConstraint_setFlags_mut(
     self_: *mut PxConstraint,
     flags: PxConstraintFlags
 )
@@ -11697,7 +11697,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_setFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_setFlag_mut(
+pub unsafe extern "C" fn physx_PxConstraint_setFlag_mut(
     self_: *mut PxConstraint,
     flag: PxConstraintFlag,
     value: bool
@@ -11711,7 +11711,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_setFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_getForce(
+pub unsafe extern "C" fn physx_PxConstraint_getForce(
     self_: *const PxConstraint,
     linear: *mut PxVec3,
     angular: *mut PxVec3
@@ -11725,7 +11725,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_getForce(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_isValid(
+pub unsafe extern "C" fn physx_PxConstraint_isValid(
     self_: *const PxConstraint
 ) -> bool
 {
@@ -11735,7 +11735,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_setBreakForce_mut(
+pub unsafe extern "C" fn physx_PxConstraint_setBreakForce_mut(
     self_: *mut PxConstraint,
     linear: f32,
     angular: f32
@@ -11749,7 +11749,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_setBreakForce_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_getBreakForce(
+pub unsafe extern "C" fn physx_PxConstraint_getBreakForce(
     self_: *const PxConstraint,
     linear: *mut f32,
     angular: *mut f32
@@ -11763,7 +11763,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_getBreakForce(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_setMinResponseThreshold_mut(
+pub unsafe extern "C" fn physx_PxConstraint_setMinResponseThreshold_mut(
     self_: *mut PxConstraint,
     threshold: f32
 )
@@ -11775,7 +11775,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_setMinResponseThreshold_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_getMinResponseThreshold(
+pub unsafe extern "C" fn physx_PxConstraint_getMinResponseThreshold(
     self_: *const PxConstraint
 ) -> f32
 {
@@ -11785,7 +11785,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_getMinResponseThreshold(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_getExternalReference_mut(
+pub unsafe extern "C" fn physx_PxConstraint_getExternalReference_mut(
     self_: *mut PxConstraint,
     typeID: *mut u32
 ) -> *mut c_void
@@ -11797,7 +11797,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_getExternalReference_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_setConstraintFunctions_mut(
+pub unsafe extern "C" fn physx_PxConstraint_setConstraintFunctions_mut(
     self_: *mut PxConstraint,
     connector: *mut PxConstraintConnector,
     shaders: *const PxConstraintShaderTable
@@ -11811,7 +11811,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_setConstraintFunctions_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraint_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxConstraint_getConcreteTypeName(
     self_: *const PxConstraint
 ) -> *const c_char
 {
@@ -11821,7 +11821,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraint_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_new(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_new(
     contactPatches: *const u8,
     contactPoints: *const u8,
     contactFaceIndices: *const u32,
@@ -11839,7 +11839,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_hasNextPatch(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_hasNextPatch(
     self_: *const PxContactStreamIterator
 ) -> bool
 {
@@ -11849,7 +11849,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_hasNextPatch(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getTotalContactCount(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getTotalContactCount(
     self_: *const PxContactStreamIterator
 ) -> u32
 {
@@ -11859,7 +11859,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getTotalContactCount
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getTotalPatchCount(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getTotalPatchCount(
     self_: *const PxContactStreamIterator
 ) -> u32
 {
@@ -11869,7 +11869,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getTotalPatchCount(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_nextPatch_mut(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_nextPatch_mut(
     self_: *mut PxContactStreamIterator
 )
 {
@@ -11879,7 +11879,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_nextPatch_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_hasNextContact(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_hasNextContact(
     self_: *const PxContactStreamIterator
 ) -> bool
 {
@@ -11889,7 +11889,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_hasNextContact(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_nextContact_mut(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_nextContact_mut(
     self_: *mut PxContactStreamIterator
 )
 {
@@ -11899,7 +11899,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_nextContact_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getContactNormal(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getContactNormal(
     self_: *const PxContactStreamIterator
 ) -> *const PxVec3
 {
@@ -11909,7 +11909,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getContactNormal(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getInvMassScale0(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getInvMassScale0(
     self_: *const PxContactStreamIterator
 ) -> f32
 {
@@ -11919,7 +11919,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getInvMassScale0(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getInvMassScale1(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getInvMassScale1(
     self_: *const PxContactStreamIterator
 ) -> f32
 {
@@ -11929,7 +11929,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getInvMassScale1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getInvInertiaScale0(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getInvInertiaScale0(
     self_: *const PxContactStreamIterator
 ) -> f32
 {
@@ -11939,7 +11939,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getInvInertiaScale0(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getInvInertiaScale1(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getInvInertiaScale1(
     self_: *const PxContactStreamIterator
 ) -> f32
 {
@@ -11949,7 +11949,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getInvInertiaScale1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getMaxImpulse(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getMaxImpulse(
     self_: *const PxContactStreamIterator
 ) -> f32
 {
@@ -11959,7 +11959,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getMaxImpulse(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getTargetVel(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getTargetVel(
     self_: *const PxContactStreamIterator
 ) -> *const PxVec3
 {
@@ -11969,7 +11969,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getTargetVel(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getContactPoint(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getContactPoint(
     self_: *const PxContactStreamIterator
 ) -> *const PxVec3
 {
@@ -11979,7 +11979,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getContactPoint(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getSeparation(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getSeparation(
     self_: *const PxContactStreamIterator
 ) -> f32
 {
@@ -11989,7 +11989,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getSeparation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getFaceIndex0(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getFaceIndex0(
     self_: *const PxContactStreamIterator
 ) -> u32
 {
@@ -11999,7 +11999,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getFaceIndex0(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getFaceIndex1(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getFaceIndex1(
     self_: *const PxContactStreamIterator
 ) -> u32
 {
@@ -12009,7 +12009,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getFaceIndex1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getStaticFriction(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getStaticFriction(
     self_: *const PxContactStreamIterator
 ) -> f32
 {
@@ -12019,7 +12019,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getStaticFriction(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getDynamicFriction(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getDynamicFriction(
     self_: *const PxContactStreamIterator
 ) -> f32
 {
@@ -12029,7 +12029,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getDynamicFriction(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getRestitution(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getRestitution(
     self_: *const PxContactStreamIterator
 ) -> f32
 {
@@ -12039,7 +12039,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getRestitution(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getDamping(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getDamping(
     self_: *const PxContactStreamIterator
 ) -> f32
 {
@@ -12049,7 +12049,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getDamping(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getMaterialFlags(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getMaterialFlags(
     self_: *const PxContactStreamIterator
 ) -> u32
 {
@@ -12059,7 +12059,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getMaterialFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getMaterialIndex0(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getMaterialIndex0(
     self_: *const PxContactStreamIterator
 ) -> u16
 {
@@ -12069,7 +12069,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getMaterialIndex0(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getMaterialIndex1(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_getMaterialIndex1(
     self_: *const PxContactStreamIterator
 ) -> u16
 {
@@ -12079,7 +12079,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_getMaterialIndex1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_advanceToIndex_mut(
+pub unsafe extern "C" fn physx_PxContactStreamIterator_advanceToIndex_mut(
     self_: *mut PxContactStreamIterator,
     initialIndex: u32
 ) -> bool
@@ -12091,7 +12091,7 @@ pub unsafe extern "C" fn magicphysx_PxContactStreamIterator_advanceToIndex_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getPoint(
+pub unsafe extern "C" fn physx_PxContactSet_getPoint(
     self_: *const PxContactSet,
     i: u32
 ) -> *const PxVec3
@@ -12103,7 +12103,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getPoint(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setPoint_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setPoint_mut(
     self_: *mut PxContactSet,
     i: u32,
     p: *const PxVec3
@@ -12117,7 +12117,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setPoint_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getNormal(
+pub unsafe extern "C" fn physx_PxContactSet_getNormal(
     self_: *const PxContactSet,
     i: u32
 ) -> *const PxVec3
@@ -12129,7 +12129,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getNormal(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setNormal_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setNormal_mut(
     self_: *mut PxContactSet,
     i: u32,
     n: *const PxVec3
@@ -12143,7 +12143,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setNormal_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getSeparation(
+pub unsafe extern "C" fn physx_PxContactSet_getSeparation(
     self_: *const PxContactSet,
     i: u32
 ) -> f32
@@ -12155,7 +12155,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getSeparation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setSeparation_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setSeparation_mut(
     self_: *mut PxContactSet,
     i: u32,
     s: f32
@@ -12169,7 +12169,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setSeparation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getTargetVelocity(
+pub unsafe extern "C" fn physx_PxContactSet_getTargetVelocity(
     self_: *const PxContactSet,
     i: u32
 ) -> *const PxVec3
@@ -12181,7 +12181,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getTargetVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setTargetVelocity_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setTargetVelocity_mut(
     self_: *mut PxContactSet,
     i: u32,
     v: *const PxVec3
@@ -12195,7 +12195,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setTargetVelocity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getInternalFaceIndex0(
+pub unsafe extern "C" fn physx_PxContactSet_getInternalFaceIndex0(
     self_: *const PxContactSet,
     i: u32
 ) -> u32
@@ -12207,7 +12207,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getInternalFaceIndex0(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getInternalFaceIndex1(
+pub unsafe extern "C" fn physx_PxContactSet_getInternalFaceIndex1(
     self_: *const PxContactSet,
     i: u32
 ) -> u32
@@ -12219,7 +12219,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getInternalFaceIndex1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getMaxImpulse(
+pub unsafe extern "C" fn physx_PxContactSet_getMaxImpulse(
     self_: *const PxContactSet,
     i: u32
 ) -> f32
@@ -12231,7 +12231,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getMaxImpulse(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setMaxImpulse_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setMaxImpulse_mut(
     self_: *mut PxContactSet,
     i: u32,
     s: f32
@@ -12245,7 +12245,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setMaxImpulse_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getRestitution(
+pub unsafe extern "C" fn physx_PxContactSet_getRestitution(
     self_: *const PxContactSet,
     i: u32
 ) -> f32
@@ -12257,7 +12257,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getRestitution(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setRestitution_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setRestitution_mut(
     self_: *mut PxContactSet,
     i: u32,
     r: f32
@@ -12271,7 +12271,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setRestitution_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getStaticFriction(
+pub unsafe extern "C" fn physx_PxContactSet_getStaticFriction(
     self_: *const PxContactSet,
     i: u32
 ) -> f32
@@ -12283,7 +12283,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getStaticFriction(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setStaticFriction_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setStaticFriction_mut(
     self_: *mut PxContactSet,
     i: u32,
     f: f32
@@ -12297,7 +12297,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setStaticFriction_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getDynamicFriction(
+pub unsafe extern "C" fn physx_PxContactSet_getDynamicFriction(
     self_: *const PxContactSet,
     i: u32
 ) -> f32
@@ -12309,7 +12309,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getDynamicFriction(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setDynamicFriction_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setDynamicFriction_mut(
     self_: *mut PxContactSet,
     i: u32,
     f: f32
@@ -12323,7 +12323,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setDynamicFriction_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_ignore_mut(
+pub unsafe extern "C" fn physx_PxContactSet_ignore_mut(
     self_: *mut PxContactSet,
     i: u32
 )
@@ -12335,7 +12335,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_ignore_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_size(
+pub unsafe extern "C" fn physx_PxContactSet_size(
     self_: *const PxContactSet
 ) -> u32
 {
@@ -12345,7 +12345,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_size(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getInvMassScale0(
+pub unsafe extern "C" fn physx_PxContactSet_getInvMassScale0(
     self_: *const PxContactSet
 ) -> f32
 {
@@ -12355,7 +12355,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getInvMassScale0(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getInvMassScale1(
+pub unsafe extern "C" fn physx_PxContactSet_getInvMassScale1(
     self_: *const PxContactSet
 ) -> f32
 {
@@ -12365,7 +12365,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getInvMassScale1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getInvInertiaScale0(
+pub unsafe extern "C" fn physx_PxContactSet_getInvInertiaScale0(
     self_: *const PxContactSet
 ) -> f32
 {
@@ -12375,7 +12375,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getInvInertiaScale0(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_getInvInertiaScale1(
+pub unsafe extern "C" fn physx_PxContactSet_getInvInertiaScale1(
     self_: *const PxContactSet
 ) -> f32
 {
@@ -12385,7 +12385,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_getInvInertiaScale1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setInvMassScale0_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setInvMassScale0_mut(
     self_: *mut PxContactSet,
     scale: f32
 )
@@ -12397,7 +12397,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setInvMassScale0_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setInvMassScale1_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setInvMassScale1_mut(
     self_: *mut PxContactSet,
     scale: f32
 )
@@ -12409,7 +12409,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setInvMassScale1_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setInvInertiaScale0_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setInvInertiaScale0_mut(
     self_: *mut PxContactSet,
     scale: f32
 )
@@ -12421,7 +12421,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setInvInertiaScale0_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactSet_setInvInertiaScale1_mut(
+pub unsafe extern "C" fn physx_PxContactSet_setInvInertiaScale1_mut(
     self_: *mut PxContactSet,
     scale: f32
 )
@@ -12433,7 +12433,7 @@ pub unsafe extern "C" fn magicphysx_PxContactSet_setInvInertiaScale1_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactModifyCallback_onContactModify_mut(
+pub unsafe extern "C" fn physx_PxContactModifyCallback_onContactModify_mut(
     self_: *mut PxContactModifyCallback,
     pairs: *mut PxContactModifyPair,
     count: u32
@@ -12447,7 +12447,7 @@ pub unsafe extern "C" fn magicphysx_PxContactModifyCallback_onContactModify_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCCDContactModifyCallback_onCCDContactModify_mut(
+pub unsafe extern "C" fn physx_PxCCDContactModifyCallback_onCCDContactModify_mut(
     self_: *mut PxCCDContactModifyCallback,
     pairs: *mut PxContactModifyPair,
     count: u32
@@ -12461,7 +12461,7 @@ pub unsafe extern "C" fn magicphysx_PxCCDContactModifyCallback_onCCDContactModif
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDeletionListener_onRelease_mut(
+pub unsafe extern "C" fn physx_PxDeletionListener_onRelease_mut(
     self_: *mut PxDeletionListener,
     observed: *const PxBase,
     userData: *mut c_void,
@@ -12477,7 +12477,7 @@ pub unsafe extern "C" fn magicphysx_PxDeletionListener_onRelease_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBaseMaterial_isKindOf(
+pub unsafe extern "C" fn physx_PxBaseMaterial_isKindOf(
     self_: *const PxBaseMaterial,
     name: *const c_char
 ) -> bool
@@ -12489,7 +12489,7 @@ pub unsafe extern "C" fn magicphysx_PxBaseMaterial_isKindOf(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFEMMaterial_setYoungsModulus_mut(
+pub unsafe extern "C" fn physx_PxFEMMaterial_setYoungsModulus_mut(
     self_: *mut PxFEMMaterial,
     young: f32
 )
@@ -12501,7 +12501,7 @@ pub unsafe extern "C" fn magicphysx_PxFEMMaterial_setYoungsModulus_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFEMMaterial_getYoungsModulus(
+pub unsafe extern "C" fn physx_PxFEMMaterial_getYoungsModulus(
     self_: *const PxFEMMaterial
 ) -> f32
 {
@@ -12511,7 +12511,7 @@ pub unsafe extern "C" fn magicphysx_PxFEMMaterial_getYoungsModulus(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFEMMaterial_setPoissons_mut(
+pub unsafe extern "C" fn physx_PxFEMMaterial_setPoissons_mut(
     self_: *mut PxFEMMaterial,
     poisson: f32
 )
@@ -12523,7 +12523,7 @@ pub unsafe extern "C" fn magicphysx_PxFEMMaterial_setPoissons_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFEMMaterial_getPoissons(
+pub unsafe extern "C" fn physx_PxFEMMaterial_getPoissons(
     self_: *const PxFEMMaterial
 ) -> f32
 {
@@ -12533,7 +12533,7 @@ pub unsafe extern "C" fn magicphysx_PxFEMMaterial_getPoissons(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFEMMaterial_setDynamicFriction_mut(
+pub unsafe extern "C" fn physx_PxFEMMaterial_setDynamicFriction_mut(
     self_: *mut PxFEMMaterial,
     dynamicFriction: f32
 )
@@ -12545,7 +12545,7 @@ pub unsafe extern "C" fn magicphysx_PxFEMMaterial_setDynamicFriction_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFEMMaterial_getDynamicFriction(
+pub unsafe extern "C" fn physx_PxFEMMaterial_getDynamicFriction(
     self_: *const PxFEMMaterial
 ) -> f32
 {
@@ -12555,7 +12555,7 @@ pub unsafe extern "C" fn magicphysx_PxFEMMaterial_getDynamicFriction(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFilterData_new(
+pub unsafe extern "C" fn physx_PxFilterData_new(
     anon_param0: PxEMPTY
 ) -> PxFilterData
 {
@@ -12565,7 +12565,7 @@ pub unsafe extern "C" fn magicphysx_PxFilterData_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFilterData_new_1(
+pub unsafe extern "C" fn physx_PxFilterData_new_1(
 
 ) -> PxFilterData
 {
@@ -12575,7 +12575,7 @@ pub unsafe extern "C" fn magicphysx_PxFilterData_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFilterData_new_2(
+pub unsafe extern "C" fn physx_PxFilterData_new_2(
     w0: u32,
     w1: u32,
     w2: u32,
@@ -12591,7 +12591,7 @@ pub unsafe extern "C" fn magicphysx_PxFilterData_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFilterData_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxFilterData_setToDefault_mut(
     self_: *mut PxFilterData
 )
 {
@@ -12601,7 +12601,7 @@ pub unsafe extern "C" fn magicphysx_PxFilterData_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetFilterObjectType(
+pub unsafe extern "C" fn physx_phys_PxGetFilterObjectType(
     attr: u32
 ) -> PxFilterObjectType
 {
@@ -12611,7 +12611,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetFilterObjectType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxFilterObjectIsKinematic(
+pub unsafe extern "C" fn physx_phys_PxFilterObjectIsKinematic(
     attr: u32
 ) -> bool
 {
@@ -12621,7 +12621,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxFilterObjectIsKinematic(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxFilterObjectIsTrigger(
+pub unsafe extern "C" fn physx_phys_PxFilterObjectIsTrigger(
     attr: u32
 ) -> bool
 {
@@ -12631,7 +12631,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxFilterObjectIsTrigger(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationFilterCallback_pairFound_mut(
+pub unsafe extern "C" fn physx_PxSimulationFilterCallback_pairFound_mut(
     self_: *mut PxSimulationFilterCallback,
     pairID: u32,
     attributes0: u32,
@@ -12661,7 +12661,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationFilterCallback_pairFound_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationFilterCallback_pairLost_mut(
+pub unsafe extern "C" fn physx_PxSimulationFilterCallback_pairLost_mut(
     self_: *mut PxSimulationFilterCallback,
     pairID: u32,
     attributes0: u32,
@@ -12683,7 +12683,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationFilterCallback_pairLost_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationFilterCallback_statusChange_mut(
+pub unsafe extern "C" fn physx_PxSimulationFilterCallback_statusChange_mut(
     self_: *mut PxSimulationFilterCallback,
     pairID: *mut u32,
     pairFlags: *mut PxPairFlags,
@@ -12699,7 +12699,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationFilterCallback_statusChange_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLockedData_getDataAccessFlags_mut(
+pub unsafe extern "C" fn physx_PxLockedData_getDataAccessFlags_mut(
     self_: *mut PxLockedData
 ) -> PxDataAccessFlags
 {
@@ -12709,7 +12709,7 @@ pub unsafe extern "C" fn magicphysx_PxLockedData_getDataAccessFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLockedData_unlock_mut(
+pub unsafe extern "C" fn physx_PxLockedData_unlock_mut(
     self_: *mut PxLockedData
 )
 {
@@ -12719,7 +12719,7 @@ pub unsafe extern "C" fn magicphysx_PxLockedData_unlock_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxLockedData_delete(
+pub unsafe extern "C" fn physx_PxLockedData_delete(
     self_: *mut PxLockedData
 )
 {
@@ -12729,7 +12729,7 @@ pub unsafe extern "C" fn magicphysx_PxLockedData_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_setDynamicFriction_mut(
+pub unsafe extern "C" fn physx_PxMaterial_setDynamicFriction_mut(
     self_: *mut PxMaterial,
     coef: f32
 )
@@ -12741,7 +12741,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_setDynamicFriction_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_getDynamicFriction(
+pub unsafe extern "C" fn physx_PxMaterial_getDynamicFriction(
     self_: *const PxMaterial
 ) -> f32
 {
@@ -12751,7 +12751,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_getDynamicFriction(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_setStaticFriction_mut(
+pub unsafe extern "C" fn physx_PxMaterial_setStaticFriction_mut(
     self_: *mut PxMaterial,
     coef: f32
 )
@@ -12763,7 +12763,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_setStaticFriction_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_getStaticFriction(
+pub unsafe extern "C" fn physx_PxMaterial_getStaticFriction(
     self_: *const PxMaterial
 ) -> f32
 {
@@ -12773,7 +12773,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_getStaticFriction(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_setRestitution_mut(
+pub unsafe extern "C" fn physx_PxMaterial_setRestitution_mut(
     self_: *mut PxMaterial,
     rest: f32
 )
@@ -12785,7 +12785,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_setRestitution_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_getRestitution(
+pub unsafe extern "C" fn physx_PxMaterial_getRestitution(
     self_: *const PxMaterial
 ) -> f32
 {
@@ -12795,7 +12795,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_getRestitution(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_setDamping_mut(
+pub unsafe extern "C" fn physx_PxMaterial_setDamping_mut(
     self_: *mut PxMaterial,
     damping: f32
 )
@@ -12807,7 +12807,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_setDamping_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_getDamping(
+pub unsafe extern "C" fn physx_PxMaterial_getDamping(
     self_: *const PxMaterial
 ) -> f32
 {
@@ -12817,7 +12817,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_getDamping(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_setFlag_mut(
+pub unsafe extern "C" fn physx_PxMaterial_setFlag_mut(
     self_: *mut PxMaterial,
     flag: PxMaterialFlag,
     b: bool
@@ -12831,7 +12831,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_setFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_setFlags_mut(
+pub unsafe extern "C" fn physx_PxMaterial_setFlags_mut(
     self_: *mut PxMaterial,
     flags: PxMaterialFlags
 )
@@ -12843,7 +12843,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_setFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_getFlags(
+pub unsafe extern "C" fn physx_PxMaterial_getFlags(
     self_: *const PxMaterial
 ) -> PxMaterialFlags
 {
@@ -12853,7 +12853,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_getFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_setFrictionCombineMode_mut(
+pub unsafe extern "C" fn physx_PxMaterial_setFrictionCombineMode_mut(
     self_: *mut PxMaterial,
     combMode: PxCombineMode
 )
@@ -12865,7 +12865,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_setFrictionCombineMode_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_getFrictionCombineMode(
+pub unsafe extern "C" fn physx_PxMaterial_getFrictionCombineMode(
     self_: *const PxMaterial
 ) -> PxCombineMode
 {
@@ -12875,7 +12875,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_getFrictionCombineMode(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_setRestitutionCombineMode_mut(
+pub unsafe extern "C" fn physx_PxMaterial_setRestitutionCombineMode_mut(
     self_: *mut PxMaterial,
     combMode: PxCombineMode
 )
@@ -12887,7 +12887,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_setRestitutionCombineMode_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_getRestitutionCombineMode(
+pub unsafe extern "C" fn physx_PxMaterial_getRestitutionCombineMode(
     self_: *const PxMaterial
 ) -> PxCombineMode
 {
@@ -12897,7 +12897,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_getRestitutionCombineMode(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMaterial_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxMaterial_getConcreteTypeName(
     self_: *const PxMaterial
 ) -> *const c_char
 {
@@ -12907,7 +12907,7 @@ pub unsafe extern "C" fn magicphysx_PxMaterial_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDiffuseParticleParams_new(
+pub unsafe extern "C" fn physx_PxDiffuseParticleParams_new(
 
 ) -> PxDiffuseParticleParams
 {
@@ -12917,7 +12917,7 @@ pub unsafe extern "C" fn magicphysx_PxDiffuseParticleParams_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDiffuseParticleParams_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxDiffuseParticleParams_setToDefault_mut(
     self_: *mut PxDiffuseParticleParams
 )
 {
@@ -12927,7 +12927,7 @@ pub unsafe extern "C" fn magicphysx_PxDiffuseParticleParams_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleMaterial_setFriction_mut(
+pub unsafe extern "C" fn physx_PxParticleMaterial_setFriction_mut(
     self_: *mut PxParticleMaterial,
     friction: f32
 )
@@ -12939,7 +12939,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleMaterial_setFriction_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleMaterial_getFriction(
+pub unsafe extern "C" fn physx_PxParticleMaterial_getFriction(
     self_: *const PxParticleMaterial
 ) -> f32
 {
@@ -12949,7 +12949,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleMaterial_getFriction(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleMaterial_setDamping_mut(
+pub unsafe extern "C" fn physx_PxParticleMaterial_setDamping_mut(
     self_: *mut PxParticleMaterial,
     damping: f32
 )
@@ -12961,7 +12961,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleMaterial_setDamping_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleMaterial_getDamping(
+pub unsafe extern "C" fn physx_PxParticleMaterial_getDamping(
     self_: *const PxParticleMaterial
 ) -> f32
 {
@@ -12971,7 +12971,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleMaterial_getDamping(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleMaterial_setAdhesion_mut(
+pub unsafe extern "C" fn physx_PxParticleMaterial_setAdhesion_mut(
     self_: *mut PxParticleMaterial,
     adhesion: f32
 )
@@ -12983,7 +12983,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleMaterial_setAdhesion_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleMaterial_getAdhesion(
+pub unsafe extern "C" fn physx_PxParticleMaterial_getAdhesion(
     self_: *const PxParticleMaterial
 ) -> f32
 {
@@ -12993,7 +12993,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleMaterial_getAdhesion(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleMaterial_setGravityScale_mut(
+pub unsafe extern "C" fn physx_PxParticleMaterial_setGravityScale_mut(
     self_: *mut PxParticleMaterial,
     scale: f32
 )
@@ -13005,7 +13005,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleMaterial_setGravityScale_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleMaterial_getGravityScale(
+pub unsafe extern "C" fn physx_PxParticleMaterial_getGravityScale(
     self_: *const PxParticleMaterial
 ) -> f32
 {
@@ -13015,7 +13015,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleMaterial_getGravityScale(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleMaterial_setAdhesionRadiusScale_mut(
+pub unsafe extern "C" fn physx_PxParticleMaterial_setAdhesionRadiusScale_mut(
     self_: *mut PxParticleMaterial,
     scale: f32
 )
@@ -13027,7 +13027,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleMaterial_setAdhesionRadiusScale_mu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxParticleMaterial_getAdhesionRadiusScale(
+pub unsafe extern "C" fn physx_PxParticleMaterial_getAdhesionRadiusScale(
     self_: *const PxParticleMaterial
 ) -> f32
 {
@@ -13037,7 +13037,7 @@ pub unsafe extern "C" fn magicphysx_PxParticleMaterial_getAdhesionRadiusScale(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_release_mut(
+pub unsafe extern "C" fn physx_PxPhysics_release_mut(
     self_: *mut PxPhysics
 )
 {
@@ -13047,7 +13047,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getFoundation_mut(
+pub unsafe extern "C" fn physx_PxPhysics_getFoundation_mut(
     self_: *mut PxPhysics
 ) -> *mut PxFoundation
 {
@@ -13057,7 +13057,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getFoundation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createAggregate_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createAggregate_mut(
     self_: *mut PxPhysics,
     maxActor: u32,
     maxShape: u32,
@@ -13073,7 +13073,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createAggregate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getTolerancesScale(
+pub unsafe extern "C" fn physx_PxPhysics_getTolerancesScale(
     self_: *const PxPhysics
 ) -> *const PxTolerancesScale
 {
@@ -13083,7 +13083,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getTolerancesScale(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createTriangleMesh_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createTriangleMesh_mut(
     self_: *mut PxPhysics,
     stream: *mut PxInputStream
 ) -> *mut PxTriangleMesh
@@ -13095,7 +13095,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createTriangleMesh_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getNbTriangleMeshes(
+pub unsafe extern "C" fn physx_PxPhysics_getNbTriangleMeshes(
     self_: *const PxPhysics
 ) -> u32
 {
@@ -13105,7 +13105,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getNbTriangleMeshes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getTriangleMeshes(
+pub unsafe extern "C" fn physx_PxPhysics_getTriangleMeshes(
     self_: *const PxPhysics,
     userBuffer: *mut *mut PxTriangleMesh,
     bufferSize: u32,
@@ -13121,7 +13121,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getTriangleMeshes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createTetrahedronMesh_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createTetrahedronMesh_mut(
     self_: *mut PxPhysics,
     stream: *mut PxInputStream
 ) -> *mut PxTetrahedronMesh
@@ -13133,7 +13133,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createTetrahedronMesh_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createSoftBodyMesh_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createSoftBodyMesh_mut(
     self_: *mut PxPhysics,
     stream: *mut PxInputStream
 ) -> *mut PxSoftBodyMesh
@@ -13145,7 +13145,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createSoftBodyMesh_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getNbTetrahedronMeshes(
+pub unsafe extern "C" fn physx_PxPhysics_getNbTetrahedronMeshes(
     self_: *const PxPhysics
 ) -> u32
 {
@@ -13155,7 +13155,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getNbTetrahedronMeshes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getTetrahedronMeshes(
+pub unsafe extern "C" fn physx_PxPhysics_getTetrahedronMeshes(
     self_: *const PxPhysics,
     userBuffer: *mut *mut PxTetrahedronMesh,
     bufferSize: u32,
@@ -13171,7 +13171,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getTetrahedronMeshes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createHeightField_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createHeightField_mut(
     self_: *mut PxPhysics,
     stream: *mut PxInputStream
 ) -> *mut PxHeightField
@@ -13183,7 +13183,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createHeightField_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getNbHeightFields(
+pub unsafe extern "C" fn physx_PxPhysics_getNbHeightFields(
     self_: *const PxPhysics
 ) -> u32
 {
@@ -13193,7 +13193,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getNbHeightFields(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getHeightFields(
+pub unsafe extern "C" fn physx_PxPhysics_getHeightFields(
     self_: *const PxPhysics,
     userBuffer: *mut *mut PxHeightField,
     bufferSize: u32,
@@ -13209,7 +13209,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getHeightFields(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createConvexMesh_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createConvexMesh_mut(
     self_: *mut PxPhysics,
     stream: *mut PxInputStream
 ) -> *mut PxConvexMesh
@@ -13221,7 +13221,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createConvexMesh_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getNbConvexMeshes(
+pub unsafe extern "C" fn physx_PxPhysics_getNbConvexMeshes(
     self_: *const PxPhysics
 ) -> u32
 {
@@ -13231,7 +13231,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getNbConvexMeshes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getConvexMeshes(
+pub unsafe extern "C" fn physx_PxPhysics_getConvexMeshes(
     self_: *const PxPhysics,
     userBuffer: *mut *mut PxConvexMesh,
     bufferSize: u32,
@@ -13247,7 +13247,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getConvexMeshes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createBVH_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createBVH_mut(
     self_: *mut PxPhysics,
     stream: *mut PxInputStream
 ) -> *mut PxBVH
@@ -13259,7 +13259,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createBVH_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getNbBVHs(
+pub unsafe extern "C" fn physx_PxPhysics_getNbBVHs(
     self_: *const PxPhysics
 ) -> u32
 {
@@ -13269,7 +13269,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getNbBVHs(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getBVHs(
+pub unsafe extern "C" fn physx_PxPhysics_getBVHs(
     self_: *const PxPhysics,
     userBuffer: *mut *mut PxBVH,
     bufferSize: u32,
@@ -13285,7 +13285,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getBVHs(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createScene_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createScene_mut(
     self_: *mut PxPhysics,
     sceneDesc: *const PxSceneDesc
 ) -> *mut PxScene
@@ -13297,7 +13297,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createScene_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getNbScenes(
+pub unsafe extern "C" fn physx_PxPhysics_getNbScenes(
     self_: *const PxPhysics
 ) -> u32
 {
@@ -13307,7 +13307,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getNbScenes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getScenes(
+pub unsafe extern "C" fn physx_PxPhysics_getScenes(
     self_: *const PxPhysics,
     userBuffer: *mut *mut PxScene,
     bufferSize: u32,
@@ -13323,7 +13323,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getScenes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createRigidStatic_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createRigidStatic_mut(
     self_: *mut PxPhysics,
     pose: *const PxTransform
 ) -> *mut PxRigidStatic
@@ -13335,7 +13335,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createRigidStatic_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createRigidDynamic_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createRigidDynamic_mut(
     self_: *mut PxPhysics,
     pose: *const PxTransform
 ) -> *mut PxRigidDynamic
@@ -13347,7 +13347,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createRigidDynamic_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createPruningStructure_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createPruningStructure_mut(
     self_: *mut PxPhysics,
     actors: *const *mut PxRigidActor,
     nbActors: u32
@@ -13361,7 +13361,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createPruningStructure_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createShape_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createShape_mut(
     self_: *mut PxPhysics,
     geometry: *const PxGeometry,
     material: *const PxMaterial,
@@ -13379,7 +13379,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createShape_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createShape_mut_1(
+pub unsafe extern "C" fn physx_PxPhysics_createShape_mut_1(
     self_: *mut PxPhysics,
     geometry: *const PxGeometry,
     materials: *const *mut PxMaterial,
@@ -13399,7 +13399,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createShape_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getNbShapes(
+pub unsafe extern "C" fn physx_PxPhysics_getNbShapes(
     self_: *const PxPhysics
 ) -> u32
 {
@@ -13409,7 +13409,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getNbShapes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getShapes(
+pub unsafe extern "C" fn physx_PxPhysics_getShapes(
     self_: *const PxPhysics,
     userBuffer: *mut *mut PxShape,
     bufferSize: u32,
@@ -13425,7 +13425,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getShapes(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createConstraint_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createConstraint_mut(
     self_: *mut PxPhysics,
     actor0: *mut PxRigidActor,
     actor1: *mut PxRigidActor,
@@ -13445,7 +13445,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createConstraint_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createArticulationReducedCoordinate_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createArticulationReducedCoordinate_mut(
     self_: *mut PxPhysics
 ) -> *mut PxArticulationReducedCoordinate
 {
@@ -13455,7 +13455,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createArticulationReducedCoordinat
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_createMaterial_mut(
+pub unsafe extern "C" fn physx_PxPhysics_createMaterial_mut(
     self_: *mut PxPhysics,
     staticFriction: f32,
     dynamicFriction: f32,
@@ -13471,7 +13471,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_createMaterial_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getNbMaterials(
+pub unsafe extern "C" fn physx_PxPhysics_getNbMaterials(
     self_: *const PxPhysics
 ) -> u32
 {
@@ -13481,7 +13481,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getNbMaterials(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getMaterials(
+pub unsafe extern "C" fn physx_PxPhysics_getMaterials(
     self_: *const PxPhysics,
     userBuffer: *mut *mut PxMaterial,
     bufferSize: u32,
@@ -13497,7 +13497,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getMaterials(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_registerDeletionListener_mut(
+pub unsafe extern "C" fn physx_PxPhysics_registerDeletionListener_mut(
     self_: *mut PxPhysics,
     observer: *mut PxDeletionListener,
     deletionEvents: *const PxDeletionEventFlags,
@@ -13513,7 +13513,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_registerDeletionListener_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_unregisterDeletionListener_mut(
+pub unsafe extern "C" fn physx_PxPhysics_unregisterDeletionListener_mut(
     self_: *mut PxPhysics,
     observer: *mut PxDeletionListener
 )
@@ -13525,7 +13525,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_unregisterDeletionListener_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_registerDeletionListenerObjects_mut(
+pub unsafe extern "C" fn physx_PxPhysics_registerDeletionListenerObjects_mut(
     self_: *mut PxPhysics,
     observer: *mut PxDeletionListener,
     observables: *const *const PxBase,
@@ -13541,7 +13541,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_registerDeletionListenerObjects_mu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_unregisterDeletionListenerObjects_mut(
+pub unsafe extern "C" fn physx_PxPhysics_unregisterDeletionListenerObjects_mut(
     self_: *mut PxPhysics,
     observer: *mut PxDeletionListener,
     observables: *const *const PxBase,
@@ -13557,7 +13557,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_unregisterDeletionListenerObjects_
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPhysics_getPhysicsInsertionCallback_mut(
+pub unsafe extern "C" fn physx_PxPhysics_getPhysicsInsertionCallback_mut(
     self_: *mut PxPhysics
 ) -> *mut PxInsertionCallback
 {
@@ -13567,7 +13567,7 @@ pub unsafe extern "C" fn magicphysx_PxPhysics_getPhysicsInsertionCallback_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreatePhysics(
+pub unsafe extern "C" fn physx_phys_PxCreatePhysics(
     version: u32,
     foundation: *mut PxFoundation,
     scale: *const PxTolerancesScale,
@@ -13587,7 +13587,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreatePhysics(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetPhysics(
+pub unsafe extern "C" fn physx_phys_PxGetPhysics(
 
 ) -> *mut PxPhysics
 {
@@ -13597,7 +13597,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetPhysics(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActorShape_new(
+pub unsafe extern "C" fn physx_PxActorShape_new(
 
 ) -> PxActorShape
 {
@@ -13607,7 +13607,7 @@ pub unsafe extern "C" fn magicphysx_PxActorShape_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxActorShape_new_1(
+pub unsafe extern "C" fn physx_PxActorShape_new_1(
     a: *mut PxRigidActor,
     s: *mut PxShape
 ) -> PxActorShape
@@ -13619,7 +13619,7 @@ pub unsafe extern "C" fn magicphysx_PxActorShape_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQueryCache_new(
+pub unsafe extern "C" fn physx_PxQueryCache_new(
 
 ) -> PxQueryCache
 {
@@ -13629,7 +13629,7 @@ pub unsafe extern "C" fn magicphysx_PxQueryCache_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQueryCache_new_1(
+pub unsafe extern "C" fn physx_PxQueryCache_new_1(
     s: *mut PxShape,
     findex: u32
 ) -> PxQueryCache
@@ -13641,7 +13641,7 @@ pub unsafe extern "C" fn magicphysx_PxQueryCache_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQueryFilterData_new(
+pub unsafe extern "C" fn physx_PxQueryFilterData_new(
 
 ) -> PxQueryFilterData
 {
@@ -13651,7 +13651,7 @@ pub unsafe extern "C" fn magicphysx_PxQueryFilterData_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQueryFilterData_new_1(
+pub unsafe extern "C" fn physx_PxQueryFilterData_new_1(
     fd: *const PxFilterData,
     f: PxQueryFlags
 ) -> PxQueryFilterData
@@ -13663,7 +13663,7 @@ pub unsafe extern "C" fn magicphysx_PxQueryFilterData_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQueryFilterData_new_2(
+pub unsafe extern "C" fn physx_PxQueryFilterData_new_2(
     f: PxQueryFlags
 ) -> PxQueryFilterData
 {
@@ -13673,7 +13673,7 @@ pub unsafe extern "C" fn magicphysx_PxQueryFilterData_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQueryFilterCallback_preFilter_mut(
+pub unsafe extern "C" fn physx_PxQueryFilterCallback_preFilter_mut(
     self_: *mut PxQueryFilterCallback,
     filterData: *const PxFilterData,
     shape: *const PxShape,
@@ -13691,7 +13691,7 @@ pub unsafe extern "C" fn magicphysx_PxQueryFilterCallback_preFilter_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQueryFilterCallback_postFilter_mut(
+pub unsafe extern "C" fn physx_PxQueryFilterCallback_postFilter_mut(
     self_: *mut PxQueryFilterCallback,
     filterData: *const PxFilterData,
     hit: *const PxQueryHit,
@@ -13709,7 +13709,7 @@ pub unsafe extern "C" fn magicphysx_PxQueryFilterCallback_postFilter_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxQueryFilterCallback_delete(
+pub unsafe extern "C" fn physx_PxQueryFilterCallback_delete(
     self_: *mut PxQueryFilterCallback
 )
 {
@@ -13719,7 +13719,7 @@ pub unsafe extern "C" fn magicphysx_PxQueryFilterCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setKinematicTarget_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_setKinematicTarget_mut(
     self_: *mut PxRigidDynamic,
     destination: *const PxTransform
 )
@@ -13731,7 +13731,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setKinematicTarget_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getKinematicTarget(
+pub unsafe extern "C" fn physx_PxRigidDynamic_getKinematicTarget(
     self_: *const PxRigidDynamic,
     target: *mut PxTransform
 ) -> bool
@@ -13743,7 +13743,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getKinematicTarget(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_isSleeping(
+pub unsafe extern "C" fn physx_PxRigidDynamic_isSleeping(
     self_: *const PxRigidDynamic
 ) -> bool
 {
@@ -13753,7 +13753,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_isSleeping(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setSleepThreshold_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_setSleepThreshold_mut(
     self_: *mut PxRigidDynamic,
     threshold: f32
 )
@@ -13765,7 +13765,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setSleepThreshold_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getSleepThreshold(
+pub unsafe extern "C" fn physx_PxRigidDynamic_getSleepThreshold(
     self_: *const PxRigidDynamic
 ) -> f32
 {
@@ -13775,7 +13775,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getSleepThreshold(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setStabilizationThreshold_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_setStabilizationThreshold_mut(
     self_: *mut PxRigidDynamic,
     threshold: f32
 )
@@ -13787,7 +13787,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setStabilizationThreshold_mut
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getStabilizationThreshold(
+pub unsafe extern "C" fn physx_PxRigidDynamic_getStabilizationThreshold(
     self_: *const PxRigidDynamic
 ) -> f32
 {
@@ -13797,7 +13797,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getStabilizationThreshold(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getRigidDynamicLockFlags(
+pub unsafe extern "C" fn physx_PxRigidDynamic_getRigidDynamicLockFlags(
     self_: *const PxRigidDynamic
 ) -> PxRigidDynamicLockFlags
 {
@@ -13807,7 +13807,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getRigidDynamicLockFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setRigidDynamicLockFlag_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_setRigidDynamicLockFlag_mut(
     self_: *mut PxRigidDynamic,
     flag: PxRigidDynamicLockFlag,
     value: bool
@@ -13821,7 +13821,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setRigidDynamicLockFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setRigidDynamicLockFlags_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_setRigidDynamicLockFlags_mut(
     self_: *mut PxRigidDynamic,
     flags: PxRigidDynamicLockFlags
 )
@@ -13833,7 +13833,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setRigidDynamicLockFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getLinearVelocity(
+pub unsafe extern "C" fn physx_PxRigidDynamic_getLinearVelocity(
     self_: *const PxRigidDynamic
 ) -> PxVec3
 {
@@ -13843,7 +13843,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getLinearVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setLinearVelocity_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_setLinearVelocity_mut(
     self_: *mut PxRigidDynamic,
     linVel: *const PxVec3,
     autowake: bool
@@ -13857,7 +13857,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setLinearVelocity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getAngularVelocity(
+pub unsafe extern "C" fn physx_PxRigidDynamic_getAngularVelocity(
     self_: *const PxRigidDynamic
 ) -> PxVec3
 {
@@ -13867,7 +13867,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getAngularVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setAngularVelocity_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_setAngularVelocity_mut(
     self_: *mut PxRigidDynamic,
     angVel: *const PxVec3,
     autowake: bool
@@ -13881,7 +13881,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setAngularVelocity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setWakeCounter_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_setWakeCounter_mut(
     self_: *mut PxRigidDynamic,
     wakeCounterValue: f32
 )
@@ -13893,7 +13893,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setWakeCounter_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getWakeCounter(
+pub unsafe extern "C" fn physx_PxRigidDynamic_getWakeCounter(
     self_: *const PxRigidDynamic
 ) -> f32
 {
@@ -13903,7 +13903,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getWakeCounter(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_wakeUp_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_wakeUp_mut(
     self_: *mut PxRigidDynamic
 )
 {
@@ -13913,7 +13913,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_wakeUp_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_putToSleep_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_putToSleep_mut(
     self_: *mut PxRigidDynamic
 )
 {
@@ -13923,7 +13923,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_putToSleep_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setSolverIterationCounts_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_setSolverIterationCounts_mut(
     self_: *mut PxRigidDynamic,
     minPositionIters: u32,
     minVelocityIters: u32
@@ -13937,7 +13937,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setSolverIterationCounts_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getSolverIterationCounts(
+pub unsafe extern "C" fn physx_PxRigidDynamic_getSolverIterationCounts(
     self_: *const PxRigidDynamic,
     minPositionIters: *mut u32,
     minVelocityIters: *mut u32
@@ -13951,7 +13951,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getSolverIterationCounts(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getContactReportThreshold(
+pub unsafe extern "C" fn physx_PxRigidDynamic_getContactReportThreshold(
     self_: *const PxRigidDynamic
 ) -> f32
 {
@@ -13961,7 +13961,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getContactReportThreshold(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setContactReportThreshold_mut(
+pub unsafe extern "C" fn physx_PxRigidDynamic_setContactReportThreshold_mut(
     self_: *mut PxRigidDynamic,
     threshold: f32
 )
@@ -13973,7 +13973,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_setContactReportThreshold_mut
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxRigidDynamic_getConcreteTypeName(
     self_: *const PxRigidDynamic
 ) -> *const c_char
 {
@@ -13983,7 +13983,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidDynamic_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidStatic_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxRigidStatic_getConcreteTypeName(
     self_: *const PxRigidStatic
 ) -> *const c_char
 {
@@ -13993,7 +13993,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidStatic_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQueryDesc_new(
+pub unsafe extern "C" fn physx_PxSceneQueryDesc_new(
 
 ) -> PxSceneQueryDesc
 {
@@ -14003,7 +14003,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQueryDesc_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQueryDesc_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxSceneQueryDesc_setToDefault_mut(
     self_: *mut PxSceneQueryDesc
 )
 {
@@ -14013,7 +14013,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQueryDesc_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQueryDesc_isValid(
+pub unsafe extern "C" fn physx_PxSceneQueryDesc_isValid(
     self_: *const PxSceneQueryDesc
 ) -> bool
 {
@@ -14023,7 +14023,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQueryDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_setDynamicTreeRebuildRateHint_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystemBase_setDynamicTreeRebuildRateHint_mut(
     self_: *mut PxSceneQuerySystemBase,
     dynamicTreeRebuildRateHint: u32
 )
@@ -14035,7 +14035,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_setDynamicTreeRebuild
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_getDynamicTreeRebuildRateHint(
+pub unsafe extern "C" fn physx_PxSceneQuerySystemBase_getDynamicTreeRebuildRateHint(
     self_: *const PxSceneQuerySystemBase
 ) -> u32
 {
@@ -14045,7 +14045,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_getDynamicTreeRebuild
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_forceRebuildDynamicTree_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystemBase_forceRebuildDynamicTree_mut(
     self_: *mut PxSceneQuerySystemBase,
     prunerIndex: u32
 )
@@ -14057,7 +14057,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_forceRebuildDynamicTr
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_setUpdateMode_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystemBase_setUpdateMode_mut(
     self_: *mut PxSceneQuerySystemBase,
     updateMode: PxSceneQueryUpdateMode
 )
@@ -14069,7 +14069,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_setUpdateMode_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_getUpdateMode(
+pub unsafe extern "C" fn physx_PxSceneQuerySystemBase_getUpdateMode(
     self_: *const PxSceneQuerySystemBase
 ) -> PxSceneQueryUpdateMode
 {
@@ -14079,7 +14079,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_getUpdateMode(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_getStaticTimestamp(
+pub unsafe extern "C" fn physx_PxSceneQuerySystemBase_getStaticTimestamp(
     self_: *const PxSceneQuerySystemBase
 ) -> u32
 {
@@ -14089,7 +14089,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_getStaticTimestamp(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_flushUpdates_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystemBase_flushUpdates_mut(
     self_: *mut PxSceneQuerySystemBase
 )
 {
@@ -14099,7 +14099,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_flushUpdates_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_raycast(
+pub unsafe extern "C" fn physx_PxSceneQuerySystemBase_raycast(
     self_: *const PxSceneQuerySystemBase,
     origin: *const PxVec3,
     unitDir: *const PxVec3,
@@ -14127,7 +14127,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_raycast(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_sweep(
+pub unsafe extern "C" fn physx_PxSceneQuerySystemBase_sweep(
     self_: *const PxSceneQuerySystemBase,
     geometry: *const PxGeometry,
     pose: *const PxTransform,
@@ -14159,7 +14159,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_sweep(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_overlap(
+pub unsafe extern "C" fn physx_PxSceneQuerySystemBase_overlap(
     self_: *const PxSceneQuerySystemBase,
     geometry: *const PxGeometry,
     pose: *const PxTransform,
@@ -14183,7 +14183,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystemBase_overlap(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_setSceneQueryUpdateMode_mut(
+pub unsafe extern "C" fn physx_PxSceneSQSystem_setSceneQueryUpdateMode_mut(
     self_: *mut PxSceneSQSystem,
     updateMode: PxSceneQueryUpdateMode
 )
@@ -14195,7 +14195,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_setSceneQueryUpdateMode_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_getSceneQueryUpdateMode(
+pub unsafe extern "C" fn physx_PxSceneSQSystem_getSceneQueryUpdateMode(
     self_: *const PxSceneSQSystem
 ) -> PxSceneQueryUpdateMode
 {
@@ -14205,7 +14205,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_getSceneQueryUpdateMode(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_getSceneQueryStaticTimestamp(
+pub unsafe extern "C" fn physx_PxSceneSQSystem_getSceneQueryStaticTimestamp(
     self_: *const PxSceneSQSystem
 ) -> u32
 {
@@ -14215,7 +14215,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_getSceneQueryStaticTimestamp
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_flushQueryUpdates_mut(
+pub unsafe extern "C" fn physx_PxSceneSQSystem_flushQueryUpdates_mut(
     self_: *mut PxSceneSQSystem
 )
 {
@@ -14225,7 +14225,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_flushQueryUpdates_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_forceDynamicTreeRebuild_mut(
+pub unsafe extern "C" fn physx_PxSceneSQSystem_forceDynamicTreeRebuild_mut(
     self_: *mut PxSceneSQSystem,
     rebuildStaticStructure: bool,
     rebuildDynamicStructure: bool
@@ -14239,7 +14239,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_forceDynamicTreeRebuild_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_getStaticStructure(
+pub unsafe extern "C" fn physx_PxSceneSQSystem_getStaticStructure(
     self_: *const PxSceneSQSystem
 ) -> PxPruningStructureType
 {
@@ -14249,7 +14249,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_getStaticStructure(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_getDynamicStructure(
+pub unsafe extern "C" fn physx_PxSceneSQSystem_getDynamicStructure(
     self_: *const PxSceneSQSystem
 ) -> PxPruningStructureType
 {
@@ -14259,7 +14259,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_getDynamicStructure(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_sceneQueriesUpdate_mut(
+pub unsafe extern "C" fn physx_PxSceneSQSystem_sceneQueriesUpdate_mut(
     self_: *mut PxSceneSQSystem,
     completionTask: *mut PxBaseTask,
     controlSimulation: bool
@@ -14273,7 +14273,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_sceneQueriesUpdate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_checkQueries_mut(
+pub unsafe extern "C" fn physx_PxSceneSQSystem_checkQueries_mut(
     self_: *mut PxSceneSQSystem,
     block: bool
 ) -> bool
@@ -14285,7 +14285,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_checkQueries_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_fetchQueries_mut(
+pub unsafe extern "C" fn physx_PxSceneSQSystem_fetchQueries_mut(
     self_: *mut PxSceneSQSystem,
     block: bool
 ) -> bool
@@ -14297,7 +14297,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneSQSystem_fetchQueries_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_release_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_release_mut(
     self_: *mut PxSceneQuerySystem
 )
 {
@@ -14307,7 +14307,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_acquireReference_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_acquireReference_mut(
     self_: *mut PxSceneQuerySystem
 )
 {
@@ -14317,7 +14317,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_acquireReference_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_preallocate_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_preallocate_mut(
     self_: *mut PxSceneQuerySystem,
     prunerIndex: u32,
     nbShapes: u32
@@ -14331,7 +14331,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_preallocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_flushMemory_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_flushMemory_mut(
     self_: *mut PxSceneQuerySystem
 )
 {
@@ -14341,7 +14341,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_flushMemory_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_addSQShape_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_addSQShape_mut(
     self_: *mut PxSceneQuerySystem,
     actor: *const PxRigidActor,
     shape: *const PxShape,
@@ -14363,7 +14363,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_addSQShape_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_removeSQShape_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_removeSQShape_mut(
     self_: *mut PxSceneQuerySystem,
     actor: *const PxRigidActor,
     shape: *const PxShape
@@ -14377,7 +14377,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_removeSQShape_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_updateSQShape_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_updateSQShape_mut(
     self_: *mut PxSceneQuerySystem,
     actor: *const PxRigidActor,
     shape: *const PxShape,
@@ -14393,7 +14393,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_updateSQShape_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_addSQCompound_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_addSQCompound_mut(
     self_: *mut PxSceneQuerySystem,
     actor: *const PxRigidActor,
     shapes: *mut *const PxShape,
@@ -14411,7 +14411,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_addSQCompound_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_removeSQCompound_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_removeSQCompound_mut(
     self_: *mut PxSceneQuerySystem,
     compoundHandle: u32
 )
@@ -14423,7 +14423,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_removeSQCompound_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_updateSQCompound_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_updateSQCompound_mut(
     self_: *mut PxSceneQuerySystem,
     compoundHandle: u32,
     compoundTransform: *const PxTransform
@@ -14437,7 +14437,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_updateSQCompound_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_shiftOrigin_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_shiftOrigin_mut(
     self_: *mut PxSceneQuerySystem,
     shift: *const PxVec3
 )
@@ -14449,7 +14449,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_shiftOrigin_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_merge_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_merge_mut(
     self_: *mut PxSceneQuerySystem,
     pruningStructure: *const PxPruningStructure
 )
@@ -14461,7 +14461,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_merge_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_getHandle(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_getHandle(
     self_: *const PxSceneQuerySystem,
     actor: *const PxRigidActor,
     shape: *const PxShape,
@@ -14477,7 +14477,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_getHandle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_sync_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_sync_mut(
     self_: *mut PxSceneQuerySystem,
     prunerIndex: u32,
     handles: *const u32,
@@ -14501,7 +14501,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_sync_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_finalizeUpdates_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_finalizeUpdates_mut(
     self_: *mut PxSceneQuerySystem
 )
 {
@@ -14511,7 +14511,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_finalizeUpdates_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_prepareSceneQueryBuildStep_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_prepareSceneQueryBuildStep_mut(
     self_: *mut PxSceneQuerySystem,
     prunerIndex: u32
 ) -> *mut c_void
@@ -14523,7 +14523,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_prepareSceneQueryBuildSte
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_sceneQueryBuildStep_mut(
+pub unsafe extern "C" fn physx_PxSceneQuerySystem_sceneQueryBuildStep_mut(
     self_: *mut PxSceneQuerySystem,
     handle: *mut c_void
 )
@@ -14535,7 +14535,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQuerySystem_sceneQueryBuildStep_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseDesc_new(
+pub unsafe extern "C" fn physx_PxBroadPhaseDesc_new(
     type_: PxBroadPhaseType
 ) -> PxBroadPhaseDesc
 {
@@ -14545,7 +14545,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseDesc_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseDesc_isValid(
+pub unsafe extern "C" fn physx_PxBroadPhaseDesc_isValid(
     self_: *const PxBroadPhaseDesc
 ) -> bool
 {
@@ -14555,7 +14555,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetBroadPhaseStaticFilterGroup(
+pub unsafe extern "C" fn physx_phys_PxGetBroadPhaseStaticFilterGroup(
 
 ) -> u32
 {
@@ -14565,7 +14565,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetBroadPhaseStaticFilterGroup(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetBroadPhaseDynamicFilterGroup(
+pub unsafe extern "C" fn physx_phys_PxGetBroadPhaseDynamicFilterGroup(
     id: u32
 ) -> u32
 {
@@ -14575,7 +14575,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetBroadPhaseDynamicFilterGroup(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetBroadPhaseKinematicFilterGroup(
+pub unsafe extern "C" fn physx_phys_PxGetBroadPhaseKinematicFilterGroup(
     id: u32
 ) -> u32
 {
@@ -14585,7 +14585,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetBroadPhaseKinematicFilterGroup(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseUpdateData_new(
+pub unsafe extern "C" fn physx_PxBroadPhaseUpdateData_new(
     created: *const u32,
     nbCreated: u32,
     updated: *const u32,
@@ -14613,7 +14613,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseUpdateData_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseResults_new(
+pub unsafe extern "C" fn physx_PxBroadPhaseResults_new(
 
 ) -> PxBroadPhaseResults
 {
@@ -14623,7 +14623,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseResults_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_getNbRegions(
+pub unsafe extern "C" fn physx_PxBroadPhaseRegions_getNbRegions(
     self_: *const PxBroadPhaseRegions
 ) -> u32
 {
@@ -14633,7 +14633,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_getNbRegions(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_getRegions(
+pub unsafe extern "C" fn physx_PxBroadPhaseRegions_getRegions(
     self_: *const PxBroadPhaseRegions,
     userBuffer: *mut PxBroadPhaseRegionInfo,
     bufferSize: u32,
@@ -14649,7 +14649,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_getRegions(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_addRegion_mut(
+pub unsafe extern "C" fn physx_PxBroadPhaseRegions_addRegion_mut(
     self_: *mut PxBroadPhaseRegions,
     region: *const PxBroadPhaseRegion,
     populateRegion: bool,
@@ -14667,7 +14667,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_addRegion_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_removeRegion_mut(
+pub unsafe extern "C" fn physx_PxBroadPhaseRegions_removeRegion_mut(
     self_: *mut PxBroadPhaseRegions,
     handle: u32
 ) -> bool
@@ -14679,7 +14679,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_removeRegion_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_getNbOutOfBoundsObjects(
+pub unsafe extern "C" fn physx_PxBroadPhaseRegions_getNbOutOfBoundsObjects(
     self_: *const PxBroadPhaseRegions
 ) -> u32
 {
@@ -14689,7 +14689,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_getNbOutOfBoundsObjects(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_getOutOfBoundsObjects(
+pub unsafe extern "C" fn physx_PxBroadPhaseRegions_getOutOfBoundsObjects(
     self_: *const PxBroadPhaseRegions
 ) -> *const u32
 {
@@ -14699,7 +14699,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseRegions_getOutOfBoundsObjects(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhase_release_mut(
+pub unsafe extern "C" fn physx_PxBroadPhase_release_mut(
     self_: *mut PxBroadPhase
 )
 {
@@ -14709,7 +14709,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhase_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhase_getType(
+pub unsafe extern "C" fn physx_PxBroadPhase_getType(
     self_: *const PxBroadPhase
 ) -> PxBroadPhaseType
 {
@@ -14719,7 +14719,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhase_getType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhase_getCaps(
+pub unsafe extern "C" fn physx_PxBroadPhase_getCaps(
     self_: *const PxBroadPhase,
     caps: *mut PxBroadPhaseCaps
 )
@@ -14731,7 +14731,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhase_getCaps(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhase_getRegions_mut(
+pub unsafe extern "C" fn physx_PxBroadPhase_getRegions_mut(
     self_: *mut PxBroadPhase
 ) -> *mut PxBroadPhaseRegions
 {
@@ -14741,7 +14741,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhase_getRegions_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhase_getAllocator_mut(
+pub unsafe extern "C" fn physx_PxBroadPhase_getAllocator_mut(
     self_: *mut PxBroadPhase
 ) -> *mut PxAllocatorCallback
 {
@@ -14751,7 +14751,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhase_getAllocator_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhase_getContextID(
+pub unsafe extern "C" fn physx_PxBroadPhase_getContextID(
     self_: *const PxBroadPhase
 ) -> u64
 {
@@ -14761,7 +14761,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhase_getContextID(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhase_setScratchBlock_mut(
+pub unsafe extern "C" fn physx_PxBroadPhase_setScratchBlock_mut(
     self_: *mut PxBroadPhase,
     scratchBlock: *mut c_void,
     size: u32
@@ -14775,7 +14775,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhase_setScratchBlock_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhase_update_mut(
+pub unsafe extern "C" fn physx_PxBroadPhase_update_mut(
     self_: *mut PxBroadPhase,
     updateData: *const PxBroadPhaseUpdateData,
     continuation: *mut PxBaseTask
@@ -14789,7 +14789,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhase_update_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhase_fetchResults_mut(
+pub unsafe extern "C" fn physx_PxBroadPhase_fetchResults_mut(
     self_: *mut PxBroadPhase,
     results: *mut PxBroadPhaseResults
 )
@@ -14801,7 +14801,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhase_fetchResults_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhase_update_mut_1(
+pub unsafe extern "C" fn physx_PxBroadPhase_update_mut_1(
     self_: *mut PxBroadPhase,
     results: *mut PxBroadPhaseResults,
     updateData: *const PxBroadPhaseUpdateData
@@ -14815,7 +14815,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhase_update_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateBroadPhase(
+pub unsafe extern "C" fn physx_phys_PxCreateBroadPhase(
     desc: *const PxBroadPhaseDesc
 ) -> *mut PxBroadPhase
 {
@@ -14825,7 +14825,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateBroadPhase(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_release_mut(
+pub unsafe extern "C" fn physx_PxAABBManager_release_mut(
     self_: *mut PxAABBManager
 )
 {
@@ -14835,7 +14835,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_getBroadPhase_mut(
+pub unsafe extern "C" fn physx_PxAABBManager_getBroadPhase_mut(
     self_: *mut PxAABBManager
 ) -> *mut PxBroadPhase
 {
@@ -14845,7 +14845,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_getBroadPhase_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_getBounds(
+pub unsafe extern "C" fn physx_PxAABBManager_getBounds(
     self_: *const PxAABBManager
 ) -> *const PxBounds3
 {
@@ -14855,7 +14855,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_getBounds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_getDistances(
+pub unsafe extern "C" fn physx_PxAABBManager_getDistances(
     self_: *const PxAABBManager
 ) -> *const f32
 {
@@ -14865,7 +14865,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_getDistances(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_getGroups(
+pub unsafe extern "C" fn physx_PxAABBManager_getGroups(
     self_: *const PxAABBManager
 ) -> *const u32
 {
@@ -14875,7 +14875,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_getGroups(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_getCapacity(
+pub unsafe extern "C" fn physx_PxAABBManager_getCapacity(
     self_: *const PxAABBManager
 ) -> u32
 {
@@ -14885,7 +14885,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_getCapacity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_addObject_mut(
+pub unsafe extern "C" fn physx_PxAABBManager_addObject_mut(
     self_: *mut PxAABBManager,
     index: u32,
     bounds: *const PxBounds3,
@@ -14903,7 +14903,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_addObject_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_removeObject_mut(
+pub unsafe extern "C" fn physx_PxAABBManager_removeObject_mut(
     self_: *mut PxAABBManager,
     index: u32
 )
@@ -14915,7 +14915,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_removeObject_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_updateObject_mut(
+pub unsafe extern "C" fn physx_PxAABBManager_updateObject_mut(
     self_: *mut PxAABBManager,
     index: u32,
     bounds: *const PxBounds3,
@@ -14931,7 +14931,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_updateObject_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_update_mut(
+pub unsafe extern "C" fn physx_PxAABBManager_update_mut(
     self_: *mut PxAABBManager,
     continuation: *mut PxBaseTask
 )
@@ -14943,7 +14943,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_update_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_fetchResults_mut(
+pub unsafe extern "C" fn physx_PxAABBManager_fetchResults_mut(
     self_: *mut PxAABBManager,
     results: *mut PxBroadPhaseResults
 )
@@ -14955,7 +14955,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_fetchResults_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxAABBManager_update_mut_1(
+pub unsafe extern "C" fn physx_PxAABBManager_update_mut_1(
     self_: *mut PxAABBManager,
     results: *mut PxBroadPhaseResults
 )
@@ -14967,7 +14967,7 @@ pub unsafe extern "C" fn magicphysx_PxAABBManager_update_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateAABBManager(
+pub unsafe extern "C" fn physx_phys_PxCreateAABBManager(
     broadphase: *mut PxBroadPhase
 ) -> *mut PxAABBManager
 {
@@ -14977,7 +14977,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateAABBManager(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneLimits_new(
+pub unsafe extern "C" fn physx_PxSceneLimits_new(
 
 ) -> PxSceneLimits
 {
@@ -14987,7 +14987,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneLimits_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneLimits_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxSceneLimits_setToDefault_mut(
     self_: *mut PxSceneLimits
 )
 {
@@ -14997,7 +14997,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneLimits_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneLimits_isValid(
+pub unsafe extern "C" fn physx_PxSceneLimits_isValid(
     self_: *const PxSceneLimits
 ) -> bool
 {
@@ -15007,7 +15007,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneLimits_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxgDynamicsMemoryConfig_new(
+pub unsafe extern "C" fn physx_PxgDynamicsMemoryConfig_new(
 
 ) -> PxgDynamicsMemoryConfig
 {
@@ -15017,7 +15017,7 @@ pub unsafe extern "C" fn magicphysx_PxgDynamicsMemoryConfig_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxgDynamicsMemoryConfig_isValid(
+pub unsafe extern "C" fn physx_PxgDynamicsMemoryConfig_isValid(
     self_: *const PxgDynamicsMemoryConfig
 ) -> bool
 {
@@ -15027,7 +15027,7 @@ pub unsafe extern "C" fn magicphysx_PxgDynamicsMemoryConfig_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneDesc_new(
+pub unsafe extern "C" fn physx_PxSceneDesc_new(
     scale: *const PxTolerancesScale
 ) -> PxSceneDesc
 {
@@ -15037,7 +15037,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneDesc_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneDesc_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxSceneDesc_setToDefault_mut(
     self_: *mut PxSceneDesc,
     scale: *const PxTolerancesScale
 )
@@ -15049,7 +15049,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneDesc_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneDesc_isValid(
+pub unsafe extern "C" fn physx_PxSceneDesc_isValid(
     self_: *const PxSceneDesc
 ) -> bool
 {
@@ -15059,7 +15059,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneDesc_getTolerancesScale(
+pub unsafe extern "C" fn physx_PxSceneDesc_getTolerancesScale(
     self_: *const PxSceneDesc
 ) -> *const PxTolerancesScale
 {
@@ -15069,7 +15069,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneDesc_getTolerancesScale(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationStatistics_getNbBroadPhaseAdds(
+pub unsafe extern "C" fn physx_PxSimulationStatistics_getNbBroadPhaseAdds(
     self_: *const PxSimulationStatistics
 ) -> u32
 {
@@ -15079,7 +15079,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationStatistics_getNbBroadPhaseAdds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationStatistics_getNbBroadPhaseRemoves(
+pub unsafe extern "C" fn physx_PxSimulationStatistics_getNbBroadPhaseRemoves(
     self_: *const PxSimulationStatistics
 ) -> u32
 {
@@ -15089,7 +15089,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationStatistics_getNbBroadPhaseRemove
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationStatistics_getRbPairStats(
+pub unsafe extern "C" fn physx_PxSimulationStatistics_getRbPairStats(
     self_: *const PxSimulationStatistics,
     pairType: RbPairStatsType,
     g0: PxGeometryType,
@@ -15105,7 +15105,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationStatistics_getRbPairStats(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationStatistics_new(
+pub unsafe extern "C" fn physx_PxSimulationStatistics_new(
 
 ) -> PxSimulationStatistics
 {
@@ -15115,7 +15115,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationStatistics_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_setScenePvdFlag_mut(
+pub unsafe extern "C" fn physx_PxPvdSceneClient_setScenePvdFlag_mut(
     self_: *mut PxPvdSceneClient,
     flag: PxPvdSceneFlag,
     value: bool
@@ -15129,7 +15129,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_setScenePvdFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_setScenePvdFlags_mut(
+pub unsafe extern "C" fn physx_PxPvdSceneClient_setScenePvdFlags_mut(
     self_: *mut PxPvdSceneClient,
     flags: PxPvdSceneFlags
 )
@@ -15141,7 +15141,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_setScenePvdFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_getScenePvdFlags(
+pub unsafe extern "C" fn physx_PxPvdSceneClient_getScenePvdFlags(
     self_: *const PxPvdSceneClient
 ) -> PxPvdSceneFlags
 {
@@ -15151,7 +15151,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_getScenePvdFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_updateCamera_mut(
+pub unsafe extern "C" fn physx_PxPvdSceneClient_updateCamera_mut(
     self_: *mut PxPvdSceneClient,
     name: *const c_char,
     origin: *const PxVec3,
@@ -15169,7 +15169,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_updateCamera_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_drawPoints_mut(
+pub unsafe extern "C" fn physx_PxPvdSceneClient_drawPoints_mut(
     self_: *mut PxPvdSceneClient,
     points: *const PxDebugPoint,
     count: u32
@@ -15183,7 +15183,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_drawPoints_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_drawLines_mut(
+pub unsafe extern "C" fn physx_PxPvdSceneClient_drawLines_mut(
     self_: *mut PxPvdSceneClient,
     lines: *const PxDebugLine,
     count: u32
@@ -15197,7 +15197,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_drawLines_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_drawTriangles_mut(
+pub unsafe extern "C" fn physx_PxPvdSceneClient_drawTriangles_mut(
     self_: *mut PxPvdSceneClient,
     triangles: *const PxDebugTriangle,
     count: u32
@@ -15211,7 +15211,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_drawTriangles_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_drawText_mut(
+pub unsafe extern "C" fn physx_PxPvdSceneClient_drawText_mut(
     self_: *mut PxPvdSceneClient,
     text: *const PxDebugText
 )
@@ -15223,7 +15223,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdSceneClient_drawText_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDominanceGroupPair_new(
+pub unsafe extern "C" fn physx_PxDominanceGroupPair_new(
     a: u8,
     b: u8
 ) -> PxDominanceGroupPair
@@ -15235,7 +15235,7 @@ pub unsafe extern "C" fn magicphysx_PxDominanceGroupPair_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseCallback_delete(
+pub unsafe extern "C" fn physx_PxBroadPhaseCallback_delete(
     self_: *mut PxBroadPhaseCallback
 )
 {
@@ -15245,7 +15245,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseCallback_onObjectOutOfBounds_mut(
+pub unsafe extern "C" fn physx_PxBroadPhaseCallback_onObjectOutOfBounds_mut(
     self_: *mut PxBroadPhaseCallback,
     shape: *mut PxShape,
     actor: *mut PxActor
@@ -15259,7 +15259,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseCallback_onObjectOutOfBounds_mut
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseCallback_onObjectOutOfBounds_mut_1(
+pub unsafe extern "C" fn physx_PxBroadPhaseCallback_onObjectOutOfBounds_mut_1(
     self_: *mut PxBroadPhaseCallback,
     aggregate: *mut PxAggregate
 )
@@ -15271,7 +15271,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseCallback_onObjectOutOfBounds_mut
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_release_mut(
+pub unsafe extern "C" fn physx_PxScene_release_mut(
     self_: *mut PxScene
 )
 {
@@ -15281,7 +15281,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setFlag_mut(
+pub unsafe extern "C" fn physx_PxScene_setFlag_mut(
     self_: *mut PxScene,
     flag: PxSceneFlag,
     value: bool
@@ -15295,7 +15295,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getFlags(
+pub unsafe extern "C" fn physx_PxScene_getFlags(
     self_: *const PxScene
 ) -> PxSceneFlags
 {
@@ -15305,7 +15305,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setLimits_mut(
+pub unsafe extern "C" fn physx_PxScene_setLimits_mut(
     self_: *mut PxScene,
     limits: *const PxSceneLimits
 )
@@ -15317,7 +15317,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setLimits_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getLimits(
+pub unsafe extern "C" fn physx_PxScene_getLimits(
     self_: *const PxScene
 ) -> PxSceneLimits
 {
@@ -15327,7 +15327,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getLimits(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getPhysics_mut(
+pub unsafe extern "C" fn physx_PxScene_getPhysics_mut(
     self_: *mut PxScene
 ) -> *mut PxPhysics
 {
@@ -15337,7 +15337,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getPhysics_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getTimestamp(
+pub unsafe extern "C" fn physx_PxScene_getTimestamp(
     self_: *const PxScene
 ) -> u32
 {
@@ -15347,7 +15347,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getTimestamp(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_addArticulation_mut(
+pub unsafe extern "C" fn physx_PxScene_addArticulation_mut(
     self_: *mut PxScene,
     articulation: *mut PxArticulationReducedCoordinate
 ) -> bool
@@ -15359,7 +15359,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_addArticulation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_removeArticulation_mut(
+pub unsafe extern "C" fn physx_PxScene_removeArticulation_mut(
     self_: *mut PxScene,
     articulation: *mut PxArticulationReducedCoordinate,
     wakeOnLostTouch: bool
@@ -15373,7 +15373,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_removeArticulation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_addActor_mut(
+pub unsafe extern "C" fn physx_PxScene_addActor_mut(
     self_: *mut PxScene,
     actor: *mut PxActor,
     bvh: *const PxBVH
@@ -15387,7 +15387,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_addActor_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_addActors_mut(
+pub unsafe extern "C" fn physx_PxScene_addActors_mut(
     self_: *mut PxScene,
     actors: *const *mut PxActor,
     nbActors: u32
@@ -15401,7 +15401,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_addActors_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_addActors_mut_1(
+pub unsafe extern "C" fn physx_PxScene_addActors_mut_1(
     self_: *mut PxScene,
     pruningStructure: *const PxPruningStructure
 ) -> bool
@@ -15413,7 +15413,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_addActors_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_removeActor_mut(
+pub unsafe extern "C" fn physx_PxScene_removeActor_mut(
     self_: *mut PxScene,
     actor: *mut PxActor,
     wakeOnLostTouch: bool
@@ -15427,7 +15427,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_removeActor_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_removeActors_mut(
+pub unsafe extern "C" fn physx_PxScene_removeActors_mut(
     self_: *mut PxScene,
     actors: *const *mut PxActor,
     nbActors: u32,
@@ -15443,7 +15443,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_removeActors_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_addAggregate_mut(
+pub unsafe extern "C" fn physx_PxScene_addAggregate_mut(
     self_: *mut PxScene,
     aggregate: *mut PxAggregate
 ) -> bool
@@ -15455,7 +15455,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_addAggregate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_removeAggregate_mut(
+pub unsafe extern "C" fn physx_PxScene_removeAggregate_mut(
     self_: *mut PxScene,
     aggregate: *mut PxAggregate,
     wakeOnLostTouch: bool
@@ -15469,7 +15469,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_removeAggregate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_addCollection_mut(
+pub unsafe extern "C" fn physx_PxScene_addCollection_mut(
     self_: *mut PxScene,
     collection: *const PxCollection
 ) -> bool
@@ -15481,7 +15481,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_addCollection_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getNbActors(
+pub unsafe extern "C" fn physx_PxScene_getNbActors(
     self_: *const PxScene,
     types: PxActorTypeFlags
 ) -> u32
@@ -15493,7 +15493,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getNbActors(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getActors(
+pub unsafe extern "C" fn physx_PxScene_getActors(
     self_: *const PxScene,
     types: PxActorTypeFlags,
     userBuffer: *mut *mut PxActor,
@@ -15511,7 +15511,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getActors(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getActiveActors_mut(
+pub unsafe extern "C" fn physx_PxScene_getActiveActors_mut(
     self_: *mut PxScene,
     nbActorsOut: *mut u32
 ) -> *mut *mut PxActor
@@ -15523,7 +15523,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getActiveActors_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getNbArticulations(
+pub unsafe extern "C" fn physx_PxScene_getNbArticulations(
     self_: *const PxScene
 ) -> u32
 {
@@ -15533,7 +15533,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getNbArticulations(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getArticulations(
+pub unsafe extern "C" fn physx_PxScene_getArticulations(
     self_: *const PxScene,
     userBuffer: *mut *mut PxArticulationReducedCoordinate,
     bufferSize: u32,
@@ -15549,7 +15549,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getArticulations(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getNbConstraints(
+pub unsafe extern "C" fn physx_PxScene_getNbConstraints(
     self_: *const PxScene
 ) -> u32
 {
@@ -15559,7 +15559,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getNbConstraints(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getConstraints(
+pub unsafe extern "C" fn physx_PxScene_getConstraints(
     self_: *const PxScene,
     userBuffer: *mut *mut PxConstraint,
     bufferSize: u32,
@@ -15575,7 +15575,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getConstraints(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getNbAggregates(
+pub unsafe extern "C" fn physx_PxScene_getNbAggregates(
     self_: *const PxScene
 ) -> u32
 {
@@ -15585,7 +15585,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getNbAggregates(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getAggregates(
+pub unsafe extern "C" fn physx_PxScene_getAggregates(
     self_: *const PxScene,
     userBuffer: *mut *mut PxAggregate,
     bufferSize: u32,
@@ -15601,7 +15601,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getAggregates(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setDominanceGroupPair_mut(
+pub unsafe extern "C" fn physx_PxScene_setDominanceGroupPair_mut(
     self_: *mut PxScene,
     group1: u8,
     group2: u8,
@@ -15617,7 +15617,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setDominanceGroupPair_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getDominanceGroupPair(
+pub unsafe extern "C" fn physx_PxScene_getDominanceGroupPair(
     self_: *const PxScene,
     group1: u8,
     group2: u8
@@ -15631,7 +15631,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getDominanceGroupPair(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getCpuDispatcher(
+pub unsafe extern "C" fn physx_PxScene_getCpuDispatcher(
     self_: *const PxScene
 ) -> *mut PxCpuDispatcher
 {
@@ -15641,7 +15641,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getCpuDispatcher(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_createClient_mut(
+pub unsafe extern "C" fn physx_PxScene_createClient_mut(
     self_: *mut PxScene
 ) -> u8
 {
@@ -15651,7 +15651,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_createClient_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setSimulationEventCallback_mut(
+pub unsafe extern "C" fn physx_PxScene_setSimulationEventCallback_mut(
     self_: *mut PxScene,
     callback: *mut PxSimulationEventCallback
 )
@@ -15663,7 +15663,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setSimulationEventCallback_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getSimulationEventCallback(
+pub unsafe extern "C" fn physx_PxScene_getSimulationEventCallback(
     self_: *const PxScene
 ) -> *mut PxSimulationEventCallback
 {
@@ -15673,7 +15673,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getSimulationEventCallback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setContactModifyCallback_mut(
+pub unsafe extern "C" fn physx_PxScene_setContactModifyCallback_mut(
     self_: *mut PxScene,
     callback: *mut PxContactModifyCallback
 )
@@ -15685,7 +15685,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setContactModifyCallback_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setCCDContactModifyCallback_mut(
+pub unsafe extern "C" fn physx_PxScene_setCCDContactModifyCallback_mut(
     self_: *mut PxScene,
     callback: *mut PxCCDContactModifyCallback
 )
@@ -15697,7 +15697,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setCCDContactModifyCallback_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getContactModifyCallback(
+pub unsafe extern "C" fn physx_PxScene_getContactModifyCallback(
     self_: *const PxScene
 ) -> *mut PxContactModifyCallback
 {
@@ -15707,7 +15707,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getContactModifyCallback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getCCDContactModifyCallback(
+pub unsafe extern "C" fn physx_PxScene_getCCDContactModifyCallback(
     self_: *const PxScene
 ) -> *mut PxCCDContactModifyCallback
 {
@@ -15717,7 +15717,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getCCDContactModifyCallback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setBroadPhaseCallback_mut(
+pub unsafe extern "C" fn physx_PxScene_setBroadPhaseCallback_mut(
     self_: *mut PxScene,
     callback: *mut PxBroadPhaseCallback
 )
@@ -15729,7 +15729,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setBroadPhaseCallback_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getBroadPhaseCallback(
+pub unsafe extern "C" fn physx_PxScene_getBroadPhaseCallback(
     self_: *const PxScene
 ) -> *mut PxBroadPhaseCallback
 {
@@ -15739,7 +15739,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getBroadPhaseCallback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setFilterShaderData_mut(
+pub unsafe extern "C" fn physx_PxScene_setFilterShaderData_mut(
     self_: *mut PxScene,
     data: *const c_void,
     dataSize: u32
@@ -15753,7 +15753,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setFilterShaderData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getFilterShaderData(
+pub unsafe extern "C" fn physx_PxScene_getFilterShaderData(
     self_: *const PxScene
 ) -> *const c_void
 {
@@ -15763,7 +15763,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getFilterShaderData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getFilterShaderDataSize(
+pub unsafe extern "C" fn physx_PxScene_getFilterShaderDataSize(
     self_: *const PxScene
 ) -> u32
 {
@@ -15773,7 +15773,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getFilterShaderDataSize(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_resetFiltering_mut(
+pub unsafe extern "C" fn physx_PxScene_resetFiltering_mut(
     self_: *mut PxScene,
     actor: *mut PxActor
 ) -> bool
@@ -15785,7 +15785,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_resetFiltering_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_resetFiltering_mut_1(
+pub unsafe extern "C" fn physx_PxScene_resetFiltering_mut_1(
     self_: *mut PxScene,
     actor: *mut PxRigidActor,
     shapes: *const *mut PxShape,
@@ -15801,7 +15801,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_resetFiltering_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getKinematicKinematicFilteringMode(
+pub unsafe extern "C" fn physx_PxScene_getKinematicKinematicFilteringMode(
     self_: *const PxScene
 ) -> PxPairFilteringMode
 {
@@ -15811,7 +15811,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getKinematicKinematicFilteringMode(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getStaticKinematicFilteringMode(
+pub unsafe extern "C" fn physx_PxScene_getStaticKinematicFilteringMode(
     self_: *const PxScene
 ) -> PxPairFilteringMode
 {
@@ -15821,7 +15821,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getStaticKinematicFilteringMode(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_simulate_mut(
+pub unsafe extern "C" fn physx_PxScene_simulate_mut(
     self_: *mut PxScene,
     elapsedTime: f32,
     completionTask: *mut PxBaseTask,
@@ -15841,7 +15841,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_simulate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_advance_mut(
+pub unsafe extern "C" fn physx_PxScene_advance_mut(
     self_: *mut PxScene,
     completionTask: *mut PxBaseTask
 ) -> bool
@@ -15853,7 +15853,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_advance_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_collide_mut(
+pub unsafe extern "C" fn physx_PxScene_collide_mut(
     self_: *mut PxScene,
     elapsedTime: f32,
     completionTask: *mut PxBaseTask,
@@ -15873,7 +15873,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_collide_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_checkResults_mut(
+pub unsafe extern "C" fn physx_PxScene_checkResults_mut(
     self_: *mut PxScene,
     block: bool
 ) -> bool
@@ -15885,7 +15885,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_checkResults_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_fetchCollision_mut(
+pub unsafe extern "C" fn physx_PxScene_fetchCollision_mut(
     self_: *mut PxScene,
     block: bool
 ) -> bool
@@ -15897,7 +15897,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_fetchCollision_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_fetchResults_mut(
+pub unsafe extern "C" fn physx_PxScene_fetchResults_mut(
     self_: *mut PxScene,
     block: bool,
     errorState: *mut u32
@@ -15911,7 +15911,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_fetchResults_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_fetchResultsStart_mut(
+pub unsafe extern "C" fn physx_PxScene_fetchResultsStart_mut(
     self_: *mut PxScene,
     contactPairs: *mut *const PxContactPairHeader,
     nbContactPairs: *mut u32,
@@ -15927,7 +15927,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_fetchResultsStart_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_processCallbacks_mut(
+pub unsafe extern "C" fn physx_PxScene_processCallbacks_mut(
     self_: *mut PxScene,
     continuation: *mut PxBaseTask
 )
@@ -15939,7 +15939,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_processCallbacks_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_fetchResultsFinish_mut(
+pub unsafe extern "C" fn physx_PxScene_fetchResultsFinish_mut(
     self_: *mut PxScene,
     errorState: *mut u32
 )
@@ -15951,7 +15951,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_fetchResultsFinish_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_fetchResultsParticleSystem_mut(
+pub unsafe extern "C" fn physx_PxScene_fetchResultsParticleSystem_mut(
     self_: *mut PxScene
 )
 {
@@ -15961,7 +15961,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_fetchResultsParticleSystem_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_flushSimulation_mut(
+pub unsafe extern "C" fn physx_PxScene_flushSimulation_mut(
     self_: *mut PxScene,
     sendPendingReports: bool
 )
@@ -15973,7 +15973,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_flushSimulation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setGravity_mut(
+pub unsafe extern "C" fn physx_PxScene_setGravity_mut(
     self_: *mut PxScene,
     vec: *const PxVec3
 )
@@ -15985,7 +15985,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setGravity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getGravity(
+pub unsafe extern "C" fn physx_PxScene_getGravity(
     self_: *const PxScene
 ) -> PxVec3
 {
@@ -15995,7 +15995,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getGravity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setBounceThresholdVelocity_mut(
+pub unsafe extern "C" fn physx_PxScene_setBounceThresholdVelocity_mut(
     self_: *mut PxScene,
     t: f32
 )
@@ -16007,7 +16007,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setBounceThresholdVelocity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getBounceThresholdVelocity(
+pub unsafe extern "C" fn physx_PxScene_getBounceThresholdVelocity(
     self_: *const PxScene
 ) -> f32
 {
@@ -16017,7 +16017,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getBounceThresholdVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setCCDMaxPasses_mut(
+pub unsafe extern "C" fn physx_PxScene_setCCDMaxPasses_mut(
     self_: *mut PxScene,
     ccdMaxPasses: u32
 )
@@ -16029,7 +16029,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setCCDMaxPasses_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getCCDMaxPasses(
+pub unsafe extern "C" fn physx_PxScene_getCCDMaxPasses(
     self_: *const PxScene
 ) -> u32
 {
@@ -16039,7 +16039,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getCCDMaxPasses(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setCCDMaxSeparation_mut(
+pub unsafe extern "C" fn physx_PxScene_setCCDMaxSeparation_mut(
     self_: *mut PxScene,
     t: f32
 )
@@ -16051,7 +16051,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setCCDMaxSeparation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getCCDMaxSeparation(
+pub unsafe extern "C" fn physx_PxScene_getCCDMaxSeparation(
     self_: *const PxScene
 ) -> f32
 {
@@ -16061,7 +16061,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getCCDMaxSeparation(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setCCDThreshold_mut(
+pub unsafe extern "C" fn physx_PxScene_setCCDThreshold_mut(
     self_: *mut PxScene,
     t: f32
 )
@@ -16073,7 +16073,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setCCDThreshold_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getCCDThreshold(
+pub unsafe extern "C" fn physx_PxScene_getCCDThreshold(
     self_: *const PxScene
 ) -> f32
 {
@@ -16083,7 +16083,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getCCDThreshold(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setMaxBiasCoefficient_mut(
+pub unsafe extern "C" fn physx_PxScene_setMaxBiasCoefficient_mut(
     self_: *mut PxScene,
     t: f32
 )
@@ -16095,7 +16095,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setMaxBiasCoefficient_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getMaxBiasCoefficient(
+pub unsafe extern "C" fn physx_PxScene_getMaxBiasCoefficient(
     self_: *const PxScene
 ) -> f32
 {
@@ -16105,7 +16105,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getMaxBiasCoefficient(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setFrictionOffsetThreshold_mut(
+pub unsafe extern "C" fn physx_PxScene_setFrictionOffsetThreshold_mut(
     self_: *mut PxScene,
     t: f32
 )
@@ -16117,7 +16117,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setFrictionOffsetThreshold_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getFrictionOffsetThreshold(
+pub unsafe extern "C" fn physx_PxScene_getFrictionOffsetThreshold(
     self_: *const PxScene
 ) -> f32
 {
@@ -16127,7 +16127,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getFrictionOffsetThreshold(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setFrictionCorrelationDistance_mut(
+pub unsafe extern "C" fn physx_PxScene_setFrictionCorrelationDistance_mut(
     self_: *mut PxScene,
     t: f32
 )
@@ -16139,7 +16139,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setFrictionCorrelationDistance_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getFrictionCorrelationDistance(
+pub unsafe extern "C" fn physx_PxScene_getFrictionCorrelationDistance(
     self_: *const PxScene
 ) -> f32
 {
@@ -16149,7 +16149,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getFrictionCorrelationDistance(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getFrictionType(
+pub unsafe extern "C" fn physx_PxScene_getFrictionType(
     self_: *const PxScene
 ) -> PxFrictionType
 {
@@ -16159,7 +16159,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getFrictionType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getSolverType(
+pub unsafe extern "C" fn physx_PxScene_getSolverType(
     self_: *const PxScene
 ) -> PxSolverType
 {
@@ -16169,7 +16169,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getSolverType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setVisualizationParameter_mut(
+pub unsafe extern "C" fn physx_PxScene_setVisualizationParameter_mut(
     self_: *mut PxScene,
     param: PxVisualizationParameter,
     value: f32
@@ -16183,7 +16183,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setVisualizationParameter_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getVisualizationParameter(
+pub unsafe extern "C" fn physx_PxScene_getVisualizationParameter(
     self_: *const PxScene,
     paramEnum: PxVisualizationParameter
 ) -> f32
@@ -16195,7 +16195,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getVisualizationParameter(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setVisualizationCullingBox_mut(
+pub unsafe extern "C" fn physx_PxScene_setVisualizationCullingBox_mut(
     self_: *mut PxScene,
     box_: *const PxBounds3
 )
@@ -16207,7 +16207,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setVisualizationCullingBox_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getVisualizationCullingBox(
+pub unsafe extern "C" fn physx_PxScene_getVisualizationCullingBox(
     self_: *const PxScene
 ) -> PxBounds3
 {
@@ -16217,7 +16217,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getVisualizationCullingBox(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getRenderBuffer_mut(
+pub unsafe extern "C" fn physx_PxScene_getRenderBuffer_mut(
     self_: *mut PxScene
 ) -> *const PxRenderBuffer
 {
@@ -16227,7 +16227,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getRenderBuffer_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getSimulationStatistics(
+pub unsafe extern "C" fn physx_PxScene_getSimulationStatistics(
     self_: *const PxScene,
     stats: *mut PxSimulationStatistics
 )
@@ -16239,7 +16239,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getSimulationStatistics(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getBroadPhaseType(
+pub unsafe extern "C" fn physx_PxScene_getBroadPhaseType(
     self_: *const PxScene
 ) -> PxBroadPhaseType
 {
@@ -16249,7 +16249,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getBroadPhaseType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getBroadPhaseCaps(
+pub unsafe extern "C" fn physx_PxScene_getBroadPhaseCaps(
     self_: *const PxScene,
     caps: *mut PxBroadPhaseCaps
 ) -> bool
@@ -16261,7 +16261,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getBroadPhaseCaps(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getNbBroadPhaseRegions(
+pub unsafe extern "C" fn physx_PxScene_getNbBroadPhaseRegions(
     self_: *const PxScene
 ) -> u32
 {
@@ -16271,7 +16271,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getNbBroadPhaseRegions(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getBroadPhaseRegions(
+pub unsafe extern "C" fn physx_PxScene_getBroadPhaseRegions(
     self_: *const PxScene,
     userBuffer: *mut PxBroadPhaseRegionInfo,
     bufferSize: u32,
@@ -16287,7 +16287,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getBroadPhaseRegions(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_addBroadPhaseRegion_mut(
+pub unsafe extern "C" fn physx_PxScene_addBroadPhaseRegion_mut(
     self_: *mut PxScene,
     region: *const PxBroadPhaseRegion,
     populateRegion: bool
@@ -16301,7 +16301,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_addBroadPhaseRegion_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_removeBroadPhaseRegion_mut(
+pub unsafe extern "C" fn physx_PxScene_removeBroadPhaseRegion_mut(
     self_: *mut PxScene,
     handle: u32
 ) -> bool
@@ -16313,7 +16313,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_removeBroadPhaseRegion_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getTaskManager(
+pub unsafe extern "C" fn physx_PxScene_getTaskManager(
     self_: *const PxScene
 ) -> *mut PxTaskManager
 {
@@ -16323,7 +16323,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getTaskManager(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_lockRead_mut(
+pub unsafe extern "C" fn physx_PxScene_lockRead_mut(
     self_: *mut PxScene,
     file: *const c_char,
     line: u32
@@ -16337,7 +16337,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_lockRead_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_unlockRead_mut(
+pub unsafe extern "C" fn physx_PxScene_unlockRead_mut(
     self_: *mut PxScene
 )
 {
@@ -16347,7 +16347,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_unlockRead_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_lockWrite_mut(
+pub unsafe extern "C" fn physx_PxScene_lockWrite_mut(
     self_: *mut PxScene,
     file: *const c_char,
     line: u32
@@ -16361,7 +16361,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_lockWrite_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_unlockWrite_mut(
+pub unsafe extern "C" fn physx_PxScene_unlockWrite_mut(
     self_: *mut PxScene
 )
 {
@@ -16371,7 +16371,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_unlockWrite_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setNbContactDataBlocks_mut(
+pub unsafe extern "C" fn physx_PxScene_setNbContactDataBlocks_mut(
     self_: *mut PxScene,
     numBlocks: u32
 )
@@ -16383,7 +16383,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setNbContactDataBlocks_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getNbContactDataBlocksUsed(
+pub unsafe extern "C" fn physx_PxScene_getNbContactDataBlocksUsed(
     self_: *const PxScene
 ) -> u32
 {
@@ -16393,7 +16393,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getNbContactDataBlocksUsed(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getMaxNbContactDataBlocksUsed(
+pub unsafe extern "C" fn physx_PxScene_getMaxNbContactDataBlocksUsed(
     self_: *const PxScene
 ) -> u32
 {
@@ -16403,7 +16403,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getMaxNbContactDataBlocksUsed(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getContactReportStreamBufferSize(
+pub unsafe extern "C" fn physx_PxScene_getContactReportStreamBufferSize(
     self_: *const PxScene
 ) -> u32
 {
@@ -16413,7 +16413,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getContactReportStreamBufferSize(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setSolverBatchSize_mut(
+pub unsafe extern "C" fn physx_PxScene_setSolverBatchSize_mut(
     self_: *mut PxScene,
     solverBatchSize: u32
 )
@@ -16425,7 +16425,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setSolverBatchSize_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getSolverBatchSize(
+pub unsafe extern "C" fn physx_PxScene_getSolverBatchSize(
     self_: *const PxScene
 ) -> u32
 {
@@ -16435,7 +16435,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getSolverBatchSize(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_setSolverArticulationBatchSize_mut(
+pub unsafe extern "C" fn physx_PxScene_setSolverArticulationBatchSize_mut(
     self_: *mut PxScene,
     solverBatchSize: u32
 )
@@ -16447,7 +16447,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_setSolverArticulationBatchSize_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getSolverArticulationBatchSize(
+pub unsafe extern "C" fn physx_PxScene_getSolverArticulationBatchSize(
     self_: *const PxScene
 ) -> u32
 {
@@ -16457,7 +16457,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getSolverArticulationBatchSize(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getWakeCounterResetValue(
+pub unsafe extern "C" fn physx_PxScene_getWakeCounterResetValue(
     self_: *const PxScene
 ) -> f32
 {
@@ -16467,7 +16467,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getWakeCounterResetValue(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_shiftOrigin_mut(
+pub unsafe extern "C" fn physx_PxScene_shiftOrigin_mut(
     self_: *mut PxScene,
     shift: *const PxVec3
 )
@@ -16479,7 +16479,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_shiftOrigin_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getScenePvdClient_mut(
+pub unsafe extern "C" fn physx_PxScene_getScenePvdClient_mut(
     self_: *mut PxScene
 ) -> *mut PxPvdSceneClient
 {
@@ -16489,7 +16489,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getScenePvdClient_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_copyArticulationData_mut(
+pub unsafe extern "C" fn physx_PxScene_copyArticulationData_mut(
     self_: *mut PxScene,
     data: *mut c_void,
     index: *mut c_void,
@@ -16509,7 +16509,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_copyArticulationData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_applyArticulationData_mut(
+pub unsafe extern "C" fn physx_PxScene_applyArticulationData_mut(
     self_: *mut PxScene,
     data: *mut c_void,
     index: *mut c_void,
@@ -16531,7 +16531,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_applyArticulationData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_copySoftBodyData_mut(
+pub unsafe extern "C" fn physx_PxScene_copySoftBodyData_mut(
     self_: *mut PxScene,
     data: *mut *mut c_void,
     dataSizes: *mut c_void,
@@ -16555,7 +16555,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_copySoftBodyData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_applySoftBodyData_mut(
+pub unsafe extern "C" fn physx_PxScene_applySoftBodyData_mut(
     self_: *mut PxScene,
     data: *mut *mut c_void,
     dataSizes: *mut c_void,
@@ -16579,7 +16579,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_applySoftBodyData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_copyContactData_mut(
+pub unsafe extern "C" fn physx_PxScene_copyContactData_mut(
     self_: *mut PxScene,
     data: *mut c_void,
     maxContactPairs: u32,
@@ -16597,7 +16597,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_copyContactData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_copyBodyData_mut(
+pub unsafe extern "C" fn physx_PxScene_copyBodyData_mut(
     self_: *mut PxScene,
     data: *mut PxGpuBodyData,
     index: *mut PxGpuActorPair,
@@ -16615,7 +16615,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_copyBodyData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_applyActorData_mut(
+pub unsafe extern "C" fn physx_PxScene_applyActorData_mut(
     self_: *mut PxScene,
     data: *mut c_void,
     index: *mut PxGpuActorPair,
@@ -16637,7 +16637,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_applyActorData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_computeDenseJacobians_mut(
+pub unsafe extern "C" fn physx_PxScene_computeDenseJacobians_mut(
     self_: *mut PxScene,
     indices: *const PxIndexDataPair,
     nbIndices: u32,
@@ -16653,7 +16653,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_computeDenseJacobians_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_computeGeneralizedMassMatrices_mut(
+pub unsafe extern "C" fn physx_PxScene_computeGeneralizedMassMatrices_mut(
     self_: *mut PxScene,
     indices: *const PxIndexDataPair,
     nbIndices: u32,
@@ -16669,7 +16669,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_computeGeneralizedMassMatrices_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_computeGeneralizedGravityForces_mut(
+pub unsafe extern "C" fn physx_PxScene_computeGeneralizedGravityForces_mut(
     self_: *mut PxScene,
     indices: *const PxIndexDataPair,
     nbIndices: u32,
@@ -16685,7 +16685,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_computeGeneralizedGravityForces_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_computeCoriolisAndCentrifugalForces_mut(
+pub unsafe extern "C" fn physx_PxScene_computeCoriolisAndCentrifugalForces_mut(
     self_: *mut PxScene,
     indices: *const PxIndexDataPair,
     nbIndices: u32,
@@ -16701,7 +16701,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_computeCoriolisAndCentrifugalForces_
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_getGpuDynamicsConfig(
+pub unsafe extern "C" fn physx_PxScene_getGpuDynamicsConfig(
     self_: *const PxScene
 ) -> PxgDynamicsMemoryConfig
 {
@@ -16711,7 +16711,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_getGpuDynamicsConfig(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxScene_applyParticleBufferData_mut(
+pub unsafe extern "C" fn physx_PxScene_applyParticleBufferData_mut(
     self_: *mut PxScene,
     indices: *const u32,
     bufferIndexPair: *const PxGpuParticleBufferIndexPair,
@@ -16733,7 +16733,7 @@ pub unsafe extern "C" fn magicphysx_PxScene_applyParticleBufferData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneReadLock_new_alloc(
+pub unsafe extern "C" fn physx_PxSceneReadLock_new_alloc(
     scene: *mut PxScene,
     file: *const c_char,
     line: u32
@@ -16747,7 +16747,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneReadLock_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneReadLock_delete(
+pub unsafe extern "C" fn physx_PxSceneReadLock_delete(
     self_: *mut PxSceneReadLock
 )
 {
@@ -16757,7 +16757,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneReadLock_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneWriteLock_new_alloc(
+pub unsafe extern "C" fn physx_PxSceneWriteLock_new_alloc(
     scene: *mut PxScene,
     file: *const c_char,
     line: u32
@@ -16771,7 +16771,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneWriteLock_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneWriteLock_delete(
+pub unsafe extern "C" fn physx_PxSceneWriteLock_delete(
     self_: *mut PxSceneWriteLock
 )
 {
@@ -16781,7 +16781,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneWriteLock_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactPairExtraDataItem_new(
+pub unsafe extern "C" fn physx_PxContactPairExtraDataItem_new(
 
 ) -> PxContactPairExtraDataItem
 {
@@ -16791,7 +16791,7 @@ pub unsafe extern "C" fn magicphysx_PxContactPairExtraDataItem_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactPairVelocity_new(
+pub unsafe extern "C" fn physx_PxContactPairVelocity_new(
 
 ) -> PxContactPairVelocity
 {
@@ -16801,7 +16801,7 @@ pub unsafe extern "C" fn magicphysx_PxContactPairVelocity_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactPairPose_new(
+pub unsafe extern "C" fn physx_PxContactPairPose_new(
 
 ) -> PxContactPairPose
 {
@@ -16811,7 +16811,7 @@ pub unsafe extern "C" fn magicphysx_PxContactPairPose_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactPairIndex_new(
+pub unsafe extern "C" fn physx_PxContactPairIndex_new(
 
 ) -> PxContactPairIndex
 {
@@ -16821,7 +16821,7 @@ pub unsafe extern "C" fn magicphysx_PxContactPairIndex_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactPairExtraDataIterator_new(
+pub unsafe extern "C" fn physx_PxContactPairExtraDataIterator_new(
     stream: *const u8,
     size: u32
 ) -> PxContactPairExtraDataIterator
@@ -16833,7 +16833,7 @@ pub unsafe extern "C" fn magicphysx_PxContactPairExtraDataIterator_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactPairExtraDataIterator_nextItemSet_mut(
+pub unsafe extern "C" fn physx_PxContactPairExtraDataIterator_nextItemSet_mut(
     self_: *mut PxContactPairExtraDataIterator
 ) -> bool
 {
@@ -16843,7 +16843,7 @@ pub unsafe extern "C" fn magicphysx_PxContactPairExtraDataIterator_nextItemSet_m
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactPairHeader_new(
+pub unsafe extern "C" fn physx_PxContactPairHeader_new(
 
 ) -> PxContactPairHeader
 {
@@ -16853,7 +16853,7 @@ pub unsafe extern "C" fn magicphysx_PxContactPairHeader_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactPair_new(
+pub unsafe extern "C" fn physx_PxContactPair_new(
 
 ) -> PxContactPair
 {
@@ -16863,7 +16863,7 @@ pub unsafe extern "C" fn magicphysx_PxContactPair_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactPair_extractContacts(
+pub unsafe extern "C" fn physx_PxContactPair_extractContacts(
     self_: *const PxContactPair,
     userBuffer: *mut PxContactPairPoint,
     bufferSize: u32
@@ -16877,7 +16877,7 @@ pub unsafe extern "C" fn magicphysx_PxContactPair_extractContacts(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactPair_bufferContacts(
+pub unsafe extern "C" fn physx_PxContactPair_bufferContacts(
     self_: *const PxContactPair,
     newPair: *mut PxContactPair,
     bufferMemory: *mut u8
@@ -16891,7 +16891,7 @@ pub unsafe extern "C" fn magicphysx_PxContactPair_bufferContacts(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactPair_getInternalFaceIndices(
+pub unsafe extern "C" fn physx_PxContactPair_getInternalFaceIndices(
     self_: *const PxContactPair
 ) -> *const u32
 {
@@ -16901,7 +16901,7 @@ pub unsafe extern "C" fn magicphysx_PxContactPair_getInternalFaceIndices(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriggerPair_new(
+pub unsafe extern "C" fn physx_PxTriggerPair_new(
 
 ) -> PxTriggerPair
 {
@@ -16911,7 +16911,7 @@ pub unsafe extern "C" fn magicphysx_PxTriggerPair_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintInfo_new(
+pub unsafe extern "C" fn physx_PxConstraintInfo_new(
 
 ) -> PxConstraintInfo
 {
@@ -16921,7 +16921,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintInfo_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConstraintInfo_new_1(
+pub unsafe extern "C" fn physx_PxConstraintInfo_new_1(
     c: *mut PxConstraint,
     extRef: *mut c_void,
     t: u32
@@ -16935,7 +16935,7 @@ pub unsafe extern "C" fn magicphysx_PxConstraintInfo_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onConstraintBreak_mut(
+pub unsafe extern "C" fn physx_PxSimulationEventCallback_onConstraintBreak_mut(
     self_: *mut PxSimulationEventCallback,
     constraints: *mut PxConstraintInfo,
     count: u32
@@ -16949,7 +16949,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onConstraintBreak_
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onWake_mut(
+pub unsafe extern "C" fn physx_PxSimulationEventCallback_onWake_mut(
     self_: *mut PxSimulationEventCallback,
     actors: *mut *mut PxActor,
     count: u32
@@ -16963,7 +16963,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onWake_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onSleep_mut(
+pub unsafe extern "C" fn physx_PxSimulationEventCallback_onSleep_mut(
     self_: *mut PxSimulationEventCallback,
     actors: *mut *mut PxActor,
     count: u32
@@ -16977,7 +16977,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onSleep_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onContact_mut(
+pub unsafe extern "C" fn physx_PxSimulationEventCallback_onContact_mut(
     self_: *mut PxSimulationEventCallback,
     pairHeader: *const PxContactPairHeader,
     pairs: *const PxContactPair,
@@ -16993,7 +16993,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onContact_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onTrigger_mut(
+pub unsafe extern "C" fn physx_PxSimulationEventCallback_onTrigger_mut(
     self_: *mut PxSimulationEventCallback,
     pairs: *mut PxTriggerPair,
     count: u32
@@ -17007,7 +17007,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onTrigger_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onAdvance_mut(
+pub unsafe extern "C" fn physx_PxSimulationEventCallback_onAdvance_mut(
     self_: *mut PxSimulationEventCallback,
     bodyBuffer: *const *const PxRigidBody,
     poseBuffer: *const PxTransform,
@@ -17023,7 +17023,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_onAdvance_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_delete(
+pub unsafe extern "C" fn physx_PxSimulationEventCallback_delete(
     self_: *mut PxSimulationEventCallback
 )
 {
@@ -17033,7 +17033,7 @@ pub unsafe extern "C" fn magicphysx_PxSimulationEventCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFEMParameters_new(
+pub unsafe extern "C" fn physx_PxFEMParameters_new(
 
 ) -> PxFEMParameters
 {
@@ -17043,7 +17043,7 @@ pub unsafe extern "C" fn magicphysx_PxFEMParameters_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPruningStructure_release_mut(
+pub unsafe extern "C" fn physx_PxPruningStructure_release_mut(
     self_: *mut PxPruningStructure
 )
 {
@@ -17053,7 +17053,7 @@ pub unsafe extern "C" fn magicphysx_PxPruningStructure_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPruningStructure_getRigidActors(
+pub unsafe extern "C" fn physx_PxPruningStructure_getRigidActors(
     self_: *const PxPruningStructure,
     userBuffer: *mut *mut PxRigidActor,
     bufferSize: u32,
@@ -17069,7 +17069,7 @@ pub unsafe extern "C" fn magicphysx_PxPruningStructure_getRigidActors(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPruningStructure_getNbRigidActors(
+pub unsafe extern "C" fn physx_PxPruningStructure_getNbRigidActors(
     self_: *const PxPruningStructure
 ) -> u32
 {
@@ -17079,7 +17079,7 @@ pub unsafe extern "C" fn magicphysx_PxPruningStructure_getNbRigidActors(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPruningStructure_getStaticMergeData(
+pub unsafe extern "C" fn physx_PxPruningStructure_getStaticMergeData(
     self_: *const PxPruningStructure
 ) -> *const c_void
 {
@@ -17089,7 +17089,7 @@ pub unsafe extern "C" fn magicphysx_PxPruningStructure_getStaticMergeData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPruningStructure_getDynamicMergeData(
+pub unsafe extern "C" fn physx_PxPruningStructure_getDynamicMergeData(
     self_: *const PxPruningStructure
 ) -> *const c_void
 {
@@ -17099,7 +17099,7 @@ pub unsafe extern "C" fn magicphysx_PxPruningStructure_getDynamicMergeData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPruningStructure_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxPruningStructure_getConcreteTypeName(
     self_: *const PxPruningStructure
 ) -> *const c_char
 {
@@ -17109,7 +17109,7 @@ pub unsafe extern "C" fn magicphysx_PxPruningStructure_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_new(
+pub unsafe extern "C" fn physx_PxExtendedVec3_new(
 
 ) -> PxExtendedVec3
 {
@@ -17119,7 +17119,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_new_1(
+pub unsafe extern "C" fn physx_PxExtendedVec3_new_1(
     _x: f64,
     _y: f64,
     _z: f64
@@ -17133,7 +17133,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_isZero(
+pub unsafe extern "C" fn physx_PxExtendedVec3_isZero(
     self_: *const PxExtendedVec3
 ) -> bool
 {
@@ -17143,7 +17143,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_isZero(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_dot(
+pub unsafe extern "C" fn physx_PxExtendedVec3_dot(
     self_: *const PxExtendedVec3,
     v: *const PxVec3
 ) -> f64
@@ -17155,7 +17155,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_dot(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_distanceSquared(
+pub unsafe extern "C" fn physx_PxExtendedVec3_distanceSquared(
     self_: *const PxExtendedVec3,
     v: *const PxExtendedVec3
 ) -> f64
@@ -17167,7 +17167,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_distanceSquared(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_magnitudeSquared(
+pub unsafe extern "C" fn physx_PxExtendedVec3_magnitudeSquared(
     self_: *const PxExtendedVec3
 ) -> f64
 {
@@ -17177,7 +17177,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_magnitudeSquared(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_magnitude(
+pub unsafe extern "C" fn physx_PxExtendedVec3_magnitude(
     self_: *const PxExtendedVec3
 ) -> f64
 {
@@ -17187,7 +17187,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_magnitude(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_normalize_mut(
+pub unsafe extern "C" fn physx_PxExtendedVec3_normalize_mut(
     self_: *mut PxExtendedVec3
 ) -> f64
 {
@@ -17197,7 +17197,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_normalize_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_isFinite(
+pub unsafe extern "C" fn physx_PxExtendedVec3_isFinite(
     self_: *const PxExtendedVec3
 ) -> bool
 {
@@ -17207,7 +17207,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_isFinite(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_maximum_mut(
+pub unsafe extern "C" fn physx_PxExtendedVec3_maximum_mut(
     self_: *mut PxExtendedVec3,
     v: *const PxExtendedVec3
 )
@@ -17219,7 +17219,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_maximum_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_minimum_mut(
+pub unsafe extern "C" fn physx_PxExtendedVec3_minimum_mut(
     self_: *mut PxExtendedVec3,
     v: *const PxExtendedVec3
 )
@@ -17231,7 +17231,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_minimum_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_set_mut(
+pub unsafe extern "C" fn physx_PxExtendedVec3_set_mut(
     self_: *mut PxExtendedVec3,
     x_: f64,
     y_: f64,
@@ -17247,7 +17247,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_set_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_setPlusInfinity_mut(
+pub unsafe extern "C" fn physx_PxExtendedVec3_setPlusInfinity_mut(
     self_: *mut PxExtendedVec3
 )
 {
@@ -17257,7 +17257,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_setPlusInfinity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_setMinusInfinity_mut(
+pub unsafe extern "C" fn physx_PxExtendedVec3_setMinusInfinity_mut(
     self_: *mut PxExtendedVec3
 )
 {
@@ -17267,7 +17267,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_setMinusInfinity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_cross_mut(
+pub unsafe extern "C" fn physx_PxExtendedVec3_cross_mut(
     self_: *mut PxExtendedVec3,
     left: *const PxExtendedVec3,
     right: *const PxVec3
@@ -17281,7 +17281,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_cross_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_cross_mut_1(
+pub unsafe extern "C" fn physx_PxExtendedVec3_cross_mut_1(
     self_: *mut PxExtendedVec3,
     left: *const PxExtendedVec3,
     right: *const PxExtendedVec3
@@ -17295,7 +17295,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_cross_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_cross(
+pub unsafe extern "C" fn physx_PxExtendedVec3_cross(
     self_: *const PxExtendedVec3,
     v: *const PxExtendedVec3
 ) -> PxExtendedVec3
@@ -17307,7 +17307,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_cross(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxExtendedVec3_cross_mut_2(
+pub unsafe extern "C" fn physx_PxExtendedVec3_cross_mut_2(
     self_: *mut PxExtendedVec3,
     left: *const PxVec3,
     right: *const PxExtendedVec3
@@ -17321,7 +17321,7 @@ pub unsafe extern "C" fn magicphysx_PxExtendedVec3_cross_mut_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_toVec3(
+pub unsafe extern "C" fn physx_phys_toVec3(
     v: *const PxExtendedVec3
 ) -> PxVec3
 {
@@ -17331,7 +17331,7 @@ pub unsafe extern "C" fn magicphysx_phys_toVec3(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxObstacle_getType(
+pub unsafe extern "C" fn physx_PxObstacle_getType(
     self_: *const PxObstacle
 ) -> PxGeometryType
 {
@@ -17341,7 +17341,7 @@ pub unsafe extern "C" fn magicphysx_PxObstacle_getType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxObstacle_new(
+pub unsafe extern "C" fn physx_PxBoxObstacle_new(
 
 ) -> PxBoxObstacle
 {
@@ -17351,7 +17351,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxObstacle_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleObstacle_new(
+pub unsafe extern "C" fn physx_PxCapsuleObstacle_new(
 
 ) -> PxCapsuleObstacle
 {
@@ -17361,7 +17361,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleObstacle_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxObstacleContext_release_mut(
+pub unsafe extern "C" fn physx_PxObstacleContext_release_mut(
     self_: *mut PxObstacleContext
 )
 {
@@ -17371,7 +17371,7 @@ pub unsafe extern "C" fn magicphysx_PxObstacleContext_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxObstacleContext_getControllerManager(
+pub unsafe extern "C" fn physx_PxObstacleContext_getControllerManager(
     self_: *const PxObstacleContext
 ) -> *mut PxControllerManager
 {
@@ -17381,7 +17381,7 @@ pub unsafe extern "C" fn magicphysx_PxObstacleContext_getControllerManager(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxObstacleContext_addObstacle_mut(
+pub unsafe extern "C" fn physx_PxObstacleContext_addObstacle_mut(
     self_: *mut PxObstacleContext,
     obstacle: *const PxObstacle
 ) -> u32
@@ -17393,7 +17393,7 @@ pub unsafe extern "C" fn magicphysx_PxObstacleContext_addObstacle_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxObstacleContext_removeObstacle_mut(
+pub unsafe extern "C" fn physx_PxObstacleContext_removeObstacle_mut(
     self_: *mut PxObstacleContext,
     handle: u32
 ) -> bool
@@ -17405,7 +17405,7 @@ pub unsafe extern "C" fn magicphysx_PxObstacleContext_removeObstacle_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxObstacleContext_updateObstacle_mut(
+pub unsafe extern "C" fn physx_PxObstacleContext_updateObstacle_mut(
     self_: *mut PxObstacleContext,
     handle: u32,
     obstacle: *const PxObstacle
@@ -17419,7 +17419,7 @@ pub unsafe extern "C" fn magicphysx_PxObstacleContext_updateObstacle_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxObstacleContext_getNbObstacles(
+pub unsafe extern "C" fn physx_PxObstacleContext_getNbObstacles(
     self_: *const PxObstacleContext
 ) -> u32
 {
@@ -17429,7 +17429,7 @@ pub unsafe extern "C" fn magicphysx_PxObstacleContext_getNbObstacles(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxObstacleContext_getObstacle(
+pub unsafe extern "C" fn physx_PxObstacleContext_getObstacle(
     self_: *const PxObstacleContext,
     i: u32
 ) -> *const PxObstacle
@@ -17441,7 +17441,7 @@ pub unsafe extern "C" fn magicphysx_PxObstacleContext_getObstacle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxObstacleContext_getObstacleByHandle(
+pub unsafe extern "C" fn physx_PxObstacleContext_getObstacleByHandle(
     self_: *const PxObstacleContext,
     handle: u32
 ) -> *const PxObstacle
@@ -17453,7 +17453,7 @@ pub unsafe extern "C" fn magicphysx_PxObstacleContext_getObstacleByHandle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxUserControllerHitReport_onShapeHit_mut(
+pub unsafe extern "C" fn physx_PxUserControllerHitReport_onShapeHit_mut(
     self_: *mut PxUserControllerHitReport,
     hit: *const PxControllerShapeHit
 )
@@ -17465,7 +17465,7 @@ pub unsafe extern "C" fn magicphysx_PxUserControllerHitReport_onShapeHit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxUserControllerHitReport_onControllerHit_mut(
+pub unsafe extern "C" fn physx_PxUserControllerHitReport_onControllerHit_mut(
     self_: *mut PxUserControllerHitReport,
     hit: *const PxControllersHit
 )
@@ -17477,7 +17477,7 @@ pub unsafe extern "C" fn magicphysx_PxUserControllerHitReport_onControllerHit_mu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxUserControllerHitReport_onObstacleHit_mut(
+pub unsafe extern "C" fn physx_PxUserControllerHitReport_onObstacleHit_mut(
     self_: *mut PxUserControllerHitReport,
     hit: *const PxControllerObstacleHit
 )
@@ -17489,7 +17489,7 @@ pub unsafe extern "C" fn magicphysx_PxUserControllerHitReport_onObstacleHit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerFilterCallback_delete(
+pub unsafe extern "C" fn physx_PxControllerFilterCallback_delete(
     self_: *mut PxControllerFilterCallback
 )
 {
@@ -17499,7 +17499,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerFilterCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerFilterCallback_filter_mut(
+pub unsafe extern "C" fn physx_PxControllerFilterCallback_filter_mut(
     self_: *mut PxControllerFilterCallback,
     a: *const PxController,
     b: *const PxController
@@ -17513,7 +17513,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerFilterCallback_filter_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerFilters_new(
+pub unsafe extern "C" fn physx_PxControllerFilters_new(
     filterData: *const PxFilterData,
     cb: *mut PxQueryFilterCallback,
     cctFilterCb: *mut PxControllerFilterCallback
@@ -17527,7 +17527,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerFilters_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerDesc_isValid(
+pub unsafe extern "C" fn physx_PxControllerDesc_isValid(
     self_: *const PxControllerDesc
 ) -> bool
 {
@@ -17537,7 +17537,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerDesc_getType(
+pub unsafe extern "C" fn physx_PxControllerDesc_getType(
     self_: *const PxControllerDesc
 ) -> PxControllerShapeType
 {
@@ -17547,7 +17547,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerDesc_getType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getType(
+pub unsafe extern "C" fn physx_PxController_getType(
     self_: *const PxController
 ) -> PxControllerShapeType
 {
@@ -17557,7 +17557,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_release_mut(
+pub unsafe extern "C" fn physx_PxController_release_mut(
     self_: *mut PxController
 )
 {
@@ -17567,7 +17567,7 @@ pub unsafe extern "C" fn magicphysx_PxController_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_move_mut(
+pub unsafe extern "C" fn physx_PxController_move_mut(
     self_: *mut PxController,
     disp: *const PxVec3,
     minDist: f32,
@@ -17587,7 +17587,7 @@ pub unsafe extern "C" fn magicphysx_PxController_move_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_setPosition_mut(
+pub unsafe extern "C" fn physx_PxController_setPosition_mut(
     self_: *mut PxController,
     position: *const PxExtendedVec3
 ) -> bool
@@ -17599,7 +17599,7 @@ pub unsafe extern "C" fn magicphysx_PxController_setPosition_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getPosition(
+pub unsafe extern "C" fn physx_PxController_getPosition(
     self_: *const PxController
 ) -> *const PxExtendedVec3
 {
@@ -17609,7 +17609,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getPosition(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_setFootPosition_mut(
+pub unsafe extern "C" fn physx_PxController_setFootPosition_mut(
     self_: *mut PxController,
     position: *const PxExtendedVec3
 ) -> bool
@@ -17621,7 +17621,7 @@ pub unsafe extern "C" fn magicphysx_PxController_setFootPosition_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getFootPosition(
+pub unsafe extern "C" fn physx_PxController_getFootPosition(
     self_: *const PxController
 ) -> PxExtendedVec3
 {
@@ -17631,7 +17631,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getFootPosition(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getActor(
+pub unsafe extern "C" fn physx_PxController_getActor(
     self_: *const PxController
 ) -> *mut PxRigidDynamic
 {
@@ -17641,7 +17641,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getActor(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_setStepOffset_mut(
+pub unsafe extern "C" fn physx_PxController_setStepOffset_mut(
     self_: *mut PxController,
     offset: f32
 )
@@ -17653,7 +17653,7 @@ pub unsafe extern "C" fn magicphysx_PxController_setStepOffset_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getStepOffset(
+pub unsafe extern "C" fn physx_PxController_getStepOffset(
     self_: *const PxController
 ) -> f32
 {
@@ -17663,7 +17663,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getStepOffset(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_setNonWalkableMode_mut(
+pub unsafe extern "C" fn physx_PxController_setNonWalkableMode_mut(
     self_: *mut PxController,
     flag: PxControllerNonWalkableMode
 )
@@ -17675,7 +17675,7 @@ pub unsafe extern "C" fn magicphysx_PxController_setNonWalkableMode_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getNonWalkableMode(
+pub unsafe extern "C" fn physx_PxController_getNonWalkableMode(
     self_: *const PxController
 ) -> PxControllerNonWalkableMode
 {
@@ -17685,7 +17685,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getNonWalkableMode(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getContactOffset(
+pub unsafe extern "C" fn physx_PxController_getContactOffset(
     self_: *const PxController
 ) -> f32
 {
@@ -17695,7 +17695,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getContactOffset(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_setContactOffset_mut(
+pub unsafe extern "C" fn physx_PxController_setContactOffset_mut(
     self_: *mut PxController,
     offset: f32
 )
@@ -17707,7 +17707,7 @@ pub unsafe extern "C" fn magicphysx_PxController_setContactOffset_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getUpDirection(
+pub unsafe extern "C" fn physx_PxController_getUpDirection(
     self_: *const PxController
 ) -> PxVec3
 {
@@ -17717,7 +17717,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getUpDirection(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_setUpDirection_mut(
+pub unsafe extern "C" fn physx_PxController_setUpDirection_mut(
     self_: *mut PxController,
     up: *const PxVec3
 )
@@ -17729,7 +17729,7 @@ pub unsafe extern "C" fn magicphysx_PxController_setUpDirection_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getSlopeLimit(
+pub unsafe extern "C" fn physx_PxController_getSlopeLimit(
     self_: *const PxController
 ) -> f32
 {
@@ -17739,7 +17739,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getSlopeLimit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_setSlopeLimit_mut(
+pub unsafe extern "C" fn physx_PxController_setSlopeLimit_mut(
     self_: *mut PxController,
     slopeLimit: f32
 )
@@ -17751,7 +17751,7 @@ pub unsafe extern "C" fn magicphysx_PxController_setSlopeLimit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_invalidateCache_mut(
+pub unsafe extern "C" fn physx_PxController_invalidateCache_mut(
     self_: *mut PxController
 )
 {
@@ -17761,7 +17761,7 @@ pub unsafe extern "C" fn magicphysx_PxController_invalidateCache_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getScene_mut(
+pub unsafe extern "C" fn physx_PxController_getScene_mut(
     self_: *mut PxController
 ) -> *mut PxScene
 {
@@ -17771,7 +17771,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getScene_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getUserData(
+pub unsafe extern "C" fn physx_PxController_getUserData(
     self_: *const PxController
 ) -> *mut c_void
 {
@@ -17781,7 +17781,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getUserData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_setUserData_mut(
+pub unsafe extern "C" fn physx_PxController_setUserData_mut(
     self_: *mut PxController,
     userData: *mut c_void
 )
@@ -17793,7 +17793,7 @@ pub unsafe extern "C" fn magicphysx_PxController_setUserData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getState(
+pub unsafe extern "C" fn physx_PxController_getState(
     self_: *const PxController,
     state: *mut PxControllerState
 )
@@ -17805,7 +17805,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getState(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_getStats(
+pub unsafe extern "C" fn physx_PxController_getStats(
     self_: *const PxController,
     stats: *mut PxControllerStats
 )
@@ -17817,7 +17817,7 @@ pub unsafe extern "C" fn magicphysx_PxController_getStats(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxController_resize_mut(
+pub unsafe extern "C" fn physx_PxController_resize_mut(
     self_: *mut PxController,
     height: f32
 )
@@ -17829,7 +17829,7 @@ pub unsafe extern "C" fn magicphysx_PxController_resize_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxControllerDesc_new_alloc(
+pub unsafe extern "C" fn physx_PxBoxControllerDesc_new_alloc(
 
 ) -> *mut PxBoxControllerDesc
 {
@@ -17839,7 +17839,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxControllerDesc_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxControllerDesc_delete(
+pub unsafe extern "C" fn physx_PxBoxControllerDesc_delete(
     self_: *mut PxBoxControllerDesc
 )
 {
@@ -17849,7 +17849,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxControllerDesc_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxControllerDesc_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxBoxControllerDesc_setToDefault_mut(
     self_: *mut PxBoxControllerDesc
 )
 {
@@ -17859,7 +17859,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxControllerDesc_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxControllerDesc_isValid(
+pub unsafe extern "C" fn physx_PxBoxControllerDesc_isValid(
     self_: *const PxBoxControllerDesc
 ) -> bool
 {
@@ -17869,7 +17869,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxControllerDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxController_getHalfHeight(
+pub unsafe extern "C" fn physx_PxBoxController_getHalfHeight(
     self_: *const PxBoxController
 ) -> f32
 {
@@ -17879,7 +17879,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxController_getHalfHeight(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxController_getHalfSideExtent(
+pub unsafe extern "C" fn physx_PxBoxController_getHalfSideExtent(
     self_: *const PxBoxController
 ) -> f32
 {
@@ -17889,7 +17889,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxController_getHalfSideExtent(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxController_getHalfForwardExtent(
+pub unsafe extern "C" fn physx_PxBoxController_getHalfForwardExtent(
     self_: *const PxBoxController
 ) -> f32
 {
@@ -17899,7 +17899,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxController_getHalfForwardExtent(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxController_setHalfHeight_mut(
+pub unsafe extern "C" fn physx_PxBoxController_setHalfHeight_mut(
     self_: *mut PxBoxController,
     halfHeight: f32
 ) -> bool
@@ -17911,7 +17911,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxController_setHalfHeight_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxController_setHalfSideExtent_mut(
+pub unsafe extern "C" fn physx_PxBoxController_setHalfSideExtent_mut(
     self_: *mut PxBoxController,
     halfSideExtent: f32
 ) -> bool
@@ -17923,7 +17923,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxController_setHalfSideExtent_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBoxController_setHalfForwardExtent_mut(
+pub unsafe extern "C" fn physx_PxBoxController_setHalfForwardExtent_mut(
     self_: *mut PxBoxController,
     halfForwardExtent: f32
 ) -> bool
@@ -17935,7 +17935,7 @@ pub unsafe extern "C" fn magicphysx_PxBoxController_setHalfForwardExtent_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleControllerDesc_new_alloc(
+pub unsafe extern "C" fn physx_PxCapsuleControllerDesc_new_alloc(
 
 ) -> *mut PxCapsuleControllerDesc
 {
@@ -17945,7 +17945,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleControllerDesc_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleControllerDesc_delete(
+pub unsafe extern "C" fn physx_PxCapsuleControllerDesc_delete(
     self_: *mut PxCapsuleControllerDesc
 )
 {
@@ -17955,7 +17955,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleControllerDesc_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleControllerDesc_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxCapsuleControllerDesc_setToDefault_mut(
     self_: *mut PxCapsuleControllerDesc
 )
 {
@@ -17965,7 +17965,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleControllerDesc_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleControllerDesc_isValid(
+pub unsafe extern "C" fn physx_PxCapsuleControllerDesc_isValid(
     self_: *const PxCapsuleControllerDesc
 ) -> bool
 {
@@ -17975,7 +17975,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleControllerDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleController_getRadius(
+pub unsafe extern "C" fn physx_PxCapsuleController_getRadius(
     self_: *const PxCapsuleController
 ) -> f32
 {
@@ -17985,7 +17985,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleController_getRadius(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleController_setRadius_mut(
+pub unsafe extern "C" fn physx_PxCapsuleController_setRadius_mut(
     self_: *mut PxCapsuleController,
     radius: f32
 ) -> bool
@@ -17997,7 +17997,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleController_setRadius_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleController_getHeight(
+pub unsafe extern "C" fn physx_PxCapsuleController_getHeight(
     self_: *const PxCapsuleController
 ) -> f32
 {
@@ -18007,7 +18007,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleController_getHeight(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleController_setHeight_mut(
+pub unsafe extern "C" fn physx_PxCapsuleController_setHeight_mut(
     self_: *mut PxCapsuleController,
     height: f32
 ) -> bool
@@ -18019,7 +18019,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleController_setHeight_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleController_getClimbingMode(
+pub unsafe extern "C" fn physx_PxCapsuleController_getClimbingMode(
     self_: *const PxCapsuleController
 ) -> PxCapsuleClimbingMode
 {
@@ -18029,7 +18029,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleController_getClimbingMode(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCapsuleController_setClimbingMode_mut(
+pub unsafe extern "C" fn physx_PxCapsuleController_setClimbingMode_mut(
     self_: *mut PxCapsuleController,
     mode: PxCapsuleClimbingMode
 ) -> bool
@@ -18041,7 +18041,7 @@ pub unsafe extern "C" fn magicphysx_PxCapsuleController_setClimbingMode_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerBehaviorCallback_getBehaviorFlags_mut(
+pub unsafe extern "C" fn physx_PxControllerBehaviorCallback_getBehaviorFlags_mut(
     self_: *mut PxControllerBehaviorCallback,
     shape: *const PxShape,
     actor: *const PxActor
@@ -18055,7 +18055,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerBehaviorCallback_getBehaviorFlag
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerBehaviorCallback_getBehaviorFlags_mut_1(
+pub unsafe extern "C" fn physx_PxControllerBehaviorCallback_getBehaviorFlags_mut_1(
     self_: *mut PxControllerBehaviorCallback,
     controller: *const PxController
 ) -> PxControllerBehaviorFlags
@@ -18067,7 +18067,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerBehaviorCallback_getBehaviorFlag
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerBehaviorCallback_getBehaviorFlags_mut_2(
+pub unsafe extern "C" fn physx_PxControllerBehaviorCallback_getBehaviorFlags_mut_2(
     self_: *mut PxControllerBehaviorCallback,
     obstacle: *const PxObstacle
 ) -> PxControllerBehaviorFlags
@@ -18079,7 +18079,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerBehaviorCallback_getBehaviorFlag
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_release_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_release_mut(
     self_: *mut PxControllerManager
 )
 {
@@ -18089,7 +18089,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_getScene(
+pub unsafe extern "C" fn physx_PxControllerManager_getScene(
     self_: *const PxControllerManager
 ) -> *mut PxScene
 {
@@ -18099,7 +18099,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_getScene(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_getNbControllers(
+pub unsafe extern "C" fn physx_PxControllerManager_getNbControllers(
     self_: *const PxControllerManager
 ) -> u32
 {
@@ -18109,7 +18109,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_getNbControllers(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_getController_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_getController_mut(
     self_: *mut PxControllerManager,
     index: u32
 ) -> *mut PxController
@@ -18121,7 +18121,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_getController_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_createController_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_createController_mut(
     self_: *mut PxControllerManager,
     desc: *const PxControllerDesc
 ) -> *mut PxController
@@ -18133,7 +18133,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_createController_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_purgeControllers_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_purgeControllers_mut(
     self_: *mut PxControllerManager
 )
 {
@@ -18143,7 +18143,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_purgeControllers_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_getRenderBuffer_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_getRenderBuffer_mut(
     self_: *mut PxControllerManager
 ) -> *mut PxRenderBuffer
 {
@@ -18153,7 +18153,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_getRenderBuffer_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_setDebugRenderingFlags_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_setDebugRenderingFlags_mut(
     self_: *mut PxControllerManager,
     flags: PxControllerDebugRenderFlags
 )
@@ -18165,7 +18165,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_setDebugRenderingFlags_m
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_getNbObstacleContexts(
+pub unsafe extern "C" fn physx_PxControllerManager_getNbObstacleContexts(
     self_: *const PxControllerManager
 ) -> u32
 {
@@ -18175,7 +18175,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_getNbObstacleContexts(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_getObstacleContext_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_getObstacleContext_mut(
     self_: *mut PxControllerManager,
     index: u32
 ) -> *mut PxObstacleContext
@@ -18187,7 +18187,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_getObstacleContext_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_createObstacleContext_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_createObstacleContext_mut(
     self_: *mut PxControllerManager
 ) -> *mut PxObstacleContext
 {
@@ -18197,7 +18197,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_createObstacleContext_mu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_computeInteractions_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_computeInteractions_mut(
     self_: *mut PxControllerManager,
     elapsedTime: f32,
     cctFilterCb: *mut PxControllerFilterCallback
@@ -18211,7 +18211,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_computeInteractions_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_setTessellation_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_setTessellation_mut(
     self_: *mut PxControllerManager,
     flag: bool,
     maxEdgeLength: f32
@@ -18225,7 +18225,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_setTessellation_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_setOverlapRecoveryModule_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_setOverlapRecoveryModule_mut(
     self_: *mut PxControllerManager,
     flag: bool
 )
@@ -18237,7 +18237,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_setOverlapRecoveryModule
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_setPreciseSweeps_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_setPreciseSweeps_mut(
     self_: *mut PxControllerManager,
     flag: bool
 )
@@ -18249,7 +18249,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_setPreciseSweeps_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_setPreventVerticalSlidingAgainstCeiling_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_setPreventVerticalSlidingAgainstCeiling_mut(
     self_: *mut PxControllerManager,
     flag: bool
 )
@@ -18261,7 +18261,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_setPreventVerticalSlidin
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxControllerManager_shiftOrigin_mut(
+pub unsafe extern "C" fn physx_PxControllerManager_shiftOrigin_mut(
     self_: *mut PxControllerManager,
     shift: *const PxVec3
 )
@@ -18273,7 +18273,7 @@ pub unsafe extern "C" fn magicphysx_PxControllerManager_shiftOrigin_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateControllerManager(
+pub unsafe extern "C" fn physx_phys_PxCreateControllerManager(
     scene: *mut PxScene,
     lockingEnabled: bool
 ) -> *mut PxControllerManager
@@ -18285,7 +18285,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateControllerManager(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDim3_new(
+pub unsafe extern "C" fn physx_PxDim3_new(
 
 ) -> PxDim3
 {
@@ -18295,7 +18295,7 @@ pub unsafe extern "C" fn magicphysx_PxDim3_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSDFDesc_new(
+pub unsafe extern "C" fn physx_PxSDFDesc_new(
 
 ) -> PxSDFDesc
 {
@@ -18305,7 +18305,7 @@ pub unsafe extern "C" fn magicphysx_PxSDFDesc_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSDFDesc_isValid(
+pub unsafe extern "C" fn physx_PxSDFDesc_isValid(
     self_: *const PxSDFDesc
 ) -> bool
 {
@@ -18315,7 +18315,7 @@ pub unsafe extern "C" fn magicphysx_PxSDFDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMeshDesc_new(
+pub unsafe extern "C" fn physx_PxConvexMeshDesc_new(
 
 ) -> PxConvexMeshDesc
 {
@@ -18325,7 +18325,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMeshDesc_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMeshDesc_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxConvexMeshDesc_setToDefault_mut(
     self_: *mut PxConvexMeshDesc
 )
 {
@@ -18335,7 +18335,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMeshDesc_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxConvexMeshDesc_isValid(
+pub unsafe extern "C" fn physx_PxConvexMeshDesc_isValid(
     self_: *const PxConvexMeshDesc
 ) -> bool
 {
@@ -18345,7 +18345,7 @@ pub unsafe extern "C" fn magicphysx_PxConvexMeshDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMeshDesc_new(
+pub unsafe extern "C" fn physx_PxTriangleMeshDesc_new(
 
 ) -> PxTriangleMeshDesc
 {
@@ -18355,7 +18355,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMeshDesc_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMeshDesc_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxTriangleMeshDesc_setToDefault_mut(
     self_: *mut PxTriangleMeshDesc
 )
 {
@@ -18365,7 +18365,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMeshDesc_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMeshDesc_isValid(
+pub unsafe extern "C" fn physx_PxTriangleMeshDesc_isValid(
     self_: *const PxTriangleMeshDesc
 ) -> bool
 {
@@ -18375,7 +18375,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMeshDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshDesc_new(
+pub unsafe extern "C" fn physx_PxTetrahedronMeshDesc_new(
 
 ) -> PxTetrahedronMeshDesc
 {
@@ -18385,7 +18385,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshDesc_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshDesc_isValid(
+pub unsafe extern "C" fn physx_PxTetrahedronMeshDesc_isValid(
     self_: *const PxTetrahedronMeshDesc
 ) -> bool
 {
@@ -18395,7 +18395,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSoftBodySimulationDataDesc_new(
+pub unsafe extern "C" fn physx_PxSoftBodySimulationDataDesc_new(
 
 ) -> PxSoftBodySimulationDataDesc
 {
@@ -18405,7 +18405,7 @@ pub unsafe extern "C" fn magicphysx_PxSoftBodySimulationDataDesc_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSoftBodySimulationDataDesc_isValid(
+pub unsafe extern "C" fn physx_PxSoftBodySimulationDataDesc_isValid(
     self_: *const PxSoftBodySimulationDataDesc
 ) -> bool
 {
@@ -18415,7 +18415,7 @@ pub unsafe extern "C" fn magicphysx_PxSoftBodySimulationDataDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH34MidphaseDesc_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxBVH34MidphaseDesc_setToDefault_mut(
     self_: *mut PxBVH34MidphaseDesc
 )
 {
@@ -18425,7 +18425,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH34MidphaseDesc_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVH34MidphaseDesc_isValid(
+pub unsafe extern "C" fn physx_PxBVH34MidphaseDesc_isValid(
     self_: *const PxBVH34MidphaseDesc
 ) -> bool
 {
@@ -18435,7 +18435,7 @@ pub unsafe extern "C" fn magicphysx_PxBVH34MidphaseDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMidphaseDesc_new(
+pub unsafe extern "C" fn physx_PxMidphaseDesc_new(
 
 ) -> PxMidphaseDesc
 {
@@ -18445,7 +18445,7 @@ pub unsafe extern "C" fn magicphysx_PxMidphaseDesc_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMidphaseDesc_getType(
+pub unsafe extern "C" fn physx_PxMidphaseDesc_getType(
     self_: *const PxMidphaseDesc
 ) -> PxMeshMidPhase
 {
@@ -18455,7 +18455,7 @@ pub unsafe extern "C" fn magicphysx_PxMidphaseDesc_getType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMidphaseDesc_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxMidphaseDesc_setToDefault_mut(
     self_: *mut PxMidphaseDesc,
     type_: PxMeshMidPhase
 )
@@ -18467,7 +18467,7 @@ pub unsafe extern "C" fn magicphysx_PxMidphaseDesc_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMidphaseDesc_isValid(
+pub unsafe extern "C" fn physx_PxMidphaseDesc_isValid(
     self_: *const PxMidphaseDesc
 ) -> bool
 {
@@ -18477,7 +18477,7 @@ pub unsafe extern "C" fn magicphysx_PxMidphaseDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVHDesc_new(
+pub unsafe extern "C" fn physx_PxBVHDesc_new(
 
 ) -> PxBVHDesc
 {
@@ -18487,7 +18487,7 @@ pub unsafe extern "C" fn magicphysx_PxBVHDesc_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVHDesc_setToDefault_mut(
+pub unsafe extern "C" fn physx_PxBVHDesc_setToDefault_mut(
     self_: *mut PxBVHDesc
 )
 {
@@ -18497,7 +18497,7 @@ pub unsafe extern "C" fn magicphysx_PxBVHDesc_setToDefault_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBVHDesc_isValid(
+pub unsafe extern "C" fn physx_PxBVHDesc_isValid(
     self_: *const PxBVHDesc
 ) -> bool
 {
@@ -18507,7 +18507,7 @@ pub unsafe extern "C" fn magicphysx_PxBVHDesc_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCookingParams_new(
+pub unsafe extern "C" fn physx_PxCookingParams_new(
     sc: *const PxTolerancesScale
 ) -> PxCookingParams
 {
@@ -18517,7 +18517,7 @@ pub unsafe extern "C" fn magicphysx_PxCookingParams_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetStandaloneInsertionCallback(
+pub unsafe extern "C" fn physx_phys_PxGetStandaloneInsertionCallback(
 
 ) -> *mut PxInsertionCallback
 {
@@ -18527,7 +18527,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetStandaloneInsertionCallback(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCookBVH(
+pub unsafe extern "C" fn physx_phys_PxCookBVH(
     desc: *const PxBVHDesc,
     stream: *mut PxOutputStream
 ) -> bool
@@ -18539,7 +18539,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCookBVH(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateBVH(
+pub unsafe extern "C" fn physx_phys_PxCreateBVH(
     desc: *const PxBVHDesc,
     insertionCallback: *mut PxInsertionCallback
 ) -> *mut PxBVH
@@ -18551,7 +18551,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateBVH(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCookHeightField(
+pub unsafe extern "C" fn physx_phys_PxCookHeightField(
     desc: *const PxHeightFieldDesc,
     stream: *mut PxOutputStream
 ) -> bool
@@ -18563,7 +18563,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCookHeightField(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateHeightField(
+pub unsafe extern "C" fn physx_phys_PxCreateHeightField(
     desc: *const PxHeightFieldDesc,
     insertionCallback: *mut PxInsertionCallback
 ) -> *mut PxHeightField
@@ -18575,7 +18575,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateHeightField(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCookConvexMesh(
+pub unsafe extern "C" fn physx_phys_PxCookConvexMesh(
     params: *const PxCookingParams,
     desc: *const PxConvexMeshDesc,
     stream: *mut PxOutputStream,
@@ -18591,7 +18591,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCookConvexMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateConvexMesh(
+pub unsafe extern "C" fn physx_phys_PxCreateConvexMesh(
     params: *const PxCookingParams,
     desc: *const PxConvexMeshDesc,
     insertionCallback: *mut PxInsertionCallback,
@@ -18607,7 +18607,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateConvexMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxValidateConvexMesh(
+pub unsafe extern "C" fn physx_phys_PxValidateConvexMesh(
     params: *const PxCookingParams,
     desc: *const PxConvexMeshDesc
 ) -> bool
@@ -18619,7 +18619,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxValidateConvexMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxComputeHullPolygons(
+pub unsafe extern "C" fn physx_phys_PxComputeHullPolygons(
     params: *const PxCookingParams,
     mesh: *const PxSimpleTriangleMesh,
     inCallback: *mut PxAllocatorCallback,
@@ -18645,7 +18645,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxComputeHullPolygons(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxValidateTriangleMesh(
+pub unsafe extern "C" fn physx_phys_PxValidateTriangleMesh(
     params: *const PxCookingParams,
     desc: *const PxTriangleMeshDesc
 ) -> bool
@@ -18657,7 +18657,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxValidateTriangleMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateTriangleMesh(
+pub unsafe extern "C" fn physx_phys_PxCreateTriangleMesh(
     params: *const PxCookingParams,
     desc: *const PxTriangleMeshDesc,
     insertionCallback: *mut PxInsertionCallback,
@@ -18673,7 +18673,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateTriangleMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCookTriangleMesh(
+pub unsafe extern "C" fn physx_phys_PxCookTriangleMesh(
     params: *const PxCookingParams,
     desc: *const PxTriangleMeshDesc,
     stream: *mut PxOutputStream,
@@ -18689,7 +18689,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCookTriangleMesh(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultMemoryOutputStream_new_alloc(
+pub unsafe extern "C" fn physx_PxDefaultMemoryOutputStream_new_alloc(
     allocator: *mut PxAllocatorCallback
 ) -> *mut PxDefaultMemoryOutputStream
 {
@@ -18699,7 +18699,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultMemoryOutputStream_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultMemoryOutputStream_delete(
+pub unsafe extern "C" fn physx_PxDefaultMemoryOutputStream_delete(
     self_: *mut PxDefaultMemoryOutputStream
 )
 {
@@ -18709,7 +18709,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultMemoryOutputStream_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultMemoryOutputStream_write_mut(
+pub unsafe extern "C" fn physx_PxDefaultMemoryOutputStream_write_mut(
     self_: *mut PxDefaultMemoryOutputStream,
     src: *const c_void,
     count: u32
@@ -18723,7 +18723,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultMemoryOutputStream_write_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultMemoryOutputStream_getSize(
+pub unsafe extern "C" fn physx_PxDefaultMemoryOutputStream_getSize(
     self_: *const PxDefaultMemoryOutputStream
 ) -> u32
 {
@@ -18733,7 +18733,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultMemoryOutputStream_getSize(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultMemoryOutputStream_getData(
+pub unsafe extern "C" fn physx_PxDefaultMemoryOutputStream_getData(
     self_: *const PxDefaultMemoryOutputStream
 ) -> *mut u8
 {
@@ -18743,7 +18743,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultMemoryOutputStream_getData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultMemoryInputData_new_alloc(
+pub unsafe extern "C" fn physx_PxDefaultMemoryInputData_new_alloc(
     data: *mut u8,
     length: u32
 ) -> *mut PxDefaultMemoryInputData
@@ -18755,7 +18755,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultMemoryInputData_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultMemoryInputData_read_mut(
+pub unsafe extern "C" fn physx_PxDefaultMemoryInputData_read_mut(
     self_: *mut PxDefaultMemoryInputData,
     dest: *mut c_void,
     count: u32
@@ -18769,7 +18769,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultMemoryInputData_read_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultMemoryInputData_getLength(
+pub unsafe extern "C" fn physx_PxDefaultMemoryInputData_getLength(
     self_: *const PxDefaultMemoryInputData
 ) -> u32
 {
@@ -18779,7 +18779,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultMemoryInputData_getLength(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultMemoryInputData_seek_mut(
+pub unsafe extern "C" fn physx_PxDefaultMemoryInputData_seek_mut(
     self_: *mut PxDefaultMemoryInputData,
     pos: u32
 )
@@ -18791,7 +18791,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultMemoryInputData_seek_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultMemoryInputData_tell(
+pub unsafe extern "C" fn physx_PxDefaultMemoryInputData_tell(
     self_: *const PxDefaultMemoryInputData
 ) -> u32
 {
@@ -18801,7 +18801,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultMemoryInputData_tell(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultFileOutputStream_new_alloc(
+pub unsafe extern "C" fn physx_PxDefaultFileOutputStream_new_alloc(
     name: *const c_char
 ) -> *mut PxDefaultFileOutputStream
 {
@@ -18811,7 +18811,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultFileOutputStream_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultFileOutputStream_delete(
+pub unsafe extern "C" fn physx_PxDefaultFileOutputStream_delete(
     self_: *mut PxDefaultFileOutputStream
 )
 {
@@ -18821,7 +18821,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultFileOutputStream_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultFileOutputStream_write_mut(
+pub unsafe extern "C" fn physx_PxDefaultFileOutputStream_write_mut(
     self_: *mut PxDefaultFileOutputStream,
     src: *const c_void,
     count: u32
@@ -18835,7 +18835,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultFileOutputStream_write_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultFileOutputStream_isValid_mut(
+pub unsafe extern "C" fn physx_PxDefaultFileOutputStream_isValid_mut(
     self_: *mut PxDefaultFileOutputStream
 ) -> bool
 {
@@ -18845,7 +18845,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultFileOutputStream_isValid_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_new_alloc(
+pub unsafe extern "C" fn physx_PxDefaultFileInputData_new_alloc(
     name: *const c_char
 ) -> *mut PxDefaultFileInputData
 {
@@ -18855,7 +18855,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_delete(
+pub unsafe extern "C" fn physx_PxDefaultFileInputData_delete(
     self_: *mut PxDefaultFileInputData
 )
 {
@@ -18865,7 +18865,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_read_mut(
+pub unsafe extern "C" fn physx_PxDefaultFileInputData_read_mut(
     self_: *mut PxDefaultFileInputData,
     dest: *mut c_void,
     count: u32
@@ -18879,7 +18879,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_read_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_seek_mut(
+pub unsafe extern "C" fn physx_PxDefaultFileInputData_seek_mut(
     self_: *mut PxDefaultFileInputData,
     pos: u32
 )
@@ -18891,7 +18891,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_seek_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_tell(
+pub unsafe extern "C" fn physx_PxDefaultFileInputData_tell(
     self_: *const PxDefaultFileInputData
 ) -> u32
 {
@@ -18901,7 +18901,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_tell(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_getLength(
+pub unsafe extern "C" fn physx_PxDefaultFileInputData_getLength(
     self_: *const PxDefaultFileInputData
 ) -> u32
 {
@@ -18911,7 +18911,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_getLength(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_isValid(
+pub unsafe extern "C" fn physx_PxDefaultFileInputData_isValid(
     self_: *const PxDefaultFileInputData
 ) -> bool
 {
@@ -18921,7 +18921,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultFileInputData_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_platformAlignedAlloc(
+pub unsafe extern "C" fn physx_phys_platformAlignedAlloc(
     size: usize
 ) -> *mut c_void
 {
@@ -18931,7 +18931,7 @@ pub unsafe extern "C" fn magicphysx_phys_platformAlignedAlloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_platformAlignedFree(
+pub unsafe extern "C" fn physx_phys_platformAlignedFree(
     ptr: *mut c_void
 )
 {
@@ -18941,7 +18941,7 @@ pub unsafe extern "C" fn magicphysx_phys_platformAlignedFree(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultAllocator_allocate_mut(
+pub unsafe extern "C" fn physx_PxDefaultAllocator_allocate_mut(
     self_: *mut PxDefaultAllocator,
     size: usize,
     anon_param1: *const c_char,
@@ -18959,7 +18959,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultAllocator_allocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultAllocator_deallocate_mut(
+pub unsafe extern "C" fn physx_PxDefaultAllocator_deallocate_mut(
     self_: *mut PxDefaultAllocator,
     ptr: *mut c_void
 )
@@ -18971,7 +18971,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultAllocator_deallocate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultAllocator_delete(
+pub unsafe extern "C" fn physx_PxDefaultAllocator_delete(
     self_: *mut PxDefaultAllocator
 )
 {
@@ -18981,7 +18981,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultAllocator_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_setActors_mut(
+pub unsafe extern "C" fn physx_PxJoint_setActors_mut(
     self_: *mut PxJoint,
     actor0: *mut PxRigidActor,
     actor1: *mut PxRigidActor
@@ -18995,7 +18995,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_setActors_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getActors(
+pub unsafe extern "C" fn physx_PxJoint_getActors(
     self_: *const PxJoint,
     actor0: *mut *mut PxRigidActor,
     actor1: *mut *mut PxRigidActor
@@ -19009,7 +19009,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getActors(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_setLocalPose_mut(
+pub unsafe extern "C" fn physx_PxJoint_setLocalPose_mut(
     self_: *mut PxJoint,
     actor: PxJointActorIndex,
     localPose: *const PxTransform
@@ -19023,7 +19023,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_setLocalPose_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getLocalPose(
+pub unsafe extern "C" fn physx_PxJoint_getLocalPose(
     self_: *const PxJoint,
     actor: PxJointActorIndex
 ) -> PxTransform
@@ -19035,7 +19035,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getLocalPose(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getRelativeTransform(
+pub unsafe extern "C" fn physx_PxJoint_getRelativeTransform(
     self_: *const PxJoint
 ) -> PxTransform
 {
@@ -19045,7 +19045,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getRelativeTransform(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getRelativeLinearVelocity(
+pub unsafe extern "C" fn physx_PxJoint_getRelativeLinearVelocity(
     self_: *const PxJoint
 ) -> PxVec3
 {
@@ -19055,7 +19055,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getRelativeLinearVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getRelativeAngularVelocity(
+pub unsafe extern "C" fn physx_PxJoint_getRelativeAngularVelocity(
     self_: *const PxJoint
 ) -> PxVec3
 {
@@ -19065,7 +19065,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getRelativeAngularVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_setBreakForce_mut(
+pub unsafe extern "C" fn physx_PxJoint_setBreakForce_mut(
     self_: *mut PxJoint,
     force: f32,
     torque: f32
@@ -19079,7 +19079,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_setBreakForce_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getBreakForce(
+pub unsafe extern "C" fn physx_PxJoint_getBreakForce(
     self_: *const PxJoint,
     force: *mut f32,
     torque: *mut f32
@@ -19093,7 +19093,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getBreakForce(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_setConstraintFlags_mut(
+pub unsafe extern "C" fn physx_PxJoint_setConstraintFlags_mut(
     self_: *mut PxJoint,
     flags: PxConstraintFlags
 )
@@ -19105,7 +19105,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_setConstraintFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_setConstraintFlag_mut(
+pub unsafe extern "C" fn physx_PxJoint_setConstraintFlag_mut(
     self_: *mut PxJoint,
     flag: PxConstraintFlag,
     value: bool
@@ -19119,7 +19119,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_setConstraintFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getConstraintFlags(
+pub unsafe extern "C" fn physx_PxJoint_getConstraintFlags(
     self_: *const PxJoint
 ) -> PxConstraintFlags
 {
@@ -19129,7 +19129,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getConstraintFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_setInvMassScale0_mut(
+pub unsafe extern "C" fn physx_PxJoint_setInvMassScale0_mut(
     self_: *mut PxJoint,
     invMassScale: f32
 )
@@ -19141,7 +19141,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_setInvMassScale0_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getInvMassScale0(
+pub unsafe extern "C" fn physx_PxJoint_getInvMassScale0(
     self_: *const PxJoint
 ) -> f32
 {
@@ -19151,7 +19151,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getInvMassScale0(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_setInvInertiaScale0_mut(
+pub unsafe extern "C" fn physx_PxJoint_setInvInertiaScale0_mut(
     self_: *mut PxJoint,
     invInertiaScale: f32
 )
@@ -19163,7 +19163,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_setInvInertiaScale0_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getInvInertiaScale0(
+pub unsafe extern "C" fn physx_PxJoint_getInvInertiaScale0(
     self_: *const PxJoint
 ) -> f32
 {
@@ -19173,7 +19173,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getInvInertiaScale0(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_setInvMassScale1_mut(
+pub unsafe extern "C" fn physx_PxJoint_setInvMassScale1_mut(
     self_: *mut PxJoint,
     invMassScale: f32
 )
@@ -19185,7 +19185,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_setInvMassScale1_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getInvMassScale1(
+pub unsafe extern "C" fn physx_PxJoint_getInvMassScale1(
     self_: *const PxJoint
 ) -> f32
 {
@@ -19195,7 +19195,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getInvMassScale1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_setInvInertiaScale1_mut(
+pub unsafe extern "C" fn physx_PxJoint_setInvInertiaScale1_mut(
     self_: *mut PxJoint,
     invInertiaScale: f32
 )
@@ -19207,7 +19207,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_setInvInertiaScale1_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getInvInertiaScale1(
+pub unsafe extern "C" fn physx_PxJoint_getInvInertiaScale1(
     self_: *const PxJoint
 ) -> f32
 {
@@ -19217,7 +19217,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getInvInertiaScale1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getConstraint(
+pub unsafe extern "C" fn physx_PxJoint_getConstraint(
     self_: *const PxJoint
 ) -> *mut PxConstraint
 {
@@ -19227,7 +19227,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getConstraint(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_setName_mut(
+pub unsafe extern "C" fn physx_PxJoint_setName_mut(
     self_: *mut PxJoint,
     name: *const c_char
 )
@@ -19239,7 +19239,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_setName_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getName(
+pub unsafe extern "C" fn physx_PxJoint_getName(
     self_: *const PxJoint
 ) -> *const c_char
 {
@@ -19249,7 +19249,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_release_mut(
+pub unsafe extern "C" fn physx_PxJoint_release_mut(
     self_: *mut PxJoint
 )
 {
@@ -19259,7 +19259,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getScene(
+pub unsafe extern "C" fn physx_PxJoint_getScene(
     self_: *const PxJoint
 ) -> *mut PxScene
 {
@@ -19269,7 +19269,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getScene(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJoint_getBinaryMetaData(
+pub unsafe extern "C" fn physx_PxJoint_getBinaryMetaData(
     stream: *mut PxOutputStream
 )
 {
@@ -19279,7 +19279,7 @@ pub unsafe extern "C" fn magicphysx_PxJoint_getBinaryMetaData(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSpring_new(
+pub unsafe extern "C" fn physx_PxSpring_new(
     stiffness_: f32,
     damping_: f32
 ) -> PxSpring
@@ -19291,7 +19291,7 @@ pub unsafe extern "C" fn magicphysx_PxSpring_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSetJointGlobalFrame(
+pub unsafe extern "C" fn physx_phys_PxSetJointGlobalFrame(
     joint: *mut PxJoint,
     wsAnchor: *const PxVec3,
     wsAxis: *const PxVec3
@@ -19305,7 +19305,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSetJointGlobalFrame(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxDistanceJointCreate(
+pub unsafe extern "C" fn physx_phys_PxDistanceJointCreate(
     physics: *mut PxPhysics,
     actor0: *mut PxRigidActor,
     localFrame0: *const PxTransform,
@@ -19323,7 +19323,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxDistanceJointCreate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getDistance(
+pub unsafe extern "C" fn physx_PxDistanceJoint_getDistance(
     self_: *const PxDistanceJoint
 ) -> f32
 {
@@ -19333,7 +19333,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getDistance(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setMinDistance_mut(
+pub unsafe extern "C" fn physx_PxDistanceJoint_setMinDistance_mut(
     self_: *mut PxDistanceJoint,
     distance: f32
 )
@@ -19345,7 +19345,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setMinDistance_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getMinDistance(
+pub unsafe extern "C" fn physx_PxDistanceJoint_getMinDistance(
     self_: *const PxDistanceJoint
 ) -> f32
 {
@@ -19355,7 +19355,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getMinDistance(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setMaxDistance_mut(
+pub unsafe extern "C" fn physx_PxDistanceJoint_setMaxDistance_mut(
     self_: *mut PxDistanceJoint,
     distance: f32
 )
@@ -19367,7 +19367,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setMaxDistance_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getMaxDistance(
+pub unsafe extern "C" fn physx_PxDistanceJoint_getMaxDistance(
     self_: *const PxDistanceJoint
 ) -> f32
 {
@@ -19377,7 +19377,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getMaxDistance(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setTolerance_mut(
+pub unsafe extern "C" fn physx_PxDistanceJoint_setTolerance_mut(
     self_: *mut PxDistanceJoint,
     tolerance: f32
 )
@@ -19389,7 +19389,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setTolerance_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getTolerance(
+pub unsafe extern "C" fn physx_PxDistanceJoint_getTolerance(
     self_: *const PxDistanceJoint
 ) -> f32
 {
@@ -19399,7 +19399,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getTolerance(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setStiffness_mut(
+pub unsafe extern "C" fn physx_PxDistanceJoint_setStiffness_mut(
     self_: *mut PxDistanceJoint,
     stiffness: f32
 )
@@ -19411,7 +19411,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setStiffness_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getStiffness(
+pub unsafe extern "C" fn physx_PxDistanceJoint_getStiffness(
     self_: *const PxDistanceJoint
 ) -> f32
 {
@@ -19421,7 +19421,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getStiffness(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setDamping_mut(
+pub unsafe extern "C" fn physx_PxDistanceJoint_setDamping_mut(
     self_: *mut PxDistanceJoint,
     damping: f32
 )
@@ -19433,7 +19433,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setDamping_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getDamping(
+pub unsafe extern "C" fn physx_PxDistanceJoint_getDamping(
     self_: *const PxDistanceJoint
 ) -> f32
 {
@@ -19443,7 +19443,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getDamping(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setContactDistance_mut(
+pub unsafe extern "C" fn physx_PxDistanceJoint_setContactDistance_mut(
     self_: *mut PxDistanceJoint,
     contactDistance: f32
 )
@@ -19455,7 +19455,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setContactDistance_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getContactDistance(
+pub unsafe extern "C" fn physx_PxDistanceJoint_getContactDistance(
     self_: *const PxDistanceJoint
 ) -> f32
 {
@@ -19465,7 +19465,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getContactDistance(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setDistanceJointFlags_mut(
+pub unsafe extern "C" fn physx_PxDistanceJoint_setDistanceJointFlags_mut(
     self_: *mut PxDistanceJoint,
     flags: PxDistanceJointFlags
 )
@@ -19477,7 +19477,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setDistanceJointFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setDistanceJointFlag_mut(
+pub unsafe extern "C" fn physx_PxDistanceJoint_setDistanceJointFlag_mut(
     self_: *mut PxDistanceJoint,
     flag: PxDistanceJointFlag,
     value: bool
@@ -19491,7 +19491,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_setDistanceJointFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getDistanceJointFlags(
+pub unsafe extern "C" fn physx_PxDistanceJoint_getDistanceJointFlags(
     self_: *const PxDistanceJoint
 ) -> PxDistanceJointFlags
 {
@@ -19501,7 +19501,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getDistanceJointFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxDistanceJoint_getConcreteTypeName(
     self_: *const PxDistanceJoint
 ) -> *const c_char
 {
@@ -19511,7 +19511,7 @@ pub unsafe extern "C" fn magicphysx_PxDistanceJoint_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxContactJointCreate(
+pub unsafe extern "C" fn physx_phys_PxContactJointCreate(
     physics: *mut PxPhysics,
     actor0: *mut PxRigidActor,
     localFrame0: *const PxTransform,
@@ -19529,7 +19529,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxContactJointCreate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJacobianRow_new(
+pub unsafe extern "C" fn physx_PxJacobianRow_new(
 
 ) -> PxJacobianRow
 {
@@ -19539,7 +19539,7 @@ pub unsafe extern "C" fn magicphysx_PxJacobianRow_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJacobianRow_new_1(
+pub unsafe extern "C" fn physx_PxJacobianRow_new_1(
     lin0: *const PxVec3,
     lin1: *const PxVec3,
     ang0: *const PxVec3,
@@ -19555,7 +19555,7 @@ pub unsafe extern "C" fn magicphysx_PxJacobianRow_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_setContact_mut(
+pub unsafe extern "C" fn physx_PxContactJoint_setContact_mut(
     self_: *mut PxContactJoint,
     contact: *const PxVec3
 )
@@ -19567,7 +19567,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_setContact_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_setContactNormal_mut(
+pub unsafe extern "C" fn physx_PxContactJoint_setContactNormal_mut(
     self_: *mut PxContactJoint,
     contactNormal: *const PxVec3
 )
@@ -19579,7 +19579,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_setContactNormal_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_setPenetration_mut(
+pub unsafe extern "C" fn physx_PxContactJoint_setPenetration_mut(
     self_: *mut PxContactJoint,
     penetration: f32
 )
@@ -19591,7 +19591,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_setPenetration_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_getContact(
+pub unsafe extern "C" fn physx_PxContactJoint_getContact(
     self_: *const PxContactJoint
 ) -> PxVec3
 {
@@ -19601,7 +19601,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_getContact(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_getContactNormal(
+pub unsafe extern "C" fn physx_PxContactJoint_getContactNormal(
     self_: *const PxContactJoint
 ) -> PxVec3
 {
@@ -19611,7 +19611,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_getContactNormal(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_getPenetration(
+pub unsafe extern "C" fn physx_PxContactJoint_getPenetration(
     self_: *const PxContactJoint
 ) -> f32
 {
@@ -19621,7 +19621,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_getPenetration(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_getRestitution(
+pub unsafe extern "C" fn physx_PxContactJoint_getRestitution(
     self_: *const PxContactJoint
 ) -> f32
 {
@@ -19631,7 +19631,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_getRestitution(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_setRestitution_mut(
+pub unsafe extern "C" fn physx_PxContactJoint_setRestitution_mut(
     self_: *mut PxContactJoint,
     restitution: f32
 )
@@ -19643,7 +19643,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_setRestitution_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_getBounceThreshold(
+pub unsafe extern "C" fn physx_PxContactJoint_getBounceThreshold(
     self_: *const PxContactJoint
 ) -> f32
 {
@@ -19653,7 +19653,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_getBounceThreshold(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_setBounceThreshold_mut(
+pub unsafe extern "C" fn physx_PxContactJoint_setBounceThreshold_mut(
     self_: *mut PxContactJoint,
     bounceThreshold: f32
 )
@@ -19665,7 +19665,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_setBounceThreshold_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxContactJoint_getConcreteTypeName(
     self_: *const PxContactJoint
 ) -> *const c_char
 {
@@ -19675,7 +19675,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_computeJacobians(
+pub unsafe extern "C" fn physx_PxContactJoint_computeJacobians(
     self_: *const PxContactJoint,
     jacobian: *mut PxJacobianRow
 )
@@ -19687,7 +19687,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_computeJacobians(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxContactJoint_getNbJacobianRows(
+pub unsafe extern "C" fn physx_PxContactJoint_getNbJacobianRows(
     self_: *const PxContactJoint
 ) -> u32
 {
@@ -19697,7 +19697,7 @@ pub unsafe extern "C" fn magicphysx_PxContactJoint_getNbJacobianRows(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxFixedJointCreate(
+pub unsafe extern "C" fn physx_phys_PxFixedJointCreate(
     physics: *mut PxPhysics,
     actor0: *mut PxRigidActor,
     localFrame0: *const PxTransform,
@@ -19715,7 +19715,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxFixedJointCreate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxFixedJoint_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxFixedJoint_getConcreteTypeName(
     self_: *const PxFixedJoint
 ) -> *const c_char
 {
@@ -19725,7 +19725,7 @@ pub unsafe extern "C" fn magicphysx_PxFixedJoint_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLimitParameters_new_alloc(
+pub unsafe extern "C" fn physx_PxJointLimitParameters_new_alloc(
 
 ) -> *mut PxJointLimitParameters
 {
@@ -19735,7 +19735,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLimitParameters_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLimitParameters_isValid(
+pub unsafe extern "C" fn physx_PxJointLimitParameters_isValid(
     self_: *const PxJointLimitParameters
 ) -> bool
 {
@@ -19745,7 +19745,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLimitParameters_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLimitParameters_isSoft(
+pub unsafe extern "C" fn physx_PxJointLimitParameters_isSoft(
     self_: *const PxJointLimitParameters
 ) -> bool
 {
@@ -19755,7 +19755,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLimitParameters_isSoft(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLinearLimit_new(
+pub unsafe extern "C" fn physx_PxJointLinearLimit_new(
     scale: *const PxTolerancesScale,
     extent: f32,
     contactDist_deprecated: f32
@@ -19769,7 +19769,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLinearLimit_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLinearLimit_new_1(
+pub unsafe extern "C" fn physx_PxJointLinearLimit_new_1(
     extent: f32,
     spring: *const PxSpring
 ) -> PxJointLinearLimit
@@ -19781,7 +19781,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLinearLimit_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLinearLimit_isValid(
+pub unsafe extern "C" fn physx_PxJointLinearLimit_isValid(
     self_: *const PxJointLinearLimit
 ) -> bool
 {
@@ -19791,7 +19791,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLinearLimit_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLinearLimit_delete(
+pub unsafe extern "C" fn physx_PxJointLinearLimit_delete(
     self_: *mut PxJointLinearLimit
 )
 {
@@ -19801,7 +19801,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLinearLimit_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLinearLimitPair_new(
+pub unsafe extern "C" fn physx_PxJointLinearLimitPair_new(
     scale: *const PxTolerancesScale,
     lowerLimit: f32,
     upperLimit: f32,
@@ -19817,7 +19817,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLinearLimitPair_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLinearLimitPair_new_1(
+pub unsafe extern "C" fn physx_PxJointLinearLimitPair_new_1(
     lowerLimit: f32,
     upperLimit: f32,
     spring: *const PxSpring
@@ -19831,7 +19831,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLinearLimitPair_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLinearLimitPair_isValid(
+pub unsafe extern "C" fn physx_PxJointLinearLimitPair_isValid(
     self_: *const PxJointLinearLimitPair
 ) -> bool
 {
@@ -19841,7 +19841,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLinearLimitPair_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLinearLimitPair_delete(
+pub unsafe extern "C" fn physx_PxJointLinearLimitPair_delete(
     self_: *mut PxJointLinearLimitPair
 )
 {
@@ -19851,7 +19851,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLinearLimitPair_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointAngularLimitPair_new(
+pub unsafe extern "C" fn physx_PxJointAngularLimitPair_new(
     lowerLimit: f32,
     upperLimit: f32,
     contactDist_deprecated: f32
@@ -19865,7 +19865,7 @@ pub unsafe extern "C" fn magicphysx_PxJointAngularLimitPair_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointAngularLimitPair_new_1(
+pub unsafe extern "C" fn physx_PxJointAngularLimitPair_new_1(
     lowerLimit: f32,
     upperLimit: f32,
     spring: *const PxSpring
@@ -19879,7 +19879,7 @@ pub unsafe extern "C" fn magicphysx_PxJointAngularLimitPair_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointAngularLimitPair_isValid(
+pub unsafe extern "C" fn physx_PxJointAngularLimitPair_isValid(
     self_: *const PxJointAngularLimitPair
 ) -> bool
 {
@@ -19889,7 +19889,7 @@ pub unsafe extern "C" fn magicphysx_PxJointAngularLimitPair_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointAngularLimitPair_delete(
+pub unsafe extern "C" fn physx_PxJointAngularLimitPair_delete(
     self_: *mut PxJointAngularLimitPair
 )
 {
@@ -19899,7 +19899,7 @@ pub unsafe extern "C" fn magicphysx_PxJointAngularLimitPair_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLimitCone_new(
+pub unsafe extern "C" fn physx_PxJointLimitCone_new(
     yLimitAngle: f32,
     zLimitAngle: f32,
     contactDist_deprecated: f32
@@ -19913,7 +19913,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLimitCone_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLimitCone_new_1(
+pub unsafe extern "C" fn physx_PxJointLimitCone_new_1(
     yLimitAngle: f32,
     zLimitAngle: f32,
     spring: *const PxSpring
@@ -19927,7 +19927,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLimitCone_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLimitCone_isValid(
+pub unsafe extern "C" fn physx_PxJointLimitCone_isValid(
     self_: *const PxJointLimitCone
 ) -> bool
 {
@@ -19937,7 +19937,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLimitCone_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLimitCone_delete(
+pub unsafe extern "C" fn physx_PxJointLimitCone_delete(
     self_: *mut PxJointLimitCone
 )
 {
@@ -19947,7 +19947,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLimitCone_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLimitPyramid_new(
+pub unsafe extern "C" fn physx_PxJointLimitPyramid_new(
     yLimitAngleMin: f32,
     yLimitAngleMax: f32,
     zLimitAngleMin: f32,
@@ -19965,7 +19965,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLimitPyramid_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLimitPyramid_new_1(
+pub unsafe extern "C" fn physx_PxJointLimitPyramid_new_1(
     yLimitAngleMin: f32,
     yLimitAngleMax: f32,
     zLimitAngleMin: f32,
@@ -19983,7 +19983,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLimitPyramid_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLimitPyramid_isValid(
+pub unsafe extern "C" fn physx_PxJointLimitPyramid_isValid(
     self_: *const PxJointLimitPyramid
 ) -> bool
 {
@@ -19993,7 +19993,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLimitPyramid_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxJointLimitPyramid_delete(
+pub unsafe extern "C" fn physx_PxJointLimitPyramid_delete(
     self_: *mut PxJointLimitPyramid
 )
 {
@@ -20003,7 +20003,7 @@ pub unsafe extern "C" fn magicphysx_PxJointLimitPyramid_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxPrismaticJointCreate(
+pub unsafe extern "C" fn physx_phys_PxPrismaticJointCreate(
     physics: *mut PxPhysics,
     actor0: *mut PxRigidActor,
     localFrame0: *const PxTransform,
@@ -20021,7 +20021,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxPrismaticJointCreate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_getPosition(
+pub unsafe extern "C" fn physx_PxPrismaticJoint_getPosition(
     self_: *const PxPrismaticJoint
 ) -> f32
 {
@@ -20031,7 +20031,7 @@ pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_getPosition(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_getVelocity(
+pub unsafe extern "C" fn physx_PxPrismaticJoint_getVelocity(
     self_: *const PxPrismaticJoint
 ) -> f32
 {
@@ -20041,7 +20041,7 @@ pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_getVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_setLimit_mut(
+pub unsafe extern "C" fn physx_PxPrismaticJoint_setLimit_mut(
     self_: *mut PxPrismaticJoint,
     anon_param0: *const PxJointLinearLimitPair
 )
@@ -20053,7 +20053,7 @@ pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_setLimit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_getLimit(
+pub unsafe extern "C" fn physx_PxPrismaticJoint_getLimit(
     self_: *const PxPrismaticJoint
 ) -> PxJointLinearLimitPair
 {
@@ -20063,7 +20063,7 @@ pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_getLimit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_setPrismaticJointFlags_mut(
+pub unsafe extern "C" fn physx_PxPrismaticJoint_setPrismaticJointFlags_mut(
     self_: *mut PxPrismaticJoint,
     flags: PxPrismaticJointFlags
 )
@@ -20075,7 +20075,7 @@ pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_setPrismaticJointFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_setPrismaticJointFlag_mut(
+pub unsafe extern "C" fn physx_PxPrismaticJoint_setPrismaticJointFlag_mut(
     self_: *mut PxPrismaticJoint,
     flag: PxPrismaticJointFlag,
     value: bool
@@ -20089,7 +20089,7 @@ pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_setPrismaticJointFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_getPrismaticJointFlags(
+pub unsafe extern "C" fn physx_PxPrismaticJoint_getPrismaticJointFlags(
     self_: *const PxPrismaticJoint
 ) -> PxPrismaticJointFlags
 {
@@ -20099,7 +20099,7 @@ pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_getPrismaticJointFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxPrismaticJoint_getConcreteTypeName(
     self_: *const PxPrismaticJoint
 ) -> *const c_char
 {
@@ -20109,7 +20109,7 @@ pub unsafe extern "C" fn magicphysx_PxPrismaticJoint_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxRevoluteJointCreate(
+pub unsafe extern "C" fn physx_phys_PxRevoluteJointCreate(
     physics: *mut PxPhysics,
     actor0: *mut PxRigidActor,
     localFrame0: *const PxTransform,
@@ -20127,7 +20127,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxRevoluteJointCreate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getAngle(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_getAngle(
     self_: *const PxRevoluteJoint
 ) -> f32
 {
@@ -20137,7 +20137,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getAngle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getVelocity(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_getVelocity(
     self_: *const PxRevoluteJoint
 ) -> f32
 {
@@ -20147,7 +20147,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setLimit_mut(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_setLimit_mut(
     self_: *mut PxRevoluteJoint,
     limits: *const PxJointAngularLimitPair
 )
@@ -20159,7 +20159,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setLimit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getLimit(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_getLimit(
     self_: *const PxRevoluteJoint
 ) -> PxJointAngularLimitPair
 {
@@ -20169,7 +20169,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getLimit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setDriveVelocity_mut(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_setDriveVelocity_mut(
     self_: *mut PxRevoluteJoint,
     velocity: f32,
     autowake: bool
@@ -20183,7 +20183,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setDriveVelocity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getDriveVelocity(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_getDriveVelocity(
     self_: *const PxRevoluteJoint
 ) -> f32
 {
@@ -20193,7 +20193,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getDriveVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setDriveForceLimit_mut(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_setDriveForceLimit_mut(
     self_: *mut PxRevoluteJoint,
     limit: f32
 )
@@ -20205,7 +20205,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setDriveForceLimit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getDriveForceLimit(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_getDriveForceLimit(
     self_: *const PxRevoluteJoint
 ) -> f32
 {
@@ -20215,7 +20215,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getDriveForceLimit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setDriveGearRatio_mut(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_setDriveGearRatio_mut(
     self_: *mut PxRevoluteJoint,
     ratio: f32
 )
@@ -20227,7 +20227,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setDriveGearRatio_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getDriveGearRatio(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_getDriveGearRatio(
     self_: *const PxRevoluteJoint
 ) -> f32
 {
@@ -20237,7 +20237,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getDriveGearRatio(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setRevoluteJointFlags_mut(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_setRevoluteJointFlags_mut(
     self_: *mut PxRevoluteJoint,
     flags: PxRevoluteJointFlags
 )
@@ -20249,7 +20249,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setRevoluteJointFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setRevoluteJointFlag_mut(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_setRevoluteJointFlag_mut(
     self_: *mut PxRevoluteJoint,
     flag: PxRevoluteJointFlag,
     value: bool
@@ -20263,7 +20263,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_setRevoluteJointFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getRevoluteJointFlags(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_getRevoluteJointFlags(
     self_: *const PxRevoluteJoint
 ) -> PxRevoluteJointFlags
 {
@@ -20273,7 +20273,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getRevoluteJointFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxRevoluteJoint_getConcreteTypeName(
     self_: *const PxRevoluteJoint
 ) -> *const c_char
 {
@@ -20283,7 +20283,7 @@ pub unsafe extern "C" fn magicphysx_PxRevoluteJoint_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSphericalJointCreate(
+pub unsafe extern "C" fn physx_phys_PxSphericalJointCreate(
     physics: *mut PxPhysics,
     actor0: *mut PxRigidActor,
     localFrame0: *const PxTransform,
@@ -20301,7 +20301,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSphericalJointCreate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSphericalJoint_getLimitCone(
+pub unsafe extern "C" fn physx_PxSphericalJoint_getLimitCone(
     self_: *const PxSphericalJoint
 ) -> PxJointLimitCone
 {
@@ -20311,7 +20311,7 @@ pub unsafe extern "C" fn magicphysx_PxSphericalJoint_getLimitCone(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSphericalJoint_setLimitCone_mut(
+pub unsafe extern "C" fn physx_PxSphericalJoint_setLimitCone_mut(
     self_: *mut PxSphericalJoint,
     limit: *const PxJointLimitCone
 )
@@ -20323,7 +20323,7 @@ pub unsafe extern "C" fn magicphysx_PxSphericalJoint_setLimitCone_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSphericalJoint_getSwingYAngle(
+pub unsafe extern "C" fn physx_PxSphericalJoint_getSwingYAngle(
     self_: *const PxSphericalJoint
 ) -> f32
 {
@@ -20333,7 +20333,7 @@ pub unsafe extern "C" fn magicphysx_PxSphericalJoint_getSwingYAngle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSphericalJoint_getSwingZAngle(
+pub unsafe extern "C" fn physx_PxSphericalJoint_getSwingZAngle(
     self_: *const PxSphericalJoint
 ) -> f32
 {
@@ -20343,7 +20343,7 @@ pub unsafe extern "C" fn magicphysx_PxSphericalJoint_getSwingZAngle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSphericalJoint_setSphericalJointFlags_mut(
+pub unsafe extern "C" fn physx_PxSphericalJoint_setSphericalJointFlags_mut(
     self_: *mut PxSphericalJoint,
     flags: PxSphericalJointFlags
 )
@@ -20355,7 +20355,7 @@ pub unsafe extern "C" fn magicphysx_PxSphericalJoint_setSphericalJointFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSphericalJoint_setSphericalJointFlag_mut(
+pub unsafe extern "C" fn physx_PxSphericalJoint_setSphericalJointFlag_mut(
     self_: *mut PxSphericalJoint,
     flag: PxSphericalJointFlag,
     value: bool
@@ -20369,7 +20369,7 @@ pub unsafe extern "C" fn magicphysx_PxSphericalJoint_setSphericalJointFlag_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSphericalJoint_getSphericalJointFlags(
+pub unsafe extern "C" fn physx_PxSphericalJoint_getSphericalJointFlags(
     self_: *const PxSphericalJoint
 ) -> PxSphericalJointFlags
 {
@@ -20379,7 +20379,7 @@ pub unsafe extern "C" fn magicphysx_PxSphericalJoint_getSphericalJointFlags(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSphericalJoint_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxSphericalJoint_getConcreteTypeName(
     self_: *const PxSphericalJoint
 ) -> *const c_char
 {
@@ -20389,7 +20389,7 @@ pub unsafe extern "C" fn magicphysx_PxSphericalJoint_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxD6JointCreate(
+pub unsafe extern "C" fn physx_phys_PxD6JointCreate(
     physics: *mut PxPhysics,
     actor0: *mut PxRigidActor,
     localFrame0: *const PxTransform,
@@ -20407,7 +20407,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxD6JointCreate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6JointDrive_new(
+pub unsafe extern "C" fn physx_PxD6JointDrive_new(
 
 ) -> PxD6JointDrive
 {
@@ -20417,7 +20417,7 @@ pub unsafe extern "C" fn magicphysx_PxD6JointDrive_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6JointDrive_new_1(
+pub unsafe extern "C" fn physx_PxD6JointDrive_new_1(
     driveStiffness: f32,
     driveDamping: f32,
     driveForceLimit: f32,
@@ -20433,7 +20433,7 @@ pub unsafe extern "C" fn magicphysx_PxD6JointDrive_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6JointDrive_isValid(
+pub unsafe extern "C" fn physx_PxD6JointDrive_isValid(
     self_: *const PxD6JointDrive
 ) -> bool
 {
@@ -20443,7 +20443,7 @@ pub unsafe extern "C" fn magicphysx_PxD6JointDrive_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_setMotion_mut(
+pub unsafe extern "C" fn physx_PxD6Joint_setMotion_mut(
     self_: *mut PxD6Joint,
     axis: PxD6Axis,
     type_: PxD6Motion
@@ -20457,7 +20457,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_setMotion_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getMotion(
+pub unsafe extern "C" fn physx_PxD6Joint_getMotion(
     self_: *const PxD6Joint,
     axis: PxD6Axis
 ) -> PxD6Motion
@@ -20469,7 +20469,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getMotion(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getTwistAngle(
+pub unsafe extern "C" fn physx_PxD6Joint_getTwistAngle(
     self_: *const PxD6Joint
 ) -> f32
 {
@@ -20479,7 +20479,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getTwistAngle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getSwingYAngle(
+pub unsafe extern "C" fn physx_PxD6Joint_getSwingYAngle(
     self_: *const PxD6Joint
 ) -> f32
 {
@@ -20489,7 +20489,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getSwingYAngle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getSwingZAngle(
+pub unsafe extern "C" fn physx_PxD6Joint_getSwingZAngle(
     self_: *const PxD6Joint
 ) -> f32
 {
@@ -20499,7 +20499,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getSwingZAngle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_setDistanceLimit_mut(
+pub unsafe extern "C" fn physx_PxD6Joint_setDistanceLimit_mut(
     self_: *mut PxD6Joint,
     limit: *const PxJointLinearLimit
 )
@@ -20511,7 +20511,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_setDistanceLimit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getDistanceLimit(
+pub unsafe extern "C" fn physx_PxD6Joint_getDistanceLimit(
     self_: *const PxD6Joint
 ) -> PxJointLinearLimit
 {
@@ -20521,7 +20521,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getDistanceLimit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_setLinearLimit_mut(
+pub unsafe extern "C" fn physx_PxD6Joint_setLinearLimit_mut(
     self_: *mut PxD6Joint,
     axis: PxD6Axis,
     limit: *const PxJointLinearLimitPair
@@ -20535,7 +20535,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_setLinearLimit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getLinearLimit(
+pub unsafe extern "C" fn physx_PxD6Joint_getLinearLimit(
     self_: *const PxD6Joint,
     axis: PxD6Axis
 ) -> PxJointLinearLimitPair
@@ -20547,7 +20547,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getLinearLimit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_setTwistLimit_mut(
+pub unsafe extern "C" fn physx_PxD6Joint_setTwistLimit_mut(
     self_: *mut PxD6Joint,
     limit: *const PxJointAngularLimitPair
 )
@@ -20559,7 +20559,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_setTwistLimit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getTwistLimit(
+pub unsafe extern "C" fn physx_PxD6Joint_getTwistLimit(
     self_: *const PxD6Joint
 ) -> PxJointAngularLimitPair
 {
@@ -20569,7 +20569,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getTwistLimit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_setSwingLimit_mut(
+pub unsafe extern "C" fn physx_PxD6Joint_setSwingLimit_mut(
     self_: *mut PxD6Joint,
     limit: *const PxJointLimitCone
 )
@@ -20581,7 +20581,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_setSwingLimit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getSwingLimit(
+pub unsafe extern "C" fn physx_PxD6Joint_getSwingLimit(
     self_: *const PxD6Joint
 ) -> PxJointLimitCone
 {
@@ -20591,7 +20591,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getSwingLimit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_setPyramidSwingLimit_mut(
+pub unsafe extern "C" fn physx_PxD6Joint_setPyramidSwingLimit_mut(
     self_: *mut PxD6Joint,
     limit: *const PxJointLimitPyramid
 )
@@ -20603,7 +20603,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_setPyramidSwingLimit_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getPyramidSwingLimit(
+pub unsafe extern "C" fn physx_PxD6Joint_getPyramidSwingLimit(
     self_: *const PxD6Joint
 ) -> PxJointLimitPyramid
 {
@@ -20613,7 +20613,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getPyramidSwingLimit(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_setDrive_mut(
+pub unsafe extern "C" fn physx_PxD6Joint_setDrive_mut(
     self_: *mut PxD6Joint,
     index: PxD6Drive,
     drive: *const PxD6JointDrive
@@ -20627,7 +20627,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_setDrive_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getDrive(
+pub unsafe extern "C" fn physx_PxD6Joint_getDrive(
     self_: *const PxD6Joint,
     index: PxD6Drive
 ) -> PxD6JointDrive
@@ -20639,7 +20639,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getDrive(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_setDrivePosition_mut(
+pub unsafe extern "C" fn physx_PxD6Joint_setDrivePosition_mut(
     self_: *mut PxD6Joint,
     pose: *const PxTransform,
     autowake: bool
@@ -20653,7 +20653,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_setDrivePosition_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getDrivePosition(
+pub unsafe extern "C" fn physx_PxD6Joint_getDrivePosition(
     self_: *const PxD6Joint
 ) -> PxTransform
 {
@@ -20663,7 +20663,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getDrivePosition(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_setDriveVelocity_mut(
+pub unsafe extern "C" fn physx_PxD6Joint_setDriveVelocity_mut(
     self_: *mut PxD6Joint,
     linear: *const PxVec3,
     angular: *const PxVec3,
@@ -20679,7 +20679,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_setDriveVelocity_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getDriveVelocity(
+pub unsafe extern "C" fn physx_PxD6Joint_getDriveVelocity(
     self_: *const PxD6Joint,
     linear: *mut PxVec3,
     angular: *mut PxVec3
@@ -20693,7 +20693,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getDriveVelocity(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_setProjectionLinearTolerance_mut(
+pub unsafe extern "C" fn physx_PxD6Joint_setProjectionLinearTolerance_mut(
     self_: *mut PxD6Joint,
     tolerance: f32
 )
@@ -20705,7 +20705,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_setProjectionLinearTolerance_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getProjectionLinearTolerance(
+pub unsafe extern "C" fn physx_PxD6Joint_getProjectionLinearTolerance(
     self_: *const PxD6Joint
 ) -> f32
 {
@@ -20715,7 +20715,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getProjectionLinearTolerance(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_setProjectionAngularTolerance_mut(
+pub unsafe extern "C" fn physx_PxD6Joint_setProjectionAngularTolerance_mut(
     self_: *mut PxD6Joint,
     tolerance: f32
 )
@@ -20727,7 +20727,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_setProjectionAngularTolerance_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getProjectionAngularTolerance(
+pub unsafe extern "C" fn physx_PxD6Joint_getProjectionAngularTolerance(
     self_: *const PxD6Joint
 ) -> f32
 {
@@ -20737,7 +20737,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getProjectionAngularTolerance(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxD6Joint_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxD6Joint_getConcreteTypeName(
     self_: *const PxD6Joint
 ) -> *const c_char
 {
@@ -20747,7 +20747,7 @@ pub unsafe extern "C" fn magicphysx_PxD6Joint_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGearJointCreate(
+pub unsafe extern "C" fn physx_phys_PxGearJointCreate(
     physics: *mut PxPhysics,
     actor0: *mut PxRigidActor,
     localFrame0: *const PxTransform,
@@ -20765,7 +20765,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGearJointCreate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGearJoint_setHinges_mut(
+pub unsafe extern "C" fn physx_PxGearJoint_setHinges_mut(
     self_: *mut PxGearJoint,
     hinge0: *const PxBase,
     hinge1: *const PxBase
@@ -20779,7 +20779,7 @@ pub unsafe extern "C" fn magicphysx_PxGearJoint_setHinges_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGearJoint_setGearRatio_mut(
+pub unsafe extern "C" fn physx_PxGearJoint_setGearRatio_mut(
     self_: *mut PxGearJoint,
     ratio: f32
 )
@@ -20791,7 +20791,7 @@ pub unsafe extern "C" fn magicphysx_PxGearJoint_setGearRatio_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGearJoint_getGearRatio(
+pub unsafe extern "C" fn physx_PxGearJoint_getGearRatio(
     self_: *const PxGearJoint
 ) -> f32
 {
@@ -20801,7 +20801,7 @@ pub unsafe extern "C" fn magicphysx_PxGearJoint_getGearRatio(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGearJoint_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxGearJoint_getConcreteTypeName(
     self_: *const PxGearJoint
 ) -> *const c_char
 {
@@ -20811,7 +20811,7 @@ pub unsafe extern "C" fn magicphysx_PxGearJoint_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxRackAndPinionJointCreate(
+pub unsafe extern "C" fn physx_phys_PxRackAndPinionJointCreate(
     physics: *mut PxPhysics,
     actor0: *mut PxRigidActor,
     localFrame0: *const PxTransform,
@@ -20829,7 +20829,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxRackAndPinionJointCreate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRackAndPinionJoint_setJoints_mut(
+pub unsafe extern "C" fn physx_PxRackAndPinionJoint_setJoints_mut(
     self_: *mut PxRackAndPinionJoint,
     hinge: *const PxBase,
     prismatic: *const PxBase
@@ -20843,7 +20843,7 @@ pub unsafe extern "C" fn magicphysx_PxRackAndPinionJoint_setJoints_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRackAndPinionJoint_setRatio_mut(
+pub unsafe extern "C" fn physx_PxRackAndPinionJoint_setRatio_mut(
     self_: *mut PxRackAndPinionJoint,
     ratio: f32
 )
@@ -20855,7 +20855,7 @@ pub unsafe extern "C" fn magicphysx_PxRackAndPinionJoint_setRatio_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRackAndPinionJoint_getRatio(
+pub unsafe extern "C" fn physx_PxRackAndPinionJoint_getRatio(
     self_: *const PxRackAndPinionJoint
 ) -> f32
 {
@@ -20865,7 +20865,7 @@ pub unsafe extern "C" fn magicphysx_PxRackAndPinionJoint_getRatio(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRackAndPinionJoint_setData_mut(
+pub unsafe extern "C" fn physx_PxRackAndPinionJoint_setData_mut(
     self_: *mut PxRackAndPinionJoint,
     nbRackTeeth: u32,
     nbPinionTeeth: u32,
@@ -20881,7 +20881,7 @@ pub unsafe extern "C" fn magicphysx_PxRackAndPinionJoint_setData_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRackAndPinionJoint_getConcreteTypeName(
+pub unsafe extern "C" fn physx_PxRackAndPinionJoint_getConcreteTypeName(
     self_: *const PxRackAndPinionJoint
 ) -> *const c_char
 {
@@ -20891,7 +20891,7 @@ pub unsafe extern "C" fn magicphysx_PxRackAndPinionJoint_getConcreteTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGroupsMask_new_alloc(
+pub unsafe extern "C" fn physx_PxGroupsMask_new_alloc(
 
 ) -> *mut PxGroupsMask
 {
@@ -20901,7 +20901,7 @@ pub unsafe extern "C" fn magicphysx_PxGroupsMask_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxGroupsMask_delete(
+pub unsafe extern "C" fn physx_PxGroupsMask_delete(
     self_: *mut PxGroupsMask
 )
 {
@@ -20911,7 +20911,7 @@ pub unsafe extern "C" fn magicphysx_PxGroupsMask_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxDefaultSimulationFilterShader(
+pub unsafe extern "C" fn physx_phys_PxDefaultSimulationFilterShader(
     attributes0: u32,
     filterData0: PxFilterData,
     attributes1: u32,
@@ -20933,7 +20933,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxDefaultSimulationFilterShader(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetGroupCollisionFlag(
+pub unsafe extern "C" fn physx_phys_PxGetGroupCollisionFlag(
     group1: u16,
     group2: u16
 ) -> bool
@@ -20945,7 +20945,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetGroupCollisionFlag(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSetGroupCollisionFlag(
+pub unsafe extern "C" fn physx_phys_PxSetGroupCollisionFlag(
     group1: u16,
     group2: u16,
     enable: bool
@@ -20959,7 +20959,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSetGroupCollisionFlag(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetGroup(
+pub unsafe extern "C" fn physx_phys_PxGetGroup(
     actor: *const PxActor
 ) -> u16
 {
@@ -20969,7 +20969,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetGroup(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSetGroup(
+pub unsafe extern "C" fn physx_phys_PxSetGroup(
     actor: *mut PxActor,
     collisionGroup: u16
 )
@@ -20981,7 +20981,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSetGroup(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetFilterOps(
+pub unsafe extern "C" fn physx_phys_PxGetFilterOps(
     op0: *mut PxFilterOp,
     op1: *mut PxFilterOp,
     op2: *mut PxFilterOp
@@ -20995,7 +20995,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetFilterOps(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSetFilterOps(
+pub unsafe extern "C" fn physx_phys_PxSetFilterOps(
     op0: *const PxFilterOp,
     op1: *const PxFilterOp,
     op2: *const PxFilterOp
@@ -21009,7 +21009,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSetFilterOps(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetFilterBool(
+pub unsafe extern "C" fn physx_phys_PxGetFilterBool(
 
 ) -> bool
 {
@@ -21019,7 +21019,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetFilterBool(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSetFilterBool(
+pub unsafe extern "C" fn physx_phys_PxSetFilterBool(
     enable: bool
 )
 {
@@ -21029,7 +21029,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSetFilterBool(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetFilterConstants(
+pub unsafe extern "C" fn physx_phys_PxGetFilterConstants(
     c0: *mut PxGroupsMask,
     c1: *mut PxGroupsMask
 )
@@ -21041,7 +21041,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetFilterConstants(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSetFilterConstants(
+pub unsafe extern "C" fn physx_phys_PxSetFilterConstants(
     c0: *const PxGroupsMask,
     c1: *const PxGroupsMask
 )
@@ -21053,7 +21053,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSetFilterConstants(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxGetGroupsMask(
+pub unsafe extern "C" fn physx_phys_PxGetGroupsMask(
     actor: *const PxActor
 ) -> PxGroupsMask
 {
@@ -21063,7 +21063,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxGetGroupsMask(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxSetGroupsMask(
+pub unsafe extern "C" fn physx_phys_PxSetGroupsMask(
     actor: *mut PxActor,
     mask: *const PxGroupsMask
 )
@@ -21075,7 +21075,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxSetGroupsMask(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultErrorCallback_new_alloc(
+pub unsafe extern "C" fn physx_PxDefaultErrorCallback_new_alloc(
 
 ) -> *mut PxDefaultErrorCallback
 {
@@ -21085,7 +21085,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultErrorCallback_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultErrorCallback_delete(
+pub unsafe extern "C" fn physx_PxDefaultErrorCallback_delete(
     self_: *mut PxDefaultErrorCallback
 )
 {
@@ -21095,7 +21095,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultErrorCallback_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultErrorCallback_reportError_mut(
+pub unsafe extern "C" fn physx_PxDefaultErrorCallback_reportError_mut(
     self_: *mut PxDefaultErrorCallback,
     code: PxErrorCode,
     message: *const c_char,
@@ -21113,7 +21113,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultErrorCallback_reportError_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActorExt_createExclusiveShape(
+pub unsafe extern "C" fn physx_PxRigidActorExt_createExclusiveShape(
     actor: *mut PxRigidActor,
     geometry: *const PxGeometry,
     materials: *const *mut PxMaterial,
@@ -21131,7 +21131,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActorExt_createExclusiveShape(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActorExt_createExclusiveShape_1(
+pub unsafe extern "C" fn physx_PxRigidActorExt_createExclusiveShape_1(
     actor: *mut PxRigidActor,
     geometry: *const PxGeometry,
     material: *const PxMaterial,
@@ -21147,7 +21147,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActorExt_createExclusiveShape_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActorExt_getRigidActorShapeLocalBoundsList(
+pub unsafe extern "C" fn physx_PxRigidActorExt_getRigidActorShapeLocalBoundsList(
     actor: *const PxRigidActor,
     numBounds: *mut u32
 ) -> *mut PxBounds3
@@ -21159,7 +21159,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActorExt_getRigidActorShapeLocalBound
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidActorExt_createBVHFromActor(
+pub unsafe extern "C" fn physx_PxRigidActorExt_createBVHFromActor(
     physics: *mut PxPhysics,
     actor: *const PxRigidActor
 ) -> *mut PxBVH
@@ -21171,7 +21171,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidActorExt_createBVHFromActor(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMassProperties_new(
+pub unsafe extern "C" fn physx_PxMassProperties_new(
 
 ) -> PxMassProperties
 {
@@ -21181,7 +21181,7 @@ pub unsafe extern "C" fn magicphysx_PxMassProperties_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMassProperties_new_1(
+pub unsafe extern "C" fn physx_PxMassProperties_new_1(
     m: f32,
     inertiaT: *const PxMat33,
     com: *const PxVec3
@@ -21195,7 +21195,7 @@ pub unsafe extern "C" fn magicphysx_PxMassProperties_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMassProperties_new_2(
+pub unsafe extern "C" fn physx_PxMassProperties_new_2(
     geometry: *const PxGeometry
 ) -> PxMassProperties
 {
@@ -21205,7 +21205,7 @@ pub unsafe extern "C" fn magicphysx_PxMassProperties_new_2(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMassProperties_translate_mut(
+pub unsafe extern "C" fn physx_PxMassProperties_translate_mut(
     self_: *mut PxMassProperties,
     t: *const PxVec3
 )
@@ -21217,7 +21217,7 @@ pub unsafe extern "C" fn magicphysx_PxMassProperties_translate_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMassProperties_getMassSpaceInertia(
+pub unsafe extern "C" fn physx_PxMassProperties_getMassSpaceInertia(
     inertia: *const PxMat33,
     massFrame: *mut PxQuat
 ) -> PxVec3
@@ -21229,7 +21229,7 @@ pub unsafe extern "C" fn magicphysx_PxMassProperties_getMassSpaceInertia(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMassProperties_translateInertia(
+pub unsafe extern "C" fn physx_PxMassProperties_translateInertia(
     inertia: *const PxMat33,
     mass: f32,
     t: *const PxVec3
@@ -21243,7 +21243,7 @@ pub unsafe extern "C" fn magicphysx_PxMassProperties_translateInertia(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMassProperties_rotateInertia(
+pub unsafe extern "C" fn physx_PxMassProperties_rotateInertia(
     inertia: *const PxMat33,
     q: *const PxQuat
 ) -> PxMat33
@@ -21255,7 +21255,7 @@ pub unsafe extern "C" fn magicphysx_PxMassProperties_rotateInertia(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMassProperties_scaleInertia(
+pub unsafe extern "C" fn physx_PxMassProperties_scaleInertia(
     inertia: *const PxMat33,
     scaleRotation: *const PxQuat,
     scale: *const PxVec3
@@ -21269,7 +21269,7 @@ pub unsafe extern "C" fn magicphysx_PxMassProperties_scaleInertia(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMassProperties_sum(
+pub unsafe extern "C" fn physx_PxMassProperties_sum(
     props: *const PxMassProperties,
     transforms: *const PxTransform,
     count: u32
@@ -21283,7 +21283,7 @@ pub unsafe extern "C" fn magicphysx_PxMassProperties_sum(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_updateMassAndInertia(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_updateMassAndInertia(
     body: *mut PxRigidBody,
     shapeDensities: *const f32,
     shapeDensityCount: u32,
@@ -21301,7 +21301,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_updateMassAndInertia(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_updateMassAndInertia_1(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_updateMassAndInertia_1(
     body: *mut PxRigidBody,
     density: f32,
     massLocalPose: *const PxVec3,
@@ -21317,7 +21317,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_updateMassAndInertia_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_setMassAndUpdateInertia(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_setMassAndUpdateInertia(
     body: *mut PxRigidBody,
     shapeMasses: *const f32,
     shapeMassCount: u32,
@@ -21335,7 +21335,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_setMassAndUpdateInertia(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_setMassAndUpdateInertia_1(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_setMassAndUpdateInertia_1(
     body: *mut PxRigidBody,
     mass: f32,
     massLocalPose: *const PxVec3,
@@ -21351,7 +21351,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_setMassAndUpdateInertia_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_computeMassPropertiesFromShapes(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_computeMassPropertiesFromShapes(
     shapes: *const *const PxShape,
     shapeCount: u32
 ) -> PxMassProperties
@@ -21363,7 +21363,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_computeMassPropertiesFromShap
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_addForceAtPos(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_addForceAtPos(
     body: *mut PxRigidBody,
     force: *const PxVec3,
     pos: *const PxVec3,
@@ -21381,7 +21381,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_addForceAtPos(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_addForceAtLocalPos(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_addForceAtLocalPos(
     body: *mut PxRigidBody,
     force: *const PxVec3,
     pos: *const PxVec3,
@@ -21399,7 +21399,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_addForceAtLocalPos(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_addLocalForceAtPos(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_addLocalForceAtPos(
     body: *mut PxRigidBody,
     force: *const PxVec3,
     pos: *const PxVec3,
@@ -21417,7 +21417,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_addLocalForceAtPos(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_addLocalForceAtLocalPos(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_addLocalForceAtLocalPos(
     body: *mut PxRigidBody,
     force: *const PxVec3,
     pos: *const PxVec3,
@@ -21435,7 +21435,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_addLocalForceAtLocalPos(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_getVelocityAtPos(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_getVelocityAtPos(
     body: *const PxRigidBody,
     pos: *const PxVec3
 ) -> PxVec3
@@ -21447,7 +21447,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_getVelocityAtPos(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_getLocalVelocityAtLocalPos(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_getLocalVelocityAtLocalPos(
     body: *const PxRigidBody,
     pos: *const PxVec3
 ) -> PxVec3
@@ -21459,7 +21459,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_getLocalVelocityAtLocalPos(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_getVelocityAtOffset(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_getVelocityAtOffset(
     body: *const PxRigidBody,
     pos: *const PxVec3
 ) -> PxVec3
@@ -21471,7 +21471,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_getVelocityAtOffset(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_computeVelocityDeltaFromImpulse(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_computeVelocityDeltaFromImpulse(
     body: *const PxRigidBody,
     impulsiveForce: *const PxVec3,
     impulsiveTorque: *const PxVec3,
@@ -21489,7 +21489,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_computeVelocityDeltaFromImpul
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_computeVelocityDeltaFromImpulse_1(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_computeVelocityDeltaFromImpulse_1(
     body: *const PxRigidBody,
     globalPose: *const PxTransform,
     point: *const PxVec3,
@@ -21513,7 +21513,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_computeVelocityDeltaFromImpul
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_computeLinearAngularImpulse(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_computeLinearAngularImpulse(
     body: *const PxRigidBody,
     globalPose: *const PxTransform,
     point: *const PxVec3,
@@ -21537,7 +21537,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_computeLinearAngularImpulse(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_linearSweepSingle(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_linearSweepSingle(
     body: *mut PxRigidBody,
     scene: *mut PxScene,
     unitDir: *const PxVec3,
@@ -21567,7 +21567,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_linearSweepSingle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_linearSweepMultiple(
+pub unsafe extern "C" fn physx_PxRigidBodyExt_linearSweepMultiple(
     body: *mut PxRigidBody,
     scene: *mut PxScene,
     unitDir: *const PxVec3,
@@ -21605,7 +21605,7 @@ pub unsafe extern "C" fn magicphysx_PxRigidBodyExt_linearSweepMultiple(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShapeExt_getGlobalPose(
+pub unsafe extern "C" fn physx_PxShapeExt_getGlobalPose(
     shape: *const PxShape,
     actor: *const PxRigidActor
 ) -> PxTransform
@@ -21617,7 +21617,7 @@ pub unsafe extern "C" fn magicphysx_PxShapeExt_getGlobalPose(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShapeExt_raycast(
+pub unsafe extern "C" fn physx_PxShapeExt_raycast(
     shape: *const PxShape,
     actor: *const PxRigidActor,
     rayOrigin: *const PxVec3,
@@ -21641,7 +21641,7 @@ pub unsafe extern "C" fn magicphysx_PxShapeExt_raycast(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShapeExt_overlap(
+pub unsafe extern "C" fn physx_PxShapeExt_overlap(
     shape: *const PxShape,
     actor: *const PxRigidActor,
     otherGeom: *const PxGeometry,
@@ -21657,7 +21657,7 @@ pub unsafe extern "C" fn magicphysx_PxShapeExt_overlap(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShapeExt_sweep(
+pub unsafe extern "C" fn physx_PxShapeExt_sweep(
     shape: *const PxShape,
     actor: *const PxRigidActor,
     unitDir: *const PxVec3,
@@ -21681,7 +21681,7 @@ pub unsafe extern "C" fn magicphysx_PxShapeExt_sweep(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxShapeExt_getWorldBounds(
+pub unsafe extern "C" fn physx_PxShapeExt_getWorldBounds(
     shape: *const PxShape,
     actor: *const PxRigidActor,
     inflation: f32
@@ -21695,7 +21695,7 @@ pub unsafe extern "C" fn magicphysx_PxShapeExt_getWorldBounds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_new_alloc(
+pub unsafe extern "C" fn physx_PxMeshOverlapUtil_new_alloc(
 
 ) -> *mut PxMeshOverlapUtil
 {
@@ -21705,7 +21705,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_new_alloc(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_delete(
+pub unsafe extern "C" fn physx_PxMeshOverlapUtil_delete(
     self_: *mut PxMeshOverlapUtil
 )
 {
@@ -21715,7 +21715,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_findOverlap_mut(
+pub unsafe extern "C" fn physx_PxMeshOverlapUtil_findOverlap_mut(
     self_: *mut PxMeshOverlapUtil,
     geom: *const PxGeometry,
     geomPose: *const PxTransform,
@@ -21733,7 +21733,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_findOverlap_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_findOverlap_mut_1(
+pub unsafe extern "C" fn physx_PxMeshOverlapUtil_findOverlap_mut_1(
     self_: *mut PxMeshOverlapUtil,
     geom: *const PxGeometry,
     geomPose: *const PxTransform,
@@ -21751,7 +21751,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_findOverlap_mut_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_getResults(
+pub unsafe extern "C" fn physx_PxMeshOverlapUtil_getResults(
     self_: *const PxMeshOverlapUtil
 ) -> *const u32
 {
@@ -21761,7 +21761,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_getResults(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_getNbResults(
+pub unsafe extern "C" fn physx_PxMeshOverlapUtil_getNbResults(
     self_: *const PxMeshOverlapUtil
 ) -> u32
 {
@@ -21771,7 +21771,7 @@ pub unsafe extern "C" fn magicphysx_PxMeshOverlapUtil_getNbResults(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxComputeTriangleMeshPenetration(
+pub unsafe extern "C" fn physx_phys_PxComputeTriangleMeshPenetration(
     direction: *mut PxVec3,
     depth: *mut f32,
     geom: *const PxGeometry,
@@ -21795,7 +21795,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxComputeTriangleMeshPenetration(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxComputeHeightFieldPenetration(
+pub unsafe extern "C" fn physx_phys_PxComputeHeightFieldPenetration(
     direction: *mut PxVec3,
     depth: *mut f32,
     geom: *const PxGeometry,
@@ -21819,7 +21819,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxComputeHeightFieldPenetration(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxXmlMiscParameter_new(
+pub unsafe extern "C" fn physx_PxXmlMiscParameter_new(
 
 ) -> PxXmlMiscParameter
 {
@@ -21829,7 +21829,7 @@ pub unsafe extern "C" fn magicphysx_PxXmlMiscParameter_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxXmlMiscParameter_new_1(
+pub unsafe extern "C" fn physx_PxXmlMiscParameter_new_1(
     inUpVector: *mut PxVec3,
     inScale: PxTolerancesScale
 ) -> PxXmlMiscParameter
@@ -21841,7 +21841,7 @@ pub unsafe extern "C" fn magicphysx_PxXmlMiscParameter_new_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerialization_isSerializable(
+pub unsafe extern "C" fn physx_PxSerialization_isSerializable(
     collection: *mut PxCollection,
     sr: *mut PxSerializationRegistry,
     externalReferences: *const PxCollection
@@ -21855,7 +21855,7 @@ pub unsafe extern "C" fn magicphysx_PxSerialization_isSerializable(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerialization_complete(
+pub unsafe extern "C" fn physx_PxSerialization_complete(
     collection: *mut PxCollection,
     sr: *mut PxSerializationRegistry,
     exceptFor: *const PxCollection,
@@ -21871,7 +21871,7 @@ pub unsafe extern "C" fn magicphysx_PxSerialization_complete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerialization_createSerialObjectIds(
+pub unsafe extern "C" fn physx_PxSerialization_createSerialObjectIds(
     collection: *mut PxCollection,
     base: u64
 )
@@ -21883,7 +21883,7 @@ pub unsafe extern "C" fn magicphysx_PxSerialization_createSerialObjectIds(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerialization_createCollectionFromXml(
+pub unsafe extern "C" fn physx_PxSerialization_createCollectionFromXml(
     inputData: *mut PxInputData,
     cooking: *mut PxCooking,
     sr: *mut PxSerializationRegistry,
@@ -21903,7 +21903,7 @@ pub unsafe extern "C" fn magicphysx_PxSerialization_createCollectionFromXml(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerialization_createCollectionFromBinary(
+pub unsafe extern "C" fn physx_PxSerialization_createCollectionFromBinary(
     memBlock: *mut c_void,
     sr: *mut PxSerializationRegistry,
     externalRefs: *const PxCollection
@@ -21917,7 +21917,7 @@ pub unsafe extern "C" fn magicphysx_PxSerialization_createCollectionFromBinary(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerialization_serializeCollectionToXml(
+pub unsafe extern "C" fn physx_PxSerialization_serializeCollectionToXml(
     outputStream: *mut PxOutputStream,
     collection: *mut PxCollection,
     sr: *mut PxSerializationRegistry,
@@ -21937,7 +21937,7 @@ pub unsafe extern "C" fn magicphysx_PxSerialization_serializeCollectionToXml(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerialization_serializeCollectionToBinary(
+pub unsafe extern "C" fn physx_PxSerialization_serializeCollectionToBinary(
     outputStream: *mut PxOutputStream,
     collection: *mut PxCollection,
     sr: *mut PxSerializationRegistry,
@@ -21955,7 +21955,7 @@ pub unsafe extern "C" fn magicphysx_PxSerialization_serializeCollectionToBinary(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSerialization_createSerializationRegistry(
+pub unsafe extern "C" fn physx_PxSerialization_createSerializationRegistry(
     physics: *mut PxPhysics
 ) -> *mut PxSerializationRegistry
 {
@@ -21965,7 +21965,7 @@ pub unsafe extern "C" fn magicphysx_PxSerialization_createSerializationRegistry(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultCpuDispatcher_release_mut(
+pub unsafe extern "C" fn physx_PxDefaultCpuDispatcher_release_mut(
     self_: *mut PxDefaultCpuDispatcher
 )
 {
@@ -21975,7 +21975,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultCpuDispatcher_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultCpuDispatcher_setRunProfiled_mut(
+pub unsafe extern "C" fn physx_PxDefaultCpuDispatcher_setRunProfiled_mut(
     self_: *mut PxDefaultCpuDispatcher,
     runProfiled: bool
 )
@@ -21987,7 +21987,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultCpuDispatcher_setRunProfiled_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxDefaultCpuDispatcher_getRunProfiled(
+pub unsafe extern "C" fn physx_PxDefaultCpuDispatcher_getRunProfiled(
     self_: *const PxDefaultCpuDispatcher
 ) -> bool
 {
@@ -21997,7 +21997,7 @@ pub unsafe extern "C" fn magicphysx_PxDefaultCpuDispatcher_getRunProfiled(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxDefaultCpuDispatcherCreate(
+pub unsafe extern "C" fn physx_phys_PxDefaultCpuDispatcherCreate(
     numThreads: u32,
     affinityMasks: *mut u32,
     mode: PxDefaultCpuDispatcherWaitForWorkMode,
@@ -22013,7 +22013,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxDefaultCpuDispatcherCreate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxBuildSmoothNormals(
+pub unsafe extern "C" fn physx_phys_PxBuildSmoothNormals(
     nbTris: u32,
     nbVerts: u32,
     verts: *const PxVec3,
@@ -22035,7 +22035,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxBuildSmoothNormals(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateDynamic(
+pub unsafe extern "C" fn physx_phys_PxCreateDynamic(
     sdk: *mut PxPhysics,
     transform: *const PxTransform,
     geometry: *const PxGeometry,
@@ -22055,7 +22055,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateDynamic(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateDynamic_1(
+pub unsafe extern "C" fn physx_phys_PxCreateDynamic_1(
     sdk: *mut PxPhysics,
     transform: *const PxTransform,
     shape: *mut PxShape,
@@ -22071,7 +22071,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateDynamic_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateKinematic(
+pub unsafe extern "C" fn physx_phys_PxCreateKinematic(
     sdk: *mut PxPhysics,
     transform: *const PxTransform,
     geometry: *const PxGeometry,
@@ -22091,7 +22091,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateKinematic(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateKinematic_1(
+pub unsafe extern "C" fn physx_phys_PxCreateKinematic_1(
     sdk: *mut PxPhysics,
     transform: *const PxTransform,
     shape: *mut PxShape,
@@ -22107,7 +22107,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateKinematic_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateStatic(
+pub unsafe extern "C" fn physx_phys_PxCreateStatic(
     sdk: *mut PxPhysics,
     transform: *const PxTransform,
     geometry: *const PxGeometry,
@@ -22125,7 +22125,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateStatic(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateStatic_1(
+pub unsafe extern "C" fn physx_phys_PxCreateStatic_1(
     sdk: *mut PxPhysics,
     transform: *const PxTransform,
     shape: *mut PxShape
@@ -22139,7 +22139,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateStatic_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCloneShape(
+pub unsafe extern "C" fn physx_phys_PxCloneShape(
     physicsSDK: *mut PxPhysics,
     shape: *const PxShape,
     isExclusive: bool
@@ -22153,7 +22153,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCloneShape(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCloneStatic(
+pub unsafe extern "C" fn physx_phys_PxCloneStatic(
     physicsSDK: *mut PxPhysics,
     transform: *const PxTransform,
     actor: *const PxRigidActor
@@ -22167,7 +22167,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCloneStatic(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCloneDynamic(
+pub unsafe extern "C" fn physx_phys_PxCloneDynamic(
     physicsSDK: *mut PxPhysics,
     transform: *const PxTransform,
     body: *const PxRigidDynamic
@@ -22181,7 +22181,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCloneDynamic(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreatePlane(
+pub unsafe extern "C" fn physx_phys_PxCreatePlane(
     sdk: *mut PxPhysics,
     plane: *const PxPlane,
     material: *mut PxMaterial
@@ -22195,7 +22195,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreatePlane(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxScaleRigidActor(
+pub unsafe extern "C" fn physx_phys_PxScaleRigidActor(
     actor: *mut PxRigidActor,
     scale: f32,
     scaleMassProps: bool
@@ -22209,7 +22209,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxScaleRigidActor(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxStringTableExt_createStringTable(
+pub unsafe extern "C" fn physx_PxStringTableExt_createStringTable(
     inAllocator: *mut PxAllocatorCallback
 ) -> *mut PxStringTable
 {
@@ -22219,7 +22219,7 @@ pub unsafe extern "C" fn magicphysx_PxStringTableExt_createStringTable(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBroadPhaseExt_createRegionsFromWorldBounds(
+pub unsafe extern "C" fn physx_PxBroadPhaseExt_createRegionsFromWorldBounds(
     regions: *mut PxBounds3,
     globalBounds: *const PxBounds3,
     nbSubdiv: u32,
@@ -22235,7 +22235,7 @@ pub unsafe extern "C" fn magicphysx_PxBroadPhaseExt_createRegionsFromWorldBounds
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_raycastAny(
+pub unsafe extern "C" fn physx_PxSceneQueryExt_raycastAny(
     scene: *const PxScene,
     origin: *const PxVec3,
     unitDir: *const PxVec3,
@@ -22259,7 +22259,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_raycastAny(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_raycastSingle(
+pub unsafe extern "C" fn physx_PxSceneQueryExt_raycastSingle(
     scene: *const PxScene,
     origin: *const PxVec3,
     unitDir: *const PxVec3,
@@ -22285,7 +22285,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_raycastSingle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_raycastMultiple(
+pub unsafe extern "C" fn physx_PxSceneQueryExt_raycastMultiple(
     scene: *const PxScene,
     origin: *const PxVec3,
     unitDir: *const PxVec3,
@@ -22315,7 +22315,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_raycastMultiple(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_sweepAny(
+pub unsafe extern "C" fn physx_PxSceneQueryExt_sweepAny(
     scene: *const PxScene,
     geometry: *const PxGeometry,
     pose: *const PxTransform,
@@ -22345,7 +22345,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_sweepAny(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_sweepSingle(
+pub unsafe extern "C" fn physx_PxSceneQueryExt_sweepSingle(
     scene: *const PxScene,
     geometry: *const PxGeometry,
     pose: *const PxTransform,
@@ -22375,7 +22375,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_sweepSingle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_sweepMultiple(
+pub unsafe extern "C" fn physx_PxSceneQueryExt_sweepMultiple(
     scene: *const PxScene,
     geometry: *const PxGeometry,
     pose: *const PxTransform,
@@ -22409,7 +22409,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_sweepMultiple(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_overlapMultiple(
+pub unsafe extern "C" fn physx_PxSceneQueryExt_overlapMultiple(
     scene: *const PxScene,
     geometry: *const PxGeometry,
     pose: *const PxTransform,
@@ -22431,7 +22431,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_overlapMultiple(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_overlapAny(
+pub unsafe extern "C" fn physx_PxSceneQueryExt_overlapAny(
     scene: *const PxScene,
     geometry: *const PxGeometry,
     pose: *const PxTransform,
@@ -22451,7 +22451,7 @@ pub unsafe extern "C" fn magicphysx_PxSceneQueryExt_overlapAny(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBatchQueryExt_release_mut(
+pub unsafe extern "C" fn physx_PxBatchQueryExt_release_mut(
     self_: *mut PxBatchQueryExt
 )
 {
@@ -22461,7 +22461,7 @@ pub unsafe extern "C" fn magicphysx_PxBatchQueryExt_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBatchQueryExt_raycast_mut(
+pub unsafe extern "C" fn physx_PxBatchQueryExt_raycast_mut(
     self_: *mut PxBatchQueryExt,
     origin: *const PxVec3,
     unitDir: *const PxVec3,
@@ -22485,7 +22485,7 @@ pub unsafe extern "C" fn magicphysx_PxBatchQueryExt_raycast_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBatchQueryExt_sweep_mut(
+pub unsafe extern "C" fn physx_PxBatchQueryExt_sweep_mut(
     self_: *mut PxBatchQueryExt,
     geometry: *const PxGeometry,
     pose: *const PxTransform,
@@ -22513,7 +22513,7 @@ pub unsafe extern "C" fn magicphysx_PxBatchQueryExt_sweep_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBatchQueryExt_overlap_mut(
+pub unsafe extern "C" fn physx_PxBatchQueryExt_overlap_mut(
     self_: *mut PxBatchQueryExt,
     geometry: *const PxGeometry,
     pose: *const PxTransform,
@@ -22533,7 +22533,7 @@ pub unsafe extern "C" fn magicphysx_PxBatchQueryExt_overlap_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxBatchQueryExt_execute_mut(
+pub unsafe extern "C" fn physx_PxBatchQueryExt_execute_mut(
     self_: *mut PxBatchQueryExt
 )
 {
@@ -22543,7 +22543,7 @@ pub unsafe extern "C" fn magicphysx_PxBatchQueryExt_execute_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateBatchQueryExt(
+pub unsafe extern "C" fn physx_phys_PxCreateBatchQueryExt(
     scene: *const PxScene,
     queryFilterCallback: *mut PxQueryFilterCallback,
     maxNbRaycasts: u32,
@@ -22567,7 +22567,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateBatchQueryExt(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateBatchQueryExt_1(
+pub unsafe extern "C" fn physx_phys_PxCreateBatchQueryExt_1(
     scene: *const PxScene,
     queryFilterCallback: *mut PxQueryFilterCallback,
     raycastBuffers: *mut PxRaycastBuffer,
@@ -22603,7 +22603,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateBatchQueryExt_1(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateExternalSceneQuerySystem(
+pub unsafe extern "C" fn physx_phys_PxCreateExternalSceneQuerySystem(
     desc: *const PxSceneQueryDesc,
     contextID: u64
 ) -> *mut PxSceneQuerySystem
@@ -22615,7 +22615,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateExternalSceneQuerySystem(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystem_addPruner_mut(
+pub unsafe extern "C" fn physx_PxCustomSceneQuerySystem_addPruner_mut(
     self_: *mut PxCustomSceneQuerySystem,
     primaryType: PxPruningStructureType,
     secondaryType: PxDynamicTreeSecondaryPruner,
@@ -22631,7 +22631,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystem_addPruner_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystem_startCustomBuildstep_mut(
+pub unsafe extern "C" fn physx_PxCustomSceneQuerySystem_startCustomBuildstep_mut(
     self_: *mut PxCustomSceneQuerySystem
 ) -> u32
 {
@@ -22641,7 +22641,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystem_startCustomBuildste
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystem_customBuildstep_mut(
+pub unsafe extern "C" fn physx_PxCustomSceneQuerySystem_customBuildstep_mut(
     self_: *mut PxCustomSceneQuerySystem,
     index: u32
 )
@@ -22653,7 +22653,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystem_customBuildstep_mut
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystem_finishCustomBuildstep_mut(
+pub unsafe extern "C" fn physx_PxCustomSceneQuerySystem_finishCustomBuildstep_mut(
     self_: *mut PxCustomSceneQuerySystem
 )
 {
@@ -22663,7 +22663,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystem_finishCustomBuildst
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystemAdapter_delete(
+pub unsafe extern "C" fn physx_PxCustomSceneQuerySystemAdapter_delete(
     self_: *mut PxCustomSceneQuerySystemAdapter
 )
 {
@@ -22673,7 +22673,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystemAdapter_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystemAdapter_getPrunerIndex(
+pub unsafe extern "C" fn physx_PxCustomSceneQuerySystemAdapter_getPrunerIndex(
     self_: *const PxCustomSceneQuerySystemAdapter,
     actor: *const PxRigidActor,
     shape: *const PxShape
@@ -22687,7 +22687,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystemAdapter_getPrunerInd
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystemAdapter_processPruner(
+pub unsafe extern "C" fn physx_PxCustomSceneQuerySystemAdapter_processPruner(
     self_: *const PxCustomSceneQuerySystemAdapter,
     prunerIndex: u32,
     context: *const PxQueryThreadContext,
@@ -22705,7 +22705,7 @@ pub unsafe extern "C" fn magicphysx_PxCustomSceneQuerySystemAdapter_processPrune
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateCustomSceneQuerySystem(
+pub unsafe extern "C" fn physx_phys_PxCreateCustomSceneQuerySystem(
     sceneQueryUpdateMode: PxSceneQueryUpdateMode,
     contextID: u64,
     adapter: *const PxCustomSceneQuerySystemAdapter,
@@ -22721,7 +22721,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateCustomSceneQuerySystem(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxFindFaceIndex(
+pub unsafe extern "C" fn physx_phys_PxFindFaceIndex(
     convexGeom: *const PxConvexMeshGeometry,
     geomPose: *const PxTransform,
     impactPos: *const PxVec3,
@@ -22737,7 +22737,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxFindFaceIndex(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPoissonSampler_setSamplingRadius_mut(
+pub unsafe extern "C" fn physx_PxPoissonSampler_setSamplingRadius_mut(
     self_: *mut PxPoissonSampler,
     samplingRadius: f32
 ) -> bool
@@ -22749,7 +22749,7 @@ pub unsafe extern "C" fn magicphysx_PxPoissonSampler_setSamplingRadius_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPoissonSampler_addSamplesInSphere_mut(
+pub unsafe extern "C" fn physx_PxPoissonSampler_addSamplesInSphere_mut(
     self_: *mut PxPoissonSampler,
     sphereCenter: *const PxVec3,
     sphereRadius: f32,
@@ -22765,7 +22765,7 @@ pub unsafe extern "C" fn magicphysx_PxPoissonSampler_addSamplesInSphere_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPoissonSampler_addSamplesInBox_mut(
+pub unsafe extern "C" fn physx_PxPoissonSampler_addSamplesInBox_mut(
     self_: *mut PxPoissonSampler,
     axisAlignedBox: *const PxBounds3,
     boxOrientation: *const PxQuat,
@@ -22781,7 +22781,7 @@ pub unsafe extern "C" fn magicphysx_PxPoissonSampler_addSamplesInBox_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPoissonSampler_delete(
+pub unsafe extern "C" fn physx_PxPoissonSampler_delete(
     self_: *mut PxPoissonSampler
 )
 {
@@ -22791,7 +22791,7 @@ pub unsafe extern "C" fn magicphysx_PxPoissonSampler_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateShapeSampler(
+pub unsafe extern "C" fn physx_phys_PxCreateShapeSampler(
     geometry: *const PxGeometry,
     transform: *const PxTransform,
     worldBounds: *const PxBounds3,
@@ -22809,7 +22809,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateShapeSampler(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMeshPoissonSampler_isPointInTriangleMesh_mut(
+pub unsafe extern "C" fn physx_PxTriangleMeshPoissonSampler_isPointInTriangleMesh_mut(
     self_: *mut PxTriangleMeshPoissonSampler,
     p: *const PxVec3
 ) -> bool
@@ -22821,7 +22821,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMeshPoissonSampler_isPointInTriang
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTriangleMeshPoissonSampler_delete(
+pub unsafe extern "C" fn physx_PxTriangleMeshPoissonSampler_delete(
     self_: *mut PxTriangleMeshPoissonSampler
 )
 {
@@ -22831,7 +22831,7 @@ pub unsafe extern "C" fn magicphysx_PxTriangleMeshPoissonSampler_delete(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreateTriangleMeshSampler(
+pub unsafe extern "C" fn physx_phys_PxCreateTriangleMeshSampler(
     triangles: *const u32,
     numTriangles: u32,
     vertices: *const PxVec3,
@@ -22851,7 +22851,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreateTriangleMeshSampler(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshExt_findTetrahedronContainingPoint(
+pub unsafe extern "C" fn physx_PxTetrahedronMeshExt_findTetrahedronContainingPoint(
     mesh: *const PxTetrahedronMesh,
     point: *const PxVec3,
     bary: *mut PxVec4,
@@ -22867,7 +22867,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshExt_findTetrahedronContaini
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshExt_findTetrahedronClosestToPoint(
+pub unsafe extern "C" fn physx_PxTetrahedronMeshExt_findTetrahedronClosestToPoint(
     mesh: *const PxTetrahedronMesh,
     point: *const PxVec3,
     bary: *mut PxVec4
@@ -22881,7 +22881,7 @@ pub unsafe extern "C" fn magicphysx_PxTetrahedronMeshExt_findTetrahedronClosestT
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxInitExtensions(
+pub unsafe extern "C" fn physx_phys_PxInitExtensions(
     physics: *mut PxPhysics,
     pvd: *mut PxPvd
 ) -> bool
@@ -22893,7 +22893,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxInitExtensions(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCloseExtensions(
+pub unsafe extern "C" fn physx_phys_PxCloseExtensions(
 
 )
 {
@@ -22903,7 +22903,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCloseExtensions(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRepXObject_new(
+pub unsafe extern "C" fn physx_PxRepXObject_new(
     inTypeName: *const c_char,
     inSerializable: *const c_void,
     inId: u64
@@ -22917,7 +22917,7 @@ pub unsafe extern "C" fn magicphysx_PxRepXObject_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRepXObject_isValid(
+pub unsafe extern "C" fn physx_PxRepXObject_isValid(
     self_: *const PxRepXObject
 ) -> bool
 {
@@ -22927,7 +22927,7 @@ pub unsafe extern "C" fn magicphysx_PxRepXObject_isValid(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRepXInstantiationArgs_new(
+pub unsafe extern "C" fn physx_PxRepXInstantiationArgs_new(
     inPhysics: *mut PxPhysics,
     inCooking: *mut PxCooking,
     inStringTable: *mut PxStringTable
@@ -22941,7 +22941,7 @@ pub unsafe extern "C" fn magicphysx_PxRepXInstantiationArgs_new(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRepXSerializer_getTypeName_mut(
+pub unsafe extern "C" fn physx_PxRepXSerializer_getTypeName_mut(
     self_: *mut PxRepXSerializer
 ) -> *const c_char
 {
@@ -22951,7 +22951,7 @@ pub unsafe extern "C" fn magicphysx_PxRepXSerializer_getTypeName_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRepXSerializer_objectToFile_mut(
+pub unsafe extern "C" fn physx_PxRepXSerializer_objectToFile_mut(
     self_: *mut PxRepXSerializer,
     inLiveObject: *const PxRepXObject,
     inCollection: *mut PxCollection,
@@ -22971,7 +22971,7 @@ pub unsafe extern "C" fn magicphysx_PxRepXSerializer_objectToFile_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxRepXSerializer_fileToObject_mut(
+pub unsafe extern "C" fn physx_PxRepXSerializer_fileToObject_mut(
     self_: *mut PxRepXSerializer,
     inReader: *mut XmlReader,
     inAllocator: *mut XmlMemoryAllocator,
@@ -22989,7 +22989,7 @@ pub unsafe extern "C" fn magicphysx_PxRepXSerializer_fileToObject_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvd_connect_mut(
+pub unsafe extern "C" fn physx_PxPvd_connect_mut(
     self_: *mut PxPvd,
     transport: *mut PxPvdTransport,
     flags: PxPvdInstrumentationFlags
@@ -23003,7 +23003,7 @@ pub unsafe extern "C" fn magicphysx_PxPvd_connect_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvd_disconnect_mut(
+pub unsafe extern "C" fn physx_PxPvd_disconnect_mut(
     self_: *mut PxPvd
 )
 {
@@ -23013,7 +23013,7 @@ pub unsafe extern "C" fn magicphysx_PxPvd_disconnect_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvd_isConnected_mut(
+pub unsafe extern "C" fn physx_PxPvd_isConnected_mut(
     self_: *mut PxPvd,
     useCachedStatus: bool
 ) -> bool
@@ -23025,7 +23025,7 @@ pub unsafe extern "C" fn magicphysx_PxPvd_isConnected_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvd_getTransport_mut(
+pub unsafe extern "C" fn physx_PxPvd_getTransport_mut(
     self_: *mut PxPvd
 ) -> *mut PxPvdTransport
 {
@@ -23035,7 +23035,7 @@ pub unsafe extern "C" fn magicphysx_PxPvd_getTransport_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvd_getInstrumentationFlags_mut(
+pub unsafe extern "C" fn physx_PxPvd_getInstrumentationFlags_mut(
     self_: *mut PxPvd
 ) -> PxPvdInstrumentationFlags
 {
@@ -23045,7 +23045,7 @@ pub unsafe extern "C" fn magicphysx_PxPvd_getInstrumentationFlags_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvd_release_mut(
+pub unsafe extern "C" fn physx_PxPvd_release_mut(
     self_: *mut PxPvd
 )
 {
@@ -23055,7 +23055,7 @@ pub unsafe extern "C" fn magicphysx_PxPvd_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxCreatePvd(
+pub unsafe extern "C" fn physx_phys_PxCreatePvd(
     foundation: *mut PxFoundation
 ) -> *mut PxPvd
 {
@@ -23065,7 +23065,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxCreatePvd(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdTransport_connect_mut(
+pub unsafe extern "C" fn physx_PxPvdTransport_connect_mut(
     self_: *mut PxPvdTransport
 ) -> bool
 {
@@ -23075,7 +23075,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdTransport_connect_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdTransport_disconnect_mut(
+pub unsafe extern "C" fn physx_PxPvdTransport_disconnect_mut(
     self_: *mut PxPvdTransport
 )
 {
@@ -23085,7 +23085,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdTransport_disconnect_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdTransport_isConnected_mut(
+pub unsafe extern "C" fn physx_PxPvdTransport_isConnected_mut(
     self_: *mut PxPvdTransport
 ) -> bool
 {
@@ -23095,7 +23095,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdTransport_isConnected_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdTransport_write_mut(
+pub unsafe extern "C" fn physx_PxPvdTransport_write_mut(
     self_: *mut PxPvdTransport,
     inBytes: *const u8,
     inLength: u32
@@ -23109,7 +23109,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdTransport_write_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdTransport_lock_mut(
+pub unsafe extern "C" fn physx_PxPvdTransport_lock_mut(
     self_: *mut PxPvdTransport
 ) -> *mut PxPvdTransport
 {
@@ -23119,7 +23119,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdTransport_lock_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdTransport_unlock_mut(
+pub unsafe extern "C" fn physx_PxPvdTransport_unlock_mut(
     self_: *mut PxPvdTransport
 )
 {
@@ -23129,7 +23129,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdTransport_unlock_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdTransport_flush_mut(
+pub unsafe extern "C" fn physx_PxPvdTransport_flush_mut(
     self_: *mut PxPvdTransport
 )
 {
@@ -23139,7 +23139,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdTransport_flush_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdTransport_getWrittenDataSize_mut(
+pub unsafe extern "C" fn physx_PxPvdTransport_getWrittenDataSize_mut(
     self_: *mut PxPvdTransport
 ) -> u64
 {
@@ -23149,7 +23149,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdTransport_getWrittenDataSize_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_PxPvdTransport_release_mut(
+pub unsafe extern "C" fn physx_PxPvdTransport_release_mut(
     self_: *mut PxPvdTransport
 )
 {
@@ -23159,7 +23159,7 @@ pub unsafe extern "C" fn magicphysx_PxPvdTransport_release_mut(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxDefaultPvdSocketTransportCreate(
+pub unsafe extern "C" fn physx_phys_PxDefaultPvdSocketTransportCreate(
     host: *const c_char,
     port: i32,
     timeoutInMilliseconds: u32
@@ -23173,7 +23173,7 @@ pub unsafe extern "C" fn magicphysx_phys_PxDefaultPvdSocketTransportCreate(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn magicphysx_phys_PxDefaultPvdFileTransportCreate(
+pub unsafe extern "C" fn physx_phys_PxDefaultPvdFileTransportCreate(
     name: *const c_char
 ) -> *mut PxPvdTransport
 {

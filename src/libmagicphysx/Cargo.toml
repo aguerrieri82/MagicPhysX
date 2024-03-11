@@ -1,10 +1,10 @@
 [package]
-name = "libmagicphysx"
-version = "1.0.0"
+name = "physx"
+version = "1.0.1"
 edition = "2021"
 
 [lib]
-name = "magicphysx"
+name = "physxnative"
 crate-type = ["cdylib"]
 
 [dependencies]
