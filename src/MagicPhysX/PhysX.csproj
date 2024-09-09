@@ -9,6 +9,8 @@
         
         <PackageTags>physics</PackageTags>
         <Description>.NET PhysX 5 binding to all platforms(win, osx, linux) for 3D engine, deep learning, dedicated server of gaming.</Description>
+        <Platforms>AnyCPU;x64</Platforms>
+        <Configurations>Debug;Release;DebugGL;ReleaseGL</Configurations>
     </PropertyGroup>
 
 
@@ -24,7 +26,7 @@
         <Content Include="../libmagicphysx/target/release/physxnative.dll" Link="runtimes/win-x64/native/physxnative.dll" CopyToOutputDirectory="PreserveNewest" />
         <Content Include="../libmagicphysx/target/release/physxnative.pdb" Link="runtimes/win-x64/native/physxnative.pdb" CopyToOutputDirectory="PreserveNewest" />
         <Content Include="../libmagicphysx/target/aarch64-linux-android/release/libphysxnative.so" Link="runtimes/android-arm64/native/libphysxnative.so" CopyToOutputDirectory="PreserveNewest" />
-     
+        <Content Include="../libmagicphysx/target/release/physxnative.dll" Link="physxnative.dll" CopyToOutputDirectory="PreserveNewest" />
     </ItemGroup>
-
+ 
 </Project>
