@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
+
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFrameworks>net9.0;net9.0-android</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
@@ -22,11 +23,5 @@
         </PackageReference>
     </ItemGroup>
 
-    <ItemGroup>
-        <Content Include="../libmagicphysx/target/release/physxnative.dll" Link="runtimes/win-x64/native/physxnative.dll" CopyToOutputDirectory="PreserveNewest" />
-        <Content Include="../libmagicphysx/target/release/physxnative.pdb" Link="runtimes/win-x64/native/physxnative.pdb" CopyToOutputDirectory="PreserveNewest" />
-        <Content Include="../libmagicphysx/target/aarch64-linux-android/release/libphysxnative.so" Link="runtimes/android-arm64/native/libphysxnative.so" CopyToOutputDirectory="PreserveNewest" />
-        <Content Include="../libmagicphysx/target/release/physxnative.dll" Link="physxnative.dll" CopyToOutputDirectory="PreserveNewest" />
-    </ItemGroup>
  
 </Project>
