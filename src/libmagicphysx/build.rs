@@ -10,7 +10,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .method_filter(|x| !(x == "create_contact_callback" || x == "destroy_contact_callback"))
         .rust_file_header("use super::physx_sys::*;")
         .rust_method_prefix("physx_")
-        .csharp_entry_point_prefix("physx_")
+        .csharp_entry_point_prefix("")
         .csharp_namespace("PhysX")
         .csharp_class_name("NativeMethods")
         .csharp_dll_name("physxnative")
