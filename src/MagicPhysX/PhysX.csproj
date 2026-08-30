@@ -23,5 +23,16 @@
         </PackageReference>
     </ItemGroup>
 
+    <!-- Windows native runtime for DllImport("physxnative"). Keep the core
+         PhysX DLLs beside the managed assembly so the loader can resolve the
+         transitive dependencies at runtime. -->
+    <ItemGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+        <Content Include="../../../../libs/physxnative/win-x64/*.dll"
+              Link="runtimes/win-x64/native/%(Filename)%(Extension)"
+              CopyToOutputDirectory="PreserveNewest"
+              Pack="true"
+              PackagePath="runtimes/win-x64/native" />
+    </ItemGroup>
+
  
 </Project>
