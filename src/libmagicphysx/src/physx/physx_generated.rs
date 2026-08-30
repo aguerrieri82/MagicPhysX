@@ -1,24 +1,3 @@
-/// enum for empty constructor tag
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxEMPTY {
-    PxEmpty = 0,
-}
-
-/// enum for zero constructor tag for vectors and matrices
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxZERO {
-    PxZero = 0,
-}
-
-/// enum for identity constructor flag for quaternions, transforms, and matrices
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxIDENTITY {
-    PxIdentity = 0,
-}
-
 /// Error codes
 ///
 /// These error codes are passed to [`PxErrorCallback`]
@@ -45,6 +24,27 @@ pub enum PxErrorCode {
     PerfWarning = 128,
     /// A bit mask for including all errors
     MaskAll = -1,
+}
+
+/// enum for empty constructor tag
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxEMPTY {
+    PxEmpty = 0,
+}
+
+/// enum for zero constructor tag for vectors and matrices
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxZERO {
+    PxZero = 0,
+}
+
+/// enum for identity constructor flag for quaternions, transforms, and matrices
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxIDENTITY {
+    PxIdentity = 0,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -91,45 +91,39 @@ pub enum PxConcreteType {
     Undefined = 0,
     Heightfield = 1,
     ConvexMesh = 2,
+    /// Will be removed together with deprecated BVH33.
     TriangleMeshBvh33 = 3,
     TriangleMeshBvh34 = 4,
     TetrahedronMesh = 5,
-    SoftbodyMesh = 6,
+    DeformableVolumeMesh = 6,
     RigidDynamic = 7,
     RigidStatic = 8,
     Shape = 9,
     Material = 10,
-    SoftbodyMaterial = 11,
-    ClothMaterial = 12,
+    DeformableSurfaceMaterial = 11,
+    DeformableVolumeMaterial = 12,
     PbdMaterial = 13,
-    FlipMaterial = 14,
-    MpmMaterial = 15,
-    CustomMaterial = 16,
-    Constraint = 17,
-    Aggregate = 18,
-    ArticulationReducedCoordinate = 19,
-    ArticulationLink = 20,
-    ArticulationJointReducedCoordinate = 21,
-    ArticulationSensor = 22,
-    ArticulationSpatialTendon = 23,
-    ArticulationFixedTendon = 24,
-    ArticulationAttachment = 25,
-    ArticulationTendonJoint = 26,
-    PruningStructure = 27,
-    Bvh = 28,
-    SoftBody = 29,
-    SoftBodyState = 30,
-    PbdParticlesystem = 31,
-    FlipParticlesystem = 32,
-    MpmParticlesystem = 33,
-    CustomParticlesystem = 34,
-    FemCloth = 35,
-    HairSystem = 36,
-    ParticleBuffer = 37,
-    ParticleDiffuseBuffer = 38,
-    ParticleClothBuffer = 39,
-    ParticleRigidBuffer = 40,
-    PhysxCoreCount = 41,
+    Constraint = 14,
+    Aggregate = 15,
+    ArticulationReducedCoordinate = 16,
+    ArticulationLink = 17,
+    ArticulationJointReducedCoordinate = 18,
+    ArticulationSpatialTendon = 19,
+    ArticulationFixedTendon = 20,
+    ArticulationAttachment = 21,
+    ArticulationTendonJoint = 22,
+    ArticulationMimicJoint = 23,
+    PruningStructure = 24,
+    Bvh = 25,
+    DeformableVolume = 26,
+    DeformableVolumeState = 27,
+    PbdParticlesystem = 28,
+    DeformableSurface = 29,
+    DeformableAttachment = 30,
+    DeformableElementFilter = 31,
+    ParticleBuffer = 32,
+    ParticleDiffuseBuffer = 33,
+    PhysxCoreCount = 34,
     FirstPhysxExtension = 256,
     FirstVehicleExtension = 512,
     FirstUserExtension = 1024,
@@ -145,42 +139,35 @@ impl From<u16> for PxConcreteType {
             3 => Self::TriangleMeshBvh33,
             4 => Self::TriangleMeshBvh34,
             5 => Self::TetrahedronMesh,
-            6 => Self::SoftbodyMesh,
+            6 => Self::DeformableVolumeMesh,
             7 => Self::RigidDynamic,
             8 => Self::RigidStatic,
             9 => Self::Shape,
             10 => Self::Material,
-            11 => Self::SoftbodyMaterial,
-            12 => Self::ClothMaterial,
+            11 => Self::DeformableSurfaceMaterial,
+            12 => Self::DeformableVolumeMaterial,
             13 => Self::PbdMaterial,
-            14 => Self::FlipMaterial,
-            15 => Self::MpmMaterial,
-            16 => Self::CustomMaterial,
-            17 => Self::Constraint,
-            18 => Self::Aggregate,
-            19 => Self::ArticulationReducedCoordinate,
-            20 => Self::ArticulationLink,
-            21 => Self::ArticulationJointReducedCoordinate,
-            22 => Self::ArticulationSensor,
-            23 => Self::ArticulationSpatialTendon,
-            24 => Self::ArticulationFixedTendon,
-            25 => Self::ArticulationAttachment,
-            26 => Self::ArticulationTendonJoint,
-            27 => Self::PruningStructure,
-            28 => Self::Bvh,
-            29 => Self::SoftBody,
-            30 => Self::SoftBodyState,
-            31 => Self::PbdParticlesystem,
-            32 => Self::FlipParticlesystem,
-            33 => Self::MpmParticlesystem,
-            34 => Self::CustomParticlesystem,
-            35 => Self::FemCloth,
-            36 => Self::HairSystem,
-            37 => Self::ParticleBuffer,
-            38 => Self::ParticleDiffuseBuffer,
-            39 => Self::ParticleClothBuffer,
-            40 => Self::ParticleRigidBuffer,
-            41 => Self::PhysxCoreCount,
+            14 => Self::Constraint,
+            15 => Self::Aggregate,
+            16 => Self::ArticulationReducedCoordinate,
+            17 => Self::ArticulationLink,
+            18 => Self::ArticulationJointReducedCoordinate,
+            19 => Self::ArticulationSpatialTendon,
+            20 => Self::ArticulationFixedTendon,
+            21 => Self::ArticulationAttachment,
+            22 => Self::ArticulationTendonJoint,
+            23 => Self::ArticulationMimicJoint,
+            24 => Self::PruningStructure,
+            25 => Self::Bvh,
+            26 => Self::DeformableVolume,
+            27 => Self::DeformableVolumeState,
+            28 => Self::PbdParticlesystem,
+            29 => Self::DeformableSurface,
+            30 => Self::DeformableAttachment,
+            31 => Self::DeformableElementFilter,
+            32 => Self::ParticleBuffer,
+            33 => Self::ParticleDiffuseBuffer,
+            34 => Self::PhysxCoreCount,
             256 => Self::FirstPhysxExtension,
             512 => Self::FirstVehicleExtension,
             1024 => Self::FirstUserExtension,
@@ -207,47 +194,6 @@ bitflags::bitflags! {
     }
 }
 
-/// Flags used to configure binary meta data entries, typically set through PX_DEF_BIN_METADATA defines.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxMetaDataFlag {
-    /// declares a class
-    Class = 1,
-    /// declares class to be virtual
-    Virtual = 2,
-    /// declares a typedef
-    Typedef = 4,
-    /// declares a pointer
-    Ptr = 8,
-    /// declares a handle
-    Handle = 16,
-    /// declares extra data exported with PxSerializer::exportExtraData
-    ExtraData = 32,
-    /// specifies one element of extra data
-    ExtraItem = 64,
-    /// specifies an array of extra data
-    ExtraItems = 128,
-    /// specifies a name of extra data
-    ExtraName = 256,
-    /// declares a union
-    Union = 512,
-    /// declares explicit padding data
-    Padding = 1024,
-    /// declares aligned data
-    Alignment = 2048,
-    /// specifies that the count value's most significant bit needs to be masked out
-    CountMaskMsb = 4096,
-    /// specifies that the count value is treated as zero for a variable value of one - special case for single triangle meshes
-    CountSkipIfOne = 8192,
-    /// specifies that the control value is the negate of the variable value
-    ControlFlip = 16384,
-    /// specifies that the control value is masked - mask bits are assumed to be within eCONTROL_MASK_RANGE
-    ControlMask = 32768,
-    /// mask range allowed for eCONTROL_MASK
-    ControlMaskRange = 255,
-    ForceDword = 2147483647,
-}
-
 /// Identifies the type of each heavyweight PxTask object
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
@@ -270,12 +216,12 @@ pub enum PxGeometryType {
     Plane = 1,
     Capsule = 2,
     Box = 3,
-    Convexmesh = 4,
-    Particlesystem = 5,
-    Tetrahedronmesh = 6,
-    Trianglemesh = 7,
-    Heightfield = 8,
-    Hairsystem = 9,
+    Convexcore = 4,
+    Convexmesh = 5,
+    Particlesystem = 6,
+    Tetrahedronmesh = 7,
+    Trianglemesh = 8,
+    Heightfield = 9,
     Custom = 10,
     /// internal use only!
     GeometryCount = 11,
@@ -289,6 +235,7 @@ pub enum PxGeometryType {
 pub enum PxGeometryQueryFlag {
     /// Saves/restores SIMD control word for each query (safer but slower). Omit this if you took care of it yourself in your app.
     SimdGuard = 1,
+    Default = 1,
 }
 
 bitflags::bitflags! {
@@ -297,6 +244,7 @@ bitflags::bitflags! {
     #[repr(transparent)]
     pub struct PxGeometryQueryFlags: u32 {
         const SimdGuard = 1 << 0;
+        const Default = 1 << 0;
     }
 }
 
@@ -341,8 +289,9 @@ pub enum PxMeshGeometryFlag {
     /// Use tighter (but more expensive to compute) bounds around the triangle mesh geometry.
     TightBounds = 1,
     /// Meshes with this flag set are treated as double-sided.
-    /// This flag is currently only used for raycasts and sweeps (it is ignored for overlap queries).
+    /// This flag is currently only used for raycasts and sweeps. It is ignored for overlap queries and has no effect on contact generation, i.e. simulation.
     /// For detailed specifications of this flag for meshes and heightfields please refer to the Geometry Query section of the user guide.
+    /// For double-sided collision meshes, consider duplicating their faces with flipped normals.
     DoubleSided = 2,
 }
 
@@ -356,950 +305,69 @@ bitflags::bitflags! {
     }
 }
 
-/// Identifies the solver to use for a particle system.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxParticleSolverType {
-    /// The position based dynamics solver that can handle fluid, granular material, cloth, inflatables etc. See [`PxPBDParticleSystem`].
-    Pbd = 1,
-    /// The FLIP fluid solver. See [`PxFLIPParticleSystem`].
-    Flip = 2,
-    /// The MPM (material point method) solver that can handle a variety of materials. See [`PxMPMParticleSystem`].
-    Mpm = 4,
-    /// Custom solver. The user needs to specify the interaction of the particle by providing appropriate functions. Can be used e.g. for molecular dynamics simulations. See [`PxCustomParticleSystem`].
-    Custom = 8,
-}
-
-/// Scene query and geometry query behavior flags.
+/// Identifies dirty particle buffers that need to be updated in the particle system.
 ///
-/// PxHitFlags are used for 3 different purposes:
-///
-/// 1) To request hit fields to be filled in by scene queries (such as hit position, normal, face index or UVs).
-/// 2) Once query is completed, to indicate which fields are valid (note that a query may produce more valid fields than requested).
-/// 3) To specify additional options for the narrow phase and mid-phase intersection routines.
-///
-/// All these flags apply to both scene queries and geometry queries (PxGeometryQuery).
+/// This flag can be used mark the device user buffers that are dirty and need to be written to the particle system.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
-pub enum PxHitFlag {
-    /// "position" member of [`PxQueryHit`] is valid
-    Position = 1,
-    /// "normal" member of [`PxQueryHit`] is valid
-    Normal = 2,
-    /// "u" and "v" barycentric coordinates of [`PxQueryHit`] are valid. Not applicable to sweep queries.
-    Uv = 8,
-    /// Performance hint flag for sweeps when it is known upfront there's no initial overlap.
-    /// NOTE: using this flag may cause undefined results if shapes are initially overlapping.
-    AssumeNoInitialOverlap = 16,
-    /// Report any first hit. Used for geometries that contain more than one primitive. For meshes,
-    /// if neither eMESH_MULTIPLE nor eANY_HIT is specified, a single closest hit will be reported.
-    AnyHit = 32,
-    /// Report all hits for meshes rather than just the first. Not applicable to sweep queries.
-    MeshMultiple = 64,
-    /// Report hits with back faces of mesh triangles. Also report hits for raycast
-    /// originating on mesh surface and facing away from the surface normal. Not applicable to sweep queries.
-    /// Please refer to the user guide for heightfield-specific differences.
-    MeshBothSides = 128,
-    /// Use more accurate but slower narrow phase sweep tests.
-    /// May provide better compatibility with PhysX 3.2 sweep behavior.
-    PreciseSweep = 256,
-    /// Report the minimum translation depth, normal and contact point.
-    Mtd = 512,
-    /// "face index" member of [`PxQueryHit`] is valid
-    FaceIndex = 1024,
-    Default = 1027,
-    /// Only this subset of flags can be modified by pre-filter. Other modifications will be discarded.
-    ModifiableFlags = 464,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxHitFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxHitFlags: u16 {
-        const Position = 1 << 0;
-        const Normal = 1 << 1;
-        const Uv = 1 << 3;
-        const AssumeNoInitialOverlap = 1 << 4;
-        const AnyHit = 1 << 5;
-        const MeshMultiple = 1 << 6;
-        const MeshBothSides = 1 << 7;
-        const PreciseSweep = 1 << 8;
-        const Mtd = 1 << 9;
-        const FaceIndex = 1 << 10;
-        const Default = Self::Position.bits | Self::Normal.bits | Self::FaceIndex.bits;
-        const ModifiableFlags = Self::AssumeNoInitialOverlap.bits | Self::MeshMultiple.bits | Self::MeshBothSides.bits | Self::PreciseSweep.bits;
-    }
-}
-
-/// Describes the format of height field samples.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxHeightFieldFormat {
-    /// Height field height data is 16 bit signed integers, followed by triangle materials.
-    ///
-    /// Each sample is 32 bits wide arranged as follows:
-    ///
-    /// 1) First there is a 16 bit height value.
-    /// 2) Next, two one byte material indices, with the high bit of each byte reserved for special use.
-    /// (so the material index is only 7 bits).
-    /// The high bit of material0 is the tess-flag.
-    /// The high bit of material1 is reserved for future use.
-    ///
-    /// There are zero or more unused bytes before the next sample depending on PxHeightFieldDesc.sampleStride,
-    /// where the application may eventually keep its own data.
-    ///
-    /// This is the only format supported at the moment.
-    S16Tm = 1,
-}
-
-/// Determines the tessellation of height field cells.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxHeightFieldTessFlag {
-    /// This flag determines which way each quad cell is subdivided.
-    ///
-    /// The flag lowered indicates subdivision like this: (the 0th vertex is referenced by only one triangle)
-    ///
-    /// +--+--+--+---> column
-    /// | /| /| /|
-    /// |/ |/ |/ |
-    /// +--+--+--+
-    /// | /| /| /|
-    /// |/ |/ |/ |
-    /// +--+--+--+
-    /// |
-    /// |
-    /// V row
-    ///
-    /// The flag raised indicates subdivision like this: (the 0th vertex is shared by two triangles)
-    ///
-    /// +--+--+--+---> column
-    /// |
-    /// \
-    /// |
-    /// \
-    /// |
-    /// \
-    /// |
-    /// |
-    /// \
-    /// |
-    /// \
-    /// |
-    /// \
-    /// |
-    /// +--+--+--+
-    /// |
-    /// \
-    /// |
-    /// \
-    /// |
-    /// \
-    /// |
-    /// |
-    /// \
-    /// |
-    /// \
-    /// |
-    /// \
-    /// |
-    /// +--+--+--+
-    /// |
-    /// |
-    /// V row
-    E0ThVertexShared = 1,
-}
-
-/// Enum with flag values to be used in PxHeightFieldDesc.flags.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxHeightFieldFlag {
-    /// Disable collisions with height field with boundary edges.
-    ///
-    /// Raise this flag if several terrain patches are going to be placed adjacent to each other,
-    /// to avoid a bump when sliding across.
-    ///
-    /// This flag is ignored in contact generation with sphere and capsule shapes.
-    NoBoundaryEdges = 1,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxHeightFieldFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxHeightFieldFlags: u16 {
-        const NoBoundaryEdges = 1 << 0;
-    }
-}
-
-/// Special material index values for height field samples.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxHeightFieldMaterial {
-    /// A material indicating that the triangle should be treated as a hole in the mesh.
-    Hole = 127,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxMeshMeshQueryFlag {
-    /// Report all overlaps
-    Default = 0,
-    /// Ignore coplanar triangle-triangle overlaps
-    DiscardCoplanar = 1,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxMeshMeshQueryFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxMeshMeshQueryFlags: u32 {
-        const DiscardCoplanar = 1 << 0;
-    }
-}
-
-/// Enum with flag values to be used in PxSimpleTriangleMesh::flags.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxMeshFlag {
-    /// Specifies if the SDK should flip normals.
-    ///
-    /// The PhysX libraries assume that the face normal of a triangle with vertices [a,b,c] can be computed as:
-    /// edge1 = b-a
-    /// edge2 = c-a
-    /// face_normal = edge1 x edge2.
-    ///
-    /// Note: This is the same as a counterclockwise winding in a right handed coordinate system or
-    /// alternatively a clockwise winding order in a left handed coordinate system.
-    ///
-    /// If this does not match the winding order for your triangles, raise the below flag.
-    Flipnormals = 1,
-    /// Denotes the use of 16-bit vertex indices
-    E16BitIndices = 2,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxMeshFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxMeshFlags: u16 {
-        const Flipnormals = 1 << 0;
-        const E16BitIndices = 1 << 1;
-    }
-}
-
-/// Mesh midphase structure. This enum is used to select the desired acceleration structure for midphase queries
-/// (i.e. raycasts, overlaps, sweeps vs triangle meshes).
-///
-/// The PxMeshMidPhase::eBVH33 structure is the one used in recent PhysX versions (up to PhysX 3.3). It has great performance and is
-/// supported on all platforms. It is deprecated since PhysX 5.x.
-///
-/// The PxMeshMidPhase::eBVH34 structure is a revisited implementation introduced in PhysX 3.4. It can be significantly faster both
-/// in terms of cooking performance and runtime performance.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxMeshMidPhase {
-    /// Default midphase mesh structure, as used up to PhysX 3.3 (deprecated)
-    Bvh33 = 0,
-    /// New midphase mesh structure, introduced in PhysX 3.4
-    Bvh34 = 1,
-    Last = 2,
-}
-
-/// Flags for the mesh geometry properties.
-///
-/// Used in ::PxTriangleMeshFlags.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxTriangleMeshFlag {
-    /// The triangle mesh has 16bits vertex indices.
-    E16BitIndices = 2,
-    /// The triangle mesh has adjacency information build.
-    AdjacencyInfo = 4,
-    /// Indicates that this mesh would preferably not be the mesh projected for mesh-mesh collision. This can indicate that the mesh is not well tessellated.
-    PreferNoSdfProj = 8,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxTriangleMeshFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxTriangleMeshFlags: u8 {
-        const E16BitIndices = 1 << 1;
-        const AdjacencyInfo = 1 << 2;
-        const PreferNoSdfProj = 1 << 3;
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxTetrahedronMeshFlag {
-    /// The tetrahedron mesh has 16bits vertex indices
-    E16BitIndices = 2,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxTetrahedronMeshFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxTetrahedronMeshFlags: u8 {
-        const E16BitIndices = 1 << 1;
-    }
-}
-
-/// Flags which control the behavior of an actor.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxActorFlag {
-    /// Enable debug renderer for this actor
-    Visualization = 1,
-    /// Disables scene gravity for this actor
-    DisableGravity = 2,
-    /// Enables the sending of PxSimulationEventCallback::onWake() and PxSimulationEventCallback::onSleep() notify events
-    SendSleepNotifies = 4,
-    /// Disables simulation for the actor.
-    ///
-    /// This is only supported by PxRigidStatic and PxRigidDynamic actors and can be used to reduce the memory footprint when rigid actors are
-    /// used for scene queries only.
-    ///
-    /// Setting this flag will remove all constraints attached to the actor from the scene.
-    ///
-    /// If this flag is set, the following calls are forbidden:
-    ///
-    /// PxRigidBody: setLinearVelocity(), setAngularVelocity(), addForce(), addTorque(), clearForce(), clearTorque(), setForceAndTorque()
-    ///
-    /// PxRigidDynamic: setKinematicTarget(), setWakeCounter(), wakeUp(), putToSleep()
-    ///
-    /// Sleeping:
-    /// Raising this flag will set all velocities and the wake counter to 0, clear all forces, clear the kinematic target, put the actor
-    /// to sleep and wake up all touching actors from the previous frame.
-    DisableSimulation = 8,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxActorFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxActorFlags: u8 {
-        const Visualization = 1 << 0;
-        const DisableGravity = 1 << 1;
-        const SendSleepNotifies = 1 << 2;
-        const DisableSimulation = 1 << 3;
-    }
-}
-
-/// Identifies each type of actor.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxActorType {
-    /// A static rigid body
-    RigidStatic = 0,
-    /// A dynamic rigid body
-    RigidDynamic = 1,
-    /// An articulation link
-    ArticulationLink = 2,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxAggregateType {
-    /// Aggregate will contain various actors of unspecified types
-    Generic = 0,
-    /// Aggregate will only contain static actors
-    Static = 1,
-    /// Aggregate will only contain kinematic actors
-    Kinematic = 2,
-}
-
-/// Constraint row flags
-///
-/// These flags configure the post-processing of constraint rows and the behavior of the solver while solving constraints
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum Px1DConstraintFlag {
-    /// whether the constraint is a spring. Mutually exclusive with eRESTITUTION. If set, eKEEPBIAS is ignored.
-    Spring = 1,
-    /// whether the constraint is a force or acceleration spring. Only valid if eSPRING is set.
-    AccelerationSpring = 2,
-    /// whether the restitution model should be applied to generate the target velocity. Mutually exclusive with eSPRING. If restitution causes a bounces, eKEEPBIAS is ignored
-    Restitution = 4,
-    /// whether to keep the error term when solving for velocity. Ignored if restitution generates bounce, or eSPRING is set.
-    Keepbias = 8,
-    /// whether to accumulate the force value from this constraint in the force total that is reported for the constraint and tested for breakage
-    OutputForce = 16,
-    /// whether the constraint has a drive force limit (which will be scaled by dt unless PxConstraintFlag::eLIMITS_ARE_FORCES is set)
-    HasDriveLimit = 32,
-    /// whether this is an angular or linear constraint
-    AngularConstraint = 64,
-    /// whether the constraint's geometric error should drive the target velocity
-    DriveRow = 128,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`Px1DConstraintFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct Px1DConstraintFlags: u16 {
-        const Spring = 1 << 0;
-        const AccelerationSpring = 1 << 1;
-        const Restitution = 1 << 2;
-        const Keepbias = 1 << 3;
-        const OutputForce = 1 << 4;
-        const HasDriveLimit = 1 << 5;
-        const AngularConstraint = 1 << 6;
-        const DriveRow = 1 << 7;
-    }
-}
-
-/// Constraint type hints which the solver uses to optimize constraint handling
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxConstraintSolveHint {
-    /// no special properties
+pub enum PxParticleBufferFlag {
+    /// No data specified
     None = 0,
-    /// a group of acceleration drive constraints with the same stiffness and drive parameters
-    Acceleration1 = 256,
-    /// temporary special value to identify SLERP drive rows
-    SlerpSpring = 258,
-    /// a group of acceleration drive constraints with the same stiffness and drive parameters
-    Acceleration2 = 512,
-    /// a group of acceleration drive constraints with the same stiffness and drive parameters
-    Acceleration3 = 768,
-    /// rotational equality constraints with no force limit and no velocity target
-    RotationalEquality = 1024,
-    /// rotational inequality constraints with (0, PX_MAX_FLT) force limits
-    RotationalInequality = 1025,
-    /// equality constraints with no force limit and no velocity target
-    Equality = 2048,
-    /// inequality constraints with (0, PX_MAX_FLT) force limits
-    Inequality = 2049,
-}
-
-/// Flags for determining which components of the constraint should be visualized.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxConstraintVisualizationFlag {
-    /// visualize constraint frames
-    LocalFrames = 1,
-    /// visualize constraint limits
-    Limits = 2,
-}
-
-/// Flags for determining how PVD should serialize a constraint update
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxPvdUpdateType {
-    /// triggers createPvdInstance call, creates an instance of a constraint
-    CreateInstance = 0,
-    /// triggers releasePvdInstance call, releases an instance of a constraint
-    ReleaseInstance = 1,
-    /// triggers updatePvdProperties call, updates all properties of a constraint
-    UpdateAllProperties = 2,
-    /// triggers simUpdate call, updates all simulation properties of a constraint
-    UpdateSimProperties = 3,
-}
-
-/// Constraint descriptor used inside the solver
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum ConstraintType {
-    /// Defines this pair is a contact constraint
-    ContactConstraint = 0,
-    /// Defines this pair is a joint constraint
-    JointConstraint = 1,
-}
-
-/// Data structure used for preparing constraints before solving them
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum BodyState {
-    DynamicBody = 1,
-    StaticBody = 2,
-    KinematicBody = 4,
-    Articulation = 8,
-}
-
-/// @
-/// {
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxArticulationAxis {
-    /// Rotational about eX
-    Twist = 0,
-    /// Rotational about eY
-    Swing1 = 1,
-    /// Rotational about eZ
-    Swing2 = 2,
-    /// Linear in eX
-    X = 3,
-    /// Linear in eY
-    Y = 4,
-    /// Linear in eZ
-    Z = 5,
-    Count = 6,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxArticulationMotion {
-    /// Locked axis, i.e. degree of freedom (DOF)
-    Locked = 0,
-    /// Limited DOF - set limits of joint DOF together with this flag, see PxArticulationJointReducedCoordinate::setLimitParams
-    Limited = 1,
-    /// Free DOF
-    Free = 2,
+    /// Specifies the position (first 3 floats) and inverse mass (last float) data (array of PxVec4 * number of particles)
+    UpdatePosition = 1,
+    /// Specifies the velocity (first 3 floats) data (array of PxVec4 * number of particles)
+    UpdateVelocity = 2,
+    /// Specifies the per-particle phase flag data (array of PxU32 * number of particles)
+    UpdatePhase = 4,
+    /// Specifies the rest position (first 3 floats) data
+    UpdateRestposition = 8,
+    /// Specifies the diffuse particle parameter buffer (see PxDiffuseParticleParams)
+    UpdateDiffuseParam = 16,
+    All = 31,
 }
 
 bitflags::bitflags! {
-    /// Flags for [`PxArticulationMotion`]
+    /// Flags for [`PxParticleBufferFlag`]
     #[derive(Default)]
     #[repr(transparent)]
-    pub struct PxArticulationMotions: u8 {
-        const Limited = 1 << 0;
-        const Free = 1 << 1;
+    pub struct PxParticleBufferFlags: u32 {
+        const UpdatePosition = 1 << 0;
+        const UpdateVelocity = 1 << 1;
+        const UpdatePhase = 1 << 2;
+        const UpdateRestposition = 1 << 3;
+        const UpdateDiffuseParam = 1 << 4;
+        const All = Self::UpdatePosition.bits | Self::UpdateVelocity.bits | Self::UpdatePhase.bits | Self::UpdateRestposition.bits | Self::UpdateDiffuseParam.bits;
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxArticulationJointType {
-    /// All joint axes, i.e. degrees of freedom (DOFs) locked
-    Fix = 0,
-    /// Single linear DOF, e.g. cart on a rail
-    Prismatic = 1,
-    /// Single rotational DOF, e.g. an elbow joint or a rotational motor, position wrapped at 2pi radians
-    Revolute = 2,
-    /// Single rotational DOF, e.g. an elbow joint or a rotational motor, position not wrapped
-    RevoluteUnwrapped = 3,
-    /// Ball and socket joint with two or three DOFs
-    Spherical = 4,
-    Undefined = 5,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxArticulationFlag {
-    /// Set articulation base to be fixed.
-    FixBase = 1,
-    /// Limits for drive effort are forces and torques rather than impulses, see PxArticulationDrive::maxForce.
-    DriveLimitsAreForces = 2,
-    /// Disable collisions between the articulation's links (note that parent/child collisions are disabled internally in either case).
-    DisableSelfCollision = 4,
-    /// Enable in order to be able to query joint solver (i.e. constraint) forces using PxArticulationCache::jointSolverForces.
-    ComputeJointForces = 8,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxArticulationFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxArticulationFlags: u8 {
-        const FixBase = 1 << 0;
-        const DriveLimitsAreForces = 1 << 1;
-        const DisableSelfCollision = 1 << 2;
-        const ComputeJointForces = 1 << 3;
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxArticulationDriveType {
-    /// The output of the implicit spring drive controller is a force/torque.
-    Force = 0,
-    /// The output of the implicit spring drive controller is a joint acceleration (use this to get (spatial)-inertia-invariant behavior of the drive).
-    Acceleration = 1,
-    /// Sets the drive gains internally to track a target position almost kinematically (i.e. with very high drive gains).
-    Target = 2,
-    /// Sets the drive gains internally to track a target velocity almost kinematically (i.e. with very high drive gains).
-    Velocity = 3,
-    None = 4,
-}
-
-/// A description of the types of articulation data that may be directly written to and read from the GPU using the functions
-/// PxScene::copyArticulationData() and PxScene::applyArticulationData(). Types that are read-only may only be used in conjunction with
-/// PxScene::copyArticulationData(). Types that are write-only may only be used in conjunction with PxScene::applyArticulationData().
-/// A subset of data types may be used in conjunction with both PxScene::applyArticulationData() and PxScene::applyArticulationData().
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxArticulationGpuDataType {
-    /// The joint positions, read and write, see PxScene::copyArticulationData(), PxScene::applyArticulationData()
-    JointPosition = 0,
-    /// The joint velocities, read and write,  see PxScene::copyArticulationData(), PxScene::applyArticulationData()
-    JointVelocity = 1,
-    /// The joint accelerations, read only, see PxScene::copyArticulationData()
-    JointAcceleration = 2,
-    /// The applied joint forces, write only, see PxScene::applyArticulationData()
-    JointForce = 3,
-    /// The computed joint constraint solver forces, read only, see PxScene::copyArticulationData()()
-    JointSolverForce = 4,
-    /// The velocity targets for the joint drives, write only, see PxScene::applyArticulationData()
-    JointTargetVelocity = 5,
-    /// The position targets for the joint drives, write only, see PxScene::applyArticulationData()
-    JointTargetPosition = 6,
-    /// The spatial sensor forces, read only, see PxScene::copyArticulationData()
-    SensorForce = 7,
-    /// The root link transform, read and write, see PxScene::copyArticulationData(), PxScene::applyArticulationData()
-    RootTransform = 8,
-    /// The root link velocity, read and write, see PxScene::copyArticulationData(), PxScene::applyArticulationData()
-    RootVelocity = 9,
-    /// The link transforms including root link, read only, see PxScene::copyArticulationData()
-    LinkTransform = 10,
-    /// The link velocities including root link, read only, see PxScene::copyArticulationData()
-    LinkVelocity = 11,
-    /// The forces to apply to links, write only, see PxScene::applyArticulationData()
-    LinkForce = 12,
-    /// The torques to apply to links, write only, see PxScene::applyArticulationData()
-    LinkTorque = 13,
-    /// Fixed tendon data, write only, see PxScene::applyArticulationData()
-    FixedTendon = 14,
-    /// Fixed tendon joint data, write only, see PxScene::applyArticulationData()
-    FixedTendonJoint = 15,
-    /// Spatial tendon data, write only, see PxScene::applyArticulationData()
-    SpatialTendon = 16,
-    /// Spatial tendon attachment data, write only, see PxScene::applyArticulationData()
-    SpatialTendonAttachment = 17,
-}
-
-/// These flags determine what data is read or written to the internal articulation data via cache.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxArticulationCacheFlag {
-    /// The joint velocities, see PxArticulationCache::jointVelocity.
-    Velocity = 1,
-    /// The joint accelerations, see PxArticulationCache::jointAcceleration.
-    Acceleration = 2,
-    /// The joint positions, see PxArticulationCache::jointPosition.
-    Position = 4,
-    /// The joint forces, see PxArticulationCache::jointForce.
-    Force = 8,
-    /// The link velocities, see PxArticulationCache::linkVelocity.
-    LinkVelocity = 16,
-    /// The link accelerations, see PxArticulationCache::linkAcceleration.
-    LinkAcceleration = 32,
-    /// Root link transform, see PxArticulationCache::rootLinkData.
-    RootTransform = 64,
-    /// Root link velocities (read/write) and accelerations (read), see PxArticulationCache::rootLinkData.
-    RootVelocities = 128,
-    /// The spatial sensor forces, see PxArticulationCache::sensorForces.
-    SensorForces = 256,
-    /// Solver constraint joint forces, see PxArticulationCache::jointSolverForces.
-    JointSolverForces = 512,
-    All = 247,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxArticulationCacheFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxArticulationCacheFlags: u32 {
-        const Velocity = 1 << 0;
-        const Acceleration = 1 << 1;
-        const Position = 1 << 2;
-        const Force = 1 << 3;
-        const LinkVelocity = 1 << 4;
-        const LinkAcceleration = 1 << 5;
-        const RootTransform = 1 << 6;
-        const RootVelocities = 1 << 7;
-        const SensorForces = 1 << 8;
-        const JointSolverForces = 1 << 9;
-        const All = Self::Velocity.bits | Self::Acceleration.bits | Self::Position.bits | Self::LinkVelocity.bits | Self::LinkAcceleration.bits | Self::RootTransform.bits | Self::RootVelocities.bits;
-    }
-}
-
-/// Flags to configure the forces reported by articulation link sensors.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxArticulationSensorFlag {
-    /// Raise to receive forces from forward dynamics.
-    ForwardDynamicsForces = 1,
-    /// Raise to receive forces from constraint solver.
-    ConstraintSolverForces = 2,
-    /// Raise to receive forces in the world rotation frame, otherwise they will be reported in the sensor's local frame.
-    WorldFrame = 4,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxArticulationSensorFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxArticulationSensorFlags: u8 {
-        const ForwardDynamicsForces = 1 << 0;
-        const ConstraintSolverForces = 1 << 1;
-        const WorldFrame = 1 << 2;
-    }
-}
-
-/// Flag that configures articulation-state updates by PxArticulationReducedCoordinate::updateKinematic.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxArticulationKinematicFlag {
-    /// Raise after any changes to the articulation root or joint positions using non-cache API calls. Updates links' positions and velocities.
-    Position = 1,
-    /// Raise after velocity-only changes to the articulation root or joints using non-cache API calls. Updates links' velocities.
-    Velocity = 2,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxArticulationKinematicFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxArticulationKinematicFlags: u8 {
-        const Position = 1 << 0;
-        const Velocity = 1 << 1;
-    }
-}
-
-/// Flags which affect the behavior of PxShapes.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxShapeFlag {
-    /// The shape will partake in collision in the physical simulation.
-    ///
-    /// It is illegal to raise the eSIMULATION_SHAPE and eTRIGGER_SHAPE flags.
-    /// In the event that one of these flags is already raised the sdk will reject any
-    /// attempt to raise the other.  To raise the eSIMULATION_SHAPE first ensure that
-    /// eTRIGGER_SHAPE is already lowered.
-    ///
-    /// This flag has no effect if simulation is disabled for the corresponding actor (see [`PxActorFlag::eDISABLE_SIMULATION`]).
-    SimulationShape = 1,
-    /// The shape will partake in scene queries (ray casts, overlap tests, sweeps, ...).
-    SceneQueryShape = 2,
-    /// The shape is a trigger which can send reports whenever other shapes enter/leave its volume.
-    ///
-    /// Triangle meshes and heightfields can not be triggers. Shape creation will fail in these cases.
-    ///
-    /// Shapes marked as triggers do not collide with other objects. If an object should act both
-    /// as a trigger shape and a collision shape then create a rigid body with two shapes, one being a
-    /// trigger shape and the other a collision shape. It is illegal to raise the eTRIGGER_SHAPE and
-    /// eSIMULATION_SHAPE flags on a single PxShape instance.  In the event that one of these flags is already
-    /// raised the sdk will reject any attempt to raise the other.  To raise the eTRIGGER_SHAPE flag first
-    /// ensure that eSIMULATION_SHAPE flag is already lowered.
-    ///
-    /// Trigger shapes will no longer send notification events for interactions with other trigger shapes.
-    ///
-    /// Shapes marked as triggers are allowed to participate in scene queries, provided the eSCENE_QUERY_SHAPE flag is set.
-    ///
-    /// This flag has no effect if simulation is disabled for the corresponding actor (see [`PxActorFlag::eDISABLE_SIMULATION`]).
-    TriggerShape = 4,
-    /// Enable debug renderer for this shape
-    Visualization = 8,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxShapeFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxShapeFlags: u8 {
-        const SimulationShape = 1 << 0;
-        const SceneQueryShape = 1 << 1;
-        const TriggerShape = 1 << 2;
-        const Visualization = 1 << 3;
-    }
-}
-
-/// Parameter to addForce() and addTorque() calls, determines the exact operation that is carried out.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxForceMode {
-    /// parameter has unit of mass * length / time^2, i.e., a force
-    Force = 0,
-    /// parameter has unit of mass * length / time, i.e., force * time
-    Impulse = 1,
-    /// parameter has unit of length / time, i.e., the effect is mass independent: a velocity change.
-    VelocityChange = 2,
-    /// parameter has unit of length/ time^2, i.e., an acceleration. It gets treated just like a force except the mass is not divided out before integration.
-    Acceleration = 3,
-}
-
-/// Collection of flags describing the behavior of a rigid body.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxRigidBodyFlag {
-    /// Enable kinematic mode for the body.
-    Kinematic = 1,
-    /// Use the kinematic target transform for scene queries.
-    ///
-    /// If this flag is raised, then scene queries will treat the kinematic target transform as the current pose
-    /// of the body (instead of using the actual pose). Without this flag, the kinematic target will only take
-    /// effect with respect to scene queries after a simulation step.
-    UseKinematicTargetForSceneQueries = 2,
-    /// Enable CCD for the body.
-    EnableCcd = 4,
-    /// Enabled CCD in swept integration for the actor.
-    ///
-    /// If this flag is raised and CCD is enabled, CCD interactions will simulate friction. By default, friction is disabled in CCD interactions because
-    /// CCD friction has been observed to introduce some simulation artifacts. CCD friction was enabled in previous versions of the SDK. Raising this flag will result in behavior
-    /// that is a closer match for previous versions of the SDK.
-    ///
-    /// This flag requires PxRigidBodyFlag::eENABLE_CCD to be raised to have any effect.
-    EnableCcdFriction = 8,
-    /// Register a rigid body to dynamically adjust contact offset based on velocity. This can be used to achieve a CCD effect.
-    ///
-    /// If both eENABLE_CCD and eENABLE_SPECULATIVE_CCD are set on the same body, then angular motions are handled by speculative
-    /// contacts (eENABLE_SPECULATIVE_CCD) while linear motions are handled by sweeps (eENABLE_CCD).
-    EnableSpeculativeCcd = 16,
-    /// Register a rigid body for reporting pose changes by the simulation at an early stage.
-    ///
-    /// Sometimes it might be advantageous to get access to the new pose of a rigid body as early as possible and
-    /// not wait until the call to fetchResults() returns. Setting this flag will schedule the rigid body to get reported
-    /// in [`PxSimulationEventCallback::onAdvance`](). Please refer to the documentation of that callback to understand
-    /// the behavior and limitations of this functionality.
-    EnablePoseIntegrationPreview = 32,
-    /// Permit CCD to limit maxContactImpulse. This is useful for use-cases like a destruction system but can cause visual artefacts so is not enabled by default.
-    EnableCcdMaxContactImpulse = 64,
-    /// Carries over forces/accelerations between frames, rather than clearing them
-    RetainAccelerations = 128,
-    /// Forces kinematic-kinematic pairs notifications for this actor.
-    ///
-    /// This flag overrides the global scene-level PxPairFilteringMode setting for kinematic actors.
-    /// This is equivalent to having PxPairFilteringMode::eKEEP for pairs involving this actor.
-    ///
-    /// A particular use case is when you have a large amount of kinematic actors, but you are only
-    /// interested in interactions between a few of them. In this case it is best to use
-    /// PxSceneDesc.kineKineFilteringMode = PxPairFilteringMode::eKILL, and then raise the
-    /// eFORCE_KINE_KINE_NOTIFICATIONS flag on the small set of kinematic actors that need
-    /// notifications.
-    ///
-    /// This has no effect if PxRigidBodyFlag::eKINEMATIC is not set.
-    ///
-    /// Changing this flag at runtime will not have an effect until you remove and re-add the actor to the scene.
-    ForceKineKineNotifications = 256,
-    /// Forces static-kinematic pairs notifications for this actor.
-    ///
-    /// Similar to eFORCE_KINE_KINE_NOTIFICATIONS, but for static-kinematic interactions.
-    ///
-    /// This has no effect if PxRigidBodyFlag::eKINEMATIC is not set.
-    ///
-    /// Changing this flag at runtime will not have an effect until you remove and re-add the actor to the scene.
-    ForceStaticKineNotifications = 512,
-    /// Enables computation of gyroscopic forces on the rigid body.
-    EnableGyroscopicForces = 1024,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxRigidBodyFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxRigidBodyFlags: u16 {
-        const Kinematic = 1 << 0;
-        const UseKinematicTargetForSceneQueries = 1 << 1;
-        const EnableCcd = 1 << 2;
-        const EnableCcdFriction = 1 << 3;
-        const EnableSpeculativeCcd = 1 << 4;
-        const EnablePoseIntegrationPreview = 1 << 5;
-        const EnableCcdMaxContactImpulse = 1 << 6;
-        const RetainAccelerations = 1 << 7;
-        const ForceKineKineNotifications = 1 << 8;
-        const ForceStaticKineNotifications = 1 << 9;
-        const EnableGyroscopicForces = 1 << 10;
-    }
-}
-
-/// constraint flags
+/// Identifies per-particle behavior for a PxParticleSystem.
 ///
-/// eBROKEN is a read only flag
+/// See [`PxPBDParticleSystem::createPhase`]().
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxConstraintFlag {
-    /// whether the constraint is broken
-    Broken = 1,
-    /// whether actor1 should get projected to actor0 for this constraint (note: projection of a static/kinematic actor to a dynamic actor will be ignored)
-    ProjectToActor0 = 2,
-    /// whether actor0 should get projected to actor1 for this constraint (note: projection of a static/kinematic actor to a dynamic actor will be ignored)
-    ProjectToActor1 = 4,
-    /// whether the actors should get projected for this constraint (the direction will be chosen by PhysX)
-    Projection = 6,
-    /// whether contacts should be generated between the objects this constraint constrains
-    CollisionEnabled = 8,
-    /// whether this constraint should be visualized, if constraint visualization is turned on
-    Visualization = 16,
-    /// limits for drive strength are forces rather than impulses
-    DriveLimitsAreForces = 32,
-    /// perform preprocessing for improved accuracy on D6 Slerp Drive (this flag will be removed in a future release when preprocessing is no longer required)
-    ImprovedSlerp = 128,
-    /// suppress constraint preprocessing, intended for use with rowResponseThreshold. May result in worse solver accuracy for ill-conditioned constraints.
-    DisablePreprocessing = 256,
-    /// enables extended limit ranges for angular limits (e.g., limit values > PxPi or
-    /// <
-    /// -PxPi)
-    EnableExtendedLimits = 512,
-    /// the constraint type is supported by gpu dynamics
-    GpuCompatible = 1024,
-    /// updates the constraint each frame
-    AlwaysUpdate = 2048,
-    /// disables the constraint. SolverPrep functions won't be called for this constraint.
-    DisableConstraint = 4096,
+#[repr(u32)]
+pub enum PxParticlePhaseFlag {
+    /// Bits [ 0, 19] represent the particle group for controlling collisions
+    ParticlePhaseGroupMask = 1048575,
+    /// Bits [20, 23] hold flags about how the particle behave
+    ParticlePhaseFlagsMask = 4293918720,
+    /// If set this particle will interact with particles of the same group
+    ParticlePhaseSelfCollide = 1048576,
+    /// If set this particle will ignore collisions with particles closer than the radius in the rest pose, this flag should not be specified unless valid rest positions have been specified using setRestParticles()
+    ParticlePhaseSelfCollideFilter = 2097152,
+    /// If set this particle will generate fluid density constraints for its overlapping neighbors
+    ParticlePhaseFluid = 4194304,
 }
 
 bitflags::bitflags! {
-    /// Flags for [`PxConstraintFlag`]
+    /// Flags for [`PxParticlePhaseFlag`]
     #[derive(Default)]
     #[repr(transparent)]
-    pub struct PxConstraintFlags: u16 {
-        const Broken = 1 << 0;
-        const ProjectToActor0 = 1 << 1;
-        const ProjectToActor1 = 1 << 2;
-        const Projection = Self::ProjectToActor0.bits | Self::ProjectToActor1.bits;
-        const CollisionEnabled = 1 << 3;
-        const Visualization = 1 << 4;
-        const DriveLimitsAreForces = 1 << 5;
-        const ImprovedSlerp = 1 << 7;
-        const DisablePreprocessing = 1 << 8;
-        const EnableExtendedLimits = 1 << 9;
-        const GpuCompatible = 1 << 10;
-        const AlwaysUpdate = 1 << 11;
-        const DisableConstraint = 1 << 12;
-    }
-}
-
-/// Header for a contact patch where all points share same material and normal
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxContactPatchFlags {
-    /// Indicates this contact stream has face indices.
-    HasFaceIndices = 1,
-    /// Indicates this contact stream is modifiable.
-    Modifiable = 2,
-    /// Indicates this contact stream is notify-only (no contact response).
-    ForceNoResponse = 4,
-    /// Indicates this contact stream has modified mass ratios
-    HasModifiedMassRatios = 8,
-    /// Indicates this contact stream has target velocities set
-    HasTargetVelocity = 16,
-    /// Indicates this contact stream has max impulses set
-    HasMaxImpulse = 32,
-    /// Indicates this contact stream needs patches re-generated. This is required if the application modified either the contact normal or the material properties
-    RegeneratePatches = 64,
-    CompressedModifiedContact = 128,
-}
-
-/// A class to iterate over a compressed contact stream. This supports read-only access to the various contact formats.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum StreamFormat {
-    SimpleStream = 0,
-    ModifiableStream = 1,
-    CompressedModifiableStream = 2,
-}
-
-/// Flags specifying deletion event types.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxDeletionEventFlag {
-    /// The user has called release on an object.
-    UserRelease = 1,
-    /// The destructor of an object has been called and the memory has been released.
-    MemoryRelease = 2,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxDeletionEventFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxDeletionEventFlags: u8 {
-        const UserRelease = 1 << 0;
-        const MemoryRelease = 1 << 1;
+    pub struct PxParticlePhaseFlags: u32 {
+        const ParticlePhaseGroupMask = 0x000fffff;
+        const ParticlePhaseFlagsMask = Self::ParticlePhaseSelfCollide.bits | Self::ParticlePhaseSelfCollideFilter.bits | Self::ParticlePhaseFluid.bits;
+        const ParticlePhaseSelfCollide = 1 << 20;
+        const ParticlePhaseSelfCollideFilter = 1 << 21;
+        const ParticlePhaseFluid = 1 << 22;
     }
 }
 
@@ -1374,6 +442,8 @@ pub enum PxPairFlag {
     /// Only takes effect if the colliding actors are rigid bodies.
     ///
     /// Only takes effect if eDETECT_DISCRETE_CONTACT or eDETECT_CCD_CONTACT is raised
+    ///
+    /// Only works with PGS solver, and only on CPU.
     NotifyThresholdForceFound = 64,
     /// Call contact report callback when the contact force between the actors of this collision pair continues to exceed one of the actor-defined force thresholds.
     ///
@@ -1383,6 +453,8 @@ pub enum PxPairFlag {
     /// previous one (unless [`eNOTIFY_THRESHOLD_FORCE_FOUND`] has been set in the previous frame).
     ///
     /// Only takes effect if eDETECT_DISCRETE_CONTACT or eDETECT_CCD_CONTACT is raised
+    ///
+    /// Only works with PGS solver, and only on CPU.
     NotifyThresholdForcePersists = 128,
     /// Call contact report callback when the contact force between the actors of this collision pair falls below one of the actor-defined force thresholds (includes the case where this collision pair stops being in contact).
     ///
@@ -1392,6 +464,8 @@ pub enum PxPairFlag {
     /// previous one (unless [`eNOTIFY_THRESHOLD_FORCE_FOUND`] or #eNOTIFY_THRESHOLD_FORCE_PERSISTS has been set in the previous frame).
     ///
     /// Only takes effect if eDETECT_DISCRETE_CONTACT or eDETECT_CCD_CONTACT is raised
+    ///
+    /// Only works with PGS solver, and only on CPU.
     NotifyThresholdForceLost = 256,
     /// Provide contact points in contact reports for this collision pair.
     ///
@@ -1536,18 +610,12 @@ pub enum PxFilterObjectType {
     RigidDynamic = 1,
     /// An articulation
     Articulation = 2,
+    /// A deformable surface
+    DeformableSurface = 3,
+    /// A deformable volume
+    DeformableVolume = 4,
     /// A particle system
-    Particlesystem = 3,
-    /// A FEM-based soft body
-    Softbody = 4,
-    /// A FEM-based cloth
-    ///
-    /// In development
-    Femcloth = 5,
-    /// A hair system
-    ///
-    /// In development
-    Hairsystem = 6,
+    Particlesystem = 5,
     /// internal use only!
     MaxTypeCount = 16,
     /// internal use only!
@@ -1559,6 +627,8 @@ pub enum PxFilterObjectType {
 pub enum PxFilterObjectFlag {
     Kinematic = 16,
     Trigger = 32,
+    CustomGeometry = 64,
+    NextFree = 128,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -1577,24 +647,916 @@ pub enum PxPairFilteringMode {
     Suppress = 1,
     /// Don't output pair from BP. Cannot be later switched to regular interaction, needs "resetFiltering" call.
     Kill = 2,
+    /// Default is eSUPPRESS for compatibility with previous PhysX versions.
+    Default = 1,
+}
+
+/// Flags which control the behavior of an actor.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxActorFlag {
+    /// Enable debug renderer for this actor
+    Visualization = 1,
+    /// Disables scene gravity for this actor
+    DisableGravity = 2,
+    /// Enables the sending of PxSimulationEventCallback::onWake() and PxSimulationEventCallback::onSleep() notify events
+    SendSleepNotifies = 4,
+    /// Disables simulation for the actor.
+    ///
+    /// This is only supported by PxRigidStatic and PxRigidDynamic actors and can be used to reduce the memory footprint when rigid actors are
+    /// used for scene queries only.
+    ///
+    /// Setting this flag will remove all constraints attached to the actor from the scene.
+    ///
+    /// If this flag is set, the following calls are forbidden:
+    ///
+    /// PxRigidBody: setLinearVelocity(), setAngularVelocity(), addForce(), addTorque(), clearForce(), clearTorque(), setForceAndTorque()
+    ///
+    /// PxRigidDynamic: setKinematicTarget(), setWakeCounter(), wakeUp(), putToSleep()
+    ///
+    /// Sleeping:
+    /// Raising this flag will set all velocities and the wake counter to 0, clear all forces, clear the kinematic target, put the actor
+    /// to sleep and wake up all touching actors from the previous frame.
+    DisableSimulation = 8,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxActorFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxActorFlags: u8 {
+        const Visualization = 1 << 0;
+        const DisableGravity = 1 << 1;
+        const SendSleepNotifies = 1 << 2;
+        const DisableSimulation = 1 << 3;
+    }
+}
+
+/// Identifies each type of actor.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxActorType {
+    /// A static rigid body
+    RigidStatic = 0,
+    /// A dynamic rigid body
+    RigidDynamic = 1,
+    /// An articulation link
+    ArticulationLink = 2,
+    /// A deformable surface
+    DeformableSurface = 3,
+    /// A deformable volume
+    DeformableVolume = 4,
+    /// A PBD ParticleSystem
+    PbdParticlesystem = 5,
+    /// internal use only!
+    ActorCount = 6,
+    /// internal use only!
+    ActorForceDword = 2147483647,
+}
+
+/// Flags which control the behaviour of a particle system.
+///
+/// See [`PxPBDParticleSystem::setParticleFlag`](), #PxPBDParticleSystem::setParticleFlags(), #PxPBDParticleSystem::getParticleFlags()
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxParticleFlag {
+    /// Disables particle self-collision
+    DisableSelfCollision = 1,
+    /// Disables particle-rigid body collision
+    DisableRigidCollision = 2,
+    /// Enables full advection of diffuse particles. By default, diffuse particles are advected only by particles in the cell they are contained. This flag enables full neighbourhood generation (more expensive).
+    FullDiffuseAdvection = 4,
+    /// Enables speculative CCD for particle-rigid body collision.
+    EnableSpeculativeCcd = 8,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxParticleFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxParticleFlags: u32 {
+        const DisableSelfCollision = 1 << 0;
+        const DisableRigidCollision = 1 << 1;
+        const FullDiffuseAdvection = 1 << 2;
+        const EnableSpeculativeCcd = 1 << 3;
+    }
+}
+
+/// Collection of flags providing a mechanism to lock motion along a specific axis.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxParticleLockFlag {
+    LockX = 1,
+    LockY = 2,
+    LockZ = 4,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxParticleLockFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxParticleLockFlags: u8 {
+        const LockX = 1 << 0;
+        const LockY = 1 << 1;
+        const LockZ = 1 << 2;
+    }
+}
+
+/// Scene query and geometry query behavior flags.
+///
+/// PxHitFlags are used for 3 different purposes:
+///
+/// 1) To request hit fields to be filled in by scene queries (such as hit position, normal, face index or UVs).
+/// 2) Once query is completed, to indicate which fields are valid (note that a query may produce more valid fields than requested).
+/// 3) To specify additional options for the narrow phase and mid-phase intersection routines.
+///
+/// All these flags apply to both scene queries and geometry queries (PxGeometryQuery).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxHitFlag {
+    /// "position" member of [`PxQueryHit`] is valid
+    Position = 1,
+    /// "normal" member of [`PxQueryHit`] is valid
+    Normal = 2,
+    /// "u" and "v" barycentric coordinates of [`PxQueryHit`] are valid. Not applicable to sweep queries.
+    Uv = 8,
+    /// Performance hint flag for sweeps when it is known upfront there's no initial overlap.
+    /// NOTE: using this flag may cause undefined results if shapes are initially overlapping.
+    AssumeNoInitialOverlap = 16,
+    /// Report any first hit. Used for geometries that contain more than one primitive. For meshes,
+    /// if neither eMESH_MULTIPLE nor eANY_HIT is specified, a single closest hit will be reported.
+    AnyHit = 32,
+    /// Report all hits for meshes rather than just the first. Not applicable to sweep queries.
+    MeshMultiple = 64,
+    /// Report hits with back faces of mesh triangles. Also report hits for raycast
+    /// originating on mesh surface and facing away from the surface normal. Not applicable to sweep queries.
+    /// Please refer to the user guide for heightfield-specific differences.
+    MeshBothSides = 128,
+    /// Use more accurate but slower narrow phase sweep tests.
+    /// May provide better compatibility with PhysX 3.2 sweep behavior.
+    PreciseSweep = 256,
+    /// Report the minimum translation depth, normal and contact point.
+    Mtd = 512,
+    /// "face index" member of [`PxQueryHit`] is valid
+    FaceIndex = 1024,
+    Default = 1027,
+    /// Only this subset of flags can be modified by pre-filter. Other modifications will be discarded.
+    ModifiableFlags = 464,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxHitFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxHitFlags: u16 {
+        const Position = 1 << 0;
+        const Normal = 1 << 1;
+        const Uv = 1 << 3;
+        const AssumeNoInitialOverlap = 1 << 4;
+        const AnyHit = 1 << 5;
+        const MeshMultiple = 1 << 6;
+        const MeshBothSides = 1 << 7;
+        const PreciseSweep = 1 << 8;
+        const Mtd = 1 << 9;
+        const FaceIndex = 1 << 10;
+        const Default = Self::Position.bits | Self::Normal.bits | Self::FaceIndex.bits;
+        const ModifiableFlags = Self::AssumeNoInitialOverlap.bits | Self::MeshMultiple.bits | Self::MeshBothSides.bits | Self::PreciseSweep.bits;
+    }
+}
+
+/// Enumeration of core types for convex core geometries.
+///
+/// This enum defines the various cores that can be used as the basis
+/// for creating convex core geometries. Each type represents a different
+/// fundamental shape that can be extended with a margin to create more
+/// complex convex shapes.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxConvexCore {
+    Point = 0,
+    Segment = 1,
+    Box = 2,
+    Ellipsoid = 3,
+    Cylinder = 4,
+    Cone = 5,
+    Count = 6,
+}
+
+/// Describes the format of height field samples.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxHeightFieldFormat {
+    /// Height field height data is 16 bit signed integers, followed by triangle materials.
+    ///
+    /// Each sample is 32 bits wide arranged as follows:
+    ///
+    /// 1) First there is a 16 bit height value.
+    /// 2) Next, two one byte material indices, with the high bit of each byte reserved for special use.
+    /// (so the material index is only 7 bits).
+    /// The high bit of material0 is the tess-flag.
+    /// The high bit of material1 is reserved for future use.
+    ///
+    /// There are zero or more unused bytes before the next sample depending on PxHeightFieldDesc.sampleStride,
+    /// where the application may eventually keep its own data.
+    ///
+    /// This is the only format supported at the moment.
+    S16Tm = 1,
+}
+
+/// Determines the tessellation of height field cells.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxHeightFieldTessFlag {
+    /// This flag determines which way each quad cell is subdivided.
+    ///
+    /// The flag lowered indicates subdivision like this: (the 0th vertex is referenced by only one triangle)
+    ///
+    /// +--+--+--+---> column
+    /// | /| /| /|
+    /// |/ |/ |/ |
+    /// +--+--+--+
+    /// | /| /| /|
+    /// |/ |/ |/ |
+    /// +--+--+--+
+    /// |
+    /// |
+    /// V row
+    ///
+    /// The flag raised indicates subdivision like this: (the 0th vertex is shared by two triangles)
+    ///
+    /// +--+--+--+---> column
+    /// |
+    /// \
+    /// |
+    /// \
+    /// |
+    /// \
+    /// |
+    /// |
+    /// \
+    /// |
+    /// \
+    /// |
+    /// \
+    /// |
+    /// +--+--+--+
+    /// |
+    /// \
+    /// |
+    /// \
+    /// |
+    /// \
+    /// |
+    /// |
+    /// \
+    /// |
+    /// \
+    /// |
+    /// \
+    /// |
+    /// +--+--+--+
+    /// |
+    /// |
+    /// V row
+    E0ThVertexShared = 1,
+}
+
+/// Enum with flag values to be used in PxHeightFieldDesc.flags.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxHeightFieldFlag {
+    /// Disable collisions with height field with boundary edges.
+    ///
+    /// Raise this flag if several terrain patches are going to be placed adjacent to each other,
+    /// to avoid a bump when sliding across.
+    ///
+    /// This flag is ignored in contact generation with sphere and capsule shapes.
+    NoBoundaryEdges = 1,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxHeightFieldFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxHeightFieldFlags: u16 {
+        const NoBoundaryEdges = 1 << 0;
+    }
+}
+
+/// Special material index values for height field samples.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxHeightFieldMaterial {
+    /// A material indicating that the triangle should be treated as a hole in the mesh.
+    Hole = 127,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
-pub enum PxDataAccessFlag {
-    Readable = 1,
-    Writable = 2,
-    Device = 4,
+pub enum PxMeshMeshQueryFlag {
+    /// Report all overlaps
+    Default = 0,
+    /// Ignore coplanar triangle-triangle overlaps
+    DiscardCoplanar = 1,
+    /// Reserved flag
+    Reserved = 2,
+    /// Reserved flag
+    Reserved1 = 2,
+    /// Reserved flag
+    Reserved2 = 4,
+    /// Reserved flag
+    Reserved3 = 8,
 }
 
 bitflags::bitflags! {
-    /// Flags for [`PxDataAccessFlag`]
+    /// Flags for [`PxMeshMeshQueryFlag`]
     #[derive(Default)]
     #[repr(transparent)]
-    pub struct PxDataAccessFlags: u8 {
-        const Readable = 1 << 0;
-        const Writable = 1 << 1;
-        const Device = 1 << 2;
+    pub struct PxMeshMeshQueryFlags: u32 {
+        const DiscardCoplanar = 1 << 0;
+        const Reserved = 1 << 1;
+        const Reserved1 = 1 << 1;
+        const Reserved2 = 1 << 2;
+        const Reserved3 = 1 << 3;
+    }
+}
+
+/// Enum with flag values to be used in PxSimpleTriangleMesh::flags.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxMeshFlag {
+    /// Specifies if the SDK should flip normals.
+    ///
+    /// The PhysX libraries assume that the face normal of a triangle with vertices [a,b,c] can be computed as:
+    /// edge1 = b-a
+    /// edge2 = c-a
+    /// face_normal = edge1 x edge2.
+    ///
+    /// Note: This is the same as a counterclockwise winding in a right handed coordinate system or
+    /// alternatively a clockwise winding order in a left handed coordinate system.
+    ///
+    /// If this does not match the winding order for your triangles, raise the below flag.
+    Flipnormals = 1,
+    /// Denotes the use of 16-bit vertex indices
+    E16BitIndices = 2,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxMeshFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxMeshFlags: u16 {
+        const Flipnormals = 1 << 0;
+        const E16BitIndices = 1 << 1;
+    }
+}
+
+/// Mesh midphase structure. This enum is used to select the desired acceleration structure for midphase queries
+/// (i.e. raycasts, overlaps, sweeps vs triangle meshes).
+///
+/// The PxMeshMidPhase::eBVH33 structure is the one used in recent PhysX versions (up to PhysX 3.3). It has great performance and is
+/// supported on all platforms. It is deprecated since PhysX 5.x.
+///
+/// The PxMeshMidPhase::eBVH34 structure is a revisited implementation introduced in PhysX 3.4. It can be significantly faster both
+/// in terms of cooking performance and runtime performance.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxMeshMidPhase {
+    /// Use eBVH34 instead. Used to be default midphase mesh structure up to PhysX 3.3
+    Bvh33 = 0,
+    /// New midphase mesh structure, introduced in PhysX 3.4
+    Bvh34 = 1,
+    Last = 2,
+}
+
+/// Flags for the mesh geometry properties.
+///
+/// Used in ::PxTriangleMeshFlags.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxTriangleMeshFlag {
+    /// The triangle mesh has 16bits vertex indices.
+    E16BitIndices = 2,
+    /// The triangle mesh has adjacency information build.
+    AdjacencyInfo = 4,
+    /// Indicates that this mesh would preferably not be the mesh projected for mesh-mesh collision. This can indicate that the mesh is not well tessellated.
+    PreferNoSdfProj = 8,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxTriangleMeshFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxTriangleMeshFlags: u8 {
+        const E16BitIndices = 1 << 1;
+        const AdjacencyInfo = 1 << 2;
+        const PreferNoSdfProj = 1 << 3;
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxTetrahedronMeshFlag {
+    /// The tetrahedron mesh has 16bits vertex indices
+    E16BitIndices = 2,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxTetrahedronMeshFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxTetrahedronMeshFlags: u8 {
+        const E16BitIndices = 1 << 1;
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxAggregateType {
+    /// Aggregate will contain various actors of unspecified types
+    Generic = 0,
+    /// Aggregate will only contain static actors
+    Static = 1,
+    /// Aggregate will only contain kinematic actors
+    Kinematic = 2,
+}
+
+/// Constraint row flags
+///
+/// These flags configure the post-processing of constraint rows and the behavior of the solver while solving constraints
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum Px1DConstraintFlag {
+    /// whether the constraint is a spring. Mutually exclusive with eRESTITUTION. If set, eKEEPBIAS is ignored.
+    Spring = 1,
+    /// whether the constraint is a force or acceleration spring. Only valid if eSPRING is set.
+    AccelerationSpring = 2,
+    /// whether the restitution model should be applied to generate the target velocity. Mutually exclusive with eSPRING. If restitution causes a bounces, eKEEPBIAS is ignored
+    Restitution = 4,
+    /// whether to keep the error term when solving for velocity. Ignored if restitution generates bounce, or eSPRING is set.
+    Keepbias = 8,
+    /// whether to accumulate the force value from this constraint in the force total that is reported for the constraint and tested for breakage
+    OutputForce = 16,
+    /// whether the constraint has a drive force limit (which will be scaled by dt unless [`PxConstraintFlag::eDRIVE_LIMITS_ARE_FORCES`] is set)
+    HasDriveLimit = 32,
+    /// whether this is an angular or linear constraint
+    AngularConstraint = 64,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`Px1DConstraintFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct Px1DConstraintFlags: u16 {
+        const Spring = 1 << 0;
+        const AccelerationSpring = 1 << 1;
+        const Restitution = 1 << 2;
+        const Keepbias = 1 << 3;
+        const OutputForce = 1 << 4;
+        const HasDriveLimit = 1 << 5;
+        const AngularConstraint = 1 << 6;
+    }
+}
+
+/// Constraint type hints which the solver uses to optimize constraint handling
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxConstraintSolveHint {
+    /// no special properties
+    None = 0,
+    /// a group of acceleration drive constraints with the same stiffness and drive parameters
+    Acceleration1 = 256,
+    /// temporary special value to identify SLERP drive rows
+    SlerpSpring = 258,
+    /// a group of acceleration drive constraints with the same stiffness and drive parameters
+    Acceleration2 = 512,
+    /// a group of acceleration drive constraints with the same stiffness and drive parameters
+    Acceleration3 = 768,
+    /// for internal purpose only, please do not use.
+    RotationalEquality = 1024,
+    /// for internal purpose only, please do not use.
+    RotationalInequality = 1025,
+    /// Mark as equality constraint.
+    ///
+    /// If a 1D constraint is an equality constraint with [-PX_MAX_FLT, PX_MAX_FLT] force limits and a velocity target equal zero, then this
+    /// flag can be raised to allow the solver to internally change the jacobian of this constraint and have it being orthogonalized relative
+    /// to other equality constraints in the same PxConstraint (unless PxConstraintFlag::eDISABLE_PREPROCESSING is set). This can improve
+    /// the convergence when solving the constraints.
+    Equality = 2048,
+    /// Mark as inequality constraint.
+    ///
+    /// If a 1D constraint is an inequality constraint with [0, PX_MAX_FLT] force limits, then this flag can be raised to allow the solver
+    /// to internally change the jacobian of this constraint and have it being orthogonalized relative to the equality constraints in the
+    /// same PxConstraint (unless PxConstraintFlag::eDISABLE_PREPROCESSING is set). This can improve the convergence when solving the
+    /// constraints.
+    Inequality = 2049,
+}
+
+/// Flags for determining which components of the constraint should be visualized.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxConstraintVisualizationFlag {
+    /// visualize constraint frames
+    LocalFrames = 1,
+    /// visualize constraint limits
+    Limits = 2,
+}
+
+/// Flags for determining how PVD should serialize a constraint update
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxPvdUpdateType {
+    /// triggers createPvdInstance call, creates an instance of a constraint
+    CreateInstance = 0,
+    /// triggers releasePvdInstance call, releases an instance of a constraint
+    ReleaseInstance = 1,
+    /// triggers updatePvdProperties call, updates all properties of a constraint
+    UpdateAllProperties = 2,
+    /// triggers simUpdate call, updates all simulation properties of a constraint
+    UpdateSimProperties = 3,
+}
+
+/// Constraint descriptor used inside the solver
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum ConstraintType {
+    /// Defines this pair is a contact constraint
+    ContactConstraint = 0,
+    /// Defines this pair is a joint constraint
+    JointConstraint = 1,
+}
+
+/// Data structure used for preparing constraints before solving them
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum BodyState {
+    DynamicBody = 1,
+    StaticBody = 2,
+    KinematicBody = 4,
+    Articulation = 8,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxArticulationAxis {
+    /// Rotational about eX
+    Twist = 0,
+    /// Rotational about eY
+    Swing1 = 1,
+    /// Rotational about eZ
+    Swing2 = 2,
+    /// Linear in eX
+    X = 3,
+    /// Linear in eY
+    Y = 4,
+    /// Linear in eZ
+    Z = 5,
+    Count = 6,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxArticulationMotion {
+    /// Locked axis, i.e. degree of freedom (DOF)
+    Locked = 0,
+    /// Limited DOF - set limits of joint DOF together with this flag, see PxArticulationJointReducedCoordinate::setLimitParams
+    Limited = 1,
+    /// Free DOF
+    Free = 2,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxArticulationMotion`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxArticulationMotions: u8 {
+        const Limited = 1 << 0;
+        const Free = 1 << 1;
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxArticulationJointType {
+    /// All joint axes, i.e. degrees of freedom (DOFs) locked
+    Fix = 0,
+    /// Single linear DOF, e.g. cart on a rail
+    Prismatic = 1,
+    /// Single rotational DOF, e.g. an elbow joint or a rotational motor, position wrapped at 2pi radians
+    Revolute = 2,
+    /// Single rotational DOF, e.g. an elbow joint or a rotational motor, position not wrapped
+    RevoluteUnwrapped = 3,
+    /// Ball and socket joint with two or three DOFs
+    Spherical = 4,
+    Undefined = 5,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxArticulationFlag {
+    /// Set articulation base to be fixed.
+    FixBase = 1,
+    /// Limits for drive effort are forces and torques rather than impulses, see PxArticulationDrive::maxForce.
+    DriveLimitsAreForces = 2,
+    /// Disable collisions between the articulation's links (note that parent/child collisions are disabled internally in either case).
+    DisableSelfCollision = 4,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxArticulationFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxArticulationFlags: u8 {
+        const FixBase = 1 << 0;
+        const DriveLimitsAreForces = 1 << 1;
+        const DisableSelfCollision = 1 << 2;
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxArticulationDriveType {
+    /// The output of the implicit spring drive controller is a force/torque.
+    Force = 0,
+    /// The output of the implicit spring drive controller is a joint acceleration (use this to get (spatial)-inertia-invariant behavior of the drive).
+    Acceleration = 1,
+    None = 2,
+}
+
+/// These flags determine what data is read or written to the internal articulation data via cache.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxArticulationCacheFlag {
+    /// The joint velocities, see PxArticulationCache::jointVelocity.
+    Velocity = 1,
+    /// The joint accelerations, see PxArticulationCache::jointAcceleration.
+    Acceleration = 2,
+    /// The joint positions, see PxArticulationCache::jointPosition.
+    Position = 4,
+    /// The joint forces, see PxArticulationCache::jointForce.
+    Force = 8,
+    /// The link velocities, see PxArticulationCache::linkVelocity. Link velocities cannot be set except for the root link velocity via  PxArticulationCache::rootLinkData.
+    LinkVelocity = 16,
+    /// The link accelerations, see PxArticulationCache::linkAcceleration.
+    LinkAcceleration = 32,
+    /// The root link transform, see PxArticulationCache::rootLinkData.
+    RootTransform = 64,
+    /// The root link velocities (read/write) and accelerations (read), see PxArticulationCache::rootLinkData.
+    RootVelocities = 128,
+    /// The link incoming joint forces, see PxArticulationCache::linkIncomingJointForce.
+    LinkIncomingJointForce = 1024,
+    /// The joint target positions, see PxArticulationCache::jointTargetPositions.
+    JointTargetPositions = 2048,
+    /// The joint target velocities, see PxArticulationCache::jointTargetVelocities.
+    JointTargetVelocities = 4096,
+    /// The link forces, see PxArticulationCache::linkForce.
+    LinkForce = 8192,
+    /// The link torques, see PxArticulationCache::linkTorque.
+    LinkTorque = 16384,
+    All = 247,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxArticulationCacheFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxArticulationCacheFlags: u32 {
+        const Velocity = 1 << 0;
+        const Acceleration = 1 << 1;
+        const Position = 1 << 2;
+        const Force = 1 << 3;
+        const LinkVelocity = 1 << 4;
+        const LinkAcceleration = 1 << 5;
+        const RootTransform = 1 << 6;
+        const RootVelocities = 1 << 7;
+        const LinkIncomingJointForce = 1 << 10;
+        const JointTargetPositions = 1 << 11;
+        const JointTargetVelocities = 1 << 12;
+        const LinkForce = 1 << 13;
+        const LinkTorque = 1 << 14;
+        const All = Self::Velocity.bits | Self::Acceleration.bits | Self::Position.bits | Self::LinkVelocity.bits | Self::LinkAcceleration.bits | Self::RootTransform.bits | Self::RootVelocities.bits;
+    }
+}
+
+/// Flag that configures articulation-state updates by PxArticulationReducedCoordinate::updateKinematic.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxArticulationKinematicFlag {
+    /// Raise after any changes to the articulation root or joint positions using non-cache API calls. Updates links' positions and velocities.
+    Position = 1,
+    /// Raise after velocity-only changes to the articulation root or joints using non-cache API calls. Updates links' velocities.
+    Velocity = 2,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxArticulationKinematicFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxArticulationKinematicFlags: u8 {
+        const Position = 1 << 0;
+        const Velocity = 1 << 1;
+    }
+}
+
+/// Flags which affect the behavior of PxShapes.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxShapeFlag {
+    /// The shape will partake in collision in the physical simulation.
+    ///
+    /// It is illegal to raise the eSIMULATION_SHAPE and eTRIGGER_SHAPE flags.
+    /// In the event that one of these flags is already raised the sdk will reject any
+    /// attempt to raise the other.  To raise the eSIMULATION_SHAPE first ensure that
+    /// eTRIGGER_SHAPE is already lowered.
+    ///
+    /// This flag has no effect if simulation is disabled for the corresponding actor (see [`PxActorFlag::eDISABLE_SIMULATION`]).
+    SimulationShape = 1,
+    /// The shape will partake in scene queries (ray casts, overlap tests, sweeps, ...).
+    SceneQueryShape = 2,
+    /// The shape is a trigger which can send reports whenever other shapes enter/leave its volume.
+    ///
+    /// Triangle meshes and heightfields can not be triggers. Shape creation will fail in these cases.
+    ///
+    /// Shapes marked as triggers do not collide with other objects. If an object should act both
+    /// as a trigger shape and a collision shape then create a rigid body with two shapes, one being a
+    /// trigger shape and the other a collision shape. 	It is illegal to raise the eTRIGGER_SHAPE and
+    /// eSIMULATION_SHAPE flags on a single PxShape instance.  In the event that one of these flags is already
+    /// raised the sdk will reject any attempt to raise the other.  To raise the eTRIGGER_SHAPE flag first
+    /// ensure that eSIMULATION_SHAPE flag is already lowered.
+    ///
+    /// Trigger shapes will no longer send notification events for interactions with other trigger shapes.
+    ///
+    /// Shapes marked as triggers are allowed to participate in scene queries, provided the eSCENE_QUERY_SHAPE flag is set.
+    ///
+    /// This flag has no effect if simulation is disabled for the corresponding actor (see [`PxActorFlag::eDISABLE_SIMULATION`]).
+    TriggerShape = 4,
+    /// Enable debug renderer for this shape
+    Visualization = 8,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxShapeFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxShapeFlags: u8 {
+        const SimulationShape = 1 << 0;
+        const SceneQueryShape = 1 << 1;
+        const TriggerShape = 1 << 2;
+        const Visualization = 1 << 3;
+    }
+}
+
+/// Parameter to addForce() and addTorque() calls, determines the exact operation that is carried out.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxForceMode {
+    /// parameter has unit of mass * length / time^2, i.e., a force
+    Force = 0,
+    /// parameter has unit of mass * length / time, i.e., force * time
+    Impulse = 1,
+    /// parameter has unit of length / time, i.e., the effect is mass independent: a velocity change.
+    VelocityChange = 2,
+    /// parameter has unit of length/ time^2, i.e., an acceleration. It gets treated just like a force except the mass is not divided out before integration.
+    Acceleration = 3,
+}
+
+/// Collection of flags describing the behavior of a rigid body.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxRigidBodyFlag {
+    /// Enable kinematic mode for the body.
+    Kinematic = 1,
+    /// Use the kinematic target transform for scene queries.
+    ///
+    /// If this flag is raised, then scene queries will treat the kinematic target transform as the current pose
+    /// of the body (instead of using the actual pose). Without this flag, the kinematic target will only take
+    /// effect with respect to scene queries after a simulation step.
+    UseKinematicTargetForSceneQueries = 2,
+    /// Enable CCD for the body.
+    EnableCcd = 4,
+    /// Enabled CCD in swept integration for the actor.
+    ///
+    /// If this flag is raised and CCD is enabled, CCD interactions will simulate friction. By default, friction is disabled in CCD interactions because
+    /// CCD friction has been observed to introduce some simulation artifacts. CCD friction was enabled in previous versions of the SDK. Raising this flag will result in behavior
+    /// that is a closer match for previous versions of the SDK.
+    ///
+    /// This flag requires PxRigidBodyFlag::eENABLE_CCD to be raised to have any effect.
+    EnableCcdFriction = 8,
+    /// Register a rigid body to dynamically adjust contact offset based on velocity. This can be used to achieve a CCD effect.
+    ///
+    /// If both eENABLE_CCD and eENABLE_SPECULATIVE_CCD are set on the same body, then angular motions are handled by speculative
+    /// contacts (eENABLE_SPECULATIVE_CCD) while linear motions are handled by sweeps (eENABLE_CCD).
+    EnableSpeculativeCcd = 16,
+    /// Register a rigid body for reporting pose changes by the simulation at an early stage.
+    ///
+    /// Sometimes it might be advantageous to get access to the new pose of a rigid body as early as possible and
+    /// not wait until the call to fetchResults() returns. Setting this flag will schedule the rigid body to get reported
+    /// in [`PxSimulationEventCallback::onAdvance`](). Please refer to the documentation of that callback to understand
+    /// the behavior and limitations of this functionality.
+    EnablePoseIntegrationPreview = 32,
+    /// Permit CCD to limit maxContactImpulse. This is useful for use-cases like a destruction system but can cause visual artefacts so is not enabled by default.
+    EnableCcdMaxContactImpulse = 64,
+    /// Carries over forces/torques between frames, rather than clearing them
+    ///
+    /// If this flag is raised, forces and torques will carry over between frames. Impulses applied with PxForceMode::eIMPULSE will not be retained.
+    ///
+    /// Clearing this flag will retain the accelerations for an additional frame before clearing them. To reset the forces immediately for the next frame,
+    /// a call to PxRigidBody::clearForce() / PxRigidBody::clearTorque() is needed.
+    RetainAccelerations = 128,
+    /// Forces kinematic-kinematic pairs notifications for this actor.
+    ///
+    /// This flag overrides the global scene-level PxPairFilteringMode setting for kinematic actors.
+    /// This is equivalent to having PxPairFilteringMode::eKEEP for pairs involving this actor.
+    ///
+    /// A particular use case is when you have a large amount of kinematic actors, but you are only
+    /// interested in interactions between a few of them. In this case it is best to use
+    /// PxSceneDesc.kineKineFilteringMode = PxPairFilteringMode::eKILL, and then raise the
+    /// eFORCE_KINE_KINE_NOTIFICATIONS flag on the small set of kinematic actors that need
+    /// notifications.
+    ///
+    /// This has no effect if PxRigidBodyFlag::eKINEMATIC is not set.
+    ///
+    /// Changing this flag at runtime will not have an effect until you remove and re-add the actor to the scene.
+    ForceKineKineNotifications = 256,
+    /// Forces static-kinematic pairs notifications for this actor.
+    ///
+    /// Similar to eFORCE_KINE_KINE_NOTIFICATIONS, but for static-kinematic interactions.
+    ///
+    /// This has no effect if PxRigidBodyFlag::eKINEMATIC is not set.
+    ///
+    /// Changing this flag at runtime will not have an effect until you remove and re-add the actor to the scene.
+    ForceStaticKineNotifications = 512,
+    /// Enables computation of gyroscopic forces on the rigid body.
+    EnableGyroscopicForces = 1024,
+    /// Reserved for internal usage
+    Reserved = 32768,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxRigidBodyFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxRigidBodyFlags: u16 {
+        const Kinematic = 1 << 0;
+        const UseKinematicTargetForSceneQueries = 1 << 1;
+        const EnableCcd = 1 << 2;
+        const EnableCcdFriction = 1 << 3;
+        const EnableSpeculativeCcd = 1 << 4;
+        const EnablePoseIntegrationPreview = 1 << 5;
+        const EnableCcdMaxContactImpulse = 1 << 6;
+        const RetainAccelerations = 1 << 7;
+        const ForceKineKineNotifications = 1 << 8;
+        const ForceStaticKineNotifications = 1 << 9;
+        const EnableGyroscopicForces = 1 << 10;
+        const Reserved = 1 << 15;
+    }
+}
+
+/// constraint flags
+///
+/// eBROKEN is a read only flag
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxConstraintFlag {
+    /// whether the constraint is broken
+    Broken = 1,
+    /// whether contacts should be generated between the objects this constraint constrains
+    CollisionEnabled = 8,
+    /// whether this constraint should be visualized, if constraint visualization is turned on
+    Visualization = 16,
+    /// Will be removed in a future version and the limits will always be forces. limits for drive strength are forces rather than impulses
+    DriveLimitsAreForces = 32,
+    /// perform preprocessing for improved accuracy on D6 Slerp Drive (this flag will be removed in a future release when preprocessing is no longer required)
+    ImprovedSlerp = 128,
+    /// suppress constraint preprocessing, intended for use with rowResponseThreshold. May result in worse solver accuracy for ill-conditioned constraints.
+    DisablePreprocessing = 256,
+    /// enables extended limit ranges for angular limits (e.g., limit values > PxPi or
+    /// <
+    /// -PxPi)
+    EnableExtendedLimits = 512,
+    /// please do not raise this flag as it is for internal use only
+    GpuCompatible = 1024,
+    /// updates the constraint each frame
+    AlwaysUpdate = 2048,
+    /// disables the constraint. SolverPrep functions won't be called for this constraint.
+    DisableConstraint = 4096,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxConstraintFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxConstraintFlags: u16 {
+        const Broken = 1 << 0;
+        const CollisionEnabled = 1 << 3;
+        const Visualization = 1 << 4;
+        const DriveLimitsAreForces = 1 << 5;
+        const ImprovedSlerp = 1 << 7;
+        const DisablePreprocessing = 1 << 8;
+        const EnableExtendedLimits = 1 << 9;
+        const GpuCompatible = 1 << 10;
+        const AlwaysUpdate = 1 << 11;
+        const DisableConstraint = 1 << 12;
     }
 }
 
@@ -1622,19 +1584,11 @@ pub enum PxMaterialFlag {
     ///
     /// Note: This flag only has an effect if the PxMaterialFlag::eDISABLE_FRICTION bit is 0.
     DisableStrongFriction = 2,
-    /// Whether to use the patch friction model.
-    /// This flag only has an effect if PxFrictionType::ePATCH friction model is used.
-    ///
-    /// When using the patch friction model, up to 2 friction anchors are generated per patch. As the number of friction anchors
-    /// can be smaller than the number of contacts, the normal force is accumulated over all contacts and used to compute friction
-    /// for all anchors. Where there are more than 2 anchors, this can produce frictional behavior that is too strong (approximately 2x as strong
-    /// as analytical models suggest).
-    ///
-    /// This flag causes the normal force to be distributed between the friction anchors such that the total amount of friction applied does not
-    /// exceed the analytical results.
-    ImprovedPatchFriction = 4,
-    /// This flag has the effect of enabling an implicit spring model for the normal force computation.
-    CompliantContact = 8,
+    /// If this flag is raised in combination with negative restitution, the computed spring-damper output will be interpreted as
+    /// acceleration instead of force targets, analog to acceleration spring constraints.
+    /// The flag has no effect for non-compliant contacts (i.e., if restitution is nonnegative).
+    /// In an interaction between a compliant-force and a compliant-acceleration body the latter will dominate.
+    CompliantAccelerationSpring = 16,
 }
 
 bitflags::bitflags! {
@@ -1644,8 +1598,7 @@ bitflags::bitflags! {
     pub struct PxMaterialFlags: u16 {
         const DisableFriction = 1 << 0;
         const DisableStrongFriction = 1 << 1;
-        const ImprovedPatchFriction = 1 << 2;
-        const CompliantContact = 1 << 3;
+        const CompliantAccelerationSpring = 1 << 4;
     }
 }
 
@@ -1664,6 +1617,15 @@ bitflags::bitflags! {
 /// eMAX
 ///
 /// The effective combine mode for the pair is maximum(material0.combineMode, material1.combineMode).
+///
+/// Notes that the restitution coefficient is overloaded if it is negative and represents a spring stiffness for compliant contacts. In the compliant contact case, the following rules apply:
+/// If a compliant (restitution
+/// <
+/// 0) material interacts with a rigid (restitution >= 0) material, the compliant behavior will be chosen independent
+/// of combine mode. In all other cases (i.e., also for compliant-compliant interactions) the combine mode is used.
+/// For a compliant-compliant interaction with eMULTIPLY combine mode, we multiply the values but keep the sign negative.
+/// The material damping follows the same logic, i.e., for the compliant vs non-compliant case, we take the damping value of the compliant material. Otherwise the combine mode is respected.
+/// In an interaction between a compliant-force and a compliant-acceleration body the latter will dominate and exclusively determine the collision behavior with its parameters.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
 pub enum PxCombineMode {
@@ -1681,87 +1643,195 @@ pub enum PxCombineMode {
     Pad32 = 2147483647,
 }
 
-/// Identifies dirty particle buffers that need to be updated in the particle system.
-///
-/// This flag can be used mark the device user buffers that are dirty and need to be written to the particle system.
+/// Header for a contact patch where all points share same material and normal
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
-pub enum PxParticleBufferFlag {
-    /// No data specified
+pub enum PxContactPatchFlags {
+    /// Indicates this contact stream has face indices.
+    HasFaceIndices = 1,
+    /// Indicates this contact stream is modifiable.
+    Modifiable = 2,
+    /// Indicates this contact stream is notify-only (no contact response).
+    ForceNoResponse = 4,
+    /// Indicates this contact stream has modified mass ratios
+    HasModifiedMassRatios = 8,
+    /// Indicates this contact stream has target velocities set
+    HasTargetVelocity = 16,
+    /// Indicates this contact stream has max impulses set
+    HasMaxImpulse = 32,
+    /// Indicates this contact stream needs patches re-generated. This is required if the application modified either the contact normal or the material properties
+    RegeneratePatches = 64,
+    CompressedModifiedContact = 128,
+}
+
+/// A class to iterate over a compressed contact stream. This supports read-only access to the various contact formats.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum StreamFormat {
+    SimpleStream = 0,
+    ModifiableStream = 1,
+    CompressedModifiableStream = 2,
+}
+
+/// Flags to enable or disable special modes of a PxDeformableBody instance
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxDeformableBodyFlag {
+    /// Determines if self collision will be detected and resolved
+    DisableSelfCollision = 1,
+    /// Enables support for speculative contact generation, see [`PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD`]
+    EnableSpeculativeCcd = 2,
+    /// Enables support for kinematic motion of the simulation mesh, see [`PxRigidBodyFlag::eKINEMATIC`]
+    Kinematic = 4,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxDeformableBodyFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxDeformableBodyFlags: u8 {
+        const DisableSelfCollision = 1 << 0;
+        const EnableSpeculativeCcd = 1 << 1;
+        const Kinematic = 1 << 2;
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxDeformableSurfaceFlag {
+    UseAnisotropicModel = 1,
+    EnableFlattening = 2,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxDeformableSurfaceFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxDeformableSurfaceFlags: u16 {
+        const UseAnisotropicModel = 1 << 0;
+        const EnableFlattening = 1 << 1;
+    }
+}
+
+/// Identifies input and output buffers for PxDeformableSurface.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxDeformableSurfaceDataFlag {
     None = 0,
-    /// Specifies the position (first 3 floats) and inverse mass (last float) data (array of PxVec4 * number of particles)
-    UpdatePosition = 1,
-    /// Specifies the velocity (first 3 floats) data (array of PxVec4 * number of particles)
-    UpdateVelocity = 2,
-    /// Specifies the per-particle phase flag data (array of PxU32 * number of particles)
-    UpdatePhase = 4,
-    /// Specifies the rest position (first 3 floats) data for cloth buffers
-    UpdateRestposition = 8,
-    /// Specifies the cloth buffer (see PxParticleClothBuffer)
-    UpdateCloth = 32,
-    /// Specifies the rigid buffer (see PxParticleRigidBuffer)
-    UpdateRigid = 64,
-    /// Specifies the diffuse particle parameter buffer (see PxDiffuseParticleParams)
-    UpdateDiffuseParam = 128,
-    /// Specifies the attachments.
-    UpdateAttachments = 256,
-    All = 495,
+    PositionInvmass = 1,
+    Velocity = 2,
+    RestPosition = 4,
+    All = 7,
 }
 
 bitflags::bitflags! {
-    /// Flags for [`PxParticleBufferFlag`]
+    /// Flags for [`PxDeformableSurfaceDataFlag`]
     #[derive(Default)]
     #[repr(transparent)]
-    pub struct PxParticleBufferFlags: u32 {
-        const UpdatePosition = 1 << 0;
-        const UpdateVelocity = 1 << 1;
-        const UpdatePhase = 1 << 2;
-        const UpdateRestposition = 1 << 3;
-        const UpdateCloth = 1 << 5;
-        const UpdateRigid = 1 << 6;
-        const UpdateDiffuseParam = 1 << 7;
-        const UpdateAttachments = 1 << 8;
-        const All = Self::UpdatePosition.bits | Self::UpdateVelocity.bits | Self::UpdatePhase.bits | Self::UpdateRestposition.bits | Self::UpdateCloth.bits | Self::UpdateRigid.bits | Self::UpdateDiffuseParam.bits | Self::UpdateAttachments.bits;
+    pub struct PxDeformableSurfaceDataFlags: u32 {
+        const PositionInvmass = 1 << 0;
+        const Velocity = 1 << 1;
+        const RestPosition = 1 << 2;
+        const All = Self::PositionInvmass.bits | Self::Velocity.bits | Self::RestPosition.bits;
     }
 }
 
-/// Identifies per-particle behavior for a PxParticleSystem.
-///
-/// See [`PxParticleSystem::createPhase`]().
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(u32)]
-pub enum PxParticlePhaseFlag {
-    /// Bits [ 0, 19] represent the particle group for controlling collisions
-    ParticlePhaseGroupMask = 1048575,
-    /// Bits [20, 23] hold flags about how the particle behave
-    ParticlePhaseFlagsMask = 4293918720,
-    /// If set this particle will interact with particles of the same group
-    ParticlePhaseSelfCollide = 1048576,
-    /// If set this particle will ignore collisions with particles closer than the radius in the rest pose, this flag should not be specified unless valid rest positions have been specified using setRestParticles()
-    ParticlePhaseSelfCollideFilter = 2097152,
-    /// If set this particle will generate fluid density constraints for its overlapping neighbors
-    ParticlePhaseFluid = 4194304,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxParticlePhaseFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxParticlePhaseFlags: u32 {
-        const ParticlePhaseGroupMask = 0x000fffff;
-        const ParticlePhaseFlagsMask = Self::ParticlePhaseSelfCollide.bits | Self::ParticlePhaseSelfCollideFilter.bits | Self::ParticlePhaseFluid.bits;
-        const ParticlePhaseSelfCollide = 1 << 20;
-        const ParticlePhaseSelfCollideFilter = 1 << 21;
-        const ParticlePhaseFluid = 1 << 22;
-    }
-}
-
-/// Specifies memory space for a PxBuffer instance.
+/// Flags to enable or disable special modes of a PxDeformableVolume instance
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
-pub enum PxBufferType {
-    Host = 0,
-    Device = 1,
+pub enum PxDeformableVolumeFlag {
+    /// Enables computation of a Cauchy stress tensor for every tetrahedron in the simulation mesh. The tensors can be accessed through the deformable volume direct API
+    ComputeStressTensor = 1,
+    /// Enables partially kinematic motion of the collision and simulation mesh.
+    PartiallyKinematic = 2,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxDeformableVolumeFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxDeformableVolumeFlags: u16 {
+        const ComputeStressTensor = 1 << 0;
+        const PartiallyKinematic = 1 << 1;
+    }
+}
+
+/// Identifies the buffers of a PxDeformableVolume instance.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxDeformableVolumeDataFlag {
+    None = 0,
+    /// The collision mesh's positions
+    PositionInvmass = 1,
+    /// The simulation mesh's positions and inverse masses
+    SimPositionInvmass = 2,
+    /// The simulation mesh's velocities
+    SimVelocity = 4,
+    /// The collision mesh's rest positions
+    RestPositionInvmass = 8,
+    All = 15,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxDeformableVolumeDataFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxDeformableVolumeDataFlags: u32 {
+        const PositionInvmass = 1 << 0;
+        const SimPositionInvmass = 1 << 1;
+        const SimVelocity = 1 << 2;
+        const RestPositionInvmass = 1 << 3;
+        const All = Self::PositionInvmass.bits | Self::SimPositionInvmass.bits | Self::SimVelocity.bits | Self::RestPositionInvmass.bits;
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxDeformableVolumeMaterialModel {
+    /// Default model. Well suited for high stiffness. Does need tetrahedra with good shapes (no extreme slivers) in the rest pose.
+    CoRotational = 0,
+    /// Well suited for lower stiffness. Robust to any tetrahedron shape.
+    NeoHookean = 1,
+}
+
+/// Flags specifying deletion event types.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxDeletionEventFlag {
+    /// The user has called release on an object.
+    UserRelease = 1,
+    /// The destructor of an object has been called and the memory has been released.
+    MemoryRelease = 2,
+}
+
+bitflags::bitflags! {
+    /// Flags for [`PxDeletionEventFlag`]
+    #[derive(Default)]
+    #[repr(transparent)]
+    pub struct PxDeletionEventFlags: u8 {
+        const UserRelease = 1 << 0;
+        const MemoryRelease = 1 << 1;
+    }
+}
+
+/// Identifies the attachment target type for an actor involved in an attachment.
+///
+/// The target type provides actor related information about what kind of attachment should be created.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxDeformableAttachmentTargetType {
+    /// Attachment to vertex points of deformable mesh.
+    Vertex = 0,
+    /// Attachment to points on triangles of deformable mesh.
+    Triangle = 1,
+    /// Attachment to points in tetrahedrons of deformable mesh.
+    Tetrahedron = 2,
+    /// Attachment to points in rigid actor local frame.
+    Rigid = 3,
+    /// Attachment to points in global frame.
+    World = 4,
+    /// Internal use only.
+    Undefined = 5,
 }
 
 /// Filtering flags for scene queries.
@@ -1782,6 +1852,10 @@ pub enum PxQueryFlag {
     /// All hits are reported as touching. Overrides eBLOCK returned from user filters with eTOUCH.
     /// This is also an optimization hint that may improve query performance.
     NoBlock = 32,
+    /// Run with legacy batch query filter behavior. Raising this flag ensures that
+    /// the hardcoded filter equation is neglected. This guarantees that any provided PxQueryFilterCallback
+    /// will be utilised, as specified by the ePREFILTER  and ePOSTFILTER flags.
+    BatchQueryLegacyBehaviour = 64,
     /// Same as eBATCH_QUERY_LEGACY_BEHAVIOUR, more explicit name making it clearer that this can also be used
     /// with regular/non-batched queries if needed.
     DisableHardcodedFilter = 64,
@@ -1800,6 +1874,7 @@ bitflags::bitflags! {
         const Postfilter = 1 << 3;
         const AnyHit = 1 << 4;
         const NoBlock = 1 << 5;
+        const BatchQueryLegacyBehaviour = 1 << 6;
         const DisableHardcodedFilter = 1 << 6;
         const Reserved = 1 << 15;
     }
@@ -1860,6 +1935,199 @@ bitflags::bitflags! {
         const LockAngularY = 1 << 4;
         const LockAngularZ = 1 << 5;
     }
+}
+
+/// This flag specifies the type of data to get when calling PxDirectGPUAPI::getRigidDynamicData().
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxRigidDynamicGPUAPIReadType {
+    /// Get the global poses. Type: 1 PxTransform per PxRigidDynamic.
+    GlobalPose = 0,
+    /// Get the linear velocities. Type: 1 PxVec3 per PxRigidDynamic.
+    LinearVelocity = 1,
+    /// Get the angular velocities. Type: 1 PxVec3 per PxRigidDynamic.
+    AngularVelocity = 2,
+    /// Get the linear accelerations. Type: 1 PxVec3 per PxRigidDynamic.
+    LinearAcceleration = 3,
+    /// Get the angular accelerations. Type: 1 PxVec3 per PxRigidDynamic.
+    AngularAcceleration = 4,
+}
+
+/// This flag specifies the type of data to set when calling PxDirectGPUAPI::setRigidDynamicData().
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxRigidDynamicGPUAPIWriteType {
+    /// Set the global poses. Type: 1 PxTransform per PxRigidDynamic.
+    GlobalPose = 0,
+    /// Set the linear velocities. Type: 1 PxVec3 per PxRigidDynamic.
+    LinearVelocity = 1,
+    /// Set the angular velocities. Type: 1 PxVec3 per PxRigidDynamic.
+    AngularVelocity = 2,
+    /// Set the forces. Will be applied at the center of gravity of the bodies. Type: 1 PxVec3 per PxRigidDynamic.
+    Force = 3,
+    /// Set the torques. Will be applied at the center of gravity of the bodies. Type: 1 PxVec3 per PxRigidDynamic.
+    Torque = 4,
+}
+
+/// This flag specifies the type of data to get when calling PxDirectGPUAPI::getArticulationData().
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxArticulationGPUAPIReadType {
+    /// The joint positions. 1 PxReal per dof. Block size per articulation: maxDofs.
+    JointPosition = 0,
+    /// The joint velocities. 1 PxReal per dof. Block size per articulation: maxDofs.
+    JointVelocity = 1,
+    /// The joint accelerations. 1 PxReal per dof. Block size per articulation: maxDofs.
+    JointAcceleration = 2,
+    /// The joint forces or torques applied using setArticulationData. 1 PxReal per dof. Block size per articulation: maxDofs. Not updated by the simulation, will return the values set by PxDirectGPUAPI::setArticulationData().
+    JointForce = 3,
+    /// The velocity targets applied using setArticulationData. 1 PxReal per dof. Block size per articulation: maxDofs. Not updated by the simulation, will return the values set by PxDirectGPUAPI::setArticulationData().
+    JointTargetVelocity = 4,
+    /// The position targets applied using setArticulationData. 1 PxReal per dof. Block size per articulation: maxDofs. Not updated by the simulation, will return the values set by PxDirectGPUAPI::setArticulationData().
+    JointTargetPosition = 5,
+    /// The root link global pose. 1 PxTransform per articulation. Block size per articulation: 1.
+    RootGlobalPose = 6,
+    /// The root link linear velocity. 1 PxVec3 per articulation. Block size per articulation: 1.
+    RootLinearVelocity = 7,
+    /// The root link angular velocity. 1 PxVec3 per articulation. Block size per articulation: 1.
+    RootAngularVelocity = 8,
+    /// The link global pose including root link. 1 PxTransform per link. Block size per articulation: maxLinks.
+    LinkGlobalPose = 9,
+    /// The link linear velocities including root link. 1 PxVec3 per link. Block size per articulation: maxLinks.
+    LinkLinearVelocity = 10,
+    /// The link angular velocities including root link. 1 PxVec3 per link. Block size per articulation: maxLinks.
+    LinkAngularVelocity = 11,
+    /// The link linear accelerations including root link. 1 PxVec3 per link. Block size per articulation: maxLinks.
+    LinkLinearAcceleration = 12,
+    /// The link angular accelerations including root link. 1 PxVec3 per link. Block size per articulation: maxLinks.
+    LinkAngularAcceleration = 13,
+    /// The link incoming joint forces including root link. The force is reported in the child joint frame of the link's incoming joint. 2 PxVec3 per link. The first PxVec3 contains the force, and the second PxVec3 contains the torque. Block size per articulation: maxLinks.
+    LinkIncomingJointForce = 14,
+    /// Fixed tendon data. 1 PxGpuFixedTendonData per fixed tendon. Block size per articulation: maxFixedTendons. Not updated by the simulation, will return the values set by PxDirectGPUAPI::setArticulationData().
+    FixedTendon = 15,
+    /// Fixed tendon joint data. 1 PxGpuTendonJointCoefficientData per fixed tendon joint. Block size per articulation: maxFixedTendons * maxFixedTendonJoints. Not updated by the simulation, will return the values set by PxDirectGPUAPI::setArticulationData().
+    FixedTendonJoint = 16,
+    /// Spatial tendon data. 1 PxGpuSpatialTendonData per spatial tendon. Block size per articulation: maxSpatialTendons. Not updated by the simulation, will return the values set by PxDirectGPUAPI::setArticulationData().
+    SpatialTendon = 17,
+    /// Spatial tendon attachment data. 1 PxGpuTendonAttachmentData per spatial tendon attachment. Block size per articulation: maxSpatialTendons * maxSpatialTendonAttachments. Not updated by the simulation, will return the values set by PxDirectGPUAPI::setArticulationData().
+    SpatialTendonAttachment = 18,
+}
+
+/// This flag specifies the type of data to set when calling PxDirectGPUAPI::setArticulationData().
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxArticulationGPUAPIWriteType {
+    /// The joint positions. 1 PxReal per dof. Block size per articulation: maxDofs.
+    JointPosition = 0,
+    /// The joint velocities. 1 PxReal per dof. Block size per articulation: maxDofs.
+    JointVelocity = 1,
+    /// The applied joint forces or torques. 1 PxReal per dof. Block size per articulation: maxDofs.
+    JointForce = 2,
+    /// The velocity targets for the joint drives. 1 PxReal per dof. Block size per articulation: maxDofs.
+    JointTargetVelocity = 3,
+    /// The position targets for the joint drives. 1 PxReal per dof. Block size per articulation: maxDofs.
+    JointTargetPosition = 4,
+    /// The root link transform. 1 PxTransform per articulation. Block size per articulation: 1.
+    RootGlobalPose = 5,
+    /// The root link linear velocity. 1 PxVec3 per articulation. Block size per articulation: 1.
+    RootLinearVelocity = 6,
+    /// The root link angular velocity. 1 PxVec3 per articulation. Block size per articulation: 1.
+    RootAngularVelocity = 7,
+    /// The forces to apply to links. 1 PxVec3 per link. Block size per articulation: maxLinks.
+    LinkForce = 8,
+    /// The torques to apply to links. 1 PxVec3 per link. Block size per articulation: maxLinks.
+    LinkTorque = 9,
+    /// Fixed tendon data. 1 PxGpuFixedTendonData per fixed tendon. Block size per articulation: maxFixedTendons.
+    FixedTendon = 10,
+    /// Fixed tendon joint data. 1 PxGpuTendonJointCoefficientData per fixed tendon joint. Block size per articulation: maxFixedTendons * maxFixedTendonJoints.
+    FixedTendonJoint = 11,
+    /// Spatial tendon data. 1 PxGpuSpatialTendonData per spatial tendon. Block size per articulation: maxSpatialTendons.
+    SpatialTendon = 12,
+    /// Spatial tendon attachment data. 1 PxGpuTendonAttachmentData per spatial tendon attachment. Block size per articulation: maxSpatialTendons * maxSpatialTendonAttachments.
+    SpatialTendonAttachment = 13,
+}
+
+/// This flag specifies the type of operation to perform when calling PxDirectGPUAPI::computeArticulationData.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxArticulationGPUAPIComputeType {
+    /// Updates the link state for all the articulations specified in the index list. This operation can be performed
+    /// by the user to propagate changes made to root transform/root velocities/joint positions/joint velocities to
+    /// be reflected in the link transforms/velocities. Performing this operation will clear output values calculated by
+    /// the simulation, specifically link accelerations, link incoming joint forces, and joint accelerations. Note
+    /// that this is only necessary if the user wants to query link state, otherwise it will be performed automatically
+    /// at the start of the next call to simulate(). The data input parameter will be ignored and can be set to NULL for
+    /// this operation.
+    UpdateKinematic = 0,
+    /// Computes the dense Jacobian for the articulation in world space, including the dofs of a potentially floating base.
+    /// This is the batched, direct-GPU equivalent of PxArticulationReducedCoordinate::computeDenseJacobian. The output data
+    /// buffer is laid out into sequential blocks per articulation, where each block has the size
+    /// (6 + maxDofs) * (6 + (maxLinks - 1) * 6) * sizeof(float). maxLinks and maxDofs are the maximum link and dof counts
+    /// across all the articulations in the scene, and can be queried by calling PxDirectGPUAPI::getArticulationGPUAPIMaxCounts().
+    /// The size of the jacobian can vary by articulation, and will be determined using these formulas:
+    /// nCols = (fixedBase ? 0 : 6) + dofCount, nRows = (fixedBase ? 0 : 6) + (linkCount - 1) * 6. The matrix is indexed [nCols * row + column].
+    DenseJacobians = 1,
+    /// Computes the mass matrices that maps accelerations to forces: forces = M * accelerations on the GPU.
+    /// This is the batched, direct-GPU equivalent of PxArticulationReducedCoordinate::computeMassMatrix(). The output buffer is laid
+    /// out into sequential blocks per articulation, where each block has the size (maxDofs + 6) * (maxDofs + 6) * sizeof(float).
+    /// maxDofs is the maximum dof count across all the articulations in the scene, and can be queried by calling
+    /// PxDirectGPUAPI::getArticulationGPUAPIMaxCounts(), The size of the matrix can vary by articulation, and will be dofCount * dofCount
+    /// for fixed-base articulations and (dofCount + 6) * (dofCount + 6) for floating-base articulations.
+    /// We refer to the documentation of PxArticulationCache and PxArticulationReducedCoordinate::computeMassMatrix() for a more detailed explanation.
+    MassMatrices = 2,
+    /// Computes the joint dof forces (and root force) required to counteract Coriolis and centrifugal forces for the given articulation pose.
+    /// This is the batched, direct-GPU equivalent to PxArticulationReducedCoordinate::computeCoriolisCompensation(). The output data
+    /// buffer is laid out into sequential blocks per articulation, where each block has the size (maxDofs + 6) * sizeof(float). maxDofs
+    /// is the maximum dof count across all the articulations in the scene, and can be queried by calling
+    /// PxDirectGPUAPI::getArticulationGPUAPIMaxCounts(). The size of the output can vary by articulation, and will be dofCount
+    /// for fixed-base articulations and (dofCount + 6) for floating-base articulations. We refer to the documentation of
+    /// PxArticulationCache and PxArticulationReducedCoordinate::computeCoriolisCompensation() for a more detailed explanation.
+    CoriolisAndCentrifugalCompensation = 3,
+    /// Computes the forces required to counteract gravitational forces for the given articulation pose. This is the batched,
+    /// direct-GPU equivalent of PxArticulationReducedCoordinate::computeGravityCompensation(). The output data buffer is laid out
+    /// into sequential blocks per articulation, where each block has the size (maxDofs + 6) * sizeof(float). maxDofs
+    /// is the maximum dof count across all the articulations in the scene, and can be queried by calling
+    /// PxDirectGPUAPI::getArticulationGPUAPIMaxCounts(). The size of the output can vary by articulation, and will be dofCount
+    /// for fixed-base articulations and (dofCount + 6) for floating-base articulations. We refer to the documentation of
+    /// PxArticulationCache and PxArticulationReducedCoordinate::computeGravityCompensation() for a more detailed explanation.
+    GravityCompensation = 4,
+    /// Computes the articulation's center of mass in the world frame for the given articulation pose.
+    /// This is the batched, direct-GPU equivalent to PxArticulationReducedCoordinate::computeArticulationCOM(). The output data
+    /// buffer is laid out into sequential blocks per articulation, where each block has the size sizeof(float) * 3.
+    ArticulationComsWorldFrame = 5,
+    /// Computes the articulation's center of mass in the root frame for the given articulation pose.
+    /// This is the batched, direct-GPU equivalent to PxArticulationReducedCoordinate::computeArticulationCOM(). The output data
+    /// buffer is laid out into sequential blocks per articulation, where each block has the size sizeof(float) * 3.
+    ArticulationComsRootFrame = 6,
+    /// Computes the centroidal momentum matrix and bias force for a floating-base articulation.
+    /// This is the batched, direct-GPU equivalent to PxArticulationReducedCoordinate::computeCentroidalMomentumMatrix(). The data buffer is laid
+    /// out into four main blocks. The two first blocks correspond to the input (mass matrix, Coriolis and Centrifugal compensation force),
+    /// and the two last blocks correspond to the output (centroidal momentum matrix, bias force). Each block must be organized into sequential
+    /// subblocks per articulation. The size of the subblock is (maxDofs + 6) * (maxDofs + 6) * sizeof(float) for the mass matrix,
+    /// (maxDofs + 6) * sizeof(float) for the Coriolis and Centrifugal compensation force, 6 * (maxDofs + 6) * sizeof(float) for the centroidal
+    /// momentum matrix, and 6 * sizeof(float) for the bias force. maxDofs is the maximum dof count across all the articulations in the scene,
+    /// and can be queried by calling PxDirectGPUAPI::getArticulationGPUAPIMaxCounts(). The size of the actual data in each subblock can vary by
+    /// articulation, and will depend on the value of dofCount. The dof indices will be according to the low-level indexing, we refer to
+    /// the documentation of PxArticulationCache for an explanation.
+    CentroidalMomentumMatrices = 7,
+}
+
+/// This flag specifies the type of data to get when calling [`PxDirectGPUAPI::getD6JointData`]().
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxD6JointGPUAPIReadType {
+    /// The joint forces applied by the solver.
+    ///
+    /// The forces are in world space. 1 PxVec3 per joint.
+    ///
+    /// Replaces calls to PxConstraint::getForce() which will not work properly anymore if direct GPU API is used.
+    JointForce = 0,
+    /// The joint torques applied by the solver.
+    ///
+    /// The torques are in world space. 1 PxVec3 per joint.
+    ///
+    /// Replaces calls to PxConstraint::getForce() which will not work properly anymore if direct GPU API is used.
+    JointTorque = 1,
 }
 
 /// Pruning structure used to accelerate scene queries.
@@ -2011,28 +2279,27 @@ pub enum PxBroadPhaseType {
 
 /// Enum for selecting the friction algorithm used for simulation.
 ///
-/// [`PxFrictionType::ePATCH`] selects the patch friction model which typically leads to the most stable results at low solver iteration counts and is also quite inexpensive, as it uses only
-/// up to four scalar solver constraints per pair of touching objects.  The patch friction model is the same basic strong friction algorithm as PhysX 3.2 and before.
+/// Since only the patch friction model is supported now, the friction type option is obsolete.
 ///
-/// [`PxFrictionType::eONE_DIRECTIONAL`] is a simplification of the Coulomb friction model, in which the friction for a given point of contact is applied in the alternating tangent directions of
-/// the contact's normal.  This simplification allows us to reduce the number of iterations required for convergence but is not as accurate as the two directional model.
+/// [`PxFrictionType::ePATCH`] is the default friction logic (Couloumb type friction model). Friction gets computed per contact patch.
+/// Up to two contact points lying in the contact patch area are selected as friction anchors to which friction impulses are applied. If there
+/// are more than two contact points, to select anchors from, the anchors are selected using a heuristic that tries to maximize the distance
+/// between the anchors within the contact patch area. For each contact patch, two perpendicular axes of the contact patch plane are selected.
+/// A 1D-constraint along each of the two axes is used to implement friction at a friction anchor point. Note that the two axes are processed
+/// separately when the PGS solver type is selected. This can lead to asymmetries when transitioning from dynamic to static friction and vice
+/// versa in certain edge cases. The TGS solver type, on the other hand, works with the combined impulse along the two axes and as such avoids
+/// this potential problem, but this is slightly more computationally expensive. Another difference between TGS and PGS is that TGS applies
+/// friction throughout all position and all velocity iterations, while PGS by default applies friction throughout the last 3 position iterations
+/// and all velocity iterations (unless [`PxSceneFlag::eENABLE_FRICTION_EVERY_ITERATION`] is used).
 ///
-/// [`PxFrictionType::eTWO_DIRECTIONAL`] is identical to the one directional model, but it applies friction in both tangent directions simultaneously.  This hurts convergence a bit so it
-/// requires more solver iterations, but is more accurate.  Like the one directional model, it is applied at every contact point, which makes it potentially more expensive
-/// than patch friction for scenarios with many contact points.
-///
-/// [`PxFrictionType::eFRICTION_COUNT`] is the total numer of friction models supported by the SDK.
+/// [`PxFrictionType::eFRICTION_COUNT`] is the total number of friction models supported by the SDK.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
 pub enum PxFrictionType {
     /// Select default patch-friction model.
     Patch = 0,
-    /// Select one directional per-contact friction model.
-    OneDirectional = 1,
-    /// Select two directional per-contact friction model.
-    TwoDirectional = 2,
     /// The total number of friction models supported by the SDK.
-    FrictionCount = 3,
+    FrictionCount = 1,
 }
 
 /// Enum for selecting the type of solver used for the simulation.
@@ -2045,7 +2312,7 @@ pub enum PxFrictionType {
 pub enum PxSolverType {
     /// Projected Gauss-Seidel iterative solver
     Pgs = 0,
-    /// Default Temporal Gauss-Seidel solver
+    /// Temporal Gauss-Seidel solver
     Tgs = 1,
 }
 
@@ -2197,45 +2464,104 @@ pub enum PxSceneFlag {
     ///
     /// This flag only has effect with the default solver. The TGS solver always performs friction per-iteration.
     EnableFrictionEveryIteration = 32768,
-    /// Controls processing friction in all solver iterations
+    /// Controls application of gravity and other external forces per TGS solver position iterations
     ///
-    /// By default, PhysX processes friction only in the final 3 position iterations, and all velocity
-    /// iterations. This flag enables friction processing in all position and velocity iterations.
+    /// By default, external forces such as gravity are applied just once at the beginning of each simulate() call. With this
+    /// flag enabled the same forces are applied in each sub time step (position iteration) of the TGS solver, leading to greater stability and better solver convergence.
+    /// One consequence is that a body in freefall will move a shorter distance over the entire simulation step if the flag is raised.
     ///
-    /// The default behaviour provides a good trade-off between performance and stability and is aimed
-    /// primarily at game development.
+    /// Note that raising this flag makes the distance traveled under freefall dependent on the number of solver iterations.
+    /// Since solver iterations are determined per-island, bodies assigned to an island with fewer solver iterations will travel a larger distance than bodies assigned to an island with more iterations.
     ///
-    /// When simulating more complex frictional behaviour, such as grasping of complex geometries with
-    /// a robotic manipulator, better results can be achieved by enabling friction in all solver iterations.
+    /// This feature is only supported for the TGS solver.
     ///
-    /// This flag only has effect with the default solver. The TGS solver always performs friction per-iteration.
-    SuppressReadback = 65536,
-    /// Controls processing friction in all solver iterations
+    /// Default
+    /// false
+    EnableExternalForcesEveryIterationTgs = 65536,
+    /// Enables the direct-GPU API. Raising this flag is only allowed if eENABLE_GPU_DYNAMICS is raised and
+    /// PxBroadphaseType::eGPU is used.
     ///
-    /// By default, PhysX processes friction only in the final 3 position iterations, and all velocity
-    /// iterations. This flag enables friction processing in all position and velocity iterations.
+    /// This is useful if your application only needs to communicate to the GPU via GPU buffers. Can be significantly
+    /// faster.
     ///
-    /// The default behaviour provides a good trade-off between performance and stability and is aimed
-    /// primarily at game development.
+    /// Enabling the direct-GPU API will disable the readback of simulation state from GPU to CPU. Simulation outputs
+    /// can only be accessed using the direct-GPU API functions in PxDirectGPUAPI (PxDirectGPUAPI::getRigidDynamicData(),
+    /// PxDirectGPUAPI::getArticulationData(), PxDirectGPUAPI::copyContactData()), and reading state directly from the actor
+    /// is not allowed.
     ///
-    /// When simulating more complex frictional behaviour, such as grasping of complex geometries with
-    /// a robotic manipulator, better results can be achieved by enabling friction in all solver iterations.
+    /// This flag requires PxSceneFlag::eDISABLE_SLEEPING to be raised.
     ///
-    /// This flag only has effect with the default solver. The TGS solver always performs friction per-iteration.
-    ForceReadback = 131072,
-    /// Controls processing friction in all solver iterations
+    /// This flag is not mutable and must be set in PxSceneDesc at scene creation.
     ///
-    /// By default, PhysX processes friction only in the final 3 position iterations, and all velocity
-    /// iterations. This flag enables friction processing in all position and velocity iterations.
+    /// Default
+    /// false
+    EnableDirectGpuApi = 131072,
+    /// Enables the computation of body accelerations for PxRigidDynamic actors.
     ///
-    /// The default behaviour provides a good trade-off between performance and stability and is aimed
-    /// primarily at game development.
+    /// By default PhysX does not compute per-body accelerations for PxRigidDynamic actors (only for articulation links).
+    /// This flag tells the system to compute them.
     ///
-    /// When simulating more complex frictional behaviour, such as grasping of complex geometries with
-    /// a robotic manipulator, better results can be achieved by enabling friction in all solver iterations.
+    /// Retrieve the accelerations using PxRigidBody::getLinearAcceleration() and PxRigidBody::getAngularAcceleration().
     ///
-    /// This flag only has effect with the default solver. The TGS solver always performs friction per-iteration.
-    MutableFlags = 69633,
+    /// If the flag is not enabled these functions will return valid accelerations for PxArticulationLink objects, but
+    /// it will return zero for PxRigidDynamic actors.
+    ///
+    /// If the flag is enabled, these functions will return valid accelerations for both PxArticulationLink and
+    /// PxRigidDynamic objects.
+    ///
+    /// This flag also enables PxRigidDynamicGPUAPIReadType::eLINEAR_ACCELERATION and PxRigidDynamicGPUAPIReadType::eANGULAR_ACCELERATION
+    /// in the direct GPU API.
+    ///
+    /// This flag is not mutable and must be set in PxSceneDesc at scene creation.
+    ///
+    /// Default
+    /// false
+    EnableBodyAccelerations = 262144,
+    /// Reorders articulation contact constraints and articulation joint maximum velocity constraints in the solver.
+    ///
+    /// When this flag is raised, the solver will observe the following order:
+    /// - joint friction, joint drive, joint position limit
+    /// - link dynamic contact
+    /// - link static contact
+    /// - joint max velocity
+    ///
+    /// When the flag is lowered, the solver will observe a modified order:
+    /// - link dynamic contact
+    /// - joint friction, joint drive, joint position limit
+    /// - joint max velocity
+    /// - link static contact
+    ///
+    /// Raising the flag can be useful for certain simulation scenarios such as gripping, where it is desirable for dynamic contact
+    /// to be resolved after joint drive but before max joint velocity.
+    ///
+    /// Raising this flag may have a negative effect on simulation performance.
+    ///
+    /// A goal of raising this flag is shallower contact penetration. This will in turn result in a reduced force
+    /// reported by PxArticulationCache::linkIncomingJointForce.
+    ///
+    /// Default
+    /// false
+    SolveArticulationContactLast = 524288,
+    /// Disables all sleeping logic in the scene.
+    ///
+    /// When this flag is raised, no objects will be put to sleep. They will all be treated by the solver as awake.
+    /// This is a performance optimization for use cases where sleeping is not desired.
+    ///
+    /// This flag is automatically enabled when PxSceneFlag::eENABLE_DIRECT_GPU_API is set.
+    ///
+    /// Default
+    /// false
+    DisableSleeping = 1048576,
+    /// Disables all sleeping logic in the scene.
+    ///
+    /// When this flag is raised, no objects will be put to sleep. They will all be treated by the solver as awake.
+    /// This is a performance optimization for use cases where sleeping is not desired.
+    ///
+    /// This flag is automatically enabled when PxSceneFlag::eENABLE_DIRECT_GPU_API is set.
+    ///
+    /// Default
+    /// false
+    MutableFlags = 4097,
 }
 
 bitflags::bitflags! {
@@ -2256,9 +2582,12 @@ bitflags::bitflags! {
         const EnableGpuDynamics = 1 << 13;
         const EnableEnhancedDeterminism = 1 << 14;
         const EnableFrictionEveryIteration = 1 << 15;
-        const SuppressReadback = 1 << 16;
-        const ForceReadback = 1 << 17;
-        const MutableFlags = Self::EnableActiveActors.bits | Self::ExcludeKinematicsFromActiveActors.bits | Self::SuppressReadback.bits;
+        const EnableExternalForcesEveryIterationTgs = 1 << 16;
+        const EnableDirectGpuApi = 1 << 17;
+        const EnableBodyAccelerations = 1 << 18;
+        const SolveArticulationContactLast = 1 << 19;
+        const DisableSleeping = 1 << 20;
+        const MutableFlags = Self::EnableActiveActors.bits | Self::ExcludeKinematicsFromActiveActors.bits;
     }
 }
 
@@ -2276,7 +2605,6 @@ pub enum PxVisualizationParameter {
     /// that determines the size of the visualization widgets.
     ///
     /// Only objects for which visualization is turned on using setFlag(eVISUALIZATION) are visualized (see [`PxActorFlag::eVISUALIZATION`], #PxShapeFlag::eVISUALIZATION, ...).
-    /// Contacts are visualized if they involve a body which is being visualized.
     /// Default is 0.
     ///
     /// Notes:
@@ -2317,42 +2645,54 @@ pub enum PxVisualizationParameter {
     ContactNormal = 7,
     /// Visualize contact errors. Will enable contact information.
     ContactError = 8,
+    /// Visualize Contact impulses. Will enable contact information.
+    ContactImpulse = 9,
     /// Visualize Contact forces. Will enable contact information.
+    ///
+    /// Use eCONTACT_IMPULSE instead.
     ContactForce = 9,
+    /// Visualize friction points. Will enable contact information.
+    FrictionPoint = 10,
+    /// Visualize friction normals. Will enable contact information.
+    FrictionNormal = 11,
+    /// Visualize friction impulses. Will enable contact information.
+    FrictionImpulse = 12,
     /// Visualize actor axes.
-    ActorAxes = 10,
+    ActorAxes = 13,
     /// Visualize bounds (AABBs in world space)
-    CollisionAabbs = 11,
+    CollisionAabbs = 14,
     /// Shape visualization
-    CollisionShapes = 12,
+    CollisionShapes = 15,
     /// Shape axis visualization
-    CollisionAxes = 13,
+    CollisionAxes = 16,
     /// Compound visualization (compound AABBs in world space)
-    CollisionCompounds = 14,
+    CollisionCompounds = 17,
     /// Mesh
     /// &
     /// convex face normals
-    CollisionFnormals = 15,
+    CollisionFnormals = 18,
     /// Active edges for meshes
-    CollisionEdges = 16,
+    CollisionEdges = 19,
     /// Static pruning structures
-    CollisionStatic = 17,
+    CollisionStatic = 20,
     /// Dynamic pruning structures
-    CollisionDynamic = 18,
+    CollisionDynamic = 21,
     /// Joint local axes
-    JointLocalFrames = 19,
+    JointLocalFrames = 22,
     /// Joint limits
-    JointLimits = 20,
+    JointLimits = 23,
     /// Visualize culling box
-    CullBox = 21,
+    CullBox = 24,
     /// MBP regions
-    MbpRegions = 22,
+    MbpRegions = 25,
     /// Renders the simulation mesh instead of the collision mesh (only available for tetmeshes)
-    SimulationMesh = 23,
+    ///
+    /// Deformable visualization is currently not supported.
+    SimulationMesh = 26,
     /// Renders the SDF of a mesh instead of the collision mesh (only available for triangle meshes with SDFs)
-    Sdf = 24,
+    Sdf = 27,
     /// This is not a parameter, it just records the current number of parameters (as maximum(PxVisualizationParameter)+1) for use in loops.
-    NumValues = 25,
+    NumValues = 28,
     /// This is not a parameter, it just records the current number of parameters (as maximum(PxVisualizationParameter)+1) for use in loops.
     ForceDword = 2147483647,
 }
@@ -2372,100 +2712,6 @@ pub enum RbPairStatsType {
     ModifiedContactPairs = 2,
     /// Trigger shape pairs processed for the current simulation step.
     TriggerPairs = 3,
-}
-
-/// These flags determine what data is read or written to the gpu softbody.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxSoftBodyDataFlag {
-    /// The collision mesh tetrahedron indices (quadruples of int32)
-    TetIndices = 0,
-    /// The collision mesh cauchy stress tensors (float 3x3 matrices)
-    TetStress = 1,
-    /// The collision mesh tetrahedron von Mises stress (float scalar)
-    TetStresscoeff = 2,
-    /// The collision mesh tetrahedron rest poses (float 3x3 matrices)
-    TetRestPoses = 3,
-    /// The collision mesh tetrahedron orientations (quaternions, quadruples of float)
-    TetRotations = 4,
-    /// The collision mesh vertex positions and their inverted mass in the 4th component (quadruples of float)
-    TetPositionInvMass = 5,
-    /// The simulation mesh tetrahedron indices (quadruples of int32)
-    SimTetIndices = 6,
-    /// The simulation mesh vertex velocities and their inverted mass in the 4th component (quadruples of float)
-    SimVelocityInvMass = 7,
-    /// The simulation mesh vertex positions and their inverted mass in the 4th component (quadruples of float)
-    SimPositionInvMass = 8,
-    /// The simulation mesh kinematic target positions
-    SimKinematicTarget = 9,
-}
-
-/// Identifies input and output buffers for PxHairSystem
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxHairSystemData {
-    /// No data specified
-    None = 0,
-    /// Specifies the position (first 3 floats) and inverse mass (last float) data (array of PxVec4 * max number of vertices)
-    PositionInvmass = 1,
-    /// Specifies the velocity (first 3 floats) data (array of PxVec4 * max number of vertices)
-    Velocity = 2,
-    /// Specifies everything
-    All = 3,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxHairSystemData`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxHairSystemDataFlags: u32 {
-        const PositionInvmass = 1 << 0;
-        const Velocity = 1 << 1;
-        const All = Self::PositionInvmass.bits | Self::Velocity.bits;
-    }
-}
-
-/// Binary settings for hair system simulation
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxHairSystemFlag {
-    /// Determines if self-collision between hair vertices is ignored
-    DisableSelfCollision = 1,
-    /// Determines if collision between hair and external bodies is ignored
-    DisableExternalCollision = 2,
-    /// Determines if attachment constraint is also felt by body to which the hair is attached
-    DisableTwosidedAttachment = 4,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxHairSystemFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxHairSystemFlags: u32 {
-        const DisableSelfCollision = 1 << 0;
-        const DisableExternalCollision = 1 << 1;
-        const DisableTwosidedAttachment = 1 << 2;
-    }
-}
-
-/// Identifies each type of information for retrieving from actor.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxActorCacheFlag {
-    ActorData = 1,
-    Force = 4,
-    Torque = 8,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxActorCacheFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxActorCacheFlags: u16 {
-        const ActorData = 1 << 0;
-        const Force = 1 << 2;
-        const Torque = 1 << 3;
-    }
 }
 
 /// PVD scene Flags. They are disabled by default, and only works if PxPvdInstrumentationFlag::eDEBUG is set.
@@ -2612,67 +2858,6 @@ bitflags::bitflags! {
     }
 }
 
-/// Identifies input and output buffers for PxSoftBody.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxSoftBodyData {
-    None = 0,
-    /// Flag to request access to the collision mesh's positions; read only
-    PositionInvmass = 1,
-    /// Flag to request access to the simulation mesh's positions and inverse masses
-    SimPositionInvmass = 4,
-    /// Flag to request access to the simulation mesh's velocities and inverse masses
-    SimVelocity = 8,
-    /// Flag to request access to the simulation mesh's kinematic target position
-    SimKinematicTarget = 16,
-    All = 29,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxSoftBodyData`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxSoftBodyDataFlags: u32 {
-        const PositionInvmass = 1 << 0;
-        const SimPositionInvmass = 1 << 2;
-        const SimVelocity = 1 << 3;
-        const SimKinematicTarget = 1 << 4;
-        const All = Self::PositionInvmass.bits | Self::SimPositionInvmass.bits | Self::SimVelocity.bits | Self::SimKinematicTarget.bits;
-    }
-}
-
-/// Flags to enable or disable special modes of a SoftBody
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(i32)]
-pub enum PxSoftBodyFlag {
-    /// Determines if self collision will be detected and resolved
-    DisableSelfCollision = 1,
-    /// Enables computation of a Cauchy stress tensor for every tetrahedron in the simulation mesh. The tensors can be accessed through the softbody direct API
-    ComputeStressTensor = 2,
-    /// Enables support for continuous collision detection
-    EnableCcd = 4,
-    /// Enable debug rendering to display the simulation mesh
-    DisplaySimMesh = 8,
-    /// Enables support for kinematic motion of the collision and simulation mesh.
-    Kinematic = 16,
-    /// Enables partially kinematic motion of the collisios and simulation mesh.
-    PartiallyKinematic = 32,
-}
-
-bitflags::bitflags! {
-    /// Flags for [`PxSoftBodyFlag`]
-    #[derive(Default)]
-    #[repr(transparent)]
-    pub struct PxSoftBodyFlags: u32 {
-        const DisableSelfCollision = 1 << 0;
-        const ComputeStressTensor = 1 << 1;
-        const EnableCcd = 1 << 2;
-        const DisplaySimMesh = 1 << 3;
-        const Kinematic = 1 << 4;
-        const PartiallyKinematic = 1 << 5;
-    }
-}
-
 /// The type of controller, eg box, sphere or capsule.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
@@ -2802,7 +2987,7 @@ pub enum PxConvexFlag {
     E16BitIndices = 1,
     /// Automatically recomputes the hull from the vertices. If this flag is not set, you must provide the entire geometry manually.
     ///
-    /// There are two different algorithms for hull computation, please see PxConvexMeshCookingType.
+    /// For the specific algorithm used in hull computation, please see PxConvexMeshCookingType.
     ComputeConvex = 2,
     /// Checks and removes almost zero-area triangles during convex hull computation.
     /// The rejected area size is specified in PxCookingParams::areaTestEpsilon
@@ -2837,11 +3022,6 @@ pub enum PxConvexFlag {
     /// Inertia tensor computation is faster using SIMD code, but the precision is lower, which may result
     /// in incorrect inertia for very thin hulls.
     FastInertiaComputation = 64,
-    /// Convex hulls are created with respect to GPU simulation limitations. Vertex limit and polygon limit
-    /// is set to 64 and vertex limit per face is internally set to 32.
-    ///
-    /// Can be used only with eCOMPUTE_CONVEX flag.
-    GpuCompatible = 128,
     /// Convex hull input vertices are shifted to be around origin to provide better computation stability.
     /// It is recommended to provide input vertices around the origin, otherwise use this flag to improve
     /// numerical stability.
@@ -2862,7 +3042,6 @@ bitflags::bitflags! {
         const DisableMeshValidation = 1 << 4;
         const PlaneShifting = 1 << 5;
         const FastInertiaComputation = 1 << 6;
-        const GpuCompatible = 1 << 7;
         const ShiftVertices = 1 << 8;
     }
 }
@@ -2873,8 +3052,20 @@ bitflags::bitflags! {
 pub enum PxMeshFormat {
     /// Normal tetmesh with arbitrary tetrahedra
     TetMesh = 0,
-    /// 6 tetrahedra in a row will form a hexahedron
+    /// 5 or 6 tetrahedra in a row will form a hexahedron
     HexMesh = 1,
+}
+
+/// This is only used for BVH33 which is deprecated and will be removed in a future version. Use BVH34 instead.
+///
+/// Enumeration for mesh cooking hints.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxMeshCookingHint {
+    /// Default value. Favors higher quality hierarchy with higher runtime performance over cooking speed.
+    SimPerformance = 0,
+    /// Enables fast cooking path at the expense of somewhat lower quality hierarchy construction.
+    CookingPerformance = 1,
 }
 
 /// Desired build strategy for PxMeshMidPhase::eBVH34
@@ -2904,6 +3095,10 @@ pub enum PxConvexMeshCookingResult {
     PolygonsLimitReached = 2,
     /// Something unrecoverable happened. Check the error stream to find out what.
     Failure = 3,
+    /// Convex mesh cooking succeeded, but the algorithm could not make the mesh GPU compatible because the
+    /// in-sphere radius is more than 100x smaller than the largest extent. Collision detection for any pair involving
+    /// this convex mesh will fall back to CPU.
+    NonGpuCompatible = 4,
 }
 
 /// Enumeration for convex mesh cooking algorithms.
@@ -2921,25 +3116,27 @@ pub enum PxConvexMeshCookingType {
 pub enum PxTriangleMeshCookingResult {
     /// Everything is A-OK.
     Success = 0,
-    /// a triangle is too large for well-conditioned results. Tessellate the mesh for better behavior, see the user guide section on cooking for more details.
+    /// A triangle is too large for well-conditioned results. Tessellate the mesh for better behavior, see the user guide section on cooking for more details.
     LargeTriangle = 1,
+    /// The mesh cleaning operation removed all triangles, resulting in an empty mesh.
+    EmptyMesh = 2,
     /// Something unrecoverable happened. Check the error stream to find out what.
-    Failure = 2,
+    Failure = 3,
 }
 
 /// Enum for the set of mesh pre-processing parameters.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
 pub enum PxMeshPreprocessingFlag {
-    /// When set, mesh welding is performed. See PxCookingParams::meshWeldTolerance. Clean mesh must be enabled.
+    /// When set, mesh welding is performed. See PxCookingParams::meshWeldTolerance. Mesh cleaning must be enabled.
     WeldVertices = 1,
     /// When set, mesh cleaning is disabled. This makes cooking faster.
     ///
-    /// When clean mesh is not performed, mesh welding is also not performed.
+    /// When mesh cleaning is disabled, mesh welding is also disabled.
     ///
     /// It is recommended to use only meshes that passed during validateTriangleMesh.
     DisableCleanMesh = 2,
-    /// When set, active edges are set for each triangle edge. This makes cooking faster but slow up contact generation.
+    /// When set, active edges are not computed and just enabled for all edges. This makes cooking faster but contact generation slower.
     DisableActiveEdgesPrecompute = 4,
     /// When set, 32-bit indices will always be created regardless of triangle count.
     ///
@@ -2947,9 +3144,9 @@ pub enum PxMeshPreprocessingFlag {
     /// <
     /// = 0xFFFF and 32-bit otherwise.
     Force32bitIndices = 8,
-    /// When set, a list of triangles will be created for each associated vertex in the mesh
+    /// When set, a list of triangles will be created for each associated vertex in the mesh.
     EnableVertMapping = 16,
-    /// When set, inertia tensor is calculated for the mesh
+    /// When set, inertia data is calculated for the mesh, assuming unit density.
     EnableInertia = 32,
 }
 
@@ -2975,10 +3172,8 @@ bitflags::bitflags! {
 #[repr(i32)]
 pub enum PxConstraintExtIDs {
     Joint = 0,
-    VehicleSuspLimitDeprecated = 1,
-    VehicleStickyTyreDeprecated = 2,
-    VehicleJoint = 3,
-    NextFreeId = 4,
+    VehicleJoint = 1,
+    NextFreeId = 2,
     InvalidId = 2147483647,
 }
 
@@ -2992,10 +3187,9 @@ pub enum PxJointConcreteType {
     Fixed = 259,
     Distance = 260,
     D6 = 261,
-    Contact = 262,
-    Gear = 263,
-    RackAndPinion = 264,
-    Last = 265,
+    Gear = 262,
+    RackAndPinion = 263,
+    Last = 264,
 }
 
 /// an enumeration for specifying one or other of the actors referenced by a joint
@@ -3114,6 +3308,23 @@ pub enum PxD6Motion {
     Free = 2,
 }
 
+/// The configuration to use for driving to the angular component of a target pose or velocity.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxD6AngularDriveConfig {
+    /// The joint tries to reach the angular drive target by separately driving along each angular degree of freedom.
+    ///
+    /// Each angular degree of freedom can have its own set of drive parameters. The degrees of freedom are covered by a twist and two swing axes.
+    /// As a consequence, only the following options are available when setting the drive parameters: PxD6Drive::eSWING1, PxD6Drive::eSWING2,
+    /// PxD6Drive::eTWIST (see [`PxD6Joint::setDrive`]()).
+    SwingTwist = 0,
+    /// The joint tries to reach the angular drive target by following a spherical linear interpolation (SLERP) based path.
+    ///
+    /// A single set of drive parameters will be used for all angular degrees of freedom and PxD6Drive::eSLERP is the only valid option to set
+    /// those parameters (see [`PxD6Joint::setDrive`]()).
+    Slerp = 1,
+}
+
 /// Used to specify which axes of a D6 joint are driven.
 ///
 /// Each drive is an implicit force-limited damped spring:
@@ -3124,7 +3335,8 @@ pub enum PxD6Motion {
 ///
 /// A linear axis is affected by drive only if the corresponding drive flag is set. There are two possible models
 /// for angular drive: swing/twist, which may be used to drive one or more angular degrees of freedom, or slerp,
-/// which may only be used to drive all three angular degrees simultaneously.
+/// which may only be used to drive all three angular degrees simultaneously. Please use [`PxD6AngularDriveConfig`]
+/// to configure the angular drive model.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
 pub enum PxD6Drive {
@@ -3134,13 +3346,26 @@ pub enum PxD6Drive {
     Y = 1,
     /// drive along the Z-axis
     Z = 2,
-    /// drive of displacement from the X-axis
-    Swing = 3,
-    /// drive of the displacement around the X-axis
-    Twist = 4,
+    /// rotational drive around the X-axis
+    ///
+    /// Only allowed if the angular drive configuration is set to PxD6AngularDriveConfig::eSWING_TWIST.
+    Twist = 3,
+    /// rotational drive around the Y-axis
+    ///
+    /// Only allowed if the angular drive configuration is set to PxD6AngularDriveConfig::eSWING_TWIST.
+    Swing1 = 4,
+    /// rotational drive around the Z-axis
+    ///
+    /// Only allowed if the angular drive configuration is set to PxD6AngularDriveConfig::eSWING_TWIST.
+    Swing2 = 5,
     /// drive of all three angular degrees along a SLERP-path
-    Slerp = 5,
-    Count = 6,
+    ///
+    /// Only allowed if the angular drive configuration is set to PxD6AngularDriveConfig::eSLERP.
+    Slerp = 6,
+    /// drive of all three angular degrees along a SLERP-path
+    ///
+    /// Only allowed if the angular drive configuration is set to PxD6AngularDriveConfig::eSLERP.
+    Count = 7,
 }
 
 impl From<usize> for PxD6Drive {
@@ -3150,10 +3375,11 @@ impl From<usize> for PxD6Drive {
             0 => Self::X,
             1 => Self::Y,
             2 => Self::Z,
-            3 => Self::Swing,
-            4 => Self::Twist,
-            5 => Self::Slerp,
-            6 => Self::Count,
+            3 => Self::Twist,
+            4 => Self::Swing1,
+            5 => Self::Swing2,
+            6 => Self::Slerp,
+            7 => Self::Count,
             _ => Self::Count,
         }
     }
@@ -3165,6 +3391,15 @@ impl From<usize> for PxD6Drive {
 pub enum PxD6JointDriveFlag {
     /// drive spring is for the acceleration at the joint (rather than the force)
     Acceleration = 1,
+    /// Add drive force/torque to the joint force/torque total.
+    ///
+    /// If this flag is raised, the force/torque value from this drive constraint will be accumulated
+    /// in the force/torque total that is reported for the underlying PxConstraint object. Note that
+    /// because the force/torque total changes, the joint break behavior will change too.
+    ///
+    /// Default:
+    /// False
+    OutputForce = 2,
 }
 
 bitflags::bitflags! {
@@ -3173,6 +3408,7 @@ bitflags::bitflags! {
     #[repr(transparent)]
     pub struct PxD6JointDriveFlags: u32 {
         const Acceleration = 1 << 0;
+        const OutputForce = 1 << 1;
     }
 }
 
@@ -3205,13 +3441,127 @@ pub enum PxDefaultCpuDispatcherWaitForWorkMode {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(i32)]
-pub enum PxBatchQueryStatus {
-    /// This is the initial state before a query starts.
-    Pending = 0,
-    /// The query is finished; results have been written into the result and hit buffers.
-    Success = 1,
-    /// The query results were incomplete due to touch hit buffer overflow. Blocking hit is still correct.
-    Overflow = 2,
+pub enum PxVehicleLimits {
+    MaxNbWheels = 20,
+    MaxNbAxles = 20,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxVehicleComponentSequenceLimits {
+    MaxNbSubgroups = 16,
+    MaxNbComponents = 64,
+    MaxNbSubgroupelements = 80,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxVehicleAxes {
+    /// The +x axis
+    PosX = 0,
+    /// The -x axis
+    NegX = 1,
+    /// The +y axis
+    PosY = 2,
+    /// The -y axis
+    NegY = 3,
+    /// The +z axis
+    PosZ = 4,
+    /// The -z axis
+    NegZ = 5,
+    MaxNbAxes = 6,
+}
+
+/// Determine whether the PhysX actor associated with a vehicle is to be updated with a velocity change or an acceleration change.
+/// A velocity change will be immediately reflected in linear and angular velocity queries against the vehicle.  An acceleration change, on the other hand,
+/// will leave the linear and angular velocities unchanged until the next PhysX scene update has applied the acceleration update to the actor's linear and
+/// angular velocities.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxVehiclePhysXActorUpdateMode {
+    ApplyVelocity = 0,
+    ApplyAcceleration = 1,
+}
+
+/// Tires have two important directions for the purposes of tire force computation: longitudinal and lateral.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxVehicleTireDirectionModes {
+    Longitudinal = 0,
+    Lateral = 1,
+    MaxNbPlanarDirections = 2,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxVehicleSimulationContextType {
+    /// The simulation context inherits from PxVehicleSimulationContext
+    Default = 0,
+    /// The simulation context inherits from PxVehiclePhysXSimulationContext
+    Physx = 1,
+}
+
+/// Choose between a potentially more expensive but more accurate solution to the clutch model or a potentially cheaper but less accurate solution.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxVehicleClutchAccuracyMode {
+    Estimate = 0,
+    BestPossible = 1,
+}
+
+/// Set the direction to apply a constraint impulse when the suspension cannot place the wheel on the ground
+/// and simultaneously respect the limits of suspension travel. The choices are to push along the ground normal to resolve the
+/// geometric error or to push along the suspension direction. The former choice can be thought of as mimicing a force applied
+/// by the tire's contact with the ground, while the latter can be thought of as mimicing a force arising from a suspension limit spring.
+/// When the ground normal and the suspension direction are approximately aligned, both do an equivalent job of maintaining the wheel above
+/// the ground. When the vehicle is on its side, eSUSPENSION does a better job of keeping the wheels above
+/// the ground but comes at the cost of an unnaturally strong torque that can lead to unwanted self-righting behaviour.
+/// eROAD_GEOMETRY_NORMAL is a good choice to avoid self-righting behaviour and still do a reasonable job at maintaining
+/// the wheel above the ground in the event that the vehicle is tending towards a roll onto its side.
+/// eNONE should be chosen if it is desired that no extra impulse is applied when the suspension alone cannot keep the wheels above
+/// the ground plane.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum DirectionSpecifier {
+    Suspension = 0,
+    RoadGeometryNormal = 1,
+    None = 2,
+}
+
+/// A description of the number of PxConstraintConnector instances per vehicle required to maintain suspension limit
+/// and sticky tire instances.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxVehiclePhysXConstraintLimits {
+    NbDofsPerPxconstraint = 12,
+    NbDofsPerWheel = 3,
+    NbWheelsPerPxconstraint = 4,
+    NbConstraintsPerVehicle = 5,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxVehicleSuspensionJounceCalculationType {
+    /// The jounce is calculated using a raycast against the plane of the road geometry state
+    Raycast = 0,
+    /// The jounce is calculated by sweeping a cylinder against the plane of the road geometry state
+    Sweep = 1,
+    MaxNb = 2,
+}
+
+/// PhysX scene queries may be raycasts or sweeps.
+///
+/// eNONE will result in no PhysX scene query. This option will not overwrite the associated PxVehicleRoadGeometryState.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(i32)]
+pub enum PxVehiclePhysXRoadGeometryQueryType {
+    /// Info about the road geometry below the wheel is provided by the user
+    None = 0,
+    /// The road geometry below the wheel is analyzed using a raycast query
+    Raycast = 1,
+    /// The road geometry below the wheel is analyzed using a sweep query
+    Sweep = 2,
+    MaxNb = 3,
 }
 
 /// types of instrumentation that PVD can do.
@@ -3286,23 +3636,10 @@ bitflags::bitflags! {
     }
 }
 
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxMat34 {
-    _unused: [u8; 0],
-}
-
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
 pub struct PxAllocatorCallback {
-    vtable_: *const std::ffi::c_void,
-}
-
-#[derive(Clone, Copy)]
-#[cfg_attr(feature = "debug-structs", derive(Debug))]
-#[repr(C)]
-pub struct PxAssertHandler {
     vtable_: *const std::ffi::c_void,
 }
 
@@ -3316,22 +3653,22 @@ pub struct PxFoundation {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxVirtualAllocatorCallback {
+pub struct PxInputStream {
     vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub union PxTempAllocatorChunk {
-    pub mNext: *mut PxTempAllocatorChunk,
-    pub mIndex: u32,
-    pub mPad: [u8; 16],
+pub struct PxInputData {
+    vtable_: *const std::ffi::c_void,
 }
-#[cfg(feature = "debug-structs")]
-impl std::fmt::Debug for PxTempAllocatorChunk {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str("PxTempAllocatorChunk")
-    }
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxOutputStream {
+    vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Copy, Clone)]
@@ -3360,6 +3697,15 @@ pub struct PxAllocationListener {
     vtable_: *const std::ffi::c_void,
 }
 
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxBroadcastingAllocator {
+    vtable_: *const std::ffi::c_void,
+mAllocator: *mut PxAllocatorCallback,
+mError: *mut PxErrorCallback,
+}
+
 #[derive(Copy, Clone)]
 #[repr(C)]
 pub struct PxHash {
@@ -3369,29 +3715,16 @@ pub struct PxHash {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxInputStream {
-    vtable_: *const std::ffi::c_void,
-}
-
-#[derive(Clone, Copy)]
-#[cfg_attr(feature = "debug-structs", derive(Debug))]
-#[repr(C)]
-pub struct PxInputData {
-    vtable_: *const std::ffi::c_void,
-}
-
-#[derive(Clone, Copy)]
-#[cfg_attr(feature = "debug-structs", derive(Debug))]
-#[repr(C)]
-pub struct PxOutputStream {
-    vtable_: *const std::ffi::c_void,
-}
-
-#[derive(Clone, Copy)]
-#[cfg_attr(feature = "debug-structs", derive(Debug))]
-#[repr(C)]
 pub struct PxProfilerCallback {
     vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxSocket {
+    vtable_: *const std::ffi::c_void,
+mImpl: *mut std::ffi::c_void,
 }
 
 #[derive(Clone, Copy)]
@@ -3425,6 +3758,14 @@ pub struct PxSerializationContext {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
+pub struct PxDeserializationContext {
+    vtable_: *const std::ffi::c_void,
+mExtraDataAddress: *mut u8,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
 pub struct PxSerializationRegistry {
     vtable_: *const std::ffi::c_void,
 }
@@ -3442,118 +3783,21 @@ pub struct PxTypeInfo {
     _unused: [u8; 0],
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxFEMSoftBodyMaterial {
-    _unused: [u8; 0],
+pub struct PxBase {
+    vtable_: *const std::ffi::c_void,
+mConcreteType: u16,
+mBaseFlags: PxBaseFlags,
+mBuiltInRefCount: u32,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxFEMClothMaterial {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxPBDMaterial {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxFLIPMaterial {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxMPMMaterial {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxCustomMaterial {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxBVH33TriangleMesh {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxParticleSystem {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxPBDParticleSystem {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxFLIPParticleSystem {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxMPMParticleSystem {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxCustomParticleSystem {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxSoftBody {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxFEMCloth {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxHairSystem {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxParticleBuffer {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxParticleAndDiffuseBuffer {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxParticleClothBuffer {
-    _unused: [u8; 0],
-}
-
-#[derive(Copy, Clone)]
-#[repr(C)]
-pub struct PxParticleRigidBuffer {
-    _unused: [u8; 0],
+pub struct PxRefCounted {
+    vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Clone, Copy)]
@@ -3594,21 +3838,97 @@ pub struct PxCpuDispatcher {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxBVHRaycastCallback {
+pub struct PxBaseTask {
+    vtable_: *const std::ffi::c_void,
+mContextID: u64,
+mTm: *mut PxTaskManager,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxTask {
+    vtable_: *const std::ffi::c_void,
+mTaskID: u32,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxLightCpuTask {
+    vtable_: *const std::ffi::c_void,
+mCont: *mut PxBaseTask,
+mRefCount: i32,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxReportCallbackBase {
+    vtable_: *const std::ffi::c_void,
+    pub mCapacity: u32,
+    pub mSize: u32,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxBVH {
     vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxBVHOverlapCallback {
+pub struct PxConvexMesh {
     vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxBVHTraversalCallback {
+pub struct PxSimulationFilterCallback {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxActor {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct PxCudaContextManager {
+    _unused: [u8; 0],
+}
+
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct PxGpuParticleSystem {
+    _unused: [u8; 0],
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxParticleSystemCallback {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxMultiCallback {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxPBDParticleSystem {
     vtable_: *const std::ffi::c_void,
 }
 
@@ -3627,21 +3947,79 @@ pub struct PxRenderOutput {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxCustomGeometryCallbacks {
+pub struct PxHeightField {
     vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub union Px1DConstraintMods {
-    pub spring: PxSpringModifiers,
-    pub bounce: PxRestitutionModifiers,
+pub struct PxTriangleMesh {
+    vtable_: *const std::ffi::c_void,
 }
-#[cfg(feature = "debug-structs")]
-impl std::fmt::Debug for Px1DConstraintMods {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        f.write_str("Px1DConstraintMods")
-    }
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxBVH33TriangleMesh {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxBVH34TriangleMesh {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDeformableVolumeAuxData {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxTetrahedronMesh {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDeformableVolumeMesh {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxCollisionMeshMappingData {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxCollisionTetrahedronMeshData {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxSimulationTetrahedronMeshData {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxAggregate {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
 }
 
 #[derive(Clone, Copy)]
@@ -3668,6 +4046,120 @@ pub struct PxConstraintAllocator {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
+pub struct PxArticulationAttachment {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxArticulationTendonJoint {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxArticulationTendon {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxArticulationSpatialTendon {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxArticulationFixedTendon {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxArticulationMimicJoint {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxArticulationReducedCoordinate {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxArticulationJointReducedCoordinate {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxShape {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxRigidActor {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxRigidBody {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxArticulationLink {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxConstraint {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxBaseMaterial {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxMaterial {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
 pub struct PxContactModifyCallback {
     vtable_: *const std::ffi::c_void,
 }
@@ -3682,6 +4174,48 @@ pub struct PxCCDContactModifyCallback {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
+pub struct PxDeformableBody {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDeformableSurface {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDeformableMaterial {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDeformableSurfaceMaterial {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDeformableVolume {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDeformableVolumeMaterial {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
 pub struct PxDeletionListener {
     vtable_: *const std::ffi::c_void,
 }
@@ -3689,27 +4223,39 @@ pub struct PxDeletionListener {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxSimulationFilterCallback {
+pub struct PxParticleBuffer {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxParticleAndDiffuseBuffer {
     vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxLockedData {
+pub struct PxPBDMaterial {
     vtable_: *const std::ffi::c_void,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxCudaContextManager {
-    _unused: [u8; 0],
+pub struct PxDeformableAttachment {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxParticleRigidAttachment {
-    _unused: [u8; 0],
+pub struct PxDeformableElementFilter {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
 }
 
 #[derive(Copy, Clone)]
@@ -3729,6 +4275,27 @@ pub struct PxPhysics {
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
 pub struct PxQueryFilterCallback {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxRigidDynamic {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxRigidStatic {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDirectGPUAPI {
     vtable_: *const std::ffi::c_void,
 }
 
@@ -3791,7 +4358,29 @@ pub struct PxBroadPhaseCallback {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
+pub struct PxPostSolveCallback {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxScene {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
 pub struct PxSimulationEventCallback {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxPruningStructure {
     vtable_: *const std::ffi::c_void,
 }
 
@@ -3819,6 +4408,31 @@ pub struct PxControllerFilterCallback {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
+pub struct PxControllerDesc {
+    vtable_: *const std::ffi::c_void,
+    pub position: PxExtendedVec3,
+    pub upDirection: PxVec3,
+    pub slopeLimit: f32,
+    pub invisibleWallHeight: f32,
+    pub maxJumpHeight: f32,
+    pub contactOffset: f32,
+    pub stepOffset: f32,
+    pub density: f32,
+    pub scaleCoeff: f32,
+    pub volumeGrowth: f32,
+    pub reportCallback: *mut PxUserControllerHitReport,
+    pub behaviorCallback: *mut PxControllerBehaviorCallback,
+    pub nonWalkableMode: PxControllerNonWalkableMode,
+    pub material: *mut PxMaterial,
+    pub registerDeletionListener: bool,
+    pub clientID: u8,
+    pub userData: *mut std::ffi::c_void,
+mType: PxControllerShapeType,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
 pub struct PxController {
     vtable_: *const std::ffi::c_void,
 }
@@ -3826,8 +4440,28 @@ pub struct PxController {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
+pub struct PxBoxControllerDesc {
+    vtable_: *const std::ffi::c_void,
+    pub halfHeight: f32,
+    pub halfSideExtent: f32,
+    pub halfForwardExtent: f32,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
 pub struct PxBoxController {
     vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxCapsuleControllerDesc {
+    vtable_: *const std::ffi::c_void,
+    pub radius: f32,
+    pub height: f32,
+    pub climbingMode: PxCapsuleClimbingMode,
 }
 
 #[derive(Clone, Copy)]
@@ -3851,6 +4485,50 @@ pub struct PxControllerManager {
     vtable_: *const std::ffi::c_void,
 }
 
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub struct PxSDFBuilder {
+    _unused: [u8; 0],
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDefaultMemoryOutputStream {
+    vtable_: *const std::ffi::c_void,
+mAllocator: *mut PxAllocatorCallback,
+mData: *mut u8,
+mSize: u64,
+mCapacity: u64,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDefaultMemoryInputData {
+    vtable_: *const std::ffi::c_void,
+mSize: u64,
+mData: *const u8,
+mPos: u64,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDefaultFileOutputStream {
+    vtable_: *const std::ffi::c_void,
+mFile: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDefaultFileInputData {
+    vtable_: *const std::ffi::c_void,
+mFile: *mut std::ffi::c_void,
+mLength: u64,
+}
+
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
@@ -3861,14 +4539,72 @@ pub struct PxDefaultAllocator {
 #[derive(Clone, Copy)]
 #[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxDefaultErrorCallback {
+pub struct PxJoint {
+    vtable_: *const std::ffi::c_void,
+    pub userData: *mut std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDistanceJoint {
     vtable_: *const std::ffi::c_void,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxBinaryConverter {
-    _unused: [u8; 0],
+pub struct PxFixedJoint {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxPrismaticJoint {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxRevoluteJoint {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxSphericalJoint {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxD6Joint {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxGearJoint {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxRackAndPinionJoint {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxDefaultErrorCallback {
+    vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Clone, Copy)]
@@ -3899,10 +4635,18 @@ pub struct PxCustomSceneQuerySystemAdapter {
     vtable_: *const std::ffi::c_void,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxCooking {
-    _unused: [u8; 0],
+pub struct PxPoissonSampler {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxTriangleMeshPoissonSampler {
+    vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Copy, Clone)]
@@ -3936,34 +4680,185 @@ pub struct PxRepXSerializer {
     vtable_: *const std::ffi::c_void,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxVehicleWheels4SimData {
-    _unused: [u8; 0],
+pub struct PxVehicleComponent {
+    vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub struct PxVehicleWheels4DynData {
+pub struct PxVehiclePvdAttributeHandles {
     _unused: [u8; 0],
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleDirectDriveCommandResponseComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleDirectDriveActuationStateComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleDirectDrivetrainComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleEngineDriveCommandResponseComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleMultiWheelDriveDifferentialStateComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleFourWheelDriveDifferentialStateComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleTankDriveDifferentialStateComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleLegacyFourWheelDriveDifferentialStateComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleEngineDriveActuationStateComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleEngineDrivetrainComponent {
+    vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub struct PxVehicleTireForceCalculator {
+pub struct PxTransform {
     _unused: [u8; 0],
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehiclePhysXActorBeginComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehiclePhysXActorEndComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleConstraintConnector {
+    vtable_: *const std::ffi::c_void,
+mVehicleConstraintState: *mut PxVehiclePhysXConstraintState,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehiclePhysXConstraintComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehiclePhysXRoadGeometrySceneQueryComponent {
+    vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Copy, Clone)]
 #[repr(C)]
-pub struct PxVehicleDrivableSurfaceToTireFrictionPairs {
+pub struct PxVehiclePvdObjectHandles {
     _unused: [u8; 0],
 }
 
-#[derive(Copy, Clone)]
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
 #[repr(C)]
-pub struct PxVehicleTelemetryData {
-    _unused: [u8; 0],
+pub struct PxVehiclePVDComponent {
+    vtable_: *const std::ffi::c_void,
+firstTime: bool,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleRigidBodyComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleSuspensionComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleLegacySuspensionComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleTireComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleLegacyTireComponent {
+    vtable_: *const std::ffi::c_void,
+}
+
+#[derive(Clone, Copy)]
+#[cfg_attr(feature = "debug-structs", derive(Debug))]
+#[repr(C)]
+pub struct PxVehicleWheelComponent {
+    vtable_: *const std::ffi::c_void,
 }
 
 #[derive(Clone, Copy)]
@@ -4001,11 +4896,8 @@ extern "C" {
     /// and physics processing thread(s).
     pub fn PxAllocatorCallback_deallocate_mut(self_: *mut PxAllocatorCallback, ptr: *mut std::ffi::c_void);
 
-    pub fn PxAssertHandler_delete(self_: *mut PxAssertHandler);
-
-    pub fn phys_PxGetAssertHandler() -> *mut PxAssertHandler;
-
-    pub fn phys_PxSetAssertHandler(handler: *mut PxAssertHandler);
+    /// Built-in assert function
+    pub fn phys_PxAssert(exp: *const std::ffi::c_char, file: *const std::ffi::c_char, line: i32, ignore: *mut bool);
 
     /// Destroys the instance it is called on.
     ///
@@ -4017,10 +4909,10 @@ extern "C" {
     pub fn PxFoundation_getErrorCallback_mut(self_: *mut PxFoundation) -> *mut PxErrorCallback;
 
     /// Sets mask of errors to report.
-    pub fn PxFoundation_setErrorLevel_mut(self_: *mut PxFoundation, mask: u32);
+    pub fn PxFoundation_setErrorLevel_mut(self_: *mut PxFoundation, mask: PxErrorCode);
 
     /// Retrieves mask of errors to be reported.
-    pub fn PxFoundation_getErrorLevel(self_: *const PxFoundation) -> u32;
+    pub fn PxFoundation_getErrorLevel(self_: *const PxFoundation) -> PxErrorCode;
 
     /// Retrieves the allocator this object was created with.
     pub fn PxFoundation_getAllocatorCallback_mut(self_: *mut PxFoundation) -> *mut PxAllocatorCallback;
@@ -4041,6 +4933,10 @@ extern "C" {
 
     pub fn PxFoundation_deregisterErrorCallback_mut(self_: *mut PxFoundation, callback: *mut PxErrorCallback);
 
+    pub fn PxFoundation_error_mut(self_: *mut PxFoundation, c: PxErrorCode, file: *const std::ffi::c_char, line: i32, messageFmt: *const std::ffi::c_char) -> bool;
+
+    pub fn PxFoundation_error_mut_1(self_: *mut PxFoundation, anon_param0: PxErrorCode, file: *const std::ffi::c_char, line: i32, messageFmt: *const std::ffi::c_char, anon_param4: *mut std::ffi::c_char) -> bool;
+
     /// Creates an instance of the foundation class
     ///
     /// The foundation class is needed to initialize higher level SDKs. There may be only one instance per process.
@@ -4054,6 +4950,11 @@ extern "C" {
 
     pub fn phys_PxGetFoundation() -> *mut PxFoundation;
 
+    /// Similar to PxGetFoundation() except it handles the case if the foundation was not created already.
+    ///
+    /// Pointer to the foundation if an instance is currently available, otherwise null.
+    pub fn phys_PxIsFoundationValid() -> *mut PxFoundation;
+
     /// Get the callback that will be used for all profiling.
     pub fn phys_PxGetProfilerCallback() -> *mut PxProfilerCallback;
 
@@ -4064,7 +4965,7 @@ extern "C" {
     pub fn phys_PxGetAllocatorCallback() -> *mut PxAllocatorCallback;
 
     /// Get the broadcasting allocator callback
-    pub fn phys_PxGetBroadcastAllocator() -> *mut PxAllocatorCallback;
+    pub fn phys_PxGetBroadcastAllocator(reportAllocationNames: *mut bool) -> *mut PxAllocatorCallback;
 
     /// Get the error callback
     pub fn phys_PxGetErrorCallback() -> *mut PxErrorCallback;
@@ -4081,31 +4982,46 @@ extern "C" {
     /// Increment the ref count of PxFoundation
     pub fn phys_PxIncFoundationRefCount();
 
+    /// read from the stream. The number of bytes read may be less than the number requested.
+    ///
+    /// the number of bytes read from the stream.
+    pub fn PxInputStream_read_mut(self_: *mut PxInputStream, dest: *mut std::ffi::c_void, count: u64) -> u64;
+
+    pub fn PxInputStream_delete(self_: *mut PxInputStream);
+
+    /// return the length of the input data
+    ///
+    /// size in bytes of the input data
+    pub fn PxInputData_getLength(self_: *const PxInputData) -> u64;
+
+    /// seek to the given offset from the start of the data.
+    pub fn PxInputData_seek_mut(self_: *mut PxInputData, offset: u64);
+
+    /// return the current offset from the start of the data
+    ///
+    /// the offset to seek to.
+    pub fn PxInputData_tell(self_: *const PxInputData) -> u64;
+
+    pub fn PxInputData_delete(self_: *mut PxInputData);
+
+    /// write to the stream. The number of bytes written may be less than the number sent.
+    ///
+    /// the number of bytes written to the stream by this call.
+    pub fn PxOutputStream_write_mut(self_: *mut PxOutputStream, src: *const std::ffi::c_void, count: u64) -> u64;
+
+    pub fn PxOutputStream_delete(self_: *mut PxOutputStream);
+
     pub fn PxAllocator_new(anon_param0: *const std::ffi::c_char) -> PxAllocator;
 
-    pub fn PxAllocator_allocate_mut(self_: *mut PxAllocator, size: usize, file: *const std::ffi::c_char, line: i32) -> *mut std::ffi::c_void;
+    pub fn PxAllocator_allocate(size: usize, file: *const std::ffi::c_char, line: i32, cookie: *mut u32) -> *mut std::ffi::c_void;
 
-    pub fn PxAllocator_deallocate_mut(self_: *mut PxAllocator, ptr: *mut std::ffi::c_void);
+    pub fn PxAllocator_deallocate(ptr: *mut std::ffi::c_void, cookie: *mut u32);
 
     pub fn PxRawAllocator_new(anon_param0: *const std::ffi::c_char) -> PxRawAllocator;
 
-    pub fn PxRawAllocator_allocate_mut(self_: *mut PxRawAllocator, size: usize, anon_param1: *const std::ffi::c_char, anon_param2: i32) -> *mut std::ffi::c_void;
+    pub fn PxRawAllocator_allocate(size: usize, anon_param1: *const std::ffi::c_char, anon_param2: i32, cookie: *mut u32) -> *mut std::ffi::c_void;
 
-    pub fn PxRawAllocator_deallocate_mut(self_: *mut PxRawAllocator, ptr: *mut std::ffi::c_void);
-
-    pub fn PxVirtualAllocatorCallback_delete(self_: *mut PxVirtualAllocatorCallback);
-
-    pub fn PxVirtualAllocatorCallback_allocate_mut(self_: *mut PxVirtualAllocatorCallback, size: usize, group: i32, file: *const std::ffi::c_char, line: i32) -> *mut std::ffi::c_void;
-
-    pub fn PxVirtualAllocatorCallback_deallocate_mut(self_: *mut PxVirtualAllocatorCallback, ptr: *mut std::ffi::c_void);
-
-    pub fn PxVirtualAllocator_new(callback: *mut PxVirtualAllocatorCallback, group: i32) -> PxVirtualAllocator;
-
-    pub fn PxVirtualAllocator_allocate_mut(self_: *mut PxVirtualAllocator, size: usize, file: *const std::ffi::c_char, line: i32) -> *mut std::ffi::c_void;
-
-    pub fn PxVirtualAllocator_deallocate_mut(self_: *mut PxVirtualAllocator, ptr: *mut std::ffi::c_void);
-
-    pub fn PxTempAllocatorChunk_new() -> PxTempAllocatorChunk;
+    pub fn PxRawAllocator_deallocate(ptr: *mut std::ffi::c_void, cookie: *mut u32);
 
     pub fn PxTempAllocator_new(anon_param0: *const std::ffi::c_char) -> PxTempAllocator;
 
@@ -4116,47 +5032,50 @@ extern "C" {
     /// Sets the bytes of the provided buffer to zero.
     ///
     /// Pointer to memory block (same as input)
-    pub fn phys_PxMemZero(dest: *mut std::ffi::c_void, count: u32) -> *mut std::ffi::c_void;
+    pub fn phys_PxMemZero(dest: *mut std::ffi::c_void, count: usize) -> *mut std::ffi::c_void;
 
     /// Sets the bytes of the provided buffer to the specified value.
     ///
     /// Pointer to memory block (same as input)
-    pub fn phys_PxMemSet(dest: *mut std::ffi::c_void, c: i32, count: u32) -> *mut std::ffi::c_void;
+    pub fn phys_PxMemSet(dest: *mut std::ffi::c_void, c: i32, count: usize) -> *mut std::ffi::c_void;
 
     /// Copies the bytes of one memory block to another. The memory blocks must not overlap.
     ///
     /// Use [`PxMemMove`] if memory blocks overlap.
     ///
     /// Pointer to destination memory block
-    pub fn phys_PxMemCopy(dest: *mut std::ffi::c_void, src: *const std::ffi::c_void, count: u32) -> *mut std::ffi::c_void;
+    pub fn phys_PxMemCopy(dest: *mut std::ffi::c_void, src: *const std::ffi::c_void, count: usize) -> *mut std::ffi::c_void;
 
     /// Copies the bytes of one memory block to another. The memory blocks can overlap.
     ///
     /// Use [`PxMemCopy`] if memory blocks do not overlap.
     ///
     /// Pointer to destination memory block
-    pub fn phys_PxMemMove(dest: *mut std::ffi::c_void, src: *const std::ffi::c_void, count: u32) -> *mut std::ffi::c_void;
+    pub fn phys_PxMemMove(dest: *mut std::ffi::c_void, src: *const std::ffi::c_void, count: usize) -> *mut std::ffi::c_void;
 
     /// Mark a specified amount of memory with 0xcd pattern. This is used to check that the meta data
     /// definition for serialized classes is complete in checked builds.
-    pub fn phys_PxMarkSerializedMemory(ptr: *mut std::ffi::c_void, byteSize: u32);
+    pub fn phys_PxMarkSerializedMemory(ptr: *mut std::ffi::c_void, byteSize: usize);
 
     pub fn phys_PxMemoryBarrier();
 
-    /// Return the index of the highest set bit. Undefined for zero arg.
-    pub fn phys_PxHighestSetBitUnsafe(v: u32) -> u32;
+    /// Returns the index of the highest set bit. Not valid for zero arg.
+    pub fn phys_PxHighestSetBitUnsafe(v: u64) -> u32;
 
-    /// Return the index of the highest set bit. Undefined for zero arg.
-    pub fn phys_PxLowestSetBitUnsafe(v: u32) -> u32;
+    /// Returns the index of the highest set bit. Not valid for zero arg.
+    pub fn phys_PxHighestSetBitUnsafe_1(v: u32) -> u32;
 
-    /// Returns the index of the highest set bit. Returns 32 for v=0.
+    /// Returns the index of the lowest set bit. Undefined for zero arg.
+    pub fn phys_PxLowestSetBitUnsafe(v: u64) -> u32;
+
+    /// Returns the index of the lowest set bit. Undefined for zero arg.
+    pub fn phys_PxLowestSetBitUnsafe_1(v: u32) -> u32;
+
+    /// Returns the number of leading zeros in v. Returns 32 for v=0.
     pub fn phys_PxCountLeadingZeros(v: u32) -> u32;
 
-    /// Prefetch aligned 64B x86, 32b ARM around
     pub fn phys_PxPrefetchLine(ptr: *const std::ffi::c_void, offset: u32);
 
-    /// Prefetch
-    /// bytes starting at
     pub fn phys_PxPrefetch(ptr: *const std::ffi::c_void, count: u32);
 
     pub fn phys_PxBitCount(v: u32) -> u32;
@@ -4165,82 +5084,21 @@ extern "C" {
 
     pub fn phys_PxNextPowerOfTwo(x: u32) -> u32;
 
-    /// Return the index of the highest set bit. Not valid for zero arg.
+    pub fn phys_PxNextPowerOfTwo_1(x: u64) -> u64;
+
+    /// Return the index of the lowest set bit. Not valid for zero arg.
     pub fn phys_PxLowestSetBit(x: u32) -> u32;
+
+    /// Return the index of the lowest set bit. Not valid for zero arg.
+    pub fn phys_PxLowestSetBit_1(x: u64) -> u32;
 
     /// Return the index of the highest set bit. Not valid for zero arg.
     pub fn phys_PxHighestSetBit(x: u32) -> u32;
 
+    /// Return the index of the highest set bit. Not valid for zero arg.
+    pub fn phys_PxHighestSetBit_1(x: u64) -> u32;
+
     pub fn phys_PxILog2(num: u32) -> u32;
-
-    /// default constructor leaves data uninitialized.
-    pub fn PxVec3_new() -> PxVec3;
-
-    /// zero constructor.
-    pub fn PxVec3_new_1(anon_param0: PxZERO) -> PxVec3;
-
-    /// Assigns scalar parameter to all elements.
-    ///
-    /// Useful to initialize to zero or one.
-    pub fn PxVec3_new_2(a: f32) -> PxVec3;
-
-    /// Initializes from 3 scalar parameters.
-    pub fn PxVec3_new_3(nx: f32, ny: f32, nz: f32) -> PxVec3;
-
-    /// tests for exact zero vector
-    pub fn PxVec3_isZero(self_: *const PxVec3) -> bool;
-
-    /// returns true if all 3 elems of the vector are finite (not NAN or INF, etc.)
-    pub fn PxVec3_isFinite(self_: *const PxVec3) -> bool;
-
-    /// is normalized - used by API parameter validation
-    pub fn PxVec3_isNormalized(self_: *const PxVec3) -> bool;
-
-    /// returns the squared magnitude
-    ///
-    /// Avoids calling PxSqrt()!
-    pub fn PxVec3_magnitudeSquared(self_: *const PxVec3) -> f32;
-
-    /// returns the magnitude
-    pub fn PxVec3_magnitude(self_: *const PxVec3) -> f32;
-
-    /// returns the scalar product of this and other.
-    pub fn PxVec3_dot(self_: *const PxVec3, v: *const PxVec3) -> f32;
-
-    /// cross product
-    pub fn PxVec3_cross(self_: *const PxVec3, v: *const PxVec3) -> PxVec3;
-
-    /// returns a unit vector
-    pub fn PxVec3_getNormalized(self_: *const PxVec3) -> PxVec3;
-
-    /// normalizes the vector in place
-    pub fn PxVec3_normalize_mut(self_: *mut PxVec3) -> f32;
-
-    /// normalizes the vector in place. Does nothing if vector magnitude is under PX_NORMALIZATION_EPSILON.
-    /// Returns vector magnitude if >= PX_NORMALIZATION_EPSILON and 0.0f otherwise.
-    pub fn PxVec3_normalizeSafe_mut(self_: *mut PxVec3) -> f32;
-
-    /// normalizes the vector in place. Asserts if vector magnitude is under PX_NORMALIZATION_EPSILON.
-    /// returns vector magnitude.
-    pub fn PxVec3_normalizeFast_mut(self_: *mut PxVec3) -> f32;
-
-    /// a[i] * b[i], for all i.
-    pub fn PxVec3_multiply(self_: *const PxVec3, a: *const PxVec3) -> PxVec3;
-
-    /// element-wise minimum
-    pub fn PxVec3_minimum(self_: *const PxVec3, v: *const PxVec3) -> PxVec3;
-
-    /// returns MIN(x, y, z);
-    pub fn PxVec3_minElement(self_: *const PxVec3) -> f32;
-
-    /// element-wise maximum
-    pub fn PxVec3_maximum(self_: *const PxVec3, v: *const PxVec3) -> PxVec3;
-
-    /// returns MAX(x, y, z);
-    pub fn PxVec3_maxElement(self_: *const PxVec3) -> f32;
-
-    /// returns absolute values of components;
-    pub fn PxVec3_abs(self_: *const PxVec3) -> PxVec3;
 
     pub fn PxVec3Padded_new_alloc() -> *mut PxVec3Padded;
 
@@ -4250,177 +5108,43 @@ extern "C" {
 
     pub fn PxVec3Padded_new_alloc_2(f: f32) -> *mut PxVec3Padded;
 
-    /// Default constructor, does not do any initialization.
-    pub fn PxQuat_new() -> PxQuat;
+    pub fn PxVec3Padded_new_alloc_3(_x: f32, _y: f32, _z: f32) -> *mut PxVec3Padded;
 
-    /// identity constructor
-    pub fn PxQuat_new_1(anon_param0: PxIDENTITY) -> PxQuat;
+    pub fn PxTransformPadded_new() -> PxTransformPadded;
 
-    /// Constructor from a scalar: sets the real part w to the scalar value, and the imaginary parts (x,y,z) to zero
-    pub fn PxQuat_new_2(r: f32) -> PxQuat;
+    pub fn PxTransformPadded_new_1(other: *const PxTransform) -> PxTransformPadded;
 
-    /// Constructor. Take note of the order of the elements!
-    pub fn PxQuat_new_3(nx: f32, ny: f32, nz: f32, nw: f32) -> PxQuat;
+    pub fn PxTransformPadded_new_2(anon_param0: PxIDENTITY) -> PxTransformPadded;
 
-    /// Creates from angle-axis representation.
+    pub fn PxTransformPadded_new_3(position: *const PxVec3) -> PxTransformPadded;
+
+    pub fn PxTransformPadded_new_4(orientation: *const PxQuat) -> PxTransformPadded;
+
+    pub fn PxTransformPadded_new_5(p0: *const PxVec3, q0: *const PxQuat) -> PxTransformPadded;
+
+    /// Sets a rotation matrix around the X axis.
+    pub fn phys_PxSetRotX(m: *mut PxMat33, angle: f32);
+
+    /// Sets a rotation matrix around the Y axis.
+    pub fn phys_PxSetRotY(m: *mut PxMat33, angle: f32);
+
+    /// Sets a rotation matrix around the Z axis.
+    pub fn phys_PxSetRotZ(m: *mut PxMat33, angle: f32);
+
+    /// Returns a rotation quaternion around the X axis.
     ///
-    /// Axis must be normalized!
+    /// Quaternion that rotates around the desired axis
+    pub fn phys_PxGetRotXQuat(angle: f32) -> PxQuat;
+
+    /// Returns a rotation quaternion around the Y axis.
     ///
-    /// Angle is in radians!
+    /// Quaternion that rotates around the desired axis
+    pub fn phys_PxGetRotYQuat(angle: f32) -> PxQuat;
+
+    /// Returns a rotation quaternion around the Z axis.
     ///
-    /// Unit:
-    /// Radians
-    pub fn PxQuat_new_4(angleRadians: f32, unitAxis: *const PxVec3) -> PxQuat;
-
-    /// Creates from orientation matrix.
-    pub fn PxQuat_new_5(m: *const PxMat33) -> PxQuat;
-
-    /// returns true if quat is identity
-    pub fn PxQuat_isIdentity(self_: *const PxQuat) -> bool;
-
-    /// returns true if all elements are finite (not NAN or INF, etc.)
-    pub fn PxQuat_isFinite(self_: *const PxQuat) -> bool;
-
-    /// returns true if finite and magnitude is close to unit
-    pub fn PxQuat_isUnit(self_: *const PxQuat) -> bool;
-
-    /// returns true if finite and magnitude is reasonably close to unit to allow for some accumulation of error vs
-    /// isValid
-    pub fn PxQuat_isSane(self_: *const PxQuat) -> bool;
-
-    /// converts this quaternion to angle-axis representation
-    pub fn PxQuat_toRadiansAndUnitAxis(self_: *const PxQuat, angle: *mut f32, axis: *mut PxVec3);
-
-    /// Gets the angle between this quat and the identity quaternion.
-    ///
-    /// Unit:
-    /// Radians
-    pub fn PxQuat_getAngle(self_: *const PxQuat) -> f32;
-
-    /// Gets the angle between this quat and the argument
-    ///
-    /// Unit:
-    /// Radians
-    pub fn PxQuat_getAngle_1(self_: *const PxQuat, q: *const PxQuat) -> f32;
-
-    /// This is the squared 4D vector length, should be 1 for unit quaternions.
-    pub fn PxQuat_magnitudeSquared(self_: *const PxQuat) -> f32;
-
-    /// returns the scalar product of this and other.
-    pub fn PxQuat_dot(self_: *const PxQuat, v: *const PxQuat) -> f32;
-
-    pub fn PxQuat_getNormalized(self_: *const PxQuat) -> PxQuat;
-
-    pub fn PxQuat_magnitude(self_: *const PxQuat) -> f32;
-
-    /// maps to the closest unit quaternion.
-    pub fn PxQuat_normalize_mut(self_: *mut PxQuat) -> f32;
-
-    pub fn PxQuat_getConjugate(self_: *const PxQuat) -> PxQuat;
-
-    pub fn PxQuat_getImaginaryPart(self_: *const PxQuat) -> PxVec3;
-
-    /// brief computes rotation of x-axis
-    pub fn PxQuat_getBasisVector0(self_: *const PxQuat) -> PxVec3;
-
-    /// brief computes rotation of y-axis
-    pub fn PxQuat_getBasisVector1(self_: *const PxQuat) -> PxVec3;
-
-    /// brief computes rotation of z-axis
-    pub fn PxQuat_getBasisVector2(self_: *const PxQuat) -> PxVec3;
-
-    /// rotates passed vec by this (assumed unitary)
-    pub fn PxQuat_rotate(self_: *const PxQuat, v: *const PxVec3) -> PxVec3;
-
-    /// inverse rotates passed vec by this (assumed unitary)
-    pub fn PxQuat_rotateInv(self_: *const PxQuat, v: *const PxVec3) -> PxVec3;
-
-    pub fn PxTransform_new() -> PxTransform;
-
-    pub fn PxTransform_new_1(position: *const PxVec3) -> PxTransform;
-
-    pub fn PxTransform_new_2(anon_param0: PxIDENTITY) -> PxTransform;
-
-    pub fn PxTransform_new_3(orientation: *const PxQuat) -> PxTransform;
-
-    pub fn PxTransform_new_4(x: f32, y: f32, z: f32, aQ: PxQuat) -> PxTransform;
-
-    pub fn PxTransform_new_5(p0: *const PxVec3, q0: *const PxQuat) -> PxTransform;
-
-    pub fn PxTransform_new_6(m: *const PxMat44) -> PxTransform;
-
-    pub fn PxTransform_getInverse(self_: *const PxTransform) -> PxTransform;
-
-    pub fn PxTransform_transform(self_: *const PxTransform, input: *const PxVec3) -> PxVec3;
-
-    pub fn PxTransform_transformInv(self_: *const PxTransform, input: *const PxVec3) -> PxVec3;
-
-    pub fn PxTransform_rotate(self_: *const PxTransform, input: *const PxVec3) -> PxVec3;
-
-    pub fn PxTransform_rotateInv(self_: *const PxTransform, input: *const PxVec3) -> PxVec3;
-
-    /// Transform transform to parent (returns compound transform: first src, then *this)
-    pub fn PxTransform_transform_1(self_: *const PxTransform, src: *const PxTransform) -> PxTransform;
-
-    /// returns true if finite and q is a unit quaternion
-    pub fn PxTransform_isValid(self_: *const PxTransform) -> bool;
-
-    /// returns true if finite and quat magnitude is reasonably close to unit to allow for some accumulation of error
-    /// vs isValid
-    pub fn PxTransform_isSane(self_: *const PxTransform) -> bool;
-
-    /// returns true if all elems are finite (not NAN or INF, etc.)
-    pub fn PxTransform_isFinite(self_: *const PxTransform) -> bool;
-
-    /// Transform transform from parent (returns compound transform: first src, then this->inverse)
-    pub fn PxTransform_transformInv_1(self_: *const PxTransform, src: *const PxTransform) -> PxTransform;
-
-    /// return a normalized transform (i.e. one in which the quaternion has unit magnitude)
-    pub fn PxTransform_getNormalized(self_: *const PxTransform) -> PxTransform;
-
-    /// Default constructor
-    pub fn PxMat33_new() -> PxMat33;
-
-    /// identity constructor
-    pub fn PxMat33_new_1(anon_param0: PxIDENTITY) -> PxMat33;
-
-    /// zero constructor
-    pub fn PxMat33_new_2(anon_param0: PxZERO) -> PxMat33;
-
-    /// Construct from three base vectors
-    pub fn PxMat33_new_3(col0: *const PxVec3, col1: *const PxVec3, col2: *const PxVec3) -> PxMat33;
-
-    /// constructor from a scalar, which generates a multiple of the identity matrix
-    pub fn PxMat33_new_4(r: f32) -> PxMat33;
-
-    /// Construct from float[9]
-    pub fn PxMat33_new_5(values: *mut f32) -> PxMat33;
-
-    /// Construct from a quaternion
-    pub fn PxMat33_new_6(q: *const PxQuat) -> PxMat33;
-
-    /// Construct from diagonal, off-diagonals are zero.
-    pub fn PxMat33_createDiagonal(d: *const PxVec3) -> PxMat33;
-
-    /// Computes the outer product of two vectors
-    pub fn PxMat33_outer(a: *const PxVec3, b: *const PxVec3) -> PxMat33;
-
-    /// Get transposed matrix
-    pub fn PxMat33_getTranspose(self_: *const PxMat33) -> PxMat33;
-
-    /// Get the real inverse
-    pub fn PxMat33_getInverse(self_: *const PxMat33) -> PxMat33;
-
-    /// Get determinant
-    pub fn PxMat33_getDeterminant(self_: *const PxMat33) -> f32;
-
-    /// Transform vector by matrix, equal to v' = M*v
-    pub fn PxMat33_transform(self_: *const PxMat33, other: *const PxVec3) -> PxVec3;
-
-    /// Transform vector by matrix transpose, v' = M^t*v
-    pub fn PxMat33_transformTranspose(self_: *const PxMat33, other: *const PxVec3) -> PxVec3;
-
-    pub fn PxMat33_front(self_: *const PxMat33) -> *const f32;
+    /// Quaternion that rotates around the desired axis
+    pub fn phys_PxGetRotZQuat(angle: f32) -> PxQuat;
 
     /// Default constructor, not performing any initialization for performance reason.
     ///
@@ -4581,158 +5305,19 @@ extern "C" {
     /// Reports an error code.
     pub fn PxBroadcastingErrorCallback_reportError_mut(self_: *mut PxBroadcastingErrorCallback, code: PxErrorCode, message: *const std::ffi::c_char, file: *const std::ffi::c_char, line: i32);
 
+    pub fn PxFPUGuard_new_alloc() -> *mut PxFPUGuard;
+
+    pub fn PxFPUGuard_delete(self_: *mut PxFPUGuard);
+
+    pub fn PxSIMDGuard_new_alloc(enable: bool) -> *mut PxSIMDGuard;
+
+    pub fn PxSIMDGuard_delete(self_: *mut PxSIMDGuard);
+
     /// Enables floating point exceptions for the scalar and SIMD unit
     pub fn phys_PxEnableFPExceptions();
 
     /// Disables floating point exceptions for the scalar and SIMD unit
     pub fn phys_PxDisableFPExceptions();
-
-    /// read from the stream. The number of bytes read may be less than the number requested.
-    ///
-    /// the number of bytes read from the stream.
-    pub fn PxInputStream_read_mut(self_: *mut PxInputStream, dest: *mut std::ffi::c_void, count: u32) -> u32;
-
-    pub fn PxInputStream_delete(self_: *mut PxInputStream);
-
-    /// return the length of the input data
-    ///
-    /// size in bytes of the input data
-    pub fn PxInputData_getLength(self_: *const PxInputData) -> u32;
-
-    /// seek to the given offset from the start of the data.
-    pub fn PxInputData_seek_mut(self_: *mut PxInputData, offset: u32);
-
-    /// return the current offset from the start of the data
-    ///
-    /// the offset to seek to.
-    pub fn PxInputData_tell(self_: *const PxInputData) -> u32;
-
-    pub fn PxInputData_delete(self_: *mut PxInputData);
-
-    /// write to the stream. The number of bytes written may be less than the number sent.
-    ///
-    /// the number of bytes written to the stream by this call.
-    pub fn PxOutputStream_write_mut(self_: *mut PxOutputStream, src: *const std::ffi::c_void, count: u32) -> u32;
-
-    pub fn PxOutputStream_delete(self_: *mut PxOutputStream);
-
-    /// default constructor leaves data uninitialized.
-    pub fn PxVec4_new() -> PxVec4;
-
-    /// zero constructor.
-    pub fn PxVec4_new_1(anon_param0: PxZERO) -> PxVec4;
-
-    /// Assigns scalar parameter to all elements.
-    ///
-    /// Useful to initialize to zero or one.
-    pub fn PxVec4_new_2(a: f32) -> PxVec4;
-
-    /// Initializes from 3 scalar parameters.
-    pub fn PxVec4_new_3(nx: f32, ny: f32, nz: f32, nw: f32) -> PxVec4;
-
-    /// Initializes from 3 scalar parameters.
-    pub fn PxVec4_new_4(v: *const PxVec3, nw: f32) -> PxVec4;
-
-    /// Initializes from an array of scalar parameters.
-    pub fn PxVec4_new_5(v: *const f32) -> PxVec4;
-
-    /// tests for exact zero vector
-    pub fn PxVec4_isZero(self_: *const PxVec4) -> bool;
-
-    /// returns true if all 3 elems of the vector are finite (not NAN or INF, etc.)
-    pub fn PxVec4_isFinite(self_: *const PxVec4) -> bool;
-
-    /// is normalized - used by API parameter validation
-    pub fn PxVec4_isNormalized(self_: *const PxVec4) -> bool;
-
-    /// returns the squared magnitude
-    ///
-    /// Avoids calling PxSqrt()!
-    pub fn PxVec4_magnitudeSquared(self_: *const PxVec4) -> f32;
-
-    /// returns the magnitude
-    pub fn PxVec4_magnitude(self_: *const PxVec4) -> f32;
-
-    /// returns the scalar product of this and other.
-    pub fn PxVec4_dot(self_: *const PxVec4, v: *const PxVec4) -> f32;
-
-    /// returns a unit vector
-    pub fn PxVec4_getNormalized(self_: *const PxVec4) -> PxVec4;
-
-    /// normalizes the vector in place
-    pub fn PxVec4_normalize_mut(self_: *mut PxVec4) -> f32;
-
-    /// a[i] * b[i], for all i.
-    pub fn PxVec4_multiply(self_: *const PxVec4, a: *const PxVec4) -> PxVec4;
-
-    /// element-wise minimum
-    pub fn PxVec4_minimum(self_: *const PxVec4, v: *const PxVec4) -> PxVec4;
-
-    /// element-wise maximum
-    pub fn PxVec4_maximum(self_: *const PxVec4, v: *const PxVec4) -> PxVec4;
-
-    pub fn PxVec4_getXYZ(self_: *const PxVec4) -> PxVec3;
-
-    /// Default constructor
-    pub fn PxMat44_new() -> PxMat44;
-
-    /// identity constructor
-    pub fn PxMat44_new_1(anon_param0: PxIDENTITY) -> PxMat44;
-
-    /// zero constructor
-    pub fn PxMat44_new_2(anon_param0: PxZERO) -> PxMat44;
-
-    /// Construct from four 4-vectors
-    pub fn PxMat44_new_3(col0: *const PxVec4, col1: *const PxVec4, col2: *const PxVec4, col3: *const PxVec4) -> PxMat44;
-
-    /// constructor that generates a multiple of the identity matrix
-    pub fn PxMat44_new_4(r: f32) -> PxMat44;
-
-    /// Construct from three base vectors and a translation
-    pub fn PxMat44_new_5(col0: *const PxVec3, col1: *const PxVec3, col2: *const PxVec3, col3: *const PxVec3) -> PxMat44;
-
-    /// Construct from float[16]
-    pub fn PxMat44_new_6(values: *mut f32) -> PxMat44;
-
-    /// Construct from a quaternion
-    pub fn PxMat44_new_7(q: *const PxQuat) -> PxMat44;
-
-    /// Construct from a diagonal vector
-    pub fn PxMat44_new_8(diagonal: *const PxVec4) -> PxMat44;
-
-    /// Construct from Mat33 and a translation
-    pub fn PxMat44_new_9(axes: *const PxMat33, position: *const PxVec3) -> PxMat44;
-
-    pub fn PxMat44_new_10(t: *const PxTransform) -> PxMat44;
-
-    /// Get transposed matrix
-    pub fn PxMat44_getTranspose(self_: *const PxMat44) -> PxMat44;
-
-    /// Transform vector by matrix, equal to v' = M*v
-    pub fn PxMat44_transform(self_: *const PxMat44, other: *const PxVec4) -> PxVec4;
-
-    /// Transform vector by matrix, equal to v' = M*v
-    pub fn PxMat44_transform_1(self_: *const PxMat44, other: *const PxVec3) -> PxVec3;
-
-    /// Rotate vector by matrix, equal to v' = M*v
-    pub fn PxMat44_rotate(self_: *const PxMat44, other: *const PxVec4) -> PxVec4;
-
-    /// Rotate vector by matrix, equal to v' = M*v
-    pub fn PxMat44_rotate_1(self_: *const PxMat44, other: *const PxVec3) -> PxVec3;
-
-    pub fn PxMat44_getBasis(self_: *const PxMat44, num: u32) -> PxVec3;
-
-    pub fn PxMat44_getPosition(self_: *const PxMat44) -> PxVec3;
-
-    pub fn PxMat44_setPosition_mut(self_: *mut PxMat44, position: *const PxVec3);
-
-    pub fn PxMat44_front(self_: *const PxMat44) -> *const f32;
-
-    pub fn PxMat44_scale_mut(self_: *mut PxMat44, p: *const PxVec4);
-
-    pub fn PxMat44_inverseRT(self_: *const PxMat44) -> PxMat44;
-
-    pub fn PxMat44_isFinite(self_: *const PxMat44) -> bool;
 
     /// Constructor
     pub fn PxPlane_new() -> PxPlane;
@@ -4847,20 +5432,95 @@ extern "C" {
     /// Compute (i+1)%3
     pub fn phys_PxGetNextIndex3(i: u32) -> u32;
 
-    pub fn phys_computeBarycentric(a: *const PxVec3, b: *const PxVec3, c: *const PxVec3, d: *const PxVec3, p: *const PxVec3, bary: *mut PxVec4);
+    /// Computes the barycentric coordinates for a point inside a tetrahedron.
+    ///
+    /// This function calculates the barycentric coordinates of a point p with respect to a tetrahedron defined by vertices a, b, c, and d.
+    pub fn phys_PxComputeBarycentric(a: *const PxVec3, b: *const PxVec3, c: *const PxVec3, d: *const PxVec3, p: *const PxVec3, bary: *mut PxVec4);
 
-    pub fn phys_computeBarycentric_1(a: *const PxVec3, b: *const PxVec3, c: *const PxVec3, p: *const PxVec3, bary: *mut PxVec4);
+    /// Computes the barycentric coordinates for a point inside a triangle.
+    ///
+    /// This function calculates the barycentric coordinates of a point p with respect to a triangle defined by vertices a, b, and c.
+    pub fn phys_PxComputeBarycentric_1(a: *const PxVec3, b: *const PxVec3, c: *const PxVec3, p: *const PxVec3, bary: *mut PxVec4);
 
+    /// Computes the barycentric coordinates for a point inside a triangle (deprecated).
+    ///
+    /// This function is deprecated. Use PxComputeBarycentric instead.
+    pub fn phys_computeBarycentric(a: *const PxVec3, b: *const PxVec3, c: *const PxVec3, p: *const PxVec3, bary: *mut PxVec4);
+
+    /// Computes the barycentric coordinates for a point inside a tetrahedron (deprecated).
+    ///
+    /// This function is deprecated. Use PxComputeBarycentric instead.
+    pub fn phys_computeBarycentric_1(a: *const PxVec3, b: *const PxVec3, c: *const PxVec3, d: *const PxVec3, p: *const PxVec3, bary: *mut PxVec4);
+
+    /// Performs linear interpolation between two values.
+    ///
+    /// The interpolated value
+    pub fn phys_PxLerp(a: f32, b: f32, t: f32) -> f32;
+
+    /// Performs bilinear interpolation.
+    ///
+    /// The interpolated value
+    pub fn phys_PxBiLerp(f00: f32, f10: f32, f01: f32, f11: f32, tx: f32, ty: f32) -> f32;
+
+    /// Performs trilinear interpolation.
+    ///
+    /// The interpolated value
+    pub fn phys_PxTriLerp(f000: f32, f100: f32, f010: f32, f110: f32, f001: f32, f101: f32, f011: f32, f111: f32, tx: f32, ty: f32, tz: f32) -> f32;
+
+    /// Computes the 1D index for a 3D grid point.
+    ///
+    /// The 1D index corresponding to the 3D grid point
+    pub fn phys_PxSDFIdx(i: u32, j: u32, k: u32, nbX: u32, nbY: u32) -> u32;
+
+    /// Samples the signed distance field (SDF) at a given local position.
+    ///
+    /// This function samples the SDF at a given local position within the defined box bounds and calculates the interpolated distance value. It handles grid clamping and ensures that the sampled value is within the tolerance limit.
+    ///
+    /// The sampled SDF value
+    pub fn phys_PxSDFSample(sdf: *const f32, localPos: *const PxVec3, sdfBoxLower: *const PxVec3, sdfBoxHigher: *const PxVec3, sdfDx: f32, invSdfDx: f32, dimX: u32, dimY: u32, dimZ: u32, tolerance: f32) -> f32;
+
+    /// Performs linear interpolation between two values.
+    ///
+    /// The interpolated value
+    ///
+    /// Please use corresponding freestanding function outside of Interpolation scope.
     pub fn Interpolation_PxLerp(a: f32, b: f32, t: f32) -> f32;
 
+    /// Performs bilinear interpolation.
+    ///
+    /// The interpolated value
+    ///
+    /// Please use corresponding freestanding function outside of Interpolation scope.
     pub fn Interpolation_PxBiLerp(f00: f32, f10: f32, f01: f32, f11: f32, tx: f32, ty: f32) -> f32;
 
+    /// Performs trilinear interpolation.
+    ///
+    /// The interpolated value
+    ///
+    /// Please use corresponding freestanding function outside of Interpolation scope.
     pub fn Interpolation_PxTriLerp(f000: f32, f100: f32, f010: f32, f110: f32, f001: f32, f101: f32, f011: f32, f111: f32, tx: f32, ty: f32, tz: f32) -> f32;
 
+    /// Computes the 1D index for a 3D grid point.
+    ///
+    /// The 1D index corresponding to the 3D grid point
+    ///
+    /// Please use corresponding freestanding function outside of Interpolation scope.
     pub fn Interpolation_PxSDFIdx(i: u32, j: u32, k: u32, nbX: u32, nbY: u32) -> u32;
 
+    /// Samples the signed distance field (SDF) at a given local position.
+    ///
+    /// This function samples the SDF at a given local position within the defined box bounds and calculates the interpolated distance value. It handles grid clamping and ensures that the sampled value is within the tolerance limit.
+    ///
+    /// The sampled SDF value
+    ///
+    /// Please use corresponding freestanding function outside of Interpolation scope.
     pub fn Interpolation_PxSDFSampleImpl(sdf: *const f32, localPos: *const PxVec3, sdfBoxLower: *const PxVec3, sdfBoxHigher: *const PxVec3, sdfDx: f32, invSdfDx: f32, dimX: u32, dimY: u32, dimZ: u32, tolerance: f32) -> f32;
 
+    /// Samples the signed distance field (SDF) at a given local position with gradient computation (deprecated).
+    ///
+    /// The sampled SDF value
+    ///
+    /// Please use PxSDFSample.
     pub fn phys_PxSdfSample(sdf: *const f32, localPos: *const PxVec3, sdfBoxLower: *const PxVec3, sdfBoxHigher: *const PxVec3, sdfDx: f32, invSdfDx: f32, dimX: u32, dimY: u32, dimZ: u32, gradient: *mut PxVec3, tolerance: f32) -> f32;
 
     /// The constructor for Mutex creates a mutex. It is initially unlocked.
@@ -4906,6 +5566,18 @@ extern "C" {
     /// eventName plus contextId can be used to uniquely match up start and end of a zone.
     pub fn PxProfilerCallback_zoneEnd_mut(self_: *mut PxProfilerCallback, profilerData: *mut std::ffi::c_void, eventName: *const std::ffi::c_char, detached: bool, contextId: u64);
 
+    /// Record integer data to be displayed in the profiler.
+    pub fn PxProfilerCallback_recordData_mut(self_: *mut PxProfilerCallback, value: i32, valueName: *const std::ffi::c_char, contextId: u64);
+
+    /// Record float data to be displayed in the profiler.
+    pub fn PxProfilerCallback_recordData_mut_1(self_: *mut PxProfilerCallback, value: f32, valueName: *const std::ffi::c_char, contextId: u64);
+
+    /// Record a frame marker to be displayed in the profiler.
+    ///
+    /// Markers that have identical names will be displayed in the profiler
+    /// along with the time between each of the markers. A frame counter will display the frame marker count.
+    pub fn PxProfilerCallback_recordFrame_mut(self_: *mut PxProfilerCallback, name: *const std::ffi::c_char, contextId: u64);
+
     pub fn PxProfileScoped_new_alloc(callback: *mut PxProfilerCallback, eventName: *const std::ffi::c_char, detached: bool, contextId: u64) -> *mut PxProfileScoped;
 
     pub fn PxProfileScoped_delete(self_: *mut PxProfileScoped);
@@ -4925,6 +5597,74 @@ extern "C" {
     pub fn PxSListImpl_flush_mut(self_: *mut PxSListImpl) -> *mut PxSListEntry;
 
     pub fn PxSListImpl_getSize() -> u32;
+
+    pub fn PxSocket_delete(self_: *mut PxSocket);
+
+    /// Opens a network socket for input and/or output
+    ///
+    /// True if the connection was successful, false otherwise
+    pub fn PxSocket_connect_mut(self_: *mut PxSocket, host: *const std::ffi::c_char, port: u16, timeout: u32) -> bool;
+
+    /// Opens a network socket for input and/or output as a server.  Put the connection in listening mode
+    pub fn PxSocket_listen_mut(self_: *mut PxSocket, port: u16) -> bool;
+
+    /// Accept a connection on a socket that is in listening mode
+    ///
+    /// This method only supports a single connection client.  Additional clients
+    /// that connect to the listening port will overwrite the existing socket handle.
+    ///
+    /// whether a connection was established
+    pub fn PxSocket_accept_mut(self_: *mut PxSocket, block: bool) -> bool;
+
+    /// Disconnects an open socket
+    pub fn PxSocket_disconnect_mut(self_: *mut PxSocket);
+
+    /// Returns whether the socket is currently open (connected) or not.
+    ///
+    /// True if the socket is connected, false otherwise
+    pub fn PxSocket_isConnected(self_: *const PxSocket) -> bool;
+
+    /// Returns the name of the connected host. This is the same as the string
+    /// that was supplied to the connect call.
+    ///
+    /// The name of the connected host
+    pub fn PxSocket_getHost(self_: *const PxSocket) -> *const std::ffi::c_char;
+
+    /// Returns the port of the connected host. This is the same as the port
+    /// that was supplied to the connect call.
+    ///
+    /// The port of the connected host
+    pub fn PxSocket_getPort(self_: *const PxSocket) -> u16;
+
+    /// Flushes the output stream. Until the stream is flushed, there is no
+    /// guarantee that the written data has actually reached the destination
+    /// storage. Flush forces all buffered data to be sent to the output.
+    ///
+    /// flush always blocks. If the socket is in non-blocking mode, this will result
+    /// the thread spinning.
+    ///
+    /// True if the flush was successful, false otherwise
+    pub fn PxSocket_flush_mut(self_: *mut PxSocket) -> bool;
+
+    /// Writes data to the output stream.
+    ///
+    /// Number of bytes actually written. This could be lower than length if the socket is non-blocking.
+    pub fn PxSocket_write_mut(self_: *mut PxSocket, data: *const u8, length: u32) -> u32;
+
+    /// Reads data from the output stream.
+    ///
+    /// Number of bytes actually read. This could be lower than length if the stream end is
+    /// encountered or the socket is non-blocking.
+    pub fn PxSocket_read_mut(self_: *mut PxSocket, data: *mut u8, length: u32) -> u32;
+
+    /// Sets blocking mode of the socket.
+    /// Socket must be connected, otherwise calling this method won't take any effect.
+    pub fn PxSocket_setBlocking_mut(self_: *mut PxSocket, blocking: bool);
+
+    /// Returns whether read/write/flush calls to the socket are blocking.
+    ///
+    /// True if the socket is blocking.
+    pub fn PxSocket_isBlocking(self_: *const PxSocket) -> bool;
 
     pub fn PxSyncImpl_new_alloc() -> *mut PxSyncImpl;
 
@@ -4949,6 +5689,85 @@ extern "C" {
     pub fn PxRunnable_delete(self_: *mut PxRunnable);
 
     pub fn PxRunnable_execute_mut(self_: *mut PxRunnable);
+
+    pub fn PxThreadImpl_getDefaultStackSize() -> u32;
+
+    pub fn PxThreadImpl_getId() -> usize;
+
+    /// Construct (but do not start) the thread object. The OS thread object will not be created
+    /// until start() is called. Executes in the context
+    /// of the spawning thread.
+    pub fn PxThreadImpl_new_alloc() -> *mut PxThreadImpl;
+
+    /// Deallocate all resources associated with the thread. Should be called in the
+    /// context of the spawning thread.
+    pub fn PxThreadImpl_delete(self_: *mut PxThreadImpl);
+
+    /// Create the OS thread and start it running. Called in the context of the spawning thread.
+    /// If an affinity mask has previously been set then it will be applied after the
+    /// thread has been created.
+    pub fn PxThreadImpl_start_mut(self_: *mut PxThreadImpl, stackSize: u32, r: *mut PxRunnable);
+
+    /// Violently kill the current thread. Blunt instrument, not recommended since
+    /// it can leave all kinds of things unreleased (stack, memory, mutexes...) Should
+    /// be called in the context of the spawning thread.
+    pub fn PxThreadImpl_kill_mut(self_: *mut PxThreadImpl);
+
+    /// Stop the thread. Signals the spawned thread that it should stop, so the
+    /// thread should check regularly
+    pub fn PxThreadImpl_signalQuit_mut(self_: *mut PxThreadImpl);
+
+    /// Wait for a thread to stop. Should be called in the context of the spawning
+    /// thread. Returns false if the thread has not been started.
+    pub fn PxThreadImpl_waitForQuit_mut(self_: *mut PxThreadImpl) -> bool;
+
+    /// check whether the thread is signalled to quit. Called in the context of the
+    /// spawned thread.
+    pub fn PxThreadImpl_quitIsSignalled_mut(self_: *mut PxThreadImpl) -> bool;
+
+    /// Cleanly shut down this thread. Called in the context of the spawned thread.
+    pub fn PxThreadImpl_quit_mut(self_: *mut PxThreadImpl);
+
+    /// Change the affinity mask for this thread. The mask is a platform
+    /// specific value.
+    ///
+    /// On Windows, Linux, and Switch platforms, each set mask bit represents
+    /// the index of a logical processor that the OS may schedule thread execution on.
+    /// Bits outside the range of valid logical processors may be ignored or cause
+    /// the function to return an error.
+    ///
+    /// On Apple platforms, this function has no effect.
+    ///
+    /// If the thread has not yet been started then the mask is stored
+    /// and applied when the thread is started.
+    ///
+    /// If the thread has already been started then this method	returns the
+    /// previous affinity mask on success, otherwise it returns zero.
+    pub fn PxThreadImpl_setAffinityMask_mut(self_: *mut PxThreadImpl, mask: u32) -> u32;
+
+    pub fn PxThreadImpl_getPriority(threadId: usize) -> PxThreadPriority;
+
+    /// Set thread priority.
+    pub fn PxThreadImpl_setPriority_mut(self_: *mut PxThreadImpl, prio: PxThreadPriority);
+
+    /// set the thread's name
+    pub fn PxThreadImpl_setName_mut(self_: *mut PxThreadImpl, name: *const std::ffi::c_char);
+
+    /// Put the current thread to sleep for the given number of milliseconds
+    pub fn PxThreadImpl_sleep(ms: u32);
+
+    /// Yield the current thread's slot on the CPU
+    pub fn PxThreadImpl_yield();
+
+    /// Inform the processor that we're in a busy wait to give it a chance to do something clever.
+    /// yield() yields the thread, while yieldProcessor() aims to yield the processor
+    pub fn PxThreadImpl_yieldProcessor();
+
+    /// Return the number of physical cores (does not include hyper-threaded cores), returns 0 on failure
+    pub fn PxThreadImpl_getNbPhysicalCores() -> u32;
+
+    /// Size of this class.
+    pub fn PxThreadImpl_getSize() -> u32;
 
     pub fn phys_PxTlsAlloc() -> u32;
 
@@ -4982,64 +5801,9 @@ extern "C" {
 
     pub fn PxTime_getLastTime(self_: *const PxTime) -> f64;
 
-    /// default constructor leaves data uninitialized.
-    pub fn PxVec2_new() -> PxVec2;
-
-    /// zero constructor.
-    pub fn PxVec2_new_1(anon_param0: PxZERO) -> PxVec2;
-
-    /// Assigns scalar parameter to all elements.
-    ///
-    /// Useful to initialize to zero or one.
-    pub fn PxVec2_new_2(a: f32) -> PxVec2;
-
-    /// Initializes from 2 scalar parameters.
-    pub fn PxVec2_new_3(nx: f32, ny: f32) -> PxVec2;
-
-    /// tests for exact zero vector
-    pub fn PxVec2_isZero(self_: *const PxVec2) -> bool;
-
-    /// returns true if all 2 elems of the vector are finite (not NAN or INF, etc.)
-    pub fn PxVec2_isFinite(self_: *const PxVec2) -> bool;
-
-    /// is normalized - used by API parameter validation
-    pub fn PxVec2_isNormalized(self_: *const PxVec2) -> bool;
-
-    /// returns the squared magnitude
-    ///
-    /// Avoids calling PxSqrt()!
-    pub fn PxVec2_magnitudeSquared(self_: *const PxVec2) -> f32;
-
-    /// returns the magnitude
-    pub fn PxVec2_magnitude(self_: *const PxVec2) -> f32;
-
-    /// returns the scalar product of this and other.
-    pub fn PxVec2_dot(self_: *const PxVec2, v: *const PxVec2) -> f32;
-
-    /// returns a unit vector
-    pub fn PxVec2_getNormalized(self_: *const PxVec2) -> PxVec2;
-
-    /// normalizes the vector in place
-    pub fn PxVec2_normalize_mut(self_: *mut PxVec2) -> f32;
-
-    /// a[i] * b[i], for all i.
-    pub fn PxVec2_multiply(self_: *const PxVec2, a: *const PxVec2) -> PxVec2;
-
-    /// element-wise minimum
-    pub fn PxVec2_minimum(self_: *const PxVec2, v: *const PxVec2) -> PxVec2;
-
-    /// returns MIN(x, y);
-    pub fn PxVec2_minElement(self_: *const PxVec2) -> f32;
-
-    /// element-wise maximum
-    pub fn PxVec2_maximum(self_: *const PxVec2, v: *const PxVec2) -> PxVec2;
-
-    /// returns MAX(x, y);
-    pub fn PxVec2_maxElement(self_: *const PxVec2) -> f32;
-
-    pub fn PxStridedData_new() -> PxStridedData;
-
     pub fn PxBoundedData_new() -> PxBoundedData;
+
+    pub fn PxBoundedData_new_1(data_: *mut std::ffi::c_void, stride_: u32, count_: u32) -> PxBoundedData;
 
     pub fn PxDebugPoint_new(p: *const PxVec3, c: *const u32) -> PxDebugPoint;
 
@@ -5108,7 +5872,7 @@ extern "C" {
     /// Serializes object data and object extra data.
     ///
     /// This function is assumed to be called within the implementation of PxSerializer::exportData and PxSerializer::exportExtraData.
-    pub fn PxSerializationContext_writeData_mut(self_: *mut PxSerializationContext, data: *const std::ffi::c_void, size: u32);
+    pub fn PxSerializationContext_writeData_mut(self_: *mut PxSerializationContext, data: *const std::ffi::c_void, size: u64);
 
     /// Aligns the serialized data.
     ///
@@ -5158,14 +5922,20 @@ extern "C" {
     pub fn PxSerializationRegistry_getSerializer(self_: *const PxSerializationRegistry, type_: u16) -> *const PxSerializer;
 
     /// Register a RepX serializer for a concrete type
+    ///
+    /// Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
     pub fn PxSerializationRegistry_registerRepXSerializer_mut(self_: *mut PxSerializationRegistry, type_: u16, serializer: *mut PxRepXSerializer);
 
     /// Unregister a RepX serializer for a concrete type, and retrieves the corresponding serializer object.
+    ///
+    /// Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
     ///
     /// Unregistered PxRepxSerializer corresponding to type, NULL for types for which no RepX serializer has been registered.
     pub fn PxSerializationRegistry_unregisterRepXSerializer_mut(self_: *mut PxSerializationRegistry, type_: u16) -> *mut PxRepXSerializer;
 
     /// Returns RepX serializer given the corresponding type name
+    ///
+    /// Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
     ///
     /// Registered PxRepXSerializer object corresponding to type name
     pub fn PxSerializationRegistry_getRepXSerializer(self_: *const PxSerializationRegistry, typeName: *const std::ffi::c_char) -> *mut PxRepXSerializer;
@@ -5310,7 +6080,7 @@ extern "C" {
     /// Returns the reference count of the object.
     ///
     /// At creation, the reference count of the object is 1. Every other object referencing this object increments the
-    /// count by 1. When the reference count reaches 0, and only then, the object gets destroyed automatically.
+    /// count by 1.	When the reference count reaches 0, and only then, the object gets destroyed automatically.
     ///
     /// the current reference count.
     pub fn PxRefCounted_getReferenceCount(self_: *const PxRefCounted) -> u32;
@@ -5475,6 +6245,16 @@ extern "C" {
     /// provided no additional user references to the task exist
     pub fn PxBaseTask_release_mut(self_: *mut PxBaseTask);
 
+    /// Tells the scheduler if a task is high priority or not.
+    ///
+    /// This function is a hint to the scheduler, to let it know that some tasks are
+    /// higher priority than others. The scheduler should try to execute high priority
+    /// tasks first, but there is no guarantee that it does (some schedulers can ignore
+    /// this information).
+    ///
+    /// True for high priority task, false for regular tasks
+    pub fn PxBaseTask_isHighPriority(self_: *const PxBaseTask) -> bool;
+
     /// Return PxTaskManager to which this task was submitted
     ///
     /// Note, can return NULL if task was not submitted, or has been
@@ -5560,50 +6340,12 @@ extern "C" {
     /// True if the current settings are valid
     ///
     /// A valid box has a positive extent in each direction (halfExtents.x > 0, halfExtents.y > 0, halfExtents.z > 0).
-    /// It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a box that has zero extent in any direction.
+    /// It is illegal to call PxPhysics::createShape with a box that has zero extent in any direction.
     pub fn PxBoxGeometry_isValid(self_: *const PxBoxGeometry) -> bool;
 
-    pub fn PxBVHRaycastCallback_delete(self_: *mut PxBVHRaycastCallback);
+    pub fn PxReportCallbackBase_new_alloc(capacity: u32) -> *mut PxReportCallbackBase;
 
-    pub fn PxBVHRaycastCallback_reportHit_mut(self_: *mut PxBVHRaycastCallback, boundsIndex: u32, distance: *mut f32) -> bool;
-
-    pub fn PxBVHOverlapCallback_delete(self_: *mut PxBVHOverlapCallback);
-
-    pub fn PxBVHOverlapCallback_reportHit_mut(self_: *mut PxBVHOverlapCallback, boundsIndex: u32) -> bool;
-
-    pub fn PxBVHTraversalCallback_delete(self_: *mut PxBVHTraversalCallback);
-
-    pub fn PxBVHTraversalCallback_visitNode_mut(self_: *mut PxBVHTraversalCallback, bounds: *const PxBounds3) -> bool;
-
-    pub fn PxBVHTraversalCallback_reportLeaf_mut(self_: *mut PxBVHTraversalCallback, nbPrims: u32, prims: *const u32) -> bool;
-
-    /// Raycast test against a BVH.
-    ///
-    /// false if query has been aborted
-    pub fn PxBVH_raycast(self_: *const PxBVH, origin: *const PxVec3, unitDir: *const PxVec3, maxDist: f32, cb: *mut PxBVHRaycastCallback, queryFlags: PxGeometryQueryFlags) -> bool;
-
-    /// Sweep test against a BVH.
-    ///
-    /// false if query has been aborted
-    pub fn PxBVH_sweep(self_: *const PxBVH, geom: *const PxGeometry, pose: *const PxTransform, unitDir: *const PxVec3, maxDist: f32, cb: *mut PxBVHRaycastCallback, queryFlags: PxGeometryQueryFlags) -> bool;
-
-    /// Overlap test against a BVH.
-    ///
-    /// false if query has been aborted
-    pub fn PxBVH_overlap(self_: *const PxBVH, geom: *const PxGeometry, pose: *const PxTransform, cb: *mut PxBVHOverlapCallback, queryFlags: PxGeometryQueryFlags) -> bool;
-
-    /// Frustum culling test against a BVH.
-    ///
-    /// This is similar in spirit to an overlap query using a convex object around the frustum.
-    /// However this specialized query has better performance, and can support more than the 6 planes
-    /// of a frustum, which can be useful in portal-based engines.
-    ///
-    /// On the other hand this test only returns a conservative number of bounds, i.e. some of the returned
-    /// bounds may actually be outside the frustum volume, close to it but not touching it. This is usually
-    /// an ok performance trade-off when the function is used for view-frustum culling.
-    ///
-    /// false if query has been aborted
-    pub fn PxBVH_cull(self_: *const PxBVH, nbPlanes: u32, planes: *const PxPlane, cb: *mut PxBVHOverlapCallback, queryFlags: PxGeometryQueryFlags) -> bool;
+    pub fn PxReportCallbackBase_delete(self_: *mut PxReportCallbackBase);
 
     /// Returns the number of bounds in the BVH.
     ///
@@ -5658,14 +6400,6 @@ extern "C" {
     /// See updateBounds() for details.
     pub fn PxBVH_partialRefit_mut(self_: *mut PxBVH);
 
-    /// Generic BVH traversal function.
-    ///
-    /// This can be used to implement custom BVH traversal functions if provided ones are not enough.
-    /// In particular this can be used to visualize the tree's bounds.
-    ///
-    /// false if query has been aborted
-    pub fn PxBVH_traverse(self_: *const PxBVH, cb: *mut PxBVHTraversalCallback) -> bool;
-
     pub fn PxBVH_getConcreteTypeName(self_: *const PxBVH) -> *const std::ffi::c_char;
 
     /// Constructor, initializes to a capsule with passed radius and half height.
@@ -5676,7 +6410,7 @@ extern "C" {
     /// True if the current settings are valid.
     ///
     /// A valid capsule has radius > 0, halfHeight >= 0.
-    /// It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a capsule that has zero radius or height.
+    /// It is illegal to call PxPhysics::createShape with a capsule that has zero radius or height.
     pub fn PxCapsuleGeometry_isValid(self_: *const PxCapsuleGeometry) -> bool;
 
     /// Returns the number of vertices.
@@ -5776,7 +6510,7 @@ extern "C" {
     /// True if the current settings are valid for shape creation.
     ///
     /// A valid convex mesh has a positive scale value in each direction (scale.x > 0, scale.y > 0, scale.z > 0).
-    /// It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a convex that has zero extent in any direction.
+    /// It is illegal to call PxPhysics::createShape with a convex that has zero extent in any direction.
     pub fn PxConvexMeshGeometry_isValid(self_: *const PxConvexMeshGeometry) -> bool;
 
     /// Constructor.
@@ -5787,7 +6521,7 @@ extern "C" {
     /// True if the current settings are valid
     ///
     /// A valid sphere has radius > 0.
-    /// It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a sphere that has zero radius.
+    /// It is illegal to call PxPhysics::createShape with a sphere that has zero radius.
     pub fn PxSphereGeometry_isValid(self_: *const PxSphereGeometry) -> bool;
 
     /// Constructor.
@@ -5806,7 +6540,7 @@ extern "C" {
     /// True if the current settings are valid for shape creation.
     ///
     /// A valid triangle mesh has a positive scale value in each direction (scale.scale.x > 0, scale.scale.y > 0, scale.scale.z > 0).
-    /// It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a triangle mesh that has zero extents in any direction.
+    /// It is illegal to call PxPhysics::createShape with a triangle mesh that has zero extents in any direction.
     pub fn PxTriangleMeshGeometry_isValid(self_: *const PxTriangleMeshGeometry) -> bool;
 
     /// Constructor.
@@ -5817,8 +6551,477 @@ extern "C" {
     /// True if the current settings are valid
     ///
     /// A valid height field has a positive scale value in each direction (heightScale > 0, rowScale > 0, columnScale > 0).
-    /// It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a height field that has zero extents in any direction.
+    /// It is illegal to call PxPhysics::createShape with a height field that has zero extents in any direction.
     pub fn PxHeightFieldGeometry_isValid(self_: *const PxHeightFieldGeometry) -> bool;
+
+    pub fn PxFilterData_new(anon_param0: PxEMPTY) -> PxFilterData;
+
+    /// Default constructor.
+    pub fn PxFilterData_new_1() -> PxFilterData;
+
+    /// Constructor to set filter data initially.
+    pub fn PxFilterData_new_2(w0: u32, w1: u32, w2: u32, w3: u32) -> PxFilterData;
+
+    /// (re)sets the structure to the default.
+    pub fn PxFilterData_setToDefault_mut(self_: *mut PxFilterData);
+
+    /// Extract filter object type from the filter attributes of a collision pair object
+    ///
+    /// The type of the collision pair object.
+    pub fn phys_PxGetFilterObjectType(attr: u32) -> PxFilterObjectType;
+
+    /// Specifies whether the collision object belongs to a kinematic rigid body
+    ///
+    /// True if the object belongs to a kinematic rigid body, else false
+    pub fn phys_PxFilterObjectIsKinematic(attr: u32) -> bool;
+
+    /// Specifies whether the collision object is a trigger shape
+    ///
+    /// True if the object is a trigger shape, else false
+    pub fn phys_PxFilterObjectIsTrigger(attr: u32) -> bool;
+
+    /// Filter method to specify how a pair of potentially colliding objects should be processed.
+    ///
+    /// This method gets called when the filter flags returned by the filter shader (see [`PxSimulationFilterShader`])
+    /// indicate that the filter callback should be invoked ([`PxFilterFlag::eCALLBACK`] or #PxFilterFlag::eNOTIFY set).
+    /// Return the PxFilterFlag flags and set the PxPairFlag flags to define what the simulation should do with the given
+    /// collision pair.
+    ///
+    /// Filter flags defining whether the pair should be discarded, temporarily ignored or processed and whether the pair
+    /// should be tracked and send a report on pair deletion through the filter callback
+    pub fn PxSimulationFilterCallback_pairFound_mut(self_: *mut PxSimulationFilterCallback, pairID: u64, attributes0: u32, filterData0: PxFilterData, a0: *const PxActor, s0: *const PxShape, attributes1: u32, filterData1: PxFilterData, a1: *const PxActor, s1: *const PxShape, pairFlags: *mut PxPairFlags) -> PxFilterFlags;
+
+    /// Callback to inform that a tracked collision pair is gone.
+    ///
+    /// This method gets called when a collision pair disappears or gets re-filtered. Only applies to
+    /// collision pairs which have been marked as filter callback pairs ([`PxFilterFlag::eNOTIFY`] set in #pairFound()).
+    pub fn PxSimulationFilterCallback_pairLost_mut(self_: *mut PxSimulationFilterCallback, pairID: u64, attributes0: u32, filterData0: PxFilterData, attributes1: u32, filterData1: PxFilterData, objectRemoved: bool);
+
+    /// Callback to give the opportunity to change the filter state of a tracked collision pair.
+    ///
+    /// This method gets called once per simulation step to let the application change the filter and pair
+    /// flags of a collision pair that has been reported in [`pairFound`]() and requested callbacks by
+    /// setting [`PxFilterFlag::eNOTIFY`]. To request a change of filter status, the target pair has to be
+    /// specified by its ID, the new filter and pair flags have to be provided and the method should return true.
+    ///
+    /// If this method changes the filter status of a collision pair and the pair should keep being tracked
+    /// by the filter callbacks then [`PxFilterFlag::eNOTIFY`] has to be set.
+    ///
+    /// The application is responsible to ensure that this method does not get called for pairs that have been
+    /// reported as lost, see [`pairLost`]().
+    ///
+    /// True if the changes should be applied. In this case the method will get called again. False if
+    /// no more status changes should be done in the current simulation step. In that case the provided flags will be discarded.
+    pub fn PxSimulationFilterCallback_statusChange_mut(self_: *mut PxSimulationFilterCallback, pairID: *mut u64, pairFlags: *mut PxPairFlags, filterFlags: *mut PxFilterFlags) -> bool;
+
+    /// Deletes the actor.
+    ///
+    /// Do not keep a reference to the deleted instance.
+    ///
+    /// If the actor belongs to a [`PxAggregate`] object, it is automatically removed from the aggregate.
+    pub fn PxActor_release_mut(self_: *mut PxActor);
+
+    /// Retrieves the type of actor.
+    ///
+    /// The actor type of the actor.
+    pub fn PxActor_getType(self_: *const PxActor) -> PxActorType;
+
+    /// Retrieves the scene which this actor belongs to.
+    ///
+    /// Owner Scene. NULL if not part of a scene.
+    pub fn PxActor_getScene(self_: *const PxActor) -> *mut PxScene;
+
+    /// Sets a name string for the object that can be retrieved with getName().
+    ///
+    /// This is for debugging and is not used by the SDK. The string is not copied by the SDK,
+    /// only the pointer is stored.
+    ///
+    /// Default:
+    /// NULL
+    pub fn PxActor_setName_mut(self_: *mut PxActor, name: *const std::ffi::c_char);
+
+    /// Retrieves the name string set with setName().
+    ///
+    /// Name string associated with object.
+    pub fn PxActor_getName(self_: *const PxActor) -> *const std::ffi::c_char;
+
+    /// Retrieves the axis aligned bounding box enclosing the actor.
+    ///
+    /// It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
+    /// in PxContactModifyCallback or in contact report callbacks).
+    ///
+    /// The actor's bounding box.
+    pub fn PxActor_getWorldBounds(self_: *const PxActor, inflation: f32) -> PxBounds3;
+
+    /// Raises or clears a particular actor flag.
+    ///
+    /// See the list of flags [`PxActorFlag`]
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake the actor up automatically.
+    pub fn PxActor_setActorFlag_mut(self_: *mut PxActor, flag: PxActorFlag, value: bool);
+
+    /// Sets the actor flags.
+    ///
+    /// See the list of flags [`PxActorFlag`]
+    pub fn PxActor_setActorFlags_mut(self_: *mut PxActor, inFlags: PxActorFlags);
+
+    /// Reads the PxActor flags.
+    ///
+    /// See the list of flags [`PxActorFlag`]
+    ///
+    /// The values of the PxActor flags.
+    pub fn PxActor_getActorFlags(self_: *const PxActor) -> PxActorFlags;
+
+    /// Assigns dynamic actors a dominance group identifier.
+    ///
+    /// PxDominanceGroup is a 5 bit group identifier (legal range from 0 to 31).
+    ///
+    /// The PxScene::setDominanceGroupPair() lets you set certain behaviors for pairs of dominance groups.
+    /// By default every dynamic actor is created in group 0.
+    ///
+    /// Default:
+    /// 0
+    ///
+    /// Sleeping:
+    /// Changing the dominance group does
+    /// NOT
+    /// wake the actor up automatically.
+    pub fn PxActor_setDominanceGroup_mut(self_: *mut PxActor, dominanceGroup: u8);
+
+    /// Retrieves the value set with setDominanceGroup().
+    ///
+    /// The dominance group of this actor.
+    pub fn PxActor_getDominanceGroup(self_: *const PxActor) -> u8;
+
+    /// Sets the owner client of an actor.
+    ///
+    /// This cannot be done once the actor has been placed into a scene.
+    ///
+    /// Default:
+    /// PX_DEFAULT_CLIENT
+    pub fn PxActor_setOwnerClient_mut(self_: *mut PxActor, inClient: u8);
+
+    /// Returns the owner client that was specified at creation time.
+    ///
+    /// This value cannot be changed once the object is placed into the scene.
+    pub fn PxActor_getOwnerClient(self_: *const PxActor) -> u8;
+
+    /// Retrieves the aggregate the actor might be a part of.
+    ///
+    /// The aggregate the actor is a part of, or NULL if the actor does not belong to an aggregate.
+    pub fn PxActor_getAggregate(self_: *const PxActor) -> *mut PxAggregate;
+
+    /// Sets the environment ID for this actor.
+    ///
+    /// The environment ID is an extra built-in filter group for the GPU broadphase. Actors will only collide with each-other if they have the
+    /// same environment ID.
+    ///
+    /// The default value is PX_INVALID_U32. Actors with this ID will collide with other actors, regardless of which environment they are a part of.
+    ///
+    /// The environment ID must be set before adding the actor to a scene, and cannot change while the actor is in the scene.
+    ///
+    /// If it is not PX_INVALID_U32, the environment ID must be smaller than 1
+    /// <
+    /// <
+    /// 24, i.e. the system does not support more than 1
+    /// <
+    /// <
+    /// 24 environments.
+    ///
+    /// Default:
+    /// PX_INVALID_U32
+    ///
+    /// This is not available for CPU broadphases.
+    ///
+    /// True if success.
+    pub fn PxActor_setEnvironmentID_mut(self_: *mut PxActor, envID: u32) -> bool;
+
+    /// Returns the environment ID for this actor.
+    ///
+    /// Environment ID for this actor.
+    pub fn PxActor_getEnvironmentID(self_: *const PxActor) -> u32;
+
+    /// Destructor
+    pub fn PxParticleSystemCallback_delete(self_: *mut PxParticleSystemCallback);
+
+    pub fn PxMultiCallback_new_alloc() -> *mut PxMultiCallback;
+
+    /// Adds a callback
+    ///
+    /// True if the callback was added
+    pub fn PxMultiCallback_addCallback_mut(self_: *mut PxMultiCallback, callback: *mut PxParticleSystemCallback) -> bool;
+
+    /// Removes a callback
+    ///
+    /// True if the callback was removed
+    pub fn PxMultiCallback_removeCallback_mut(self_: *mut PxMultiCallback, callback: *const PxParticleSystemCallback) -> bool;
+
+    pub fn PxMultiCallback_delete(self_: *mut PxMultiCallback);
+
+    pub fn PxPBDParticleSystem_delete(self_: *mut PxPBDParticleSystem);
+
+    /// Sets the solver iteration counts for the body.
+    ///
+    /// The solver iteration count determines how accurately joints and contacts are resolved.
+    /// If you are having trouble with jointed bodies oscillating and behaving erratically, then
+    /// setting a higher position iteration count may improve their stability.
+    ///
+    /// If intersecting bodies are being depenetrated too violently, increase the number of velocity
+    /// iterations. More velocity iterations will drive the relative exit velocity of the intersecting
+    /// objects closer to the correct value given the restitution.
+    ///
+    /// Default:
+    /// 4 position iterations, 1 velocity iteration
+    ///
+    /// See [`getSolverIterationCounts`]()
+    pub fn PxPBDParticleSystem_setSolverIterationCounts_mut(self_: *mut PxPBDParticleSystem, minPositionIters: u32, minVelocityIters: u32);
+
+    /// Retrieves the solver iteration counts.
+    ///
+    /// See [`setSolverIterationCounts`]()
+    pub fn PxPBDParticleSystem_getSolverIterationCounts(self_: *const PxPBDParticleSystem, minPositionIters: *mut u32, minVelocityIters: *mut u32);
+
+    /// Retrieves the collision filter settings.
+    ///
+    /// The filter data
+    pub fn PxPBDParticleSystem_getSimulationFilterData(self_: *const PxPBDParticleSystem) -> PxFilterData;
+
+    /// Set collision filter settings
+    ///
+    /// Allows to control with which objects the particle system collides
+    pub fn PxPBDParticleSystem_setSimulationFilterData_mut(self_: *mut PxPBDParticleSystem, data: *const PxFilterData);
+
+    /// Set particle flag
+    ///
+    /// Allows to control self collision etc.
+    pub fn PxPBDParticleSystem_setParticleFlag_mut(self_: *mut PxPBDParticleSystem, flag: PxParticleFlag, val: bool);
+
+    /// Set particle flags
+    ///
+    /// Allows to control self collision etc.
+    pub fn PxPBDParticleSystem_setParticleFlags_mut(self_: *mut PxPBDParticleSystem, flags: PxParticleFlags);
+
+    /// Retrieves the particle flags.
+    ///
+    /// The particle flags
+    pub fn PxPBDParticleSystem_getParticleFlags(self_: *const PxPBDParticleSystem) -> PxParticleFlags;
+
+    /// Set the maximal depenetration velocity particles can reach
+    ///
+    /// Allows to limit the particles' maximal depenetration velocity to avoid that collision responses lead to very high particle velocities
+    pub fn PxPBDParticleSystem_setMaxDepenetrationVelocity_mut(self_: *mut PxPBDParticleSystem, maxDepenetrationVelocity: f32);
+
+    /// Retrieves maximal depenetration velocity a particle can have.
+    ///
+    /// The maximal depenetration velocity
+    pub fn PxPBDParticleSystem_getMaxDepenetrationVelocity(self_: *const PxPBDParticleSystem) -> f32;
+
+    /// Set the maximal linear velocity particles can reach.
+    ///
+    /// Allows to limit the particles' maximal velocity to control the maximal distance a particle can move per frame.
+    ///
+    /// Default:
+    /// PX_MAX_F32
+    pub fn PxPBDParticleSystem_setMaxLinearVelocity_mut(self_: *mut PxPBDParticleSystem, maxLinearVelocity: f32);
+
+    /// Retrieves maximal linear velocity a particle can have.
+    ///
+    /// The maximal linear velocity
+    pub fn PxPBDParticleSystem_getMaxLinearVelocity(self_: *const PxPBDParticleSystem) -> f32;
+
+    /// Use setMaxLinearVelocity() instead.
+    pub fn PxPBDParticleSystem_setMaxVelocity_mut(self_: *mut PxPBDParticleSystem, maxVelocity: f32);
+
+    /// Use getMaxLinearVelocity() instead.
+    pub fn PxPBDParticleSystem_getMaxVelocity(self_: *const PxPBDParticleSystem) -> f32;
+
+    /// Return the cuda context manager
+    ///
+    /// The cuda context manager
+    pub fn PxPBDParticleSystem_getCudaContextManager(self_: *const PxPBDParticleSystem) -> *mut PxCudaContextManager;
+
+    /// Set the rest offset for the collision between particles and rigids or deformable bodies.
+    ///
+    /// A particle and a rigid or deformable body will come to rest at a distance equal to the sum of their restOffset values.
+    pub fn PxPBDParticleSystem_setRestOffset_mut(self_: *mut PxPBDParticleSystem, restOffset: f32);
+
+    /// Return the rest offset
+    ///
+    /// the rest offset
+    ///
+    /// See [`setRestOffset`]()
+    pub fn PxPBDParticleSystem_getRestOffset(self_: *const PxPBDParticleSystem) -> f32;
+
+    /// Set the contact offset for the collision between particles and rigids or soft bodies
+    ///
+    /// The contact offset needs to be larger than the rest offset.
+    /// Contact constraints are generated for a particle and a rigid or deformable below the distance equal to the sum of their contacOffset values.
+    pub fn PxPBDParticleSystem_setContactOffset_mut(self_: *mut PxPBDParticleSystem, contactOffset: f32);
+
+    /// Return the contact offset
+    ///
+    /// the contact offset
+    ///
+    /// See [`setContactOffset`]()
+    pub fn PxPBDParticleSystem_getContactOffset(self_: *const PxPBDParticleSystem) -> f32;
+
+    /// Set the contact offset for the interactions between particles
+    ///
+    /// The particle contact offset needs to be larger than the fluid rest offset and larger than the solid rest offset.
+    /// Interactions for two particles are computed if their distance is below twice the particleContactOffset value.
+    pub fn PxPBDParticleSystem_setParticleContactOffset_mut(self_: *mut PxPBDParticleSystem, particleContactOffset: f32);
+
+    /// Return the particle contact offset
+    ///
+    /// the particle contact offset
+    ///
+    /// See [`setParticleContactOffset`]()
+    pub fn PxPBDParticleSystem_getParticleContactOffset(self_: *const PxPBDParticleSystem) -> f32;
+
+    /// Set the solid rest offset
+    ///
+    /// Two solid particles (or a solid and a fluid particle) will come to rest at a distance equal to twice the solidRestOffset value.
+    pub fn PxPBDParticleSystem_setSolidRestOffset_mut(self_: *mut PxPBDParticleSystem, solidRestOffset: f32);
+
+    /// Return the solid rest offset
+    ///
+    /// the solid rest offset
+    ///
+    /// See [`setSolidRestOffset`]()
+    pub fn PxPBDParticleSystem_getSolidRestOffset(self_: *const PxPBDParticleSystem) -> f32;
+
+    /// Reads the particle lock flags.
+    ///
+    /// See the list of flags [`PxParticleLockFlag`]
+    ///
+    /// The values of the particle lock flags.
+    pub fn PxPBDParticleSystem_getParticleLockFlags(self_: *const PxPBDParticleSystem) -> PxParticleLockFlags;
+
+    /// Raises or clears a particular particle lock flag.
+    ///
+    /// See the list of flags [`PxParticleLockFlag`]
+    ///
+    /// Default:
+    /// no flags are set
+    pub fn PxPBDParticleSystem_setParticleLockFlag_mut(self_: *mut PxPBDParticleSystem, flag: PxParticleLockFlag, value: bool);
+
+    /// Set all particle lock flags.
+    pub fn PxPBDParticleSystem_setParticleLockFlags_mut(self_: *mut PxPBDParticleSystem, flags: PxParticleLockFlags);
+
+    /// Creates combined particle flag with particle material and particle phase flags.
+    ///
+    /// The combined particle group index and phase flags.
+    ///
+    /// See [`PxParticlePhaseFlag`]
+    pub fn PxPBDParticleSystem_createPhase_mut(self_: *mut PxPBDParticleSystem, material: *mut PxPBDMaterial, flags: PxParticlePhaseFlags) -> u32;
+
+    /// Returns number of particle materials referenced by particle phases
+    ///
+    /// The number of particle materials
+    pub fn PxPBDParticleSystem_getNbParticleMaterials(self_: *const PxPBDParticleSystem) -> u32;
+
+    /// Returns particle materials referenced by particle phases
+    ///
+    /// The particle materials
+    pub fn PxPBDParticleSystem_getParticleMaterials(self_: *const PxPBDParticleSystem, userBuffer: *mut *mut PxPBDMaterial, bufferSize: u32, startIndex: u32) -> u32;
+
+    /// Sets a user notify object which receives special simulation events when they occur.
+    ///
+    /// Do not set the callback while the simulation is running. Calls to this method while the simulation is running will be ignored.
+    ///
+    /// A call to fetchResultsParticleSystem() on the PxScene will synchronize the work such that the caller knows that all worke done in the callback completed.
+    ///
+    /// See [`PxParticleSystemCallback`], #getParticleSystemCallback()
+    pub fn PxPBDParticleSystem_setParticleSystemCallback_mut(self_: *mut PxPBDParticleSystem, callback: *mut PxParticleSystemCallback);
+
+    /// Retrieves the simulationEventCallback pointer set with setSimulationEventCallback().
+    ///
+    /// The current user notify pointer. See PxSimulationEventCallback.
+    ///
+    /// See [`PxParticleSystemCallback`], #setParticleSystemCallback()
+    pub fn PxPBDParticleSystem_getParticleSystemCallback(self_: *const PxPBDParticleSystem) -> *mut PxParticleSystemCallback;
+
+    /// Add an existing particle buffer to the particle system.
+    ///
+    /// See [`PxParticleBuffer`].
+    pub fn PxPBDParticleSystem_addParticleBuffer_mut(self_: *mut PxPBDParticleSystem, particleBuffer: *mut PxParticleBuffer);
+
+    /// Remove particle buffer from the particle system.
+    ///
+    /// See [`PxParticleBuffer`].
+    pub fn PxPBDParticleSystem_removeParticleBuffer_mut(self_: *mut PxPBDParticleSystem, particleBuffer: *mut PxParticleBuffer);
+
+    /// Returns the GPU particle system index.
+    ///
+    /// The GPU index, if the particle system is in a scene and PxSceneFlag::eENABLE_DIRECT_GPU_API is set, or 0xFFFFFFFF otherwise.
+    pub fn PxPBDParticleSystem_getGpuParticleSystemIndex_mut(self_: *mut PxPBDParticleSystem) -> u32;
+
+    /// Set wind direction and intensity
+    pub fn PxPBDParticleSystem_setWind_mut(self_: *mut PxPBDParticleSystem, wind: *const PxVec3);
+
+    /// Retrieves the wind direction and intensity.
+    ///
+    /// The wind direction and intensity
+    pub fn PxPBDParticleSystem_getWind(self_: *const PxPBDParticleSystem) -> PxVec3;
+
+    /// Set the fluid boundary density scale
+    ///
+    /// Defines how strong of a contribution the boundary (typically a rigid surface) should have on a fluid particle's density.
+    pub fn PxPBDParticleSystem_setFluidBoundaryDensityScale_mut(self_: *mut PxPBDParticleSystem, fluidBoundaryDensityScale: f32);
+
+    /// Return the fluid boundary density scale
+    ///
+    /// the fluid boundary density scale
+    ///
+    /// See [`setFluidBoundaryDensityScale`]()
+    pub fn PxPBDParticleSystem_getFluidBoundaryDensityScale(self_: *const PxPBDParticleSystem) -> f32;
+
+    /// Set the fluid rest offset
+    ///
+    /// Two fluid particles will come to rest at a distance equal to twice the fluidRestOffset value.
+    pub fn PxPBDParticleSystem_setFluidRestOffset_mut(self_: *mut PxPBDParticleSystem, fluidRestOffset: f32);
+
+    /// Return the fluid rest offset
+    ///
+    /// the fluid rest offset
+    ///
+    /// See [`setFluidRestOffset`]()
+    pub fn PxPBDParticleSystem_getFluidRestOffset(self_: *const PxPBDParticleSystem) -> f32;
+
+    /// Set the particle system grid size x dimension
+    pub fn PxPBDParticleSystem_setGridSizeX_mut(self_: *mut PxPBDParticleSystem, gridSizeX: u32);
+
+    /// Get the particle system grid size x dimension
+    ///
+    /// [in] the x dimension in the particle grid
+    ///
+    /// See [`setGridSizeX`]()
+    pub fn PxPBDParticleSystem_getGridSizeX(self_: *const PxPBDParticleSystem) -> u32;
+
+    /// Set the particle system grid size y dimension
+    pub fn PxPBDParticleSystem_setGridSizeY_mut(self_: *mut PxPBDParticleSystem, gridSizeY: u32);
+
+    /// Get the particle system grid size y dimension
+    ///
+    /// [in] the y dimension in the particle grid
+    ///
+    /// See [`setGridSizeY`]()
+    pub fn PxPBDParticleSystem_getGridSizeY(self_: *const PxPBDParticleSystem) -> u32;
+
+    /// Set the particle system grid size z dimension
+    pub fn PxPBDParticleSystem_setGridSizeZ_mut(self_: *mut PxPBDParticleSystem, gridSizeZ: u32);
+
+    /// Get the particle system grid size z dimension
+    ///
+    /// [in] the z dimension in the particle grid
+    ///
+    /// See [`setGridSizeZ`]()
+    pub fn PxPBDParticleSystem_getGridSizeZ(self_: *const PxPBDParticleSystem) -> u32;
+
+    pub fn PxPBDParticleSystem_getConcreteTypeName(self_: *const PxPBDParticleSystem) -> *const std::ffi::c_char;
 
     /// Default constructor.
     ///
@@ -5830,14 +7033,6 @@ extern "C" {
     /// True if the current settings are valid for shape creation.
     pub fn PxParticleSystemGeometry_isValid(self_: *const PxParticleSystemGeometry) -> bool;
 
-    /// Default constructor.
-    pub fn PxHairSystemGeometry_new() -> PxHairSystemGeometry;
-
-    /// Returns true if the geometry is valid.
-    ///
-    /// True if the current settings are valid for shape creation.
-    pub fn PxHairSystemGeometry_isValid(self_: *const PxHairSystemGeometry) -> bool;
-
     /// Constructor. By default creates an empty object with a NULL mesh and identity scale.
     pub fn PxTetrahedronMeshGeometry_new(mesh: *mut PxTetrahedronMesh) -> PxTetrahedronMeshGeometry;
 
@@ -5846,7 +7041,7 @@ extern "C" {
     /// True if the current settings are valid for shape creation.
     ///
     /// A valid tetrahedron mesh has a positive scale value in each direction (scale.scale.x > 0, scale.scale.y > 0, scale.scale.z > 0).
-    /// It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a tetrahedron mesh that has zero extents in any direction.
+    /// It is illegal to call PxPhysics::createShape with a tetrahedron mesh that has zero extents in any direction.
     pub fn PxTetrahedronMeshGeometry_isValid(self_: *const PxTetrahedronMeshGeometry) -> bool;
 
     pub fn PxQueryHit_new() -> PxQueryHit;
@@ -5868,65 +7063,45 @@ extern "C" {
 
     pub fn PxGeomIndexPair_new_1(_id0: u32, _id1: u32) -> PxGeomIndexPair;
 
+    pub fn PxGeomIndexClosePair_new() -> PxGeomIndexClosePair;
+
+    pub fn PxGeomIndexClosePair_new_1(_id0: u32, _id1: u32, d: f32) -> PxGeomIndexClosePair;
+
     /// For internal use
-    pub fn phys_PxCustomGeometry_getUniqueID() -> u32;
-
-    /// Default constructor
-    pub fn PxCustomGeometryType_new() -> PxCustomGeometryType;
-
-    /// Invalid type
-    pub fn PxCustomGeometryType_INVALID() -> PxCustomGeometryType;
-
-    /// Return custom type. The type purpose is for user to differentiate custom geometries. Not used by PhysX.
-    ///
-    /// Unique ID of a custom geometry type.
-    ///
-    /// User should use DECLARE_CUSTOM_GEOMETRY_TYPE and IMPLEMENT_CUSTOM_GEOMETRY_TYPE intead of overwriting this function.
-    pub fn PxCustomGeometryCallbacks_getCustomType(self_: *const PxCustomGeometryCallbacks) -> PxCustomGeometryType;
-
-    /// Return local bounds.
-    ///
-    /// Bounding box in the geometry local space.
-    pub fn PxCustomGeometryCallbacks_getLocalBounds(self_: *const PxCustomGeometryCallbacks, geometry: *const PxGeometry) -> PxBounds3;
-
-    /// Raycast. Cast a ray against the geometry in given pose.
-    ///
-    /// Number of hits.
-    pub fn PxCustomGeometryCallbacks_raycast(self_: *const PxCustomGeometryCallbacks, origin: *const PxVec3, unitDir: *const PxVec3, geom: *const PxGeometry, pose: *const PxTransform, maxDist: f32, hitFlags: PxHitFlags, maxHits: u32, rayHits: *mut PxGeomRaycastHit, stride: u32, threadContext: *mut PxQueryThreadContext) -> u32;
-
-    /// Overlap. Test if geometries overlap.
-    ///
-    /// True if there is overlap. False otherwise.
-    pub fn PxCustomGeometryCallbacks_overlap(self_: *const PxCustomGeometryCallbacks, geom0: *const PxGeometry, pose0: *const PxTransform, geom1: *const PxGeometry, pose1: *const PxTransform, threadContext: *mut PxQueryThreadContext) -> bool;
-
-    /// Sweep. Sweep one geometry against the other.
-    ///
-    /// True if there is hit. False otherwise.
-    pub fn PxCustomGeometryCallbacks_sweep(self_: *const PxCustomGeometryCallbacks, unitDir: *const PxVec3, maxDist: f32, geom0: *const PxGeometry, pose0: *const PxTransform, geom1: *const PxGeometry, pose1: *const PxTransform, sweepHit: *mut PxGeomSweepHit, hitFlags: PxHitFlags, inflation: f32, threadContext: *mut PxQueryThreadContext) -> bool;
-
-    /// Compute custom geometry mass properties. For geometries usable with dynamic rigidbodies.
-    pub fn PxCustomGeometryCallbacks_computeMassProperties(self_: *const PxCustomGeometryCallbacks, geometry: *const PxGeometry, massProperties: *mut PxMassProperties);
-
-    /// Compatible with PhysX's PCM feature. Allows to optimize contact generation.
-    pub fn PxCustomGeometryCallbacks_usePersistentContactManifold(self_: *const PxCustomGeometryCallbacks, geometry: *const PxGeometry, breakingThreshold: *mut f32) -> bool;
-
-    pub fn PxCustomGeometryCallbacks_delete(self_: *mut PxCustomGeometryCallbacks);
+    pub fn PxCustomGeometry_getUniqueID() -> u32;
 
     /// Default constructor.
     ///
     /// Creates an empty object with a NULL callbacks pointer.
     pub fn PxCustomGeometry_new() -> PxCustomGeometry;
 
-    /// Constructor.
-    pub fn PxCustomGeometry_new_1(_callbacks: *mut PxCustomGeometryCallbacks) -> PxCustomGeometry;
-
     /// Returns true if the geometry is valid.
     ///
     /// True if the current settings are valid for shape creation.
     pub fn PxCustomGeometry_isValid(self_: *const PxCustomGeometry) -> bool;
 
-    /// Returns the custom type of the custom geometry.
-    pub fn PxCustomGeometry_getCustomType(self_: *const PxCustomGeometry) -> PxCustomGeometryType;
+    /// Default constructor
+    pub fn PxConvexCoreGeometry_new() -> PxConvexCoreGeometry;
+
+    /// Get the type of the core
+    ///
+    /// The type of the core
+    pub fn PxConvexCoreGeometry_getCoreType(self_: *const PxConvexCoreGeometry) -> PxConvexCore;
+
+    /// Get a pointer to the core data.
+    ///
+    /// A pointer to the core data.
+    pub fn PxConvexCoreGeometry_getCoreData(self_: *const PxConvexCoreGeometry) -> *const std::ffi::c_void;
+
+    /// Get the margin of the convex core geometry.
+    ///
+    /// The margin size.
+    pub fn PxConvexCoreGeometry_getMargin(self_: *const PxConvexCoreGeometry) -> f32;
+
+    /// Check if the convex core geometry is valid.
+    ///
+    /// True if the geometry is valid, false otherwise.
+    pub fn PxConvexCoreGeometry_isValid(self_: *const PxConvexCoreGeometry) -> bool;
 
     pub fn PxGeometryHolder_getType(self_: *const PxGeometryHolder) -> PxGeometryType;
 
@@ -5950,6 +7125,10 @@ extern "C" {
 
     pub fn PxGeometryHolder_box(self_: *const PxGeometryHolder) -> *const PxBoxGeometry;
 
+    pub fn PxGeometryHolder_convexCore_mut(self_: *mut PxGeometryHolder) -> *mut PxConvexCoreGeometry;
+
+    pub fn PxGeometryHolder_convexCore(self_: *const PxGeometryHolder) -> *const PxConvexCoreGeometry;
+
     pub fn PxGeometryHolder_convexMesh_mut(self_: *mut PxGeometryHolder) -> *mut PxConvexMeshGeometry;
 
     pub fn PxGeometryHolder_convexMesh(self_: *const PxGeometryHolder) -> *const PxConvexMeshGeometry;
@@ -5970,10 +7149,6 @@ extern "C" {
 
     pub fn PxGeometryHolder_particleSystem(self_: *const PxGeometryHolder) -> *const PxParticleSystemGeometry;
 
-    pub fn PxGeometryHolder_hairSystem_mut(self_: *mut PxGeometryHolder) -> *mut PxHairSystemGeometry;
-
-    pub fn PxGeometryHolder_hairSystem(self_: *const PxGeometryHolder) -> *const PxHairSystemGeometry;
-
     pub fn PxGeometryHolder_custom_mut(self_: *mut PxGeometryHolder) -> *mut PxCustomGeometry;
 
     pub fn PxGeometryHolder_custom(self_: *const PxGeometryHolder) -> *const PxCustomGeometry;
@@ -5986,7 +7161,7 @@ extern "C" {
 
     /// Raycast test against a geometry object.
     ///
-    /// All geometry types are supported except PxParticleSystemGeometry, PxTetrahedronMeshGeometry and PxHairSystemGeometry.
+    /// All geometry types are supported except PxParticleSystemGeometry and PxTetrahedronMeshGeometry.
     ///
     /// Number of hits between the ray and the geometry object
     pub fn PxGeometryQuery_raycast(origin: *const PxVec3, unitDir: *const PxVec3, geom: *const PxGeometry, pose: *const PxTransform, maxDist: f32, hitFlags: PxHitFlags, maxHits: u32, rayHits: *mut PxGeomRaycastHit, stride: u32, queryFlags: PxGeometryQueryFlags, threadContext: *mut PxQueryThreadContext) -> u32;
@@ -6001,7 +7176,7 @@ extern "C" {
     ///
     /// PxHeightFieldGeometry vs. PxHeightFieldGeometry
     ///
-    /// Anything involving PxParticleSystemGeometry, PxTetrahedronMeshGeometry or PxHairSystemGeometry.
+    /// Anything involving PxParticleSystemGeometry or PxTetrahedronMeshGeometry
     ///
     /// True if the two geometry objects overlap
     pub fn PxGeometryQuery_overlap(geom0: *const PxGeometry, pose0: *const PxTransform, geom1: *const PxGeometry, pose1: *const PxTransform, queryFlags: PxGeometryQueryFlags, threadContext: *mut PxQueryThreadContext) -> bool;
@@ -6010,13 +7185,15 @@ extern "C" {
     ///
     /// The following combinations are supported.
     ///
-    /// PxSphereGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
+    /// PxSphereGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexCoreGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
     ///
-    /// PxCapsuleGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
+    /// PxCapsuleGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexCoreGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
     ///
-    /// PxBoxGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
+    /// PxBoxGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexCoreGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
     ///
-    /// PxConvexMeshGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
+    /// PxConvexCoreGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexCoreGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
+    ///
+    /// PxConvexMeshGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexCoreGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
     ///
     /// True if the swept geometry object geom0 hits the object geom1
     pub fn PxGeometryQuery_sweep(unitDir: *const PxVec3, maxDist: f32, geom0: *const PxGeometry, pose0: *const PxTransform, geom1: *const PxGeometry, pose1: *const PxTransform, sweepHit: *mut PxGeomSweepHit, hitFlags: PxHitFlags, inflation: f32, queryFlags: PxGeometryQueryFlags, threadContext: *mut PxQueryThreadContext) -> bool;
@@ -6030,7 +7207,7 @@ extern "C" {
     /// - mesh/mesh
     /// - mesh/heightfield
     /// - heightfield/heightfield
-    /// - anything involving PxParticleSystemGeometry, PxTetrahedronMeshGeometry or PxHairSystemGeometry
+    /// - anything involving PxParticleSystemGeometry, PxTetrahedronMeshGeometry
     ///
     /// The function returns a unit vector ('direction') and a penetration depth ('depth').
     ///
@@ -6046,7 +7223,7 @@ extern "C" {
 
     /// Computes distance between a point and a geometry object.
     ///
-    /// Currently supported geometry objects: box, sphere, capsule, convex, mesh.
+    /// Currently supported geometry objects: box, sphere, capsule, convex core, convex mesh, mesh.
     ///
     /// For meshes, only the BVH34 midphase data-structure is supported.
     ///
@@ -6054,7 +7231,14 @@ extern "C" {
     pub fn PxGeometryQuery_pointDistance(point: *const PxVec3, geom: *const PxGeometry, pose: *const PxTransform, closestPoint: *mut PxVec3, closestIndex: *mut u32, queryFlags: PxGeometryQueryFlags) -> f32;
 
     /// computes the bounds for a geometry object
-    pub fn PxGeometryQuery_computeGeomBounds(bounds: *mut PxBounds3, geom: *const PxGeometry, pose: *const PxTransform, offset: f32, inflation: f32, queryFlags: PxGeometryQueryFlags);
+    ///
+    /// True if success, false if an error occurred and the bounds were not written out.
+    pub fn PxGeometryQuery_computeGeomBounds(bounds: *mut PxBounds3, geom: *const PxGeometry, pose: *const PxTransform, offset: f32, inflation: f32, queryFlags: PxGeometryQueryFlags) -> bool;
+
+    /// Generate collision contacts between a convex geometry and a single triangle
+    ///
+    /// True if there was collision
+    pub fn PxGeometryQuery_generateTriangleContacts(geom: *const PxGeometry, pose: *const PxTransform, triangleVertices: *const PxVec3, triangleIndex: u32, contactDistance: f32, meshContactMargin: f32, toleranceLength: f32, contactBuffer: *mut PxContactBuffer) -> bool;
 
     /// Checks if provided geometry is valid.
     ///
@@ -6230,7 +7414,7 @@ extern "C" {
     ///
     /// This function returns a single closest hit across all the input triangles. Multiple hits are not supported.
     ///
-    /// Supported hitFlags are PxHitFlag::eDEFAULT, PxHitFlag::eASSUME_NO_INITIAL_OVERLAP, PxHitFlag::ePRECISE_SWEEP, PxHitFlag::eMESH_BOTH_SIDES, PxHitFlag::eMESH_ANY.
+    /// Supported hitFlags are PxHitFlag::eDEFAULT, PxHitFlag::eASSUME_NO_INITIAL_OVERLAP, PxHitFlag::ePRECISE_SWEEP, PxHitFlag::eMESH_BOTH_SIDES, PxHitFlag::eANY_HIT.
     ///
     /// ePOSITION is only defined when there is no initial overlap (sweepHit.hadInitialOverlap() == false)
     ///
@@ -6424,7 +7608,12 @@ extern "C" {
     pub fn PxTetrahedron_delete(self_: *mut PxTetrahedron);
 
     /// Decrements the reference count of a tetrahedron mesh and releases it if the new reference count is zero.
-    pub fn PxSoftBodyAuxData_release_mut(self_: *mut PxSoftBodyAuxData);
+    pub fn PxDeformableVolumeAuxData_release_mut(self_: *mut PxDeformableVolumeAuxData);
+
+    /// Get the inverse mass of each vertex of the tetrahedron mesh.
+    ///
+    /// PxReal* A pointer to an array of inverse mass for each vertex of the tetrahedron mesh. Size: number of vertices * sizeof(PxReal).
+    pub fn PxDeformableVolumeAuxData_getGridModelInvMass_mut(self_: *mut PxDeformableVolumeAuxData) -> *mut f32;
 
     /// Returns the number of vertices.
     ///
@@ -6477,26 +7666,26 @@ extern "C" {
     /// Decrements the reference count of a tetrahedron mesh and releases it if the new reference count is zero.
     pub fn PxTetrahedronMesh_release_mut(self_: *mut PxTetrahedronMesh);
 
-    /// Const accecssor to the softbody's collision mesh.
-    pub fn PxSoftBodyMesh_getCollisionMesh(self_: *const PxSoftBodyMesh) -> *const PxTetrahedronMesh;
+    /// Const accecssor to the deformable volume's collision mesh.
+    pub fn PxDeformableVolumeMesh_getCollisionMesh(self_: *const PxDeformableVolumeMesh) -> *const PxTetrahedronMesh;
 
-    /// Accecssor to the softbody's collision mesh.
-    pub fn PxSoftBodyMesh_getCollisionMesh_mut(self_: *mut PxSoftBodyMesh) -> *mut PxTetrahedronMesh;
+    /// Accecssor to the deformable volume's collision mesh.
+    pub fn PxDeformableVolumeMesh_getCollisionMesh_mut(self_: *mut PxDeformableVolumeMesh) -> *mut PxTetrahedronMesh;
 
-    /// Const accessor to the softbody's simulation mesh.
-    pub fn PxSoftBodyMesh_getSimulationMesh(self_: *const PxSoftBodyMesh) -> *const PxTetrahedronMesh;
+    /// Const accessor to the deformable volume's simulation mesh.
+    pub fn PxDeformableVolumeMesh_getSimulationMesh(self_: *const PxDeformableVolumeMesh) -> *const PxTetrahedronMesh;
 
-    /// Accecssor to the softbody's simulation mesh.
-    pub fn PxSoftBodyMesh_getSimulationMesh_mut(self_: *mut PxSoftBodyMesh) -> *mut PxTetrahedronMesh;
+    /// Accecssor to the deformable volume's simulation mesh.
+    pub fn PxDeformableVolumeMesh_getSimulationMesh_mut(self_: *mut PxDeformableVolumeMesh) -> *mut PxTetrahedronMesh;
 
-    /// Const accessor to the softbodies simulation state.
-    pub fn PxSoftBodyMesh_getSoftBodyAuxData(self_: *const PxSoftBodyMesh) -> *const PxSoftBodyAuxData;
+    /// Const accessor to the deformable volume's simulation state.
+    pub fn PxDeformableVolumeMesh_getDeformableVolumeAuxData(self_: *const PxDeformableVolumeMesh) -> *const PxDeformableVolumeAuxData;
 
-    /// Accessor to the softbody's auxilary data like mass and rest pose information
-    pub fn PxSoftBodyMesh_getSoftBodyAuxData_mut(self_: *mut PxSoftBodyMesh) -> *mut PxSoftBodyAuxData;
+    /// Accessor to the deformable volume's auxilary data like mass and rest pose information
+    pub fn PxDeformableVolumeMesh_getDeformableVolumeAuxData_mut(self_: *mut PxDeformableVolumeMesh) -> *mut PxDeformableVolumeAuxData;
 
     /// Decrements the reference count of a tetrahedron mesh and releases it if the new reference count is zero.
-    pub fn PxSoftBodyMesh_release_mut(self_: *mut PxSoftBodyMesh);
+    pub fn PxDeformableVolumeMesh_release_mut(self_: *mut PxDeformableVolumeMesh);
 
     pub fn PxCollisionMeshMappingData_release_mut(self_: *mut PxCollisionMeshMappingData);
 
@@ -6504,117 +7693,17 @@ extern "C" {
 
     pub fn PxCollisionTetrahedronMeshData_getMesh_mut(self_: *mut PxCollisionTetrahedronMeshData) -> *mut PxTetrahedronMeshData;
 
-    pub fn PxCollisionTetrahedronMeshData_getData(self_: *const PxCollisionTetrahedronMeshData) -> *const PxSoftBodyCollisionData;
+    pub fn PxCollisionTetrahedronMeshData_getData(self_: *const PxCollisionTetrahedronMeshData) -> *const PxDeformableVolumeCollisionData;
 
-    pub fn PxCollisionTetrahedronMeshData_getData_mut(self_: *mut PxCollisionTetrahedronMeshData) -> *mut PxSoftBodyCollisionData;
+    pub fn PxCollisionTetrahedronMeshData_getData_mut(self_: *mut PxCollisionTetrahedronMeshData) -> *mut PxDeformableVolumeCollisionData;
 
     pub fn PxCollisionTetrahedronMeshData_release_mut(self_: *mut PxCollisionTetrahedronMeshData);
 
     pub fn PxSimulationTetrahedronMeshData_getMesh_mut(self_: *mut PxSimulationTetrahedronMeshData) -> *mut PxTetrahedronMeshData;
 
-    pub fn PxSimulationTetrahedronMeshData_getData_mut(self_: *mut PxSimulationTetrahedronMeshData) -> *mut PxSoftBodySimulationData;
+    pub fn PxSimulationTetrahedronMeshData_getData_mut(self_: *mut PxSimulationTetrahedronMeshData) -> *mut PxDeformableVolumeSimulationData;
 
     pub fn PxSimulationTetrahedronMeshData_release_mut(self_: *mut PxSimulationTetrahedronMeshData);
-
-    /// Deletes the actor.
-    ///
-    /// Do not keep a reference to the deleted instance.
-    ///
-    /// If the actor belongs to a [`PxAggregate`] object, it is automatically removed from the aggregate.
-    pub fn PxActor_release_mut(self_: *mut PxActor);
-
-    /// Retrieves the type of actor.
-    ///
-    /// The actor type of the actor.
-    pub fn PxActor_getType(self_: *const PxActor) -> PxActorType;
-
-    /// Retrieves the scene which this actor belongs to.
-    ///
-    /// Owner Scene. NULL if not part of a scene.
-    pub fn PxActor_getScene(self_: *const PxActor) -> *mut PxScene;
-
-    /// Sets a name string for the object that can be retrieved with getName().
-    ///
-    /// This is for debugging and is not used by the SDK. The string is not copied by the SDK,
-    /// only the pointer is stored.
-    ///
-    /// Default:
-    /// NULL
-    pub fn PxActor_setName_mut(self_: *mut PxActor, name: *const std::ffi::c_char);
-
-    /// Retrieves the name string set with setName().
-    ///
-    /// Name string associated with object.
-    pub fn PxActor_getName(self_: *const PxActor) -> *const std::ffi::c_char;
-
-    /// Retrieves the axis aligned bounding box enclosing the actor.
-    ///
-    /// It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
-    /// in PxContactModifyCallback or in contact report callbacks).
-    ///
-    /// The actor's bounding box.
-    pub fn PxActor_getWorldBounds(self_: *const PxActor, inflation: f32) -> PxBounds3;
-
-    /// Raises or clears a particular actor flag.
-    ///
-    /// See the list of flags [`PxActorFlag`]
-    ///
-    /// Sleeping:
-    /// Does
-    /// NOT
-    /// wake the actor up automatically.
-    pub fn PxActor_setActorFlag_mut(self_: *mut PxActor, flag: PxActorFlag, value: bool);
-
-    /// Sets the actor flags.
-    ///
-    /// See the list of flags [`PxActorFlag`]
-    pub fn PxActor_setActorFlags_mut(self_: *mut PxActor, inFlags: PxActorFlags);
-
-    /// Reads the PxActor flags.
-    ///
-    /// See the list of flags [`PxActorFlag`]
-    ///
-    /// The values of the PxActor flags.
-    pub fn PxActor_getActorFlags(self_: *const PxActor) -> PxActorFlags;
-
-    /// Assigns dynamic actors a dominance group identifier.
-    ///
-    /// PxDominanceGroup is a 5 bit group identifier (legal range from 0 to 31).
-    ///
-    /// The PxScene::setDominanceGroupPair() lets you set certain behaviors for pairs of dominance groups.
-    /// By default every dynamic actor is created in group 0.
-    ///
-    /// Default:
-    /// 0
-    ///
-    /// Sleeping:
-    /// Changing the dominance group does
-    /// NOT
-    /// wake the actor up automatically.
-    pub fn PxActor_setDominanceGroup_mut(self_: *mut PxActor, dominanceGroup: u8);
-
-    /// Retrieves the value set with setDominanceGroup().
-    ///
-    /// The dominance group of this actor.
-    pub fn PxActor_getDominanceGroup(self_: *const PxActor) -> u8;
-
-    /// Sets the owner client of an actor.
-    ///
-    /// This cannot be done once the actor has been placed into a scene.
-    ///
-    /// Default:
-    /// PX_DEFAULT_CLIENT
-    pub fn PxActor_setOwnerClient_mut(self_: *mut PxActor, inClient: u8);
-
-    /// Returns the owner client that was specified at creation time.
-    ///
-    /// This value cannot be changed once the object is placed into the scene.
-    pub fn PxActor_getOwnerClient(self_: *const PxActor) -> u8;
-
-    /// Retrieves the aggregate the actor might be a part of.
-    ///
-    /// The aggregate the actor is a part of, or NULL if the actor does not belong to an aggregate.
-    pub fn PxActor_getAggregate(self_: *const PxActor) -> *mut PxAggregate;
 
     pub fn phys_PxGetAggregateFilterHint(type_: PxAggregateType, enableSelfCollision: bool) -> u32;
 
@@ -6657,7 +7746,7 @@ extern "C" {
     /// Adds an articulation to the aggregate object.
     ///
     /// A warning is output if the total number of actors is reached (every articulation link counts as an actor),
-    /// or if the incoming articulation already belongs to an aggregate.
+    /// or if the incoming articulation already belongs	to an aggregate.
     ///
     /// If the aggregate belongs to a scene, adding an articulation to the aggregate also adds the articulation to that scene.
     ///
@@ -6679,6 +7768,11 @@ extern "C" {
     ///
     /// Number of actors contained in the aggregate.
     pub fn PxAggregate_getNbActors(self_: *const PxAggregate) -> u32;
+
+    /// Retrieves max amount of actors that can be contained in the aggregate.
+    ///
+    /// Max actor size.
+    pub fn PxAggregate_getMaxNbActors(self_: *const PxAggregate) -> u32;
 
     /// Retrieves max amount of shapes that can be contained in the aggregate.
     ///
@@ -6702,7 +7796,43 @@ extern "C" {
     /// self-collision flag
     pub fn PxAggregate_getSelfCollision(self_: *const PxAggregate) -> bool;
 
+    /// Sets the environment ID for this aggregate.
+    ///
+    /// The environment ID is an extra built-in filter group for the GPU broadphase. Aggregates will only collide with actors or aggregates that
+    /// have the same environment ID.
+    ///
+    /// The default value is PX_INVALID_U32. Aggregates with this ID will collide with other actors or aggregates, regardless of which environment
+    /// they are a part of.
+    ///
+    /// The environment ID must be set before adding the aggregate to a scene, and cannot change while the aggregate is in the scene.
+    ///
+    /// If it is not PX_INVALID_U32, the environment ID must be smaller than 1
+    /// <
+    /// <
+    /// 24, i.e. the system does not support more than 1
+    /// <
+    /// <
+    /// 24 environments.
+    ///
+    /// Aggregated actors must have a default environment ID (PX_INVALID_U32). The environment ID of the aggregate is used in the broadphase, not
+    /// the environment IDs from aggregated actors.
+    ///
+    /// Default:
+    /// PX_INVALID_U32
+    ///
+    /// This is not available for CPU broadphases.
+    ///
+    /// True if success.
+    pub fn PxAggregate_setEnvironmentID_mut(self_: *mut PxAggregate, envID: u32) -> bool;
+
+    /// Returns the environment ID for this aggregate.
+    ///
+    /// Environment ID for this aggregate.
+    pub fn PxAggregate_getEnvironmentID(self_: *const PxAggregate) -> u32;
+
     pub fn PxAggregate_getConcreteTypeName(self_: *const PxAggregate) -> *const std::ffi::c_char;
+
+    pub fn Px1DConstraintFlag_new() -> Px1DConstraintFlag;
 
     pub fn PxConstraintInvMassScale_new() -> PxConstraintInvMassScale;
 
@@ -6712,16 +7842,16 @@ extern "C" {
     pub fn PxConstraintVisualizer_visualizeJointFrames_mut(self_: *mut PxConstraintVisualizer, parent: *const PxTransform, child: *const PxTransform);
 
     /// Visualize joint linear limit
-    pub fn PxConstraintVisualizer_visualizeLinearLimit_mut(self_: *mut PxConstraintVisualizer, t0: *const PxTransform, t1: *const PxTransform, value: f32, active: bool);
+    pub fn PxConstraintVisualizer_visualizeLinearLimit_mut(self_: *mut PxConstraintVisualizer, t0: *const PxTransform, t1: *const PxTransform, value: f32);
 
     /// Visualize joint angular limit
-    pub fn PxConstraintVisualizer_visualizeAngularLimit_mut(self_: *mut PxConstraintVisualizer, t0: *const PxTransform, lower: f32, upper: f32, active: bool);
+    pub fn PxConstraintVisualizer_visualizeAngularLimit_mut(self_: *mut PxConstraintVisualizer, t0: *const PxTransform, lower: f32, upper: f32);
 
     /// Visualize limit cone
-    pub fn PxConstraintVisualizer_visualizeLimitCone_mut(self_: *mut PxConstraintVisualizer, t: *const PxTransform, tanQSwingY: f32, tanQSwingZ: f32, active: bool);
+    pub fn PxConstraintVisualizer_visualizeLimitCone_mut(self_: *mut PxConstraintVisualizer, t: *const PxTransform, tanQSwingY: f32, tanQSwingZ: f32);
 
     /// Visualize joint double cone
-    pub fn PxConstraintVisualizer_visualizeDoubleCone_mut(self_: *mut PxConstraintVisualizer, t: *const PxTransform, angle: f32, active: bool);
+    pub fn PxConstraintVisualizer_visualizeDoubleCone_mut(self_: *mut PxConstraintVisualizer, t: *const PxTransform, angle: f32);
 
     /// Visualize line
     pub fn PxConstraintVisualizer_visualizeLine_mut(self_: *mut PxConstraintVisualizer, p0: *const PxVec3, p1: *const PxVec3, color: u32);
@@ -6730,6 +7860,9 @@ extern "C" {
     /// when the constraint is marked dirty, this function is called at the start of the simulation
     /// step for the SDK to copy the constraint data block.
     pub fn PxConstraintConnector_prepareData_mut(self_: *mut PxConstraintConnector) -> *mut std::ffi::c_void;
+
+    /// this function is called by the SDK to update OmniPVD's view of it
+    pub fn PxConstraintConnector_updateOmniPvdProperties(self_: *const PxConstraintConnector);
 
     /// Constraint release callback
     ///
@@ -6759,10 +7892,22 @@ extern "C" {
     /// to make sure that the data gets synced at the beginning of the next simulation step.
     pub fn PxConstraintConnector_onOriginShift_mut(self_: *mut PxConstraintConnector, shift: *const PxVec3);
 
+    /// Fetches external data for a constraint.
+    ///
+    /// This function is used by the SDK to acquire a reference to the owner of a constraint and a unique
+    /// owner type ID. This information will be passed on when a breakable constraint breaks or when
+    /// [`PxConstraint::getExternalReference`]() is called.
+    ///
+    /// Reference to the external object which owns the constraint.
+    pub fn PxConstraintConnector_getExternalReference_mut(self_: *mut PxConstraintConnector, typeID: *mut u32) -> *mut std::ffi::c_void;
+
     /// Obtain a reference to a PxBase interface if the constraint has one.
     ///
     /// If the constraint does not implement the PxBase interface, it should return NULL.
     pub fn PxConstraintConnector_getSerializable_mut(self_: *mut PxConstraintConnector) -> *mut PxBase;
+
+    /// Obtain the shader function pointer used to prep rows for this constraint
+    pub fn PxConstraintConnector_getPrep(self_: *const PxConstraintConnector) -> *mut std::ffi::c_void;
 
     /// Obtain the pointer to the constraint's constant data
     pub fn PxConstraintConnector_getConstantBlock(self_: *const PxConstraintConnector) -> *const std::ffi::c_void;
@@ -6796,9 +7941,21 @@ extern "C" {
 
     pub fn PxArticulationLimit_new_1(low_: f32, high_: f32) -> PxArticulationLimit;
 
-    pub fn PxArticulationDrive_new() -> PxArticulationDrive;
+    pub fn PxPerformanceEnvelope_new(anon_param0: *const PxEMPTY) -> PxPerformanceEnvelope;
 
-    pub fn PxArticulationDrive_new_1(stiffness_: f32, damping_: f32, maxForce_: f32, driveType_: PxArticulationDriveType) -> PxArticulationDrive;
+    pub fn PxPerformanceEnvelope_new_1(maxEffort_: f32, maxActuatorVelocity_: f32, velocityDependentResistance_: f32, speedEffortGradient_: f32) -> PxPerformanceEnvelope;
+
+    pub fn PxJointFrictionParams_new() -> PxJointFrictionParams;
+
+    pub fn PxJointFrictionParams_new_1(staticFrictionEffort_: f32, dynamicFrictionEffort_: f32, viscousFrictionCoefficient_: f32) -> PxJointFrictionParams;
+
+    pub fn PxArticulationDrive_new(anon_param0: *const PxEMPTY) -> PxArticulationDrive;
+
+    pub fn PxArticulationDrive_new_1() -> PxArticulationDrive;
+
+    pub fn PxArticulationDrive_new_2(stiffness_: f32, damping_: f32, maxForce_: f32, driveType_: PxArticulationDriveType) -> PxArticulationDrive;
+
+    pub fn PxArticulationDrive_new_3(stiffness_: f32, damping_: f32, envelope_: PxPerformanceEnvelope, driveType_: PxArticulationDriveType) -> PxArticulationDrive;
 
     pub fn PxTGSSolverBodyVel_projectVelocity(self_: *const PxTGSSolverBodyVel, lin: *const PxVec3, ang: *const PxVec3) -> f32;
 
@@ -6809,37 +7966,53 @@ extern "C" {
     /// Sets the spring rest length for the sub-tendon from the root to this leaf attachment.
     ///
     /// Setting this on non-leaf attachments has no effect.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationAttachment_setRestLength_mut(self_: *mut PxArticulationAttachment, restLength: f32);
 
     /// Gets the spring rest length for the sub-tendon from the root to this leaf attachment.
     ///
     /// The rest length.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationAttachment_getRestLength(self_: *const PxArticulationAttachment) -> f32;
 
     /// Sets the low and high limit on the length of the sub-tendon from the root to this leaf attachment.
     ///
     /// Setting this on non-leaf attachments has no effect.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationAttachment_setLimitParameters_mut(self_: *mut PxArticulationAttachment, parameters: *const PxArticulationTendonLimit);
 
     /// Gets the low and high limit on the length of the sub-tendon from the root to this leaf attachment.
     ///
     /// Struct with the low and high limit.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationAttachment_getLimitParameters(self_: *const PxArticulationAttachment) -> PxArticulationTendonLimit;
 
     /// Sets the attachment's relative offset in the link actor frame.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationAttachment_setRelativeOffset_mut(self_: *mut PxArticulationAttachment, offset: *const PxVec3);
 
     /// Gets the attachment's relative offset in the link actor frame.
     ///
     /// The relative offset in the link actor frame.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationAttachment_getRelativeOffset(self_: *const PxArticulationAttachment) -> PxVec3;
 
     /// Sets the attachment coefficient.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationAttachment_setCoefficient_mut(self_: *mut PxArticulationAttachment, coefficient: f32);
 
     /// Gets the attachment coefficient.
     ///
     /// The scale that the distance between this attachment and its parent is multiplied by when summing up the spatial tendon's length.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationAttachment_getCoefficient(self_: *const PxArticulationAttachment) -> f32;
 
     /// Gets the articulation link.
@@ -6877,9 +8050,13 @@ extern "C" {
     ///
     /// RecipCoefficient is commonly expected to be 1/coefficient, but it can be set to different values to tune behavior; for example, zero can be used to
     /// have a joint axis only participate in the length computation of the tendon, but not have any tendon force applied to it.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationTendonJoint_setCoefficient_mut(self_: *mut PxArticulationTendonJoint, axis: PxArticulationAxis, coefficient: f32, recipCoefficient: f32);
 
     /// Gets the tendon joint coefficient.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationTendonJoint_getCoefficient(self_: *const PxArticulationTendonJoint, axis: *mut PxArticulationAxis, coefficient: *mut f32, recipCoefficient: *mut f32);
 
     /// Gets the articulation link.
@@ -6909,24 +8086,34 @@ extern "C" {
     pub fn PxArticulationTendonJoint_getConcreteTypeName(self_: *const PxArticulationTendonJoint) -> *const std::ffi::c_char;
 
     /// Sets the spring stiffness term acting on the tendon length.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationTendon_setStiffness_mut(self_: *mut PxArticulationTendon, stiffness: f32);
 
     /// Gets the spring stiffness of the tendon.
     ///
     /// The spring stiffness.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationTendon_getStiffness(self_: *const PxArticulationTendon) -> f32;
 
     /// Sets the damping term acting both on the tendon length and tendon-length limits.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationTendon_setDamping_mut(self_: *mut PxArticulationTendon, damping: f32);
 
     /// Gets the damping term acting both on the tendon length and tendon-length limits.
     ///
     /// The damping term.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationTendon_getDamping(self_: *const PxArticulationTendon) -> f32;
 
     /// Sets the limit stiffness term acting on the tendon's length limits.
     ///
     /// For spatial tendons, this parameter applies to all its leaf attachments / sub-tendons.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationTendon_setLimitStiffness_mut(self_: *mut PxArticulationTendon, stiffness: f32);
 
     /// Gets the limit stiffness term acting on the tendon's length limits.
@@ -6934,17 +8121,23 @@ extern "C" {
     /// For spatial tendons, this parameter applies to all its leaf attachments / sub-tendons.
     ///
     /// The limit stiffness term.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationTendon_getLimitStiffness(self_: *const PxArticulationTendon) -> f32;
 
     /// Sets the length offset term for the tendon.
     ///
     /// An offset defines an amount to be added to the accumulated length computed for the tendon. It allows the
     /// application to actuate the tendon by shortening or lengthening it.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationTendon_setOffset_mut(self_: *mut PxArticulationTendon, offset: f32, autowake: bool);
 
     /// Gets the length offset term for the tendon.
     ///
     /// The offset term.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationTendon_getOffset(self_: *const PxArticulationTendon) -> f32;
 
     /// Gets the articulation that the tendon is a part of.
@@ -6983,6 +8176,8 @@ extern "C" {
     /// The string name.
     pub fn PxArticulationSpatialTendon_getConcreteTypeName(self_: *const PxArticulationSpatialTendon) -> *const std::ffi::c_char;
 
+    pub fn PxArticulationSpatialTendon_delete(self_: *mut PxArticulationSpatialTendon);
+
     /// Creates an articulation tendon joint and adds it to the list of children in the parent tendon joint.
     ///
     /// Creating a tendon joint is not allowed while the articulation is in a scene. In order to
@@ -7012,21 +8207,29 @@ extern "C" {
     ///
     /// The spring of the tendon is not exerting any force on the articulation when the rest length is equal to the
     /// tendon's accumulated length plus the tendon offset.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationFixedTendon_setRestLength_mut(self_: *mut PxArticulationFixedTendon, restLength: f32);
 
     /// Gets the spring rest length of the tendon.
     ///
     /// The spring rest length of the tendon.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationFixedTendon_getRestLength(self_: *const PxArticulationFixedTendon) -> f32;
 
     /// Sets the low and high limit on the length of the tendon.
     ///
     /// The limits, together with the damping and limit stiffness parameters, act on the accumulated length of the tendon.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationFixedTendon_setLimitParameters_mut(self_: *mut PxArticulationFixedTendon, parameter: *const PxArticulationTendonLimit);
 
     /// Gets the low and high limit on the length of the tendon.
     ///
     /// Struct with the low and high limit.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationFixedTendon_getLimitParameters(self_: *const PxArticulationFixedTendon) -> PxArticulationTendonLimit;
 
     /// Returns the string name of the dynamic type.
@@ -7034,72 +8237,80 @@ extern "C" {
     /// The string name.
     pub fn PxArticulationFixedTendon_getConcreteTypeName(self_: *const PxArticulationFixedTendon) -> *const std::ffi::c_char;
 
-    pub fn PxArticulationCache_new() -> PxArticulationCache;
+    pub fn PxArticulationFixedTendon_delete(self_: *mut PxArticulationFixedTendon);
 
-    /// Releases an articulation cache.
-    pub fn PxArticulationCache_release_mut(self_: *mut PxArticulationCache);
+    /// Releases the mimic joint.
+    ///
+    /// Releasing a mimic joint is not allowed while the articulation is in a scene. In order to
+    /// release a mimic joint, remove and then re-add the articulation to the scene.
+    pub fn PxArticulationMimicJoint_release_mut(self_: *mut PxArticulationMimicJoint);
 
-    /// Releases the sensor.
+    /// Returns the articulation that this mimic joint is part of.
     ///
-    /// Releasing a sensor is not allowed while the articulation is in a scene. In order to
-    /// release a sensor, remove and then re-add the articulation to the scene.
-    pub fn PxArticulationSensor_release_mut(self_: *mut PxArticulationSensor);
+    /// A reference to the articulation.
+    pub fn PxArticulationMimicJoint_getArticulation(self_: *const PxArticulationMimicJoint) -> *mut PxArticulationReducedCoordinate;
 
-    /// Returns the spatial force in the local frame of the sensor.
+    /// Get the gear of a mimic joint.
     ///
-    /// The spatial force.
-    ///
-    /// This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
-    /// and in PxContactModifyCallback or in contact report callbacks.
-    pub fn PxArticulationSensor_getForces(self_: *const PxArticulationSensor) -> PxSpatialForce;
+    /// The gear ratio.
+    pub fn PxArticulationMimicJoint_getGearRatio(self_: *const PxArticulationMimicJoint) -> f32;
 
-    /// Returns the relative pose between this sensor and the body frame of the link that the sensor is attached to.
-    ///
-    /// The link body frame is at the center of mass and aligned with the principal axes of inertia, see PxRigidBody::getCMassLocalPose.
-    ///
-    /// The transform link body frame -> sensor frame.
-    pub fn PxArticulationSensor_getRelativePose(self_: *const PxArticulationSensor) -> PxTransform;
+    /// Set the gear ratio of a mimic joint.
+    pub fn PxArticulationMimicJoint_setGearRatio_mut(self_: *mut PxArticulationMimicJoint, gearRatio: f32);
 
-    /// Sets the relative pose between this sensor and the body frame of the link that the sensor is attached to.
+    /// Get the offset of a mimic joint.
     ///
-    /// The link body frame is at the center of mass and aligned with the principal axes of inertia, see PxRigidBody::getCMassLocalPose.
-    ///
-    /// Setting the sensor relative pose is not allowed while the articulation is in a scene. In order to
-    /// set the pose, remove and then re-add the articulation to the scene.
-    pub fn PxArticulationSensor_setRelativePose_mut(self_: *mut PxArticulationSensor, pose: *const PxTransform);
+    /// The offset.
+    pub fn PxArticulationMimicJoint_getOffset(self_: *const PxArticulationMimicJoint) -> f32;
 
-    /// Returns the link that this sensor is attached to.
-    ///
-    /// A pointer to the link.
-    pub fn PxArticulationSensor_getLink(self_: *const PxArticulationSensor) -> *mut PxArticulationLink;
+    /// Set the offset of a mimic joint.
+    pub fn PxArticulationMimicJoint_setOffset_mut(self_: *mut PxArticulationMimicJoint, offset: f32);
 
-    /// Returns the index of this sensor inside the articulation.
+    /// Get the natural frequency of a mimic joint.
     ///
-    /// The return value is only valid for sensors attached to articulations that are in a scene.
-    ///
-    /// The low-level index, or 0xFFFFFFFF if the articulation is not in a scene.
-    pub fn PxArticulationSensor_getIndex(self_: *const PxArticulationSensor) -> u32;
+    /// The natural frequency.
+    pub fn PxArticulationMimicJoint_getNaturalFrequency(self_: *const PxArticulationMimicJoint) -> f32;
 
-    /// Returns the articulation that this sensor is part of.
-    ///
-    /// A pointer to the articulation.
-    pub fn PxArticulationSensor_getArticulation(self_: *const PxArticulationSensor) -> *mut PxArticulationReducedCoordinate;
+    /// Set the natural frequency of a mimic joint.
+    pub fn PxArticulationMimicJoint_setNaturalFrequency_mut(self_: *mut PxArticulationMimicJoint, naturalFrequency: f32);
 
-    /// Returns the sensor's flags.
+    /// Get the damping ratio of a mimic joint.
     ///
-    /// The current set of flags of the sensor.
-    pub fn PxArticulationSensor_getFlags(self_: *const PxArticulationSensor) -> PxArticulationSensorFlags;
+    /// The damping ratio.
+    pub fn PxArticulationMimicJoint_getDampingRatio(self_: *const PxArticulationMimicJoint) -> f32;
 
-    /// Sets a flag of the sensor.
+    /// Set the damping ratio of a mimic joint.
+    pub fn PxArticulationMimicJoint_setDampingRatio_mut(self_: *mut PxArticulationMimicJoint, dampingRatio: f32);
+
+    /// Return the jointA specified in PxArticulationReducedCoordinate::createMimicJoint()
     ///
-    /// Setting the sensor flags is not allowed while the articulation is in a scene. In order to
-    /// set the flags, remove and then re-add the articulation to the scene.
-    pub fn PxArticulationSensor_setFlag_mut(self_: *mut PxArticulationSensor, flag: PxArticulationSensorFlag, enabled: bool);
+    /// The jointA specified in PxArticulationReducedCoordinate::createMimicJoint()
+    pub fn PxArticulationMimicJoint_getJointA(self_: *const PxArticulationMimicJoint) -> *mut PxArticulationJointReducedCoordinate;
+
+    /// Return the jointB specified in PxArticulationReducedCoordinate::createMimicJoint()
+    ///
+    /// The jointB specified in PxArticulationReducedCoordinate::createMimicJoint()
+    pub fn PxArticulationMimicJoint_getJointB(self_: *const PxArticulationMimicJoint) -> *mut PxArticulationJointReducedCoordinate;
+
+    /// Return the axisA specified in PxArticulationReducedCoordinate::createMimicJoint()
+    ///
+    /// The axisA specified in PxArticulationReducedCoordinate::createMimicJoint()
+    pub fn PxArticulationMimicJoint_getAxisA(self_: *const PxArticulationMimicJoint) -> PxArticulationAxis;
+
+    /// Return the axisB specified in PxArticulationReducedCoordinate::createMimicJoint()
+    ///
+    /// The axisB specified in PxArticulationReducedCoordinate::createMimicJoint()
+    pub fn PxArticulationMimicJoint_getAxisB(self_: *const PxArticulationMimicJoint) -> PxArticulationAxis;
 
     /// Returns the string name of the dynamic type.
     ///
     /// The string name.
-    pub fn PxArticulationSensor_getConcreteTypeName(self_: *const PxArticulationSensor) -> *const std::ffi::c_char;
+    pub fn PxArticulationMimicJoint_getConcreteTypeName(self_: *const PxArticulationMimicJoint) -> *const std::ffi::c_char;
+
+    pub fn PxArticulationCache_new() -> PxArticulationCache;
+
+    /// Releases an articulation cache.
+    pub fn PxArticulationCache_release_mut(self_: *mut PxArticulationCache);
 
     /// Returns the scene which this articulation belongs to.
     ///
@@ -7128,18 +8339,18 @@ extern "C" {
 
     /// Returns true if this articulation is sleeping.
     ///
-    /// When an actor does not move for a period of time, it is no longer simulated in order to save time. This state
+    /// When an actor does not move for a period of time, it is no longer simulated in order to reduce computational cost. This state
     /// is called sleeping. However, because the object automatically wakes up when it is either touched by an awake object,
     /// or a sleep-affecting property is changed by the user, the entire sleep mechanism should be transparent to the user.
     ///
     /// An articulation can only go to sleep if all links are ready for sleeping. An articulation is guaranteed to be awake
     /// if at least one of the following holds:
     ///
-    /// The wake counter is positive (see [`setWakeCounter`]()).
+    /// The wake counter of any link in the articulation is positive (see [`setWakeCounter`]()).
     ///
-    /// The linear or angular velocity of any link is non-zero.
+    /// The mass-normalized energy of any link in the articulation is above a threshold (see [`setSleepThreshold`]()).
     ///
-    /// A non-zero force or torque has been applied to the articulation or any of its links.
+    /// A non-zero force or torque has been applied to any joint or link.
     ///
     /// If an articulation is sleeping, the following state is guaranteed:
     ///
@@ -7166,6 +8377,9 @@ extern "C" {
     /// The articulation will sleep if the energy of each link is below this threshold.
     ///
     /// This call may not be made during simulation.
+    ///
+    /// Default:
+    /// 5e-5f * PxTolerancesScale::speed * PxTolerancesScale::speed;
     pub fn PxArticulationReducedCoordinate_setSleepThreshold_mut(self_: *mut PxArticulationReducedCoordinate, threshold: f32);
 
     /// Returns the mass-normalized energy below which the articulation may go to sleep.
@@ -7180,7 +8394,7 @@ extern "C" {
     /// This value has no effect if PxSceneFlag::eENABLE_STABILIZATION was not enabled on the PxSceneDesc.
     ///
     /// Default:
-    /// 0.01 * PxTolerancesScale::speed * PxTolerancesScale::speed
+    /// 5e-6f * PxTolerancesScale::speed * PxTolerancesScale::speed
     ///
     /// This call may not be made during simulation.
     pub fn PxArticulationReducedCoordinate_setStabilizationThreshold_mut(self_: *mut PxArticulationReducedCoordinate, threshold: f32);
@@ -7194,9 +8408,9 @@ extern "C" {
 
     /// Sets the wake counter for the articulation in seconds.
     ///
-    /// - The wake counter value determines the minimum amount of time until the articulation can be put to sleep.
-    /// - An articulation will not be put to sleep if the energy is above the specified threshold (see [`setSleepThreshold`]())
-    /// or if other awake objects are touching it.
+    /// - The wake counter value specifies a time threshold used to determine whether an articulation may be put to sleep.
+    /// - The articulation will be put to sleep if all links have experienced a mass-normalised energy less than a threshold for at least
+    /// a threshold time, as specified by the wake counter.
     /// - Passing in a positive value will wake up the articulation automatically.
     ///
     /// Default:
@@ -7214,7 +8428,7 @@ extern "C" {
 
     /// Wakes up the articulation if it is sleeping.
     ///
-    /// - The articulation will get woken up and might cause other touching objects to wake up as well during the next simulation step.
+    /// - The articulation will be woken up and might cause other touching objects to wake up as well during the next simulation step.
     /// - This will set the wake counter of the articulation to the value specified in [`PxSceneDesc::wakeCounterResetValue`].
     ///
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation,
@@ -7229,53 +8443,26 @@ extern "C" {
     /// This call may not be made during simulation, and may only be made on articulations that are in a scene.
     pub fn PxArticulationReducedCoordinate_putToSleep_mut(self_: *mut PxArticulationReducedCoordinate);
 
-    /// Sets the limit on the magnitude of the linear velocity of the articulation's center of mass.
-    ///
-    /// - The limit acts on the linear velocity of the entire articulation. The velocity is calculated from the total momentum
-    /// and the spatial inertia of the articulation.
-    /// - The limit only applies to floating-base articulations.
-    /// - A benefit of the COM velocity limit is that it is evenly applied to the whole articulation, which results in fewer visual
-    /// artifacts compared to link rigid-body damping or joint-velocity limits. However, these per-link or per-degree-of-freedom
-    /// limits may still help avoid numerical issues.
-    ///
-    /// This call may not be made during simulation.
-    pub fn PxArticulationReducedCoordinate_setMaxCOMLinearVelocity_mut(self_: *mut PxArticulationReducedCoordinate, maxLinearVelocity: f32);
-
-    /// Gets the limit on the magnitude of the linear velocity of the articulation's center of mass.
-    ///
-    /// The maximal linear velocity magnitude.
-    pub fn PxArticulationReducedCoordinate_getMaxCOMLinearVelocity(self_: *const PxArticulationReducedCoordinate) -> f32;
-
-    /// Sets the limit on the magnitude of the angular velocity at the articulation's center of mass.
-    ///
-    /// - The limit acts on the angular velocity of the entire articulation. The velocity is calculated from the total momentum
-    /// and the spatial inertia of the articulation.
-    /// - The limit only applies to floating-base articulations.
-    /// - A benefit of the COM velocity limit is that it is evenly applied to the whole articulation, which results in fewer visual
-    /// artifacts compared to link rigid-body damping or joint-velocity limits. However, these per-link or per-degree-of-freedom
-    /// limits may still help avoid numerical issues.
-    ///
-    /// This call may not be made during simulation.
-    pub fn PxArticulationReducedCoordinate_setMaxCOMAngularVelocity_mut(self_: *mut PxArticulationReducedCoordinate, maxAngularVelocity: f32);
-
-    /// Gets the limit on the magnitude of the angular velocity at the articulation's center of mass.
-    ///
-    /// The maximal angular velocity magnitude.
-    pub fn PxArticulationReducedCoordinate_getMaxCOMAngularVelocity(self_: *const PxArticulationReducedCoordinate) -> f32;
-
     /// Adds a link to the articulation with default attribute values.
     ///
     /// The new link, or NULL if the link cannot be created.
     ///
     /// Creating a link is not allowed while the articulation is in a scene. In order to add a link,
     /// remove and then re-add the articulation to the scene.
+    ///
+    /// When the articulation is added to a scene, the root link adopts the specified pose. The pose of the
+    /// root link is propagated through the ensemble of links from parent to child after accounting for each child's
+    /// inbound joint frames and the joint positions set by PxArticulationJointReducedCoordinate::setJointPosition().
+    /// As a consequence, the pose of each non-root link is automatically overwritten when adding the articulation to the scene.
     pub fn PxArticulationReducedCoordinate_createLink_mut(self_: *mut PxArticulationReducedCoordinate, parent: *mut PxArticulationLink, pose: *const PxTransform) -> *mut PxArticulationLink;
 
     /// Releases the articulation, and all its links and corresponding joints.
     ///
-    /// Attached sensors and tendons are released automatically when the articulation is released.
+    /// Attached mimic joints and tendons are released automatically when the articulation is released.
     ///
     /// This call may not be made during simulation.
+    ///
+    /// This call does not release any PxArticulationCache instance that has been instantiated using [`createCache`]()
     pub fn PxArticulationReducedCoordinate_release_mut(self_: *mut PxArticulationReducedCoordinate);
 
     /// Returns the number of links in the articulation.
@@ -7284,6 +8471,8 @@ extern "C" {
     pub fn PxArticulationReducedCoordinate_getNbLinks(self_: *const PxArticulationReducedCoordinate) -> u32;
 
     /// Returns the set of links in the articulation in the order that they were added to the articulation using createLink.
+    ///
+    /// The order of the links may be different from the order in which the data is stored in the cache, see PxArticulationLink::getLinkIndex.
     ///
     /// The number of links written into the buffer.
     pub fn PxArticulationReducedCoordinate_getLinks(self_: *const PxArticulationReducedCoordinate, userBuffer: *mut *mut PxArticulationLink, bufferSize: u32, startIndex: u32) -> u32;
@@ -7312,9 +8501,9 @@ extern "C" {
     /// during [`PxScene::collide`]() and up to #PxScene::advance(), and in PxContactModifyCallback or in contact report callbacks.
     pub fn PxArticulationReducedCoordinate_getWorldBounds(self_: *const PxArticulationReducedCoordinate, inflation: f32) -> PxBounds3;
 
-    /// Returns the aggregate the articulation might be a part of.
+    /// Returns the aggregate associated with the articulation.
     ///
-    /// The aggregate the articulation is a part of, or NULL if the articulation does not belong to an aggregate.
+    /// The aggregate associated with the articulation or NULL if the articulation does not belong to an aggregate.
     pub fn PxArticulationReducedCoordinate_getAggregate(self_: *const PxArticulationReducedCoordinate) -> *mut PxAggregate;
 
     /// Sets flags on the articulation.
@@ -7329,7 +8518,7 @@ extern "C" {
 
     /// Returns the articulation's flags.
     ///
-    /// The flags.
+    /// The articulation's flags.
     pub fn PxArticulationReducedCoordinate_getArticulationFlags(self_: *const PxArticulationReducedCoordinate) -> PxArticulationFlags;
 
     /// Returns the total number of joint degrees-of-freedom (DOFs) of the articulation.
@@ -7343,7 +8532,7 @@ extern "C" {
 
     /// Creates an articulation cache that can be used to read and write internal articulation data.
     ///
-    /// - When the structure of the articulation changes (e.g. adding a link or sensor) after the cache was created,
+    /// - When the structure of the articulation changes (e.g. adding a link) after the cache was created,
     /// the cache needs to be released and recreated.
     /// - Free the memory allocated for the cache by calling the release() method on the cache.
     /// - Caches can only be created by articulations that are in a scene.
@@ -7373,11 +8562,24 @@ extern "C" {
     /// - a nonzero root velocity is applied
     ///
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
+    ///
+    /// Calling applyCache(cache, PxArticulationCacheFlag::eROOT_TRANSFORM) has the same outcome as calling
+    /// PxArticulationReducedCoordinate::setRootGlobalPose() followed by PxArticulationReducedCoordinate::updateKinematic(PxArticulationKinematicFlag::ePOSITION).
+    /// Similarly, calling applyCache(cache, PxArticulationCacheFlag::eROOT_VELOCITIES) is the cache equivalent of calling
+    /// PxArticulationReducedCoordinate::setRootLinearVelocity() followed by PxArticulationReducedCoordinate::updateKinematic(PxArticulationKinematicFlag::eVELOCITY).
+    /// Joint positions follow a similar pattern with applyCache(cache, PxArticulationCacheFlag::ePOSITION) having the same outcome as callling
+    /// PxArticulationJointReducedCoordinate::setJointPosition() followed by PxArticulationReducedCoordinate::updateKinematic(PxArticulationKinematicFlag::ePOSITION).
+    /// Finally, joint velocities updated with applyCache(PxArticulationCacheFlag::eVELOCITY) will produce the same outcome as calling
+    /// PxArticulationJointReducedCoordinate::setJointVelocity() followed by PxArticulationReducedCoordinate::updateKinematic(PxArticulationKinematicFlag::eVELOCITY).
+    ///
+    /// This method should not be used if the direct GPU API is enabled. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationReducedCoordinate_applyCache_mut(self_: *mut PxArticulationReducedCoordinate, cache: *mut PxArticulationCache, flags: PxArticulationCacheFlags, autowake: bool);
 
     /// Copies internal data of the articulation to the cache.
     ///
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
+    ///
+    /// This method should not be used if the direct GPU API is enabled. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationReducedCoordinate_copyInternalStateToCache(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache, flags: PxArticulationCacheFlags);
 
     /// Converts maximal-coordinate joint DOF data to reduced coordinates.
@@ -7386,6 +8588,8 @@ extern "C" {
     /// - The reduced-coordinate data follows the cache indexing convention, see PxArticulationCache::jointVelocity.
     ///
     /// The articulation must be in a scene.
+    ///
+    /// This can be used as a helper function to prepare per joint cache data such as PxArticulationCache::jointVelocity.
     pub fn PxArticulationReducedCoordinate_packJointData(self_: *const PxArticulationReducedCoordinate, maximum: *const f32, reduced: *mut f32);
 
     /// Converts reduced-coordinate joint DOF data to maximal coordinates.
@@ -7399,42 +8603,57 @@ extern "C" {
     /// Prepares common articulation data based on articulation pose for inverse dynamics calculations.
     ///
     /// Usage:
-    /// 1. Set articulation pose (joint positions and base transform) via articulation cache and applyCache().
-    /// 1. Call commonInit.
-    /// 1. Call inverse dynamics computation method.
+    /// -[``] Set articulation pose (joint positions and base transform) via articulation cache and applyCache().
+    /// -[``] Call commonInit.
+    /// -[``] Call inverse dynamics computation method.
     ///
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
     pub fn PxArticulationReducedCoordinate_commonInit(self_: *const PxArticulationReducedCoordinate);
 
-    /// Computes the joint DOF forces required to counteract gravitational forces for the given articulation pose.
+    /// Computes the forces required to counteract gravitational forces for the given articulation pose.
     ///
-    /// - Inputs - Articulation pose (joint positions + base transform).
-    /// - Outputs - Joint forces to counteract gravity (in cache).
+    /// In the case of a fixed-base articulation, the gravity compensation force accounts for the gravity on all the links and provides
+    /// the force required to compensate the gravitational forces for all the joint DoFs.
+    /// The indexing follows the internal DOF index order, see PxArticulationCache::jointVelocity.
+    ///
+    /// In the case of a floating-base articulation, the gravity compensation force also accounts for the gravity on the root link and also provides
+    /// the force on the root required to compensate its gravitational force. The indexing is:
+    /// | Root force X | Root force Y | Root force Z | Root torque X | Root torque Y | Root torque Z | Force/Torque DOF 0 | ... | Force/Torque DOF N |
+    ///
+    /// - Inputs:	Articulation pose (joint positions + base transform).
+    /// - Outputs:	Forces to counteract gravity (in cache).
     ///
     /// - The joint forces returned are determined purely by gravity for the articulation in the current joint and base pose, and joints at rest;
     /// i.e. external forces, joint velocities, and joint accelerations are set to zero. Joint drives are also not considered in the computation.
     /// - commonInit() must be called before the computation, and after setting the articulation pose via applyCache().
     ///
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
-    pub fn PxArticulationReducedCoordinate_computeGeneralizedGravityForce(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache);
+    pub fn PxArticulationReducedCoordinate_computeGravityCompensation(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache);
 
-    /// Computes the joint DOF forces required to counteract Coriolis and centrifugal forces for the given articulation state.
+    /// Computes the joint DOF forces (and root force) required to counteract Coriolis and centrifugal forces for the given articulation state.
     ///
-    /// - Inputs - Articulation state (joint positions and velocities (in cache), and base transform and spatial velocity).
-    /// - Outputs - Joint forces to counteract Coriolis and centrifugal forces (in cache).
+    /// In the case of a fixed-base articulation, the Coriolis and centrifugal compensation force accounts for forces resulting to the current
+    /// joint velocities. The indexing follows the internal DOF index order, see PxArticulationCache::jointVelocity.
     ///
-    /// - The joint forces returned are determined purely by the articulation's state; i.e. external forces, gravity, and joint accelerations are set to zero.
+    /// In the case of a floating-base articulation, the Coriolis and centrifugal compensation force also accounts for forces resulting to the current
+    /// root velocity. The indexing is:
+    /// | Root force X | Root force Y | Root force Z | Root torque X | Root torque Y | Root torque Z | Force/Torque DOF 0 | ... | Force/Torque DOF N |
+    ///
+    /// - Inputs:	Articulation state (joint positions and velocities (in cache), and base transform and spatial velocity).
+    /// - Outputs:	Joint forces (and root force) to counteract Coriolis and centrifugal forces (in cache).
+    ///
+    /// - The forces returned are determined purely by the articulation's state; i.e. external forces, gravity, and joint accelerations are set to zero.
     /// Joint drives and potential damping terms, such as link angular or linear damping, or joint friction, are also not considered in the computation.
     /// - Prior to the computation, update/set the base spatial velocity with PxArticulationCache::rootLinkData and applyCache().
     /// - commonInit() must be called before the computation, and after setting the articulation pose via applyCache().
     ///
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
-    pub fn PxArticulationReducedCoordinate_computeCoriolisAndCentrifugalForce(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache);
+    pub fn PxArticulationReducedCoordinate_computeCoriolisCompensation(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache);
 
     /// Computes the joint DOF forces required to counteract external spatial forces applied to articulation links.
     ///
-    /// - Inputs - External forces on links (in cache), articulation pose (joint positions + base transform).
-    /// - Outputs - Joint forces to counteract the external forces (in cache).
+    /// - Inputs:	External forces on links (in cache), articulation pose (joint positions + base transform).
+    /// - Outputs:	Joint forces to counteract the external forces (in cache).
     ///
     /// - Only the external spatial forces provided in the cache and the articulation pose are considered in the computation.
     /// - The external spatial forces are with respect to the links' centers of mass, and not the actor's origin.
@@ -7445,25 +8664,25 @@ extern "C" {
 
     /// Computes the joint accelerations for the given articulation state and joint forces.
     ///
-    /// - Inputs - Joint forces (in cache) and articulation state (joint positions and velocities (in cache), and base transform and spatial velocity).
-    /// - Outputs - Joint accelerations (in cache).
+    /// - Inputs:	Joint forces (in cache) and articulation state (joint positions and velocities (in cache), and base transform and spatial velocity).
+    /// - Outputs:	Joint accelerations (in cache).
     ///
-    /// - The computation includes Coriolis terms and gravity. However, joint drives and potential damping terms are not considered in the computation
-    /// (for example, linear link damping or joint friction).
+    /// - The computation includes Coriolis terms and gravity. However, joint drives, external forces, and potential damping (link damping, friction) terms
+    /// are not considered in the computation.
     /// - Prior to the computation, update/set the base spatial velocity with PxArticulationCache::rootLinkData and applyCache().
     /// - commonInit() must be called before the computation, and after setting the articulation pose via applyCache().
     ///
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
     pub fn PxArticulationReducedCoordinate_computeJointAcceleration(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache);
 
-    /// Computes the joint forces for the given articulation state and joint accelerations, not considering gravity.
+    /// Computes the joint forces for the given articulation pose and joint accelerations, not considering gravity and velocity.
     ///
-    /// - Inputs - Joint accelerations (in cache) and articulation state (joint positions and velocities (in cache), and base transform and spatial velocity).
-    /// - Outputs - Joint forces (in cache).
+    /// - Inputs:	Joint accelerations (in cache).
+    /// - Outputs:	Joint forces (in cache).
     ///
-    /// - The computation includes Coriolis terms. However, joint drives and potential damping terms are not considered in the computation
+    /// - Gravity, Coriolis effects, joint drives and potential damping terms are not considered in the computation
     /// (for example, linear link damping or joint friction).
-    /// - Prior to the computation, update/set the base spatial velocity with PxArticulationCache::rootLinkData and applyCache().
+    /// - To compute the joint force for a different pose, the joint positions and root transform first need to be applied with applyCache() as this function ignores any values set to joint positions and root transform in the cache
     /// - commonInit() must be called before the computation, and after setting the articulation pose via applyCache().
     ///
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
@@ -7477,6 +8696,8 @@ extern "C" {
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
     pub fn PxArticulationReducedCoordinate_computeDenseJacobian(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache, nRows: *mut u32, nCols: *mut u32);
 
+    /// The API related to loop joints will be removed in a future version once a replacement is made available.
+    ///
     /// Computes the coefficient matrix for contact forces.
     ///
     /// - The matrix dimension is getCoefficientMatrixSize() = getDofs() * getNbLoopJoints(), and the DOF (column) indexing follows the internal DOF order, see PxArticulationCache::jointVelocity.
@@ -7487,6 +8708,8 @@ extern "C" {
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
     pub fn PxArticulationReducedCoordinate_computeCoefficientMatrix(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache);
 
+    /// The API related to loop joints will be removed in a future version once a replacement is made available.
+    ///
     /// Computes the lambda values when the test impulse is 1.
     ///
     /// - The user must allocate memory for PxArticulationCache::lambda where the required size of the PxReal array is equal to getNbLoopJoints().
@@ -7497,36 +8720,85 @@ extern "C" {
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
     pub fn PxArticulationReducedCoordinate_computeLambda(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache, initialState: *mut PxArticulationCache, jointTorque: *const f32, maxIter: u32) -> bool;
 
-    /// Compute the joint-space inertia matrix that maps joint accelerations to joint forces: forces = M * accelerations.
+    /// Compute the mass matrix M that maps accelerations to forces: forces = M * accelerations.
     ///
-    /// - Inputs - Articulation pose (joint positions and base transform).
-    /// - Outputs - Mass matrix (in cache).
+    /// In the case of a fixed-base articulation, the mass matrix maps joint accelerations to joint forces.
+    /// The indexing follows the internal DOF index order, see PxArticulationCache::jointVelocity.
+    ///
+    /// In the case of a floating-base articulation, the mass matrix also includes terms required to map root accelerations
+    /// to root forces. The mass matrix should be used with accelerations and forces that follows the indexing below:
+    /// | Root force X       |     | Root linear acceleration X  |
+    /// | Root force Y	     |     | Root linear acceleration Y  |
+    /// | Root force Z       |     | Root linear acceleration Z  |
+    /// | Root torque X      |     | Root angular acceleration X |
+    /// | Root torque Y      |     | Root angular acceleration Y |
+    /// | Root torque Z      | = M | Root angular acceleration Z |
+    /// | Force/Torque DOF 0 |     | Joint acceleration 0        |
+    /// | Force/Torque DOF 1 |     | Joint acceleration 1        |
+    /// | ...                |     | ...                         |
+    /// | Force/Torque DOF N |     | Joint acceleration N        |
+    ///
+    /// - Inputs:	Articulation pose (joint positions and base transform).
+    /// - Outputs:	Mass matrix (in cache).
     ///
     /// commonInit() must be called before the computation, and after setting the articulation pose via applyCache().
     ///
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
-    pub fn PxArticulationReducedCoordinate_computeGeneralizedMassMatrix(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache);
+    ///
+    /// The mass matrix is indexed [nCols * row + column].
+    pub fn PxArticulationReducedCoordinate_computeMassMatrix(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache);
 
+    /// Compute the articulation's center of mass.
+    ///
+    /// The articulation's center of mass given either in the world frame (rootFrame = false) or in the root frame
+    /// (rootFrame = true). PxVec3(0.0f) is returned if the articulation is not in a scene or the call is made during simulation.
+    ///
+    /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
+    pub fn PxArticulationReducedCoordinate_computeArticulationCOM(self_: *const PxArticulationReducedCoordinate, rootFrame: bool) -> PxVec3;
+
+    /// Compute the centroidal momentum matrix and corresponding bias force of an articulation.
+    ///
+    /// - Inputs:	Articulation state (joint positions and velocities, and base transform and spatial velocity),
+    /// articulation mass matrix, Coriolis and Centrifugal compensation forces.
+    /// - Outputs:	Centroidal momentum matrix and bias force (in cache).
+    ///
+    /// commonInit(), computeMassMatrix() and computeCoriolisCompensation() must be called before the computation,
+    /// and after setting the articulation pose and velocities via applyCache().
+    ///
+    /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
+    /// This call may also only be made for floating-base articulations.
+    pub fn PxArticulationReducedCoordinate_computeCentroidalMomentumMatrix(self_: *const PxArticulationReducedCoordinate, cache: *mut PxArticulationCache);
+
+    /// The API related to loop joints will be removed in a future version once a replacement is made available.
+    ///
     /// Adds a loop joint to the articulation system for inverse dynamics.
     ///
     /// This call may not be made during simulation.
     pub fn PxArticulationReducedCoordinate_addLoopJoint_mut(self_: *mut PxArticulationReducedCoordinate, joint: *mut PxConstraint);
 
+    /// The API related to loop joints will be removed in a future version once a replacement is made available.
+    ///
     /// Removes a loop joint from the articulation for inverse dynamics.
     ///
     /// This call may not be made during simulation.
     pub fn PxArticulationReducedCoordinate_removeLoopJoint_mut(self_: *mut PxArticulationReducedCoordinate, joint: *mut PxConstraint);
 
+    /// The API related to loop joints will be removed in a future version once a replacement is made available.
+    ///
     /// Returns the number of loop joints in the articulation for inverse dynamics.
     ///
     /// The number of loop joints.
     pub fn PxArticulationReducedCoordinate_getNbLoopJoints(self_: *const PxArticulationReducedCoordinate) -> u32;
 
+    /// The API related to loop joints will be removed in a future version once a replacement is made available.
+    ///
     /// Returns the set of loop constraints (i.e. joints) in the articulation.
     ///
     /// The number of constraints written into the buffer.
     pub fn PxArticulationReducedCoordinate_getLoopJoints(self_: *const PxArticulationReducedCoordinate, userBuffer: *mut *mut PxConstraint, bufferSize: u32, startIndex: u32) -> u32;
 
+    /// The API related to loop joints will be removed in a future version once a replacement is made available.
+    ///
     /// Returns the required size of the coefficient matrix in the articulation.
     ///
     /// Size of the coefficient matrix (equal to getDofs() * getNbLoopJoints()).
@@ -7534,65 +8806,87 @@ extern "C" {
     /// This call may only be made on articulations that are in a scene.
     pub fn PxArticulationReducedCoordinate_getCoefficientMatrixSize(self_: *const PxArticulationReducedCoordinate) -> u32;
 
-    /// Sets the root link transform (world to actor frame).
+    /// Sets the root link transform in the world frame.
     ///
-    /// - For performance, prefer PxArticulationCache::rootLinkData to set the root link transform in a batch articulation state update.
     /// - Use updateKinematic() after all state updates to the articulation via non-cache API such as this method,
     /// in order to update link states for the next simulation frame or querying.
     ///
     /// This call may not be made during simulation.
+    ///
+    /// PxArticulationCache::rootLinkData similarly allows the root link pose to be updated and potentially offers better performance
+    /// if the root link pose is to be updated along with other state variables.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationReducedCoordinate_setRootGlobalPose_mut(self_: *mut PxArticulationReducedCoordinate, pose: *const PxTransform, autowake: bool);
 
     /// Returns the root link transform (world to actor frame).
-    ///
-    /// For performance, prefer PxArticulationCache::rootLinkData to get the root link transform in a batch query.
     ///
     /// The root link transform.
     ///
     /// This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
     /// and in PxContactModifyCallback or in contact report callbacks.
+    ///
+    /// PxArticulationCache::rootLinkData similarly allows the root link pose to be queried and potentially offers better performance if the root
+    /// link pose is to be queried along with other state variables.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationReducedCoordinate_getRootGlobalPose(self_: *const PxArticulationReducedCoordinate) -> PxTransform;
 
     /// Sets the root link linear center-of-mass velocity.
     ///
     /// - The linear velocity is with respect to the link's center of mass and not the actor frame origin.
-    /// - For performance, prefer PxArticulationCache::rootLinkData to set the root link velocity in a batch articulation state update.
     /// - The articulation is woken up if the input velocity is nonzero (ignoring autowake) and the articulation is in a scene.
     /// - Use updateKinematic() after all state updates to the articulation via non-cache API such as this method,
     /// in order to update link states for the next simulation frame or querying.
     ///
     /// This call may not be made during simulation, except in a split simulation in-between [`PxScene::fetchCollision`] and #PxScene::advance.
+    ///
+    /// PxArticulationCache::rootLinkData similarly allows the root link linear velocity to be updated and potentially offers better performance
+    /// if the root link linear velocity is to be updated along with other state variables.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationReducedCoordinate_setRootLinearVelocity_mut(self_: *mut PxArticulationReducedCoordinate, linearVelocity: *const PxVec3, autowake: bool);
 
     /// Gets the root link center-of-mass linear velocity.
     ///
     /// - The linear velocity is with respect to the link's center of mass and not the actor frame origin.
-    /// - For performance, prefer PxArticulationCache::rootLinkData to get the root link velocity in a batch query.
     ///
     /// The root link center-of-mass linear velocity.
     ///
     /// This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
     /// and in PxContactModifyCallback or in contact report callbacks.
+    ///
+    /// PxArticulationCache::rootLinkData similarly allows the root link linear velocity to be queried and potentially offers better performance
+    /// if the root link linear velocity is to be queried along with other state variables.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationReducedCoordinate_getRootLinearVelocity(self_: *const PxArticulationReducedCoordinate) -> PxVec3;
 
     /// Sets the root link angular velocity.
     ///
-    /// - For performance, prefer PxArticulationCache::rootLinkData to set the root link velocity in a batch articulation state update.
     /// - The articulation is woken up if the input velocity is nonzero (ignoring autowake) and the articulation is in a scene.
     /// - Use updateKinematic() after all state updates to the articulation via non-cache API such as this method,
     /// in order to update link states for the next simulation frame or querying.
     ///
     /// This call may not be made during simulation, except in a split simulation in-between [`PxScene::fetchCollision`] and #PxScene::advance.
+    ///
+    /// PxArticulationCache::rootLinkData similarly allows the root link angular velocity to be updated and potentially offers better performance
+    /// if the root link angular velocity is to be updated along with other state variables.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationReducedCoordinate_setRootAngularVelocity_mut(self_: *mut PxArticulationReducedCoordinate, angularVelocity: *const PxVec3, autowake: bool);
 
     /// Gets the root link angular velocity.
-    ///
-    /// For performance, prefer PxArticulationCache::rootLinkData to get the root link velocity in a batch query.
     ///
     /// The root link angular velocity.
     ///
     /// This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
     /// and in PxContactModifyCallback or in contact report callbacks.
+    ///
+    /// PxArticulationCache::rootLinkData similarly allows the root link angular velocity to be queried and potentially offers better performance
+    /// if the root link angular velocity is to be queried along with other state variables.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationReducedCoordinate_getRootAngularVelocity(self_: *const PxArticulationReducedCoordinate) -> PxVec3;
 
     /// Returns the (classical) link acceleration in world space for the given low-level link index.
@@ -7602,14 +8896,17 @@ extern "C" {
     ///
     /// The link's center-of-mass classical acceleration, or 0 if the call is made before the articulation participated in a first simulation step.
     ///
-    /// This call may only be made on articulations that are in a scene, and it is not allowed to use this method while the simulation
-    /// is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(), and in PxContactModifyCallback or in contact report callbacks.
+    /// This call may only be made on articulations that are in a scene. It is not allowed to use this method while the simulation
+    /// is running.  The exceptions to this rule are a split simulation during [`PxScene::collide`]() and up to #PxScene::advance();
+    /// in PxContactModifyCallback; and in contact report callbacks.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationReducedCoordinate_getLinkAcceleration_mut(self_: *mut PxArticulationReducedCoordinate, linkId: u32) -> PxSpatialVelocity;
 
     /// Returns the GPU articulation index.
     ///
-    /// The GPU index, or 0xFFFFFFFF if the articulation is not in a scene or PxSceneFlag::eSUPPRESS_READBACK is not set.
-    pub fn PxArticulationReducedCoordinate_getGpuArticulationIndex_mut(self_: *mut PxArticulationReducedCoordinate) -> u32;
+    /// The GPU index, or 0xFFFFFFFF if the articulation is not in a scene.
+    pub fn PxArticulationReducedCoordinate_getGPUIndex(self_: *const PxArticulationReducedCoordinate) -> u32;
 
     /// Creates a spatial tendon to attach to the articulation with default attribute values.
     ///
@@ -7617,6 +8914,8 @@ extern "C" {
     ///
     /// Creating a spatial tendon is not allowed while the articulation is in a scene. In order to
     /// add the tendon, remove and then re-add the articulation to the scene.
+    ///
+    /// The spatial tendon is released with PxArticulationReducedCoordinate::release()
     pub fn PxArticulationReducedCoordinate_createSpatialTendon_mut(self_: *mut PxArticulationReducedCoordinate) -> *mut PxArticulationSpatialTendon;
 
     /// Creates a fixed tendon to attach to the articulation with default attribute values.
@@ -7625,15 +8924,9 @@ extern "C" {
     ///
     /// Creating a fixed tendon is not allowed while the articulation is in a scene. In order to
     /// add the tendon, remove and then re-add the articulation to the scene.
+    ///
+    /// The fixed tendon is released with PxArticulationReducedCoordinate::release()
     pub fn PxArticulationReducedCoordinate_createFixedTendon_mut(self_: *mut PxArticulationReducedCoordinate) -> *mut PxArticulationFixedTendon;
-
-    /// Creates a force sensor attached to a link of the articulation.
-    ///
-    /// The new sensor.
-    ///
-    /// Creating a sensor is not allowed while the articulation is in a scene. In order to
-    /// add the sensor, remove and then re-add the articulation to the scene.
-    pub fn PxArticulationReducedCoordinate_createSensor_mut(self_: *mut PxArticulationReducedCoordinate, link: *mut PxArticulationLink, relativePose: *const PxTransform) -> *mut PxArticulationSensor;
 
     /// Returns the spatial tendons attached to the articulation.
     ///
@@ -7645,7 +8938,7 @@ extern "C" {
     /// Returns the number of spatial tendons in the articulation.
     ///
     /// The number of tendons.
-    pub fn PxArticulationReducedCoordinate_getNbSpatialTendons_mut(self_: *mut PxArticulationReducedCoordinate) -> u32;
+    pub fn PxArticulationReducedCoordinate_getNbSpatialTendons(self_: *const PxArticulationReducedCoordinate) -> u32;
 
     /// Returns the fixed tendons attached to the articulation.
     ///
@@ -7657,23 +8950,40 @@ extern "C" {
     /// Returns the number of fixed tendons in the articulation.
     ///
     /// The number of tendons.
-    pub fn PxArticulationReducedCoordinate_getNbFixedTendons_mut(self_: *mut PxArticulationReducedCoordinate) -> u32;
+    pub fn PxArticulationReducedCoordinate_getNbFixedTendons(self_: *const PxArticulationReducedCoordinate) -> u32;
 
-    /// Returns the sensors attached to the articulation.
+    /// Create a mimic joint that will enforce a relationship between two joints.
     ///
-    /// The order of the sensors in the buffer is not necessarily identical to the order in which the sensors were added to the articulation.
+    /// If naturalFrequency is less than or equal to zero it is assumed that the mimic joint has no compliance and is a hard constraint.
     ///
-    /// The number of sensors written into the buffer.
-    pub fn PxArticulationReducedCoordinate_getSensors(self_: *const PxArticulationReducedCoordinate, userBuffer: *mut *mut PxArticulationSensor, bufferSize: u32, startIndex: u32) -> u32;
+    /// If dampingRatio is less than or equal to zero it is assumed that the mimic joint has no compliance and is a hard constraint.
+    ///
+    /// In the absence of compliance, the mimic joint enforces the rule: qA + gearRatio*qB + offset = 0 with qA denoting the
+    /// joint position of the specified degree of freedom of jointA and qB denoting the joint position of the specified degree of freedom of jointB.
+    ///
+    /// Larger values of naturalFrequency and dampingRatio will make the mimic joint stiffer and more akin to a hard constraint.
+    ///
+    /// A damping ratio less than 1.0 is not recommended.
+    ///
+    /// If dampingRatio is less than or equal to zero and naturalFrequency greater than zero, the mimic joint will behave as a hard constraint.
+    /// If dampingRatio is greater than zero and naturalFrequency less than or equal to zero, the mimic joint will also behave as a hard constraint.
+    pub fn PxArticulationReducedCoordinate_createMimicJoint_mut(self_: *mut PxArticulationReducedCoordinate, jointA: *const PxArticulationJointReducedCoordinate, axisA: PxArticulationAxis, jointB: *const PxArticulationJointReducedCoordinate, axisB: PxArticulationAxis, gearRatio: f32, offset: f32, naturalFrequency: f32, dampingRatio: f32) -> *mut PxArticulationMimicJoint;
 
-    /// Returns the number of sensors in the articulation.
+    /// Returns the mimic joints added to the articulation.
     ///
-    /// The number of sensors.
-    pub fn PxArticulationReducedCoordinate_getNbSensors_mut(self_: *mut PxArticulationReducedCoordinate) -> u32;
+    /// The order of the mimic joints in the buffer is not necessarily identical to the order in which the mimic joints were added to the articulation.
+    ///
+    /// The number of mimic joints written into the buffer.
+    pub fn PxArticulationReducedCoordinate_getMimicJoints(self_: *const PxArticulationReducedCoordinate, userBuffer: *mut *mut PxArticulationMimicJoint, bufferSize: u32, startIndex: u32) -> u32;
+
+    /// Returns the number of mimic joints in the articulation.
+    ///
+    /// The number of mimic joints.
+    pub fn PxArticulationReducedCoordinate_getNbMimicJoints(self_: *const PxArticulationReducedCoordinate) -> u32;
 
     /// Update link velocities and/or positions in the articulation.
     ///
-    /// For performance, prefer the PxArticulationCache API that performs batch articulation state updates.
+    /// An alternative that potentially offers better performance is to use the PxArticulationCache API.
     ///
     /// If the application updates the root state (position and velocity) or joint state via any combination of
     /// the non-cache API calls
@@ -7690,6 +9000,11 @@ extern "C" {
     ///
     /// This call may only be made on articulations that are in a scene, and may not be made during simulation.
     pub fn PxArticulationReducedCoordinate_updateKinematic_mut(self_: *mut PxArticulationReducedCoordinate, flags: PxArticulationKinematicFlags);
+
+    /// Returns the string name of the dynamic type.
+    ///
+    /// The string name.
+    pub fn PxArticulationReducedCoordinate_getConcreteTypeName(self_: *const PxArticulationReducedCoordinate) -> *const std::ffi::c_char;
 
     /// Gets the parent articulation link of this joint.
     ///
@@ -7724,7 +9039,10 @@ extern "C" {
     /// Sets the joint type (e.g. revolute).
     ///
     /// Setting the joint type is not allowed while the articulation is in a scene.
-    /// In order to set the joint type, remove and then re-add the articulation to the scene.
+    /// In order to amend the joint type, remove and then re-add the articulation to the scene.
+    ///
+    /// Default:
+    /// PxArticulationJointType::eUNDEFINED
     pub fn PxArticulationJointReducedCoordinate_setJointType_mut(self_: *mut PxArticulationJointReducedCoordinate, jointType: PxArticulationJointType);
 
     /// Gets the joint type.
@@ -7736,6 +9054,9 @@ extern "C" {
     ///
     /// Setting the motion of joint axes is not allowed while the articulation is in a scene.
     /// In order to set the motion, remove and then re-add the articulation to the scene.
+    ///
+    /// Default:
+    /// PxArticulationMotion::eLOCKED
     pub fn PxArticulationJointReducedCoordinate_setMotion_mut(self_: *mut PxArticulationJointReducedCoordinate, axis: PxArticulationAxis, motion: PxArticulationMotion);
 
     /// Returns the joint motion for the given axis.
@@ -7751,7 +9072,16 @@ extern "C" {
     ///
     /// This call is not allowed while the simulation is running.
     ///
-    /// For spherical joints, limit.min and limit.max must both be in range [-Pi, Pi].
+    /// For PxArticulationJointType::eSPHERICAL, limit.min and limit.max must both be in range [-Pi, Pi].
+    ///
+    /// For PxArticulationJointType::eREVOLUTE, limit.min and limit.max must both be in range [-2*Pi, 2*Pi].
+    ///
+    /// For PxArticulationJointType::eREVOLUTE_UNWRAPPED, limit.min and limit.max must both be in range [-PX_MAX_REAL, PX_MAX_REAL].
+    ///
+    /// For PxArticulationJointType::ePRISMATIC, limit.min and limit.max must both be in range [-PX_MAX_REAL, PX_MAX_REAL].
+    ///
+    /// Default:
+    /// (0,0)
     pub fn PxArticulationJointReducedCoordinate_setLimitParams_mut(self_: *mut PxArticulationJointReducedCoordinate, axis: PxArticulationAxis, limit: *const PxArticulationLimit);
 
     /// Returns the joint limits for a given axis.
@@ -7764,6 +9094,9 @@ extern "C" {
     /// See PxArticulationDrive for parameter details; and the manual for further information, and the drives' implicit spring-damper (i.e. PD control) implementation in particular.
     ///
     /// This call is not allowed while the simulation is running.
+    ///
+    /// Default:
+    /// PxArticulationDrive(0.0f, 0.0f, 0.0f, PxArticulationDriveType::eNONE)
     pub fn PxArticulationJointReducedCoordinate_setDriveParams_mut(self_: *mut PxArticulationJointReducedCoordinate, axis: PxArticulationAxis, drive: *const PxArticulationDrive);
 
     /// Gets the joint drive configuration for the given axis.
@@ -7777,14 +9110,21 @@ extern "C" {
     ///
     /// This call is not allowed while the simulation is running.
     ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
     /// For spherical joints, target must be in range [-Pi, Pi].
     ///
-    /// The target is specified in the parent frame of the joint. If Gp, Gc are the parent and child actor poses in the world frame and Lp, Lc are the parent and child joint frames expressed in the parent and child actor frames then the joint will drive the parent and child links to poses that obey Gp * Lp * J = Gc * Lc. For joints restricted to angular motion, J has the form PxTranfsorm(PxVec3(PxZero), PxExp(PxVec3(twistTarget, swing1Target, swing2Target))).  For joints restricted to linear motion, J has the form PxTransform(PxVec3(XTarget, YTarget, ZTarget), PxQuat(PxIdentity)).
+    /// The target is specified in the parent frame of the joint. If Gp, Gc are the parent and child actor poses in the world frame and Lp, Lc are the parent and child joint frames expressed in the parent and child actor frames then the joint will drive the parent and child links to poses that obey Gp * Lp * J = Gc * Lc. For joints restricted to angular motion, J has the form PxTransform(PxVec3(PxZero), PxExp(PxVec3(twistTarget, swing1Target, swing2Target))).  For joints restricted to linear motion, J has the form PxTransform(PxVec3(XTarget, YTarget, ZTarget), PxQuat(PxIdentity)).
     ///
     /// For spherical joints with more than 1 degree of freedom, the joint target angles taken together can collectively represent a rotation of greater than Pi around a vector. When this happens the rotation that matches the joint drive target is not the shortest path rotation.  The joint pose J that is the outcome after driving to the target pose will always be the equivalent of the shortest path rotation.
+    ///
+    /// Default:
+    /// 0.0
     pub fn PxArticulationJointReducedCoordinate_setDriveTarget_mut(self_: *mut PxArticulationJointReducedCoordinate, axis: PxArticulationAxis, target: f32, autowake: bool);
 
     /// Returns the joint drive position target for the given axis.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     ///
     /// The target position.
     pub fn PxArticulationJointReducedCoordinate_getDriveTarget(self_: *const PxArticulationJointReducedCoordinate, axis: PxArticulationAxis) -> f32;
@@ -7794,9 +9134,16 @@ extern "C" {
     /// The target units are linear units (equivalent to scene units) per second for a translational axis, or radians per second for a rotational axis.
     ///
     /// This call is not allowed while the simulation is running.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
+    /// Default:
+    /// 0.0
     pub fn PxArticulationJointReducedCoordinate_setDriveVelocity_mut(self_: *mut PxArticulationJointReducedCoordinate, axis: PxArticulationAxis, targetVel: f32, autowake: bool);
 
     /// Returns the joint drive velocity target for the given axis.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     ///
     /// The target velocity.
     pub fn PxArticulationJointReducedCoordinate_getDriveVelocity(self_: *const PxArticulationJointReducedCoordinate, axis: PxArticulationAxis) -> f32;
@@ -7807,6 +9154,9 @@ extern "C" {
     /// - The armature is in mass units for a prismatic (i.e. linear) joint, and in mass units * (scene linear units)^2 for a rotational joint.
     ///
     /// This call is not allowed while the simulation is running.
+    ///
+    /// Default:
+    /// 0.0
     pub fn PxArticulationJointReducedCoordinate_setArmature_mut(self_: *mut PxArticulationJointReducedCoordinate, axis: PxArticulationAxis, armature: f32);
 
     /// Gets the joint armature for the given axis.
@@ -7825,6 +9175,9 @@ extern "C" {
     /// zero stiffness and zero velocity target, and an appropriately dimensioned damping parameter.
     ///
     /// This call is not allowed while the simulation is running.
+    ///
+    /// Default:
+    /// 0.05
     pub fn PxArticulationJointReducedCoordinate_setFrictionCoefficient_mut(self_: *mut PxArticulationJointReducedCoordinate, coefficient: f32);
 
     /// Gets the joint friction coefficient.
@@ -7832,18 +9185,53 @@ extern "C" {
     /// The joint friction coefficient.
     pub fn PxArticulationJointReducedCoordinate_getFrictionCoefficient(self_: *const PxArticulationJointReducedCoordinate) -> f32;
 
+    /// Configures joint friction.
+    ///
+    /// See PxJointFrictionParams for parameter details; and the manual for further information. The new friction model is applied to all axes where setFrictionParams() has been called.
+    /// For axes where setFrictionParams() hasn't been used, the deprecated friction model remains in effect. See setFrictionCoefficient().
+    ///
+    /// This call is not allowed while the simulation is running.
+    ///
+    /// Default:
+    /// PxJointFrictionParams(0.0f, 0.0f, 0.0f)
+    pub fn PxArticulationJointReducedCoordinate_setFrictionParams_mut(self_: *mut PxArticulationJointReducedCoordinate, axis: PxArticulationAxis, jointFrictionParams: *const PxJointFrictionParams);
+
+    /// Gets per-axis joint friction parameters struct.
+    ///
+    /// The joint friction parameters.
+    pub fn PxArticulationJointReducedCoordinate_getFrictionParams(self_: *const PxArticulationJointReducedCoordinate, axis: PxArticulationAxis) -> PxJointFrictionParams;
+
     /// Sets the maximal joint velocity enforced for all axes.
     ///
     /// - The solver will apply appropriate joint-space impulses in order to enforce the per-axis joint-velocity limit.
     /// - The velocity units are linear units (equivalent to scene units) per second for a translational axis, or radians per second for a rotational axis.
     ///
     /// This call is not allowed while the simulation is running.
+    ///
+    /// Default:
+    /// 100.0
     pub fn PxArticulationJointReducedCoordinate_setMaxJointVelocity_mut(self_: *mut PxArticulationJointReducedCoordinate, maxJointV: f32);
 
     /// Gets the maximal joint velocity enforced for all axes.
     ///
     /// The maximal per-axis joint velocity.
     pub fn PxArticulationJointReducedCoordinate_getMaxJointVelocity(self_: *const PxArticulationJointReducedCoordinate) -> f32;
+
+    /// Sets the maximal joint velocity enforced for the given axis.
+    ///
+    /// - The solver will apply appropriate joint-space impulses in order to enforce the per-axis joint-velocity limit.
+    /// - The velocity units are linear units (equivalent to scene units) per second for a translational axis, or radians per second for a rotational axis.
+    ///
+    /// This call is not allowed while the simulation is running.
+    ///
+    /// Default:
+    /// 100.0
+    pub fn PxArticulationJointReducedCoordinate_setMaxJointVelocity_mut_1(self_: *mut PxArticulationJointReducedCoordinate, axis: PxArticulationAxis, maxJointV: f32);
+
+    /// Gets the maximal joint velocity enforced for the given axis.
+    ///
+    /// The maximal joint velocity for the given axis.
+    pub fn PxArticulationJointReducedCoordinate_getMaxJointVelocity_1(self_: *const PxArticulationJointReducedCoordinate, axis: PxArticulationAxis) -> f32;
 
     /// Sets the joint position for the given axis.
     ///
@@ -7853,11 +9241,22 @@ extern "C" {
     ///
     /// This call is not allowed while the simulation is running.
     ///
-    /// For spherical joints, jointPos must be in range [-Pi, Pi].
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     ///
-    /// Joint position is specified in the parent frame of the joint. If Gp, Gc are the parent and child actor poses in the world frame and Lp, Lc are the parent and child joint frames expressed in the parent and child actor frames then the parent and child links will be given poses that obey Gp * Lp * J = Gc * Lc with J denoting the joint pose. For joints restricted to angular motion, J has the form PxTranfsorm(PxVec3(PxZero), PxExp(PxVec3(twistPos, swing1Pos, swing2Pos))).  For joints restricted to linear motion, J has the form PxTransform(PxVec3(xPos, yPos, zPos), PxQuat(PxIdentity)).
+    /// For PxArticulationJointType::eSPHERICAL, jointPos must be in range [-Pi, Pi].
+    ///
+    /// For PxArticulationJointType::eREVOLUTE, jointPos must be in range [-2*Pi, 2*Pi].
+    ///
+    /// For PxArticulationJointType::eREVOLUTE_UNWRAPPED, jointPos must be in range [-PX_MAX_REAL, PX_MAX_REAL].
+    ///
+    /// For PxArticulationJointType::ePRISMATIC, jointPos must be in range [-PX_MAX_REAL, PX_MAX_REAL].
+    ///
+    /// Joint position is specified in the parent frame of the joint. If Gp, Gc are the parent and child actor poses in the world frame and Lp, Lc are the parent and child joint frames expressed in the parent and child actor frames then the parent and child links will be given poses that obey Gp * Lp * J = Gc * Lc with J denoting the joint pose. For joints restricted to angular motion, J has the form PxTransform(PxVec3(PxZero), PxExp(PxVec3(twistPos, swing1Pos, swing2Pos))).  For joints restricted to linear motion, J has the form PxTransform(PxVec3(xPos, yPos, zPos), PxQuat(PxIdentity)).
     ///
     /// For spherical joints with more than 1 degree of freedom, the input joint positions taken together can collectively represent a rotation of greater than Pi around a vector. When this happens the rotation that matches the joint positions is not the shortest path rotation.  The joint pose J that is the outcome of setting and applying the joint positions will always be the equivalent of the shortest path rotation.
+    ///
+    /// Default:
+    /// 0.0
     pub fn PxArticulationJointReducedCoordinate_setJointPosition_mut(self_: *mut PxArticulationJointReducedCoordinate, axis: PxArticulationAxis, jointPos: f32);
 
     /// Gets the joint position for the given axis, i.e. joint degree of freedom (DOF).
@@ -7868,6 +9267,8 @@ extern "C" {
     ///
     /// This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
     /// and in PxContactModifyCallback or in contact report callbacks.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationJointReducedCoordinate_getJointPosition(self_: *const PxArticulationJointReducedCoordinate, axis: PxArticulationAxis) -> f32;
 
     /// Sets the joint velocity for the given axis.
@@ -7877,6 +9278,11 @@ extern "C" {
     /// in order to update link states for the next simulation frame or querying.
     ///
     /// This call is not allowed while the simulation is running.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
+    /// Default:
+    /// 0.0
     pub fn PxArticulationJointReducedCoordinate_setJointVelocity_mut(self_: *mut PxArticulationJointReducedCoordinate, axis: PxArticulationAxis, jointVel: f32);
 
     /// Gets the joint velocity for the given axis.
@@ -7887,6 +9293,8 @@ extern "C" {
     ///
     /// This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
     /// and in PxContactModifyCallback or in contact report callbacks.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     pub fn PxArticulationJointReducedCoordinate_getJointVelocity(self_: *const PxArticulationJointReducedCoordinate, axis: PxArticulationAxis) -> f32;
 
     /// Returns the string name of the dynamic type.
@@ -7894,13 +9302,21 @@ extern "C" {
     /// The string name.
     pub fn PxArticulationJointReducedCoordinate_getConcreteTypeName(self_: *const PxArticulationJointReducedCoordinate) -> *const std::ffi::c_char;
 
-    /// Decrements the reference count of a shape and releases it if the new reference count is zero.
+    pub fn PxArticulationJointReducedCoordinate_delete(self_: *mut PxArticulationJointReducedCoordinate);
+
+    /// Sets a name string for the object that can be retrieved with getName().
     ///
-    /// Note that in releases prior to PhysX 3.3 this method did not have reference counting semantics and was used to destroy a shape
-    /// created with PxActor::createShape(). In PhysX 3.3 and above, this usage is deprecated, instead, use PxRigidActor::detachShape() to detach
-    /// a shape from an actor. If the shape to be detached was created with PxActor::createShape(), the actor holds the only counted reference,
-    /// and so when the shape is detached it will also be destroyed.
-    pub fn PxShape_release_mut(self_: *mut PxShape);
+    /// This is for debugging and is not used by the SDK. The string is not copied by the SDK,
+    /// only the pointer is stored.
+    ///
+    /// Default:
+    /// NULL
+    pub fn PxArticulationJointReducedCoordinate_setName_mut(self_: *mut PxArticulationJointReducedCoordinate, name: *const std::ffi::c_char);
+
+    /// Retrieves the name string set with setName().
+    ///
+    /// Name string associated with object.
+    pub fn PxArticulationJointReducedCoordinate_getName(self_: *const PxArticulationJointReducedCoordinate) -> *const std::ffi::c_char;
 
     /// Adjust the geometry of the shape.
     ///
@@ -7979,6 +9395,22 @@ extern "C" {
     /// wake the associated actor up automatically.
     pub fn PxShape_setMaterials_mut(self_: *mut PxShape, materials: *const *mut PxMaterial, materialCount: u16);
 
+    /// Assigns surface deformable material(s) to the shape. Will remove existing materials from the shape.
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake the associated actor up automatically.
+    pub fn PxShape_setDeformableSurfaceMaterials_mut(self_: *mut PxShape, materials: *const *mut PxDeformableSurfaceMaterial, materialCount: u16);
+
+    /// Assigns deformable volume material(s) to the shape. Will remove existing materials from the shape.
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake the associated actor up automatically.
+    pub fn PxShape_setDeformableVolumeMaterials_mut(self_: *mut PxShape, materials: *const *mut PxDeformableVolumeMaterial, materialCount: u16);
+
     /// Returns the number of materials assigned to the shape.
     ///
     /// You can use [`getMaterials`]() to retrieve the material pointers.
@@ -7995,6 +9427,24 @@ extern "C" {
     /// Number of material pointers written to the buffer.
     pub fn PxShape_getMaterials(self_: *const PxShape, userBuffer: *mut *mut PxMaterial, bufferSize: u32, startIndex: u32) -> u32;
 
+    /// Retrieve all the surface deformable material pointers associated with the shape.
+    ///
+    /// You can retrieve the number of material pointers by calling [`getNbMaterials`]()
+    ///
+    /// Note: The returned data may contain invalid pointers if you release materials using [`PxMaterial::release`]().
+    ///
+    /// Number of material pointers written to the buffer.
+    pub fn PxShape_getDeformableSurfaceMaterials(self_: *const PxShape, userBuffer: *mut *mut PxDeformableSurfaceMaterial, bufferSize: u32, startIndex: u32) -> u32;
+
+    /// Retrieve all the deformable volume material pointers associated with the shape.
+    ///
+    /// You can retrieve the number of material pointers by calling [`getNbMaterials`]()
+    ///
+    /// Note: The returned data may contain invalid pointers if you release materials using [`PxMaterial::release`]().
+    ///
+    /// Number of material pointers written to the buffer.
+    pub fn PxShape_getDeformableVolumeMaterials(self_: *const PxShape, userBuffer: *mut *mut PxDeformableVolumeMaterial, bufferSize: u32, startIndex: u32) -> u32;
+
     /// Retrieve material from given triangle index.
     ///
     /// The input index is the internal triangle index as used inside the SDK. This is the index
@@ -8002,7 +9452,7 @@ extern "C" {
     ///
     /// This function is only useful for triangle meshes or heightfields, which have per-triangle
     /// materials. For other shapes or SDF triangle meshes, the function returns the single material
-    /// associated with the shape, regardless of the index.
+    /// associated with the	shape, regardless of the index.
     ///
     /// Material from input triangle
     ///
@@ -8069,10 +9519,15 @@ extern "C" {
 
     /// Sets torsional patch radius.
     ///
-    /// This defines the radius of the contact patch used to apply torsional friction. If the radius is 0, no torsional friction
-    /// will be applied. If the radius is > 0, some torsional friction will be applied. This is proportional to the penetration depth
-    /// so, if the shapes are separated or penetration is zero, no torsional friction will be applied. It is used to approximate
-    /// rotational friction introduced by the compression of contacting surfaces.
+    /// This defines the radius of the contact patch used to apply torsional friction. If the radius is 0 (and minTorsionalPatchRadius
+    /// is 0 too, see [`setMinTorsionalPatchRadius`]), no torsional friction will be applied. If the radius is > 0, some torsional friction
+    /// will be applied. This is proportional to the penetration depth so, if the shapes are separated or penetration is zero, no
+    /// torsional friction will be applied. It is used to approximate rotational friction introduced by the compression of contacting surfaces.
+    ///
+    /// Will only be active, if the friction patch has a single anchor point only. This is for example the case, if a contact patch
+    /// has a single contact point.
+    ///
+    /// Only supported in combination with solver type PxSolverType::eTGS.
     ///
     /// Default:
     /// 0.0
@@ -8080,10 +9535,7 @@ extern "C" {
 
     /// Gets torsional patch radius.
     ///
-    /// This defines the radius of the contact patch used to apply torsional friction. If the radius is 0, no torsional friction
-    /// will be applied. If the radius is > 0, some torsional friction will be applied. This is proportional to the penetration depth
-    /// so, if the shapes are separated or penetration is zero, no torsional friction will be applied. It is used to approximate
-    /// rotational friction introduced by the compression of contacting surfaces.
+    /// See [`setTorsionalPatchRadius`] for more info.
     ///
     /// The torsional patch radius of the shape.
     pub fn PxShape_getTorsionalPatchRadius(self_: *const PxShape) -> f32;
@@ -8095,19 +9547,25 @@ extern "C" {
     ///
     /// If the radius is > 0, some torsional friction will be applied regardless of the value of torsionalPatchRadius or the amount of penetration.
     ///
+    /// Will only be active in certain cases, see [`setTorsionalPatchRadius`] for details.
+    ///
     /// Default:
     /// 0.0
     pub fn PxShape_setMinTorsionalPatchRadius_mut(self_: *mut PxShape, radius: f32);
 
     /// Gets minimum torsional patch radius.
     ///
-    /// This defines the minimum radius of the contact patch used to apply torsional friction. If the radius is 0, the amount of torsional friction
-    /// that will be applied will be entirely dependent on the value of torsionalPatchRadius.
-    ///
-    /// If the radius is > 0, some torsional friction will be applied regardless of the value of torsionalPatchRadius or the amount of penetration.
+    /// See [`setMinTorsionalPatchRadius`] for more info.
     ///
     /// The minimum torsional patch radius of the shape.
     pub fn PxShape_getMinTorsionalPatchRadius(self_: *const PxShape) -> f32;
+
+    /// Returns the GPU shape index.
+    ///
+    /// This function only returns valid results if GPU dynamics is enabled.
+    ///
+    /// The GPU index, or 0xFFFFFFFF if the shape is not attached to a PxActor that is inserted into a PxScene.
+    pub fn PxShape_getGPUIndex(self_: *const PxShape) -> u32;
 
     /// Sets shape flags
     ///
@@ -8176,6 +9634,8 @@ extern "C" {
     /// It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
     /// in PxContactModifyCallback or in contact report callbacks).
     ///
+    /// If this actor is a PxRigidDynamic or PxArticulationLink, this method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
     /// Global pose of object.
     pub fn PxRigidActor_getGlobalPose(self_: *const PxRigidActor) -> PxTransform;
 
@@ -8195,6 +9655,11 @@ extern "C" {
     /// moving actors into other actors, thus causing overlap (an invalid physical state)
     ///
     /// moving an actor that is connected by a joint to another away from the other (thus causing joint error)
+    ///
+    /// It is not allowed to use this method if the actor is part of a [`PxPruningStructure`] that has not been
+    /// added to a scene yet.
+    ///
+    /// If this actor is a PxRigidDynamic or PxArticulationLink, this method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
     ///
     /// Sleeping:
     /// This call wakes dynamic actors if they are sleeping and the autowake parameter is true (default).
@@ -8267,7 +9732,15 @@ extern "C" {
 
     pub fn PxNodeIndex_new_1(id: u32) -> PxNodeIndex;
 
+    pub fn PxNodeIndex_new_2(ind: u64) -> PxNodeIndex;
+
+    pub fn PxNodeIndex_new_3(id: u32, linkData: u32, anon_param2: bool) -> PxNodeIndex;
+
+    pub fn PxNodeIndex_getInd(self_: *const PxNodeIndex) -> u64;
+
     pub fn PxNodeIndex_index(self_: *const PxNodeIndex) -> u32;
+
+    pub fn PxNodeIndex_linkData(self_: *const PxNodeIndex) -> u32;
 
     pub fn PxNodeIndex_articulationLinkId(self_: *const PxNodeIndex) -> u32;
 
@@ -8281,14 +9754,16 @@ extern "C" {
 
     pub fn PxNodeIndex_setIndices_mut_1(self_: *mut PxNodeIndex, index: u32);
 
-    pub fn PxNodeIndex_getInd(self_: *const PxNodeIndex) -> u64;
-
     /// Sets the pose of the center of mass relative to the actor.
     ///
     /// Changing this transform will not move the actor in the world!
     ///
     /// Setting an unrealistic center of mass which is a long way from the body can make it difficult for
     /// the SDK to solve constraints. Perhaps leading to instability and jittering bodies.
+    ///
+    /// Changing this transform will not update the linear velocity reported by getLinearVelocity() to account
+    /// for the shift in center of mass. If the shift should be accounted for, the user should update the velocity
+    /// using setLinearVelocity().
     ///
     /// Default:
     /// the identity transform
@@ -8376,7 +9851,7 @@ extern "C" {
     /// Zero represents no damping. The damping coefficient must be nonnegative.
     ///
     /// Default:
-    /// 0.0
+    /// 0.05 for PxArticulationLink, 0.0 for PxRigidDynamic
     pub fn PxRigidBody_setLinearDamping_mut(self_: *mut PxRigidBody, linDamp: f32);
 
     /// Retrieves the linear damping coefficient.
@@ -8404,6 +9879,8 @@ extern "C" {
     /// It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
     /// in PxContactModifyCallback or in contact report callbacks).
     ///
+    /// The linear velocity is reported with respect to the rigid body's center of mass and not the actor frame origin.
+    ///
     /// The linear velocity of the actor.
     pub fn PxRigidBody_getLinearVelocity(self_: *const PxRigidBody) -> PxVec3;
 
@@ -8418,15 +9895,18 @@ extern "C" {
     /// Lets you set the maximum linear velocity permitted for this actor.
     ///
     /// With this function, you can set the  maximum linear velocity permitted for this rigid body.
-    /// Higher angular velocities are clamped to this value.
+    /// Higher linear velocities are clamped to this value.
     ///
-    /// Note: The angular velocity is clamped to the set value
+    /// Note: The linear velocity is clamped to the set value
     /// before
     /// the solver, which means that
     /// the limit may still be momentarily exceeded.
     ///
+    /// Enforcing the limit introduces momentum into the simulation, causing potentially unphysical behavior.
+    /// For articulation links, consider using joint damping and limits instead, which preserve momentum.
+    ///
     /// Default:
-    /// PX_MAX_F32
+    /// 100 * PxTolerancesScale::length /s for PxArticulationLink, 1e^16 lengthUnits/s for PxRigidDynamic
     pub fn PxRigidBody_setMaxLinearVelocity_mut(self_: *mut PxRigidBody, maxLinVel: f32);
 
     /// Retrieves the maximum angular velocity permitted for this actor.
@@ -8447,14 +9927,40 @@ extern "C" {
     /// the solver, which means that
     /// the limit may still be momentarily exceeded.
     ///
+    /// Enforcing the limit introduces momentum into the simulation, causing potentially unphysical behavior.
+    /// For articulation links, consider using joint damping and limits instead, which preserve momentum.
+    ///
     /// Default:
-    /// 100.0
+    /// 50.0 rad/s for PxArticulationLink, 100.0 rad/s for PxRigidDynamic
+    ///
+    /// Range:
+    /// [0, 1e^16) rad/s
     pub fn PxRigidBody_setMaxAngularVelocity_mut(self_: *mut PxRigidBody, maxAngVel: f32);
 
     /// Retrieves the maximum angular velocity permitted for this actor.
     ///
     /// The maximum allowed angular velocity for this actor.
     pub fn PxRigidBody_getMaxAngularVelocity(self_: *const PxRigidBody) -> f32;
+
+    /// Retrieves the linear acceleration of an actor.
+    ///
+    /// For PxArticulationLink objects, this function is always available.
+    ///
+    /// For PxRigidDynamic actors, this function only returns valid results if PxSceneFlag::eENABLE_BODY_ACCELERATIONS is enabled.
+    /// If that flag is not enabled, the function returns zero for PxRigidDynamic actors.
+    ///
+    /// The linear acceleration of the actor, or zero if PxSceneFlag::eENABLE_BODY_ACCELERATIONS is disabled and the object is a PxRigidDynamic.
+    pub fn PxRigidBody_getLinearAcceleration(self_: *const PxRigidBody) -> PxVec3;
+
+    /// Retrieves the angular acceleration of an actor.
+    ///
+    /// For PxArticulationLink objects, this function is always available.
+    ///
+    /// For PxRigidDynamic actors, this function only returns valid results if PxSceneFlag::eENABLE_BODY_ACCELERATIONS is enabled.
+    /// If that flag is not enabled, the function returns zero for PxRigidDynamic actors.
+    ///
+    /// The angular acceleration of the actor, or zero if PxSceneFlag::eENABLE_BODY_ACCELERATIONS is disabled and the object is a PxRigidDynamic.
+    pub fn PxRigidBody_getAngularAcceleration(self_: *const PxRigidBody) -> PxVec3;
 
     /// Applies a force (or impulse) defined in the global coordinate frame to the actor at its center of mass.
     ///
@@ -8470,12 +9976,17 @@ extern "C" {
     ///
     /// It is invalid to use this method if the actor has not been added to a scene already or if PxActorFlag::eDISABLE_SIMULATION is set.
     ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
     /// The force modes PxForceMode::eIMPULSE and PxForceMode::eVELOCITY_CHANGE can not be applied to articulation links.
     ///
     /// if this is called on an articulation link, only the link is updated, not the entire articulation.
     ///
     /// see [`PxRigidBodyExt::computeVelocityDeltaFromImpulse`] for details of how to compute the change in linear velocity that
     /// will arise from the application of an impulsive force, where an impulsive force is applied force multiplied by a timestep.
+    ///
+    /// Forces will be cleared automatically after they are applied during the next simulation step. If the forces should be retained for
+    /// the following steps, PxRigidBodyFlag::eRETAIN_ACCELERATIONS should be raised.
     ///
     /// Sleeping:
     /// This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the force is non-zero.
@@ -8492,12 +10003,17 @@ extern "C" {
     ///
     /// It is invalid to use this method if the actor has not been added to a scene already or if PxActorFlag::eDISABLE_SIMULATION is set.
     ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
     /// The force modes PxForceMode::eIMPULSE and PxForceMode::eVELOCITY_CHANGE can not be applied to articulation links.
     ///
     /// if this called on an articulation link, only the link is updated, not the entire articulation.
     ///
     /// see [`PxRigidBodyExt::computeVelocityDeltaFromImpulse`] for details of how to compute the change in angular velocity that
     /// will arise from the application of an impulsive torque, where an impulsive torque is an applied torque multiplied by a timestep.
+    ///
+    /// Torques will be cleared after they are applied during the next simulation step. If the Torques should be retained for the following
+    /// steps, PxRigidBodyFlag::eRETAIN_ACCELERATIONS should be raised.
     ///
     /// Sleeping:
     /// This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the torque is non-zero.
@@ -8515,6 +10031,8 @@ extern "C" {
     ///
     /// The force modes PxForceMode::eIMPULSE and PxForceMode::eVELOCITY_CHANGE can not be applied to articulation links.
     ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
     /// It is invalid to use this method if the actor has not been added to a scene already or if PxActorFlag::eDISABLE_SIMULATION is set.
     pub fn PxRigidBody_clearForce_mut(self_: *mut PxRigidBody, mode: PxForceMode);
 
@@ -8530,6 +10048,8 @@ extern "C" {
     ///
     /// The force modes PxForceMode::eIMPULSE and PxForceMode::eVELOCITY_CHANGE can not be applied to articulation links.
     ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
     /// It is invalid to use this method if the actor has not been added to a scene already or if PxActorFlag::eDISABLE_SIMULATION is set.
     pub fn PxRigidBody_clearTorque_mut(self_: *mut PxRigidBody, mode: PxForceMode);
 
@@ -8539,7 +10059,12 @@ extern "C" {
     ///
     /// The force modes PxForceMode::eIMPULSE and PxForceMode::eVELOCITY_CHANGE can not be applied to articulation links.
     ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
     /// It is invalid to use this method if the actor has not been added to a scene already or if PxActorFlag::eDISABLE_SIMULATION is set.
+    ///
+    /// Forces and torques will be cleared after they are applied during the next simulation step. If they should be retained for the following
+    /// steps, PxRigidBodyFlag::eRETAIN_ACCELERATIONS should be raised.
     pub fn PxRigidBody_setForceAndTorque_mut(self_: *mut PxRigidBody, force: *const PxVec3, torque: *const PxVec3, mode: PxForceMode);
 
     /// Raises or clears a particular rigid body flag.
@@ -8577,7 +10102,7 @@ extern "C" {
     /// scenes which the constraint solver can't converge, e.g. scenes where an object is being dragged through a wall with a constraint.
     /// A value of 0 ensures that the pair of objects stop at the exact time-of-impact and will not gently drift through each-other. However, with very small/thin objects initially in
     /// contact, this can lead to a large amount of time being dropped and increases the chances of jamming. Jamming occurs when the an object is persistently in contact with an object
-    /// such that the time-of-impact is 0, which results in no time being advanced for those objects in that CCD pass.
+    /// such that the time-of-impact is	0, which results in no time being advanced for those objects in that CCD pass.
     ///
     /// The chances of jamming can be reduced by increasing the number of CCD mass
     pub fn PxRigidBody_setMinCCDAdvanceCoefficient_mut(self_: *mut PxRigidBody, advanceCoefficient: f32);
@@ -8598,7 +10123,7 @@ extern "C" {
     pub fn PxRigidBody_getMaxDepenetrationVelocity(self_: *const PxRigidBody) -> f32;
 
     /// Sets a limit on the impulse that may be applied at a contact. The maximum impulse at a contact between two dynamic or kinematic
-    /// bodies will be the minimum of the two limit values. For a collision between a static and a dynamic body, the impulse is limited
+    /// bodies will be the minimum	of the two limit values. For a collision between a static and a dynamic body, the impulse is limited
     /// by the value for the dynamic body.
     pub fn PxRigidBody_setMaxContactImpulse_mut(self_: *mut PxRigidBody, maxImpulse: f32);
 
@@ -8656,6 +10181,11 @@ extern "C" {
 
     /// Gets the low-level link index that may be used to index into members of PxArticulationCache.
     ///
+    /// The low-level indices are built after an articulation is added to the scene following a breadth-first approach,
+    /// where all the links at the current depth are indexed sequentially before moving to the links at the next depth level.
+    /// The root of the articulation has therefore the index 0.
+    /// Note that the low-level indices may be different from the order in which the links were originally added to the articulation.
+    ///
     /// The return value is only valid for articulations that are in a scene.
     ///
     /// The low-level index, or 0xFFFFFFFF if the articulation is not in a scene.
@@ -8687,7 +10217,6 @@ extern "C" {
 
     /// Get the linear velocity of the link.
     ///
-    /// - The linear velocity is with respect to the link's center of mass and not the actor frame origin.
     /// - For performance, prefer PxArticulationCache::linkVelocity to get link spatial velocities in a batch query.
     /// - When the articulation state is updated via non-cache API, use PxArticulationReducedCoordinate::updateKinematic before querying velocity.
     ///
@@ -8695,6 +10224,8 @@ extern "C" {
     ///
     /// This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
     /// and in PxContactModifyCallback or in contact report callbacks.
+    ///
+    /// The linear velocity is reported with respect to the link's center of mass and not the actor frame origin.
     pub fn PxArticulationLink_getLinearVelocity(self_: *const PxArticulationLink) -> PxVec3;
 
     /// Get the angular velocity of the link.
@@ -8712,8 +10243,6 @@ extern "C" {
     ///
     /// The string name.
     pub fn PxArticulationLink_getConcreteTypeName(self_: *const PxArticulationLink) -> *const std::ffi::c_char;
-
-    pub fn PxConeLimitedConstraint_new() -> PxConeLimitedConstraint;
 
     /// Releases a PxConstraint instance.
     ///
@@ -8794,6 +10323,172 @@ extern "C" {
     pub fn PxConstraint_setConstraintFunctions_mut(self_: *mut PxConstraint, connector: *mut PxConstraintConnector, shaders: *const PxConstraintShaderTable);
 
     pub fn PxConstraint_getConcreteTypeName(self_: *const PxConstraint) -> *const std::ffi::c_char;
+
+    pub fn PxConstraint_getGPUIndex(self_: *const PxConstraint) -> u32;
+
+    pub fn PxBaseMaterial_delete(self_: *mut PxBaseMaterial);
+
+    pub fn PxBaseMaterial_isKindOf(self_: *const PxBaseMaterial, name: *const std::ffi::c_char) -> bool;
+
+    /// Sets the coefficient of dynamic friction.
+    ///
+    /// The coefficient of dynamic friction should be in [0, PX_MAX_F32). If set to greater than staticFriction, the effective value of staticFriction will be increased to match.
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake any actors which may be affected.
+    pub fn PxMaterial_setDynamicFriction_mut(self_: *mut PxMaterial, coef: f32);
+
+    /// Retrieves the DynamicFriction value.
+    ///
+    /// The coefficient of dynamic friction.
+    pub fn PxMaterial_getDynamicFriction(self_: *const PxMaterial) -> f32;
+
+    /// Sets the coefficient of static friction
+    ///
+    /// The coefficient of static friction should be in the range [0, PX_MAX_F32)
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake any actors which may be affected.
+    pub fn PxMaterial_setStaticFriction_mut(self_: *mut PxMaterial, coef: f32);
+
+    /// Retrieves the coefficient of static friction.
+    ///
+    /// The coefficient of static friction.
+    pub fn PxMaterial_getStaticFriction(self_: *const PxMaterial) -> f32;
+
+    /// Sets the coefficient of restitution or the spring stiffness for compliant contact
+    ///
+    /// A coefficient of 0 makes the object bounce as little as possible, higher values up to 1.0 result in more bounce.
+    /// If a negative value is provided it is interpreted as stiffness term for an implicit spring
+    /// simulated at the contact site, with the spring positional error defined by
+    /// the contact separation value. Higher stiffness terms produce stiffer springs that behave more like a rigid contact.
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake any actors which may be affected.
+    pub fn PxMaterial_setRestitution_mut(self_: *mut PxMaterial, rest: f32);
+
+    /// Retrieves the coefficient of restitution.
+    ///
+    /// See [`setRestitution`].
+    ///
+    /// The coefficient of restitution.
+    pub fn PxMaterial_getRestitution(self_: *const PxMaterial) -> f32;
+
+    /// Sets the coefficient of damping
+    ///
+    /// This property only affects the simulation if compliant contact mode is enabled, i.e., a negative restitution value is set.
+    /// Damping works together with spring stiffness. Spring stiffness corrects positional error while
+    /// damping resists relative velocity. Setting a high damping coefficient can produce spongy contacts.
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake any actors which may be affected.
+    pub fn PxMaterial_setDamping_mut(self_: *mut PxMaterial, damping: f32);
+
+    /// Retrieves the coefficient of damping.
+    ///
+    /// See [`setDamping`].
+    ///
+    /// The coefficient of damping.
+    pub fn PxMaterial_getDamping(self_: *const PxMaterial) -> f32;
+
+    /// Raises or clears a particular material flag.
+    ///
+    /// See the list of flags [`PxMaterialFlag`]
+    ///
+    /// Default:
+    /// No flag raised.
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake any actors which may be affected.
+    pub fn PxMaterial_setFlag_mut(self_: *mut PxMaterial, flag: PxMaterialFlag, b: bool);
+
+    /// sets all the material flags.
+    ///
+    /// See the list of flags [`PxMaterialFlag`]
+    ///
+    /// Default:
+    /// No flag raised.
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake any actors which may be affected.
+    pub fn PxMaterial_setFlags_mut(self_: *mut PxMaterial, flags: PxMaterialFlags);
+
+    /// Retrieves the flags. See [`PxMaterialFlag`].
+    ///
+    /// The material flags.
+    pub fn PxMaterial_getFlags(self_: *const PxMaterial) -> PxMaterialFlags;
+
+    /// Sets the friction combine mode.
+    ///
+    /// See the enum ::PxCombineMode .
+    ///
+    /// Default:
+    /// PxCombineMode::eAVERAGE
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake any actors which may be affected.
+    pub fn PxMaterial_setFrictionCombineMode_mut(self_: *mut PxMaterial, combMode: PxCombineMode);
+
+    /// Retrieves the friction combine mode.
+    ///
+    /// See [`setFrictionCombineMode`].
+    ///
+    /// The friction combine mode for this material.
+    pub fn PxMaterial_getFrictionCombineMode(self_: *const PxMaterial) -> PxCombineMode;
+
+    /// Sets the restitution combine mode.
+    ///
+    /// See the enum ::PxCombineMode .
+    ///
+    /// Default:
+    /// PxCombineMode::eAVERAGE
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake any actors which may be affected.
+    pub fn PxMaterial_setRestitutionCombineMode_mut(self_: *mut PxMaterial, combMode: PxCombineMode);
+
+    /// Retrieves the restitution combine mode.
+    ///
+    /// See [`setRestitutionCombineMode`].
+    ///
+    /// The coefficient of restitution combine mode for this material.
+    pub fn PxMaterial_getRestitutionCombineMode(self_: *const PxMaterial) -> PxCombineMode;
+
+    /// Sets the damping combine mode.
+    ///
+    /// See the enum ::PxCombineMode .
+    ///
+    /// Default:
+    /// PxCombineMode::eAVERAGE
+    ///
+    /// Sleeping:
+    /// Does
+    /// NOT
+    /// wake any actors which may be affected.
+    pub fn PxMaterial_setDampingCombineMode_mut(self_: *mut PxMaterial, combMode: PxCombineMode);
+
+    /// Retrieves the damping combine mode.
+    ///
+    /// The damping combine mode for this material.
+    pub fn PxMaterial_getDampingCombineMode(self_: *const PxMaterial) -> PxCombineMode;
+
+    pub fn PxMaterial_getConcreteTypeName(self_: *const PxMaterial) -> *const std::ffi::c_char;
 
     /// Constructor
     pub fn PxContactStreamIterator_new(contactPatches: *const u8, contactPoints: *const u8, contactFaceIndices: *const u32, nbPatches: u32, nbContacts: u32) -> PxContactStreamIterator;
@@ -8919,6 +10614,55 @@ extern "C" {
     /// True if advancing was possible
     pub fn PxContactStreamIterator_advanceToIndex_mut(self_: *mut PxContactStreamIterator, initialIndex: u32) -> bool;
 
+    /// Constructor
+    pub fn PxFrictionAnchorStreamIterator_new(contactPatches: *const u8, frictionPatches: *const u8, patchCount: u32) -> PxFrictionAnchorStreamIterator;
+
+    /// Check if there are more patches.
+    ///
+    /// true if there are more patches.
+    pub fn PxFrictionAnchorStreamIterator_hasNextPatch(self_: *const PxFrictionAnchorStreamIterator) -> bool;
+
+    /// Advance to the next patch.
+    pub fn PxFrictionAnchorStreamIterator_nextPatch_mut(self_: *mut PxFrictionAnchorStreamIterator);
+
+    /// Check if current patch has more friction anchors.
+    ///
+    /// true if there are more friction anchors in current patch.
+    pub fn PxFrictionAnchorStreamIterator_hasNextFrictionAnchor(self_: *const PxFrictionAnchorStreamIterator) -> bool;
+
+    /// Advance to the next friction anchor in the patch.
+    pub fn PxFrictionAnchorStreamIterator_nextFrictionAnchor_mut(self_: *mut PxFrictionAnchorStreamIterator);
+
+    /// Get the friction anchor's position.
+    ///
+    /// The friction anchor's position.
+    pub fn PxFrictionAnchorStreamIterator_getPosition(self_: *const PxFrictionAnchorStreamIterator) -> *const PxVec3;
+
+    /// Get the friction anchor's impulse.
+    ///
+    /// The friction anchor's impulse.
+    pub fn PxFrictionAnchorStreamIterator_getImpulse(self_: *const PxFrictionAnchorStreamIterator) -> *const PxVec3;
+
+    /// Get the friction anchor's normal.
+    ///
+    /// The friction anchor's normal.
+    pub fn PxFrictionAnchorStreamIterator_getNormal(self_: *const PxFrictionAnchorStreamIterator) -> *const PxVec3;
+
+    /// Get current patch's static friction coefficient.
+    ///
+    /// The patch's static friction coefficient.
+    pub fn PxFrictionAnchorStreamIterator_getStaticFriction(self_: *const PxFrictionAnchorStreamIterator) -> f32;
+
+    /// Get current patch's dynamic friction coefficient.
+    ///
+    /// The patch's dynamic friction coefficient.
+    pub fn PxFrictionAnchorStreamIterator_getDynamicFriction(self_: *const PxFrictionAnchorStreamIterator) -> f32;
+
+    /// Get current patch's combined material flags.
+    ///
+    /// The patch's combined material flags.
+    pub fn PxFrictionAnchorStreamIterator_getMaterialFlags(self_: *const PxFrictionAnchorStreamIterator) -> PxMaterialFlags;
+
     /// Get the position of a specific contact point in the set.
     ///
     /// Position to the requested point in world space
@@ -8951,6 +10695,8 @@ extern "C" {
     pub fn PxContactSet_getTargetVelocity(self_: *const PxContactSet, i: u32) -> *const PxVec3;
 
     /// Alter the target velocity of a specific contact point in the set.
+    ///
+    /// The sign of the velocity needs to be flipped depending on the order of the actors in the pair. There is no guarantee about the consistency of the order from frame to frame.
     pub fn PxContactSet_setTargetVelocity_mut(self_: *mut PxContactSet, i: u32, v: *const PxVec3);
 
     /// Get the face index with respect to the first shape of the pair for a specific contact point in the set.
@@ -9089,6 +10835,701 @@ extern "C" {
     /// disable contacts using PxContactSet::ignore().
     pub fn PxCCDContactModifyCallback_onCCDContactModify_mut(self_: *mut PxCCDContactModifyCallback, pairs: *mut PxContactModifyPair, count: u32);
 
+    /// Raises or clears a particular deformable body flag.
+    ///
+    /// See the list of flags [`PxDeformableBodyFlag`]
+    ///
+    /// Default:
+    /// No flags are set
+    pub fn PxDeformableBody_setDeformableBodyFlag_mut(self_: *mut PxDeformableBody, flag: PxDeformableBodyFlag, val: bool);
+
+    /// Sets deformable body flags.
+    ///
+    /// See the list of flags [`PxDeformableBodyFlag`]
+    ///
+    /// Default:
+    /// No flags are set
+    pub fn PxDeformableBody_setDeformableBodyFlags_mut(self_: *mut PxDeformableBody, flags: PxDeformableBodyFlags);
+
+    /// Reads the deformable body flags.
+    ///
+    /// See the list of flags [`PxDeformableBodyFlag`]
+    ///
+    /// The values of the deformable body flags.
+    pub fn PxDeformableBody_getDeformableBodyFlags(self_: *const PxDeformableBody) -> PxDeformableBodyFlags;
+
+    /// Sets the linear damping parameter.
+    ///
+    /// After every timestep the velocity is reduced while the magnitude of the
+    /// reduction depends on the linearDamping value.
+    pub fn PxDeformableBody_setLinearDamping_mut(self_: *mut PxDeformableBody, linearDamping: f32);
+
+    /// Retrieves linear velocity damping parameter.
+    ///
+    /// The linear damping parameter
+    pub fn PxDeformableBody_getLinearDamping(self_: *const PxDeformableBody) -> f32;
+
+    /// Sets the maximal velocity vertices can reach
+    ///
+    /// Allows to limit the vertices' maximal velocity to control the maximal distance a vertex can move per frame
+    /// Default:
+    /// 1.0e32
+    pub fn PxDeformableBody_setMaxLinearVelocity_mut(self_: *mut PxDeformableBody, maxLinearVelocity: f32);
+
+    /// Retrieves maximal velocity a vertex can have.
+    ///
+    /// The maximal velocity
+    pub fn PxDeformableBody_getMaxLinearVelocity(self_: *const PxDeformableBody) -> f32;
+
+    /// Sets the maximal depenetration velocity vertices can reach
+    ///
+    /// Allows to limit the vertices' maximal depenetration velocity to avoid that collision responses lead to very high particle velocities
+    /// Default:
+    /// 1.0e32
+    pub fn PxDeformableBody_setMaxDepenetrationVelocity_mut(self_: *mut PxDeformableBody, maxDepenetrationVelocity: f32);
+
+    /// Retrieves maximal depenetration velocity a vertex can have.
+    ///
+    /// The maximal depenetration velocity
+    pub fn PxDeformableBody_getMaxDepenetrationVelocity(self_: *const PxDeformableBody) -> f32;
+
+    /// Sets the self collision filter distance.
+    ///
+    /// Penetration distance that needs to be exceeded before contacts for self collision are generated.
+    /// Will only have an effect if self collisions are enabled.
+    /// Default:
+    /// 0.1
+    pub fn PxDeformableBody_setSelfCollisionFilterDistance_mut(self_: *mut PxDeformableBody, selfCollisionFilterDistance: f32);
+
+    /// Retrieves the self collision filter distance.
+    ///
+    /// The self collision filter distance
+    pub fn PxDeformableBody_getSelfCollisionFilterDistance(self_: *const PxDeformableBody) -> f32;
+
+    /// Sets the solver iteration count for the deformable body.
+    ///
+    /// Since deformables are currently implemented using an XPBD solver (extended position based dynamics), minVelocityIters is ignored.
+    /// Default:
+    /// 4 position iterations, 1 velocity iteration
+    pub fn PxDeformableBody_setSolverIterationCounts_mut(self_: *mut PxDeformableBody, minPositionIters: u32, minVelocityIters: u32);
+
+    /// Retrieves the solver iteration counts.
+    pub fn PxDeformableBody_getSolverIterationCounts(self_: *const PxDeformableBody, minPositionIters: *mut u32, minVelocityIters: *mut u32);
+
+    /// Sets the threshold controlling sleeping of the deformable body.
+    ///
+    /// Threshold that defines the maximal magnitude of the linear motion a deformable body can move in one second
+    /// before it becomes a candidate for sleeping.
+    pub fn PxDeformableBody_setSleepThreshold_mut(self_: *mut PxDeformableBody, sleepThreshold: f32);
+
+    /// Retrieves the sleep threshold.
+    ///
+    /// The sleep threshold
+    pub fn PxDeformableBody_getSleepThreshold(self_: *const PxDeformableBody) -> f32;
+
+    /// Sets the threshold controlling settling phase before sleeping of the deformable body.
+    ///
+    /// Threshold that defines the maximal magnitude of the linear motion a deformable body can move
+    /// in one second before it becomes a candidate for sleeping and settling damping is engaged.
+    /// The settling threshold needs to be higher than the sleep threshold.
+    /// Default:
+    /// 0.1
+    pub fn PxDeformableBody_setSettlingThreshold_mut(self_: *mut PxDeformableBody, settlingThreshold: f32);
+
+    /// Retrieves the settling threshold.
+    ///
+    /// The settling threshold
+    pub fn PxDeformableBody_getSettlingThreshold(self_: *const PxDeformableBody) -> f32;
+
+    /// Sets the damping parameter used for settling phase.
+    ///
+    /// If the maximum linear velocity of the deformable body falls below the settling threshold, the deformable body
+    /// enters the settling phase in which the settling damping is applied.
+    ///
+    /// Default:
+    /// 10.0
+    pub fn PxDeformableBody_setSettlingDamping_mut(self_: *mut PxDeformableBody, settlingDamping: f32);
+
+    /// Retrieves settling damping parameter.
+    ///
+    /// The settling damping parameter
+    pub fn PxDeformableBody_getSettlingDamping(self_: *const PxDeformableBody) -> f32;
+
+    /// Sets the wake counter for the deformable body.
+    ///
+    /// The wake counter value determines the minimum amount of time until the deformable body can be put to sleep. Please note
+    /// that a deformable body will not be put to sleep if any vertex velocity is above the specified threshold
+    /// or if other awake objects are touching it.
+    ///
+    /// Passing in a positive value will wake the deformable body up automatically.
+    ///
+    /// Default:
+    /// 0.4 (which corresponds to 20 frames for a time step of 0.02)
+    pub fn PxDeformableBody_setWakeCounter_mut(self_: *mut PxDeformableBody, wakeCounterValue: f32);
+
+    /// Returns the wake counter of the deformable body.
+    ///
+    /// The wake counter of the deformable body.
+    pub fn PxDeformableBody_getWakeCounter(self_: *const PxDeformableBody) -> f32;
+
+    /// Returns true if this deformable body is sleeping.
+    ///
+    /// When an actor does not move for a period of time, it is no longer simulated in order to save time. This state
+    /// is called sleeping. However, because the object automatically wakes up when it is either touched by an awake object,
+    /// or a sleep-affecting property is changed by the user, the entire sleep mechanism should be transparent to the user.
+    ///
+    /// A deformable volume can only go to sleep if all vertices are ready for sleeping. A deformable body is guaranteed to be awake
+    /// if at least one of the following holds:
+    ///
+    /// The wake counter is positive (
+    ///
+    /// The velocity of any vertex is above the sleep threshold.
+    ///
+    /// If a deformable body is sleeping, the following state is guaranteed:
+    ///
+    /// The wake counter is zero.
+    ///
+    /// The linear velocity of all vertices is zero.
+    ///
+    /// When a deformable body gets inserted into a scene, it will be considered asleep if all the points above hold, else it will
+    /// be treated as awake.
+    ///
+    /// It is invalid to use this method if the deformable body has not been added to a scene already.
+    ///
+    /// True if the deformable body is sleeping.
+    pub fn PxDeformableBody_isSleeping(self_: *const PxDeformableBody) -> bool;
+
+    /// Retrieve a shape pointer belonging to the actor.
+    pub fn PxDeformableBody_getShape_mut(self_: *mut PxDeformableBody) -> *mut PxShape;
+
+    /// Attaches a shape
+    ///
+    /// Attaches the shape to use for collision detection for deformable surfaces and volumes.
+    /// Each deformable needs to have exactly one exclusive shape attached for simulation. If a shape has
+    /// already been attached to a deformable, detachShape needs to be called prior to attaching
+    /// a new shape.
+    ///
+    /// Deformable surfaces need a shape with triangle mesh geometry, which can be created with
+    /// PxPhysics::createShape(const PxGeometry
+    /// &
+    /// , const PxDeformableSurfaceMaterial
+    /// &
+    /// material, bool, PxShapeFlags), or
+    /// PxPhysics::createShape(const PxGeometry
+    /// &
+    /// , PxDeformableSurfaceMaterial*const*, PxU16, bool, PxShapeFlags)
+    /// Deformable surfaces use the same triangle mesh for collision detection and dynamics computations.
+    ///
+    /// Deformable volumes need a shape with tetrahedron mesh geometry, which can be created with
+    /// PxPhysics::createShape(const PxGeometry
+    /// &
+    /// , const PxDeformableVolumeMaterial
+    /// &
+    /// material, bool, PxShapeFlags), or
+    /// PxPhysics::createShape(const PxGeometry
+    /// &
+    /// , PxDeformableVolumeMaterial*const*, PxU16, bool, PxShapeFlags)
+    /// Deformable volumes additionally need a separate tetrahedron mesh for dynamics, which can be attached using
+    /// PxDeformbleVolume::attachSimulationMesh.
+    ///
+    /// Returns true if the operation was successful
+    pub fn PxDeformableBody_attachShape_mut(self_: *mut PxDeformableBody, shape: *mut PxShape) -> bool;
+
+    /// Detaches the shape
+    ///
+    /// Detaches the shape used for collision detection.
+    pub fn PxDeformableBody_detachShape_mut(self_: *mut PxDeformableBody);
+
+    /// Returns the cuda context manager
+    ///
+    /// The cuda context manager
+    pub fn PxDeformableBody_getCudaContextManager(self_: *const PxDeformableBody) -> *mut PxCudaContextManager;
+
+    /// Raises or clears a particular deformable surface flag.
+    ///
+    /// See the list of flags [`PxDeformableSurfaceFlag`]
+    ///
+    /// Default:
+    /// No flags are set
+    pub fn PxDeformableSurface_setDeformableSurfaceFlag_mut(self_: *mut PxDeformableSurface, flag: PxDeformableSurfaceFlag, val: bool);
+
+    /// Sets deformable surface flags.
+    ///
+    /// See the list of flags [`PxDeformableSurfaceFlag`]
+    ///
+    /// Default:
+    /// No flags are set
+    pub fn PxDeformableSurface_setDeformableSurfaceFlags_mut(self_: *mut PxDeformableSurface, flags: PxDeformableSurfaceFlags);
+
+    /// Reads the deformable surface flags.
+    ///
+    /// See the list of flags [`PxDeformableSurfaceFlag`]
+    ///
+    /// The values of the deformable surface flags.
+    pub fn PxDeformableSurface_getDeformableSurfaceFlags(self_: *const PxDeformableSurface) -> PxDeformableSurfaceFlags;
+
+    /// Sets the number of collision pair updates per timestep.
+    ///
+    /// Collision pair is updated at least once per timestep and increasing the frequency provides better collision pairs.
+    /// Default:
+    /// 1
+    pub fn PxDeformableSurface_setNbCollisionPairUpdatesPerTimestep_mut(self_: *mut PxDeformableSurface, frequency: u32);
+
+    /// Retrieves number of collision pair updates per timestep.
+    ///
+    /// The number of collision pair updates per timestep.
+    pub fn PxDeformableSurface_getNbCollisionPairUpdatesPerTimestep(self_: *const PxDeformableSurface) -> u32;
+
+    /// Sets the number of collision substeps in each sub-timestep.
+    ///
+    /// Collision constraints can be applied multiple times in each sub-timestep
+    /// Default:
+    /// 1
+    pub fn PxDeformableSurface_setNbCollisionSubsteps_mut(self_: *mut PxDeformableSurface, frequency: u32);
+
+    /// Retrieves the number of collision substeps in each sub-timestep.
+    ///
+    /// The number of collision substeps in each sub-timestep.
+    pub fn PxDeformableSurface_getNbCollisionSubsteps(self_: *const PxDeformableSurface) -> u32;
+
+    /// Gets a pointer to a device buffer containing positions and inverse masses of the
+    /// surface deformable.
+    ///
+    /// This function returns a pointer to device memory for the positions and inverse masses of
+    /// the surface deformable. The device memory buffer is used to both initialize/update the vertices of the surface deformable and
+    /// read the simulation results.
+    ///
+    /// It is mandatory to call PxDeformableSurface::markDirty() with PxDeformableSurfaceDataFlag::ePOSITION_INVMASS when
+    /// updating data in this buffer.
+    ///
+    /// The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary.
+    /// The first 3 floats specify the positions and the last float specifies the inverse mass of the vertex.
+    /// The size of the buffer is the number of vertices of the surface deformable mesh * sizeof(PxVec4).
+    ///
+    /// The device memory pointed to by this pointer is allocated when a shape is attached to the
+    /// deformable surface. Calling PxDeformableSurface::detachShape() will deallocate the memory.
+    ///
+    /// It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+    /// until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+    /// have finished, reading the data during a completion task is explicitly allowed. The
+    /// simulation will read and write directly from/into this buffer.
+    ///
+    /// It is the users' responsibility to initialize this buffer with the initial positions of
+    /// the vertices of the surface deformable mesh.
+    ///
+    /// PxVec4* A pointer to a device buffer containing positions and inverse masses of
+    /// the surface deformable mesh.
+    pub fn PxDeformableSurface_getPositionInvMassBufferD_mut(self_: *mut PxDeformableSurface) -> *mut PxVec4;
+
+    /// Gets a pointer to a device buffer containing velocities of the deformable surface.
+    ///
+    /// This function returns a pointer to device memory for the velocities of the deformable surface. This buffer
+    /// is used to both initialize/update the vertices of the surface deformable and read the simulation results.
+    ///
+    /// It is mandatory to call PxDeformableSurface::markDirty() with PxDeformableSurfaceDataFlag::eVELOCITY when
+    /// updating data in this buffer.
+    ///
+    /// The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary. The
+    /// first 3 floats specify the velocity of the vertex. The final float is unused. The size of
+    /// the buffer is the number of vertices of the surface deformable mesh * sizeof(PxVec4).
+    ///
+    /// The device memory pointed to by this pointer is allocated when a shape is attached to the
+    /// deformable surface. Calling PxDeformableSurface::detachShape() will deallocate the memory.
+    ///
+    /// It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+    /// until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+    /// have finished, reading the data during a completion task is explicitly allowed. The
+    /// simulation will read and write directly from/into this buffer.
+    ///
+    /// It is the users' responsibility to initialize this buffer with the initial velocities of
+    /// the vertices of the surface deformable mesh.
+    ///
+    /// PxVec4* A pointer to a device buffer containing the velocities of the surface deformable mesh.
+    pub fn PxDeformableSurface_getVelocityBufferD_mut(self_: *mut PxDeformableSurface) -> *mut PxVec4;
+
+    /// Gets a pointer to a device buffer containing the rest positions of the deformable surface.
+    ///
+    /// This function returns a pointer to device memory for the rest positions of the deformable surface.
+    /// This buffer is used to initialize/update the rest positions of the vertices of the deformable surface.
+    ///
+    /// It is mandatory to call PxDeformableSurface::markDirty() with PxDeformableSurfaceDataFlag::eREST_POSITION when
+    /// updating data in this buffer.
+    ///
+    /// The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary.
+    /// The first 3 specify the rest position. The last float is unused. The size of the buffer
+    /// is the number of vertices of the surface deformable mesh * sizeof(PxVec4).
+    ///
+    /// The device memory pointed to by this pointer is allocated when a shape is attached to the
+    /// deformable surface. Calling PxDeformableSurface::detachShape() will deallocate the memory.
+    ///
+    /// It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+    /// until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+    /// have finished, reading the data during a completion task is explicitly allowed. The
+    /// simulation will read directly from this buffer.
+    ///
+    /// It is the users' responsibility to initialize this buffer with the initial rest positions of
+    /// the vertices of the surface deformable mesh.
+    ///
+    /// PxVec4* A pointer to a device buffer containing the rest positions of the surface deformable mesh.
+    pub fn PxDeformableSurface_getRestPositionBufferD_mut(self_: *mut PxDeformableSurface) -> *mut PxVec4;
+
+    /// Marks per-vertex simulation state and configuration buffers dirty to signal to the simulation
+    /// that changes have been made.
+    ///
+    /// Calling this function is required to notify the simulation of changes made in the positionInvMass,
+    /// velocity and rest position buffers.
+    ///
+    /// This function can be called multiple times, and dirty flags are accumulated internally until
+    /// PxScene::simulate() is called.
+    pub fn PxDeformableSurface_markDirty_mut(self_: *mut PxDeformableSurface, flags: PxDeformableSurfaceDataFlags);
+
+    /// Gets the concrete type name.
+    ///
+    /// The name of the concrete type.
+    pub fn PxDeformableSurface_getConcreteTypeName(self_: *const PxDeformableSurface) -> *const std::ffi::c_char;
+
+    /// Sets young's modulus which defines the body's stiffness
+    ///
+    /// Default:
+    /// 1.e6
+    pub fn PxDeformableMaterial_setYoungsModulus_mut(self_: *mut PxDeformableMaterial, young: f32);
+
+    /// Retrieves the young's modulus value.
+    ///
+    /// The young's modulus value.
+    pub fn PxDeformableMaterial_getYoungsModulus(self_: *const PxDeformableMaterial) -> f32;
+
+    /// Sets the Poisson's ratio which defines the body's volume preservation.
+    ///
+    /// Default:
+    /// 0.45
+    pub fn PxDeformableMaterial_setPoissons_mut(self_: *mut PxDeformableMaterial, poisson: f32);
+
+    /// Retrieves the Poisson's ratio.
+    ///
+    /// The Poisson's ratio.
+    pub fn PxDeformableMaterial_getPoissons(self_: *const PxDeformableMaterial) -> f32;
+
+    /// Sets the dynamic friction value which defines the strength of resistance when two objects slide relative to each other while in contact.
+    ///
+    /// Default:
+    /// 0.0
+    pub fn PxDeformableMaterial_setDynamicFriction_mut(self_: *mut PxDeformableMaterial, dynamicFriction: f32);
+
+    /// Retrieves the dynamic friction value
+    ///
+    /// The dynamic friction value
+    pub fn PxDeformableMaterial_getDynamicFriction(self_: *const PxDeformableMaterial) -> f32;
+
+    /// Sets material damping
+    pub fn PxDeformableMaterial_setElasticityDamping_mut(self_: *mut PxDeformableMaterial, elasticityDamping: f32);
+
+    /// Retrieves the material damping.
+    ///
+    /// damping.
+    pub fn PxDeformableMaterial_getElasticityDamping(self_: *const PxDeformableMaterial) -> f32;
+
+    /// Sets material thickness
+    ///
+    /// Default:
+    /// 0.001
+    pub fn PxDeformableSurfaceMaterial_setThickness_mut(self_: *mut PxDeformableSurfaceMaterial, thickness: f32);
+
+    /// Retrieves the material thickness.
+    ///
+    /// Default:
+    /// 0.001
+    ///
+    /// thickness.
+    pub fn PxDeformableSurfaceMaterial_getThickness(self_: *const PxDeformableSurfaceMaterial) -> f32;
+
+    /// Sets material bending stiffness
+    ///
+    /// Default:
+    /// 0.0
+    pub fn PxDeformableSurfaceMaterial_setBendingStiffness_mut(self_: *mut PxDeformableSurfaceMaterial, bendingStiffness: f32);
+
+    /// Retrieves the material bending stiffness.
+    ///
+    /// bendingStiffness.
+    pub fn PxDeformableSurfaceMaterial_getBendingStiffness(self_: *const PxDeformableSurfaceMaterial) -> f32;
+
+    /// Sets material bending damping
+    pub fn PxDeformableSurfaceMaterial_setBendingDamping_mut(self_: *mut PxDeformableSurfaceMaterial, bendingDamping: f32);
+
+    /// Retrieves the material bending damping.
+    ///
+    /// bending damping.
+    pub fn PxDeformableSurfaceMaterial_getBendingDamping(self_: *const PxDeformableSurfaceMaterial) -> f32;
+
+    /// Gets the concrete type name.
+    ///
+    /// The name of the concrete type.
+    pub fn PxDeformableSurfaceMaterial_getConcreteTypeName(self_: *const PxDeformableSurfaceMaterial) -> *const std::ffi::c_char;
+
+    /// Raises or clears a particular deformable volume flag.
+    ///
+    /// See the list of flags [`PxDeformableVolumeFlag`]
+    ///
+    /// Default:
+    /// No flags are set
+    pub fn PxDeformableVolume_setDeformableVolumeFlag_mut(self_: *mut PxDeformableVolume, flag: PxDeformableVolumeFlag, val: bool);
+
+    /// Sets deformable volume flags.
+    ///
+    /// See the list of flags [`PxDeformableVolumeFlag`]
+    ///
+    /// Default:
+    /// No flags are set
+    pub fn PxDeformableVolume_setDeformableVolumeFlags_mut(self_: *mut PxDeformableVolume, flags: PxDeformableVolumeFlags);
+
+    /// Reads the deformable volume flags.
+    ///
+    /// See the list of flags [`PxDeformableVolumeFlag`]
+    ///
+    /// The values of the deformable volume flags.
+    pub fn PxDeformableVolume_getDeformableVolumeFlags(self_: *const PxDeformableVolume) -> PxDeformableVolumeFlags;
+
+    /// Sets the self collision stress tolerance.
+    ///
+    /// Stress threshold to deactivate collision contacts in case the local stress magnitude exceeds the threshold.
+    /// Default:
+    /// 0.9
+    pub fn PxDeformableVolume_setSelfCollisionStressTolerance_mut(self_: *mut PxDeformableVolume, selfCollisionStressTolerance: f32);
+
+    /// Retrieves the self collision stress tolerance.
+    ///
+    /// The self collision filter distance
+    pub fn PxDeformableVolume_getSelfCollisionStressTolerance(self_: *const PxDeformableVolume) -> f32;
+
+    /// Gets a pointer to a device buffer containing positions and inverse masses of the
+    /// collision mesh.
+    ///
+    /// This function returns a pointer to device memory for the positions and inverse masses of
+    /// the deformable volume. This buffer is used to both initialize/update the collision mesh vertices
+    /// of the deformable volume and read the simulation results.
+    ///
+    /// It is mandatory to call PxDeformableVolume::markDirty() with PxDeformableVolumeDataFlag::ePOSITION_INVMASS
+    /// when updating data in this buffer.
+    ///
+    /// The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary.
+    /// The first 3 floats specify the vertex position and the last float contains the inverse mass of the
+    /// vertex. The size of the buffer is the number of vertices of the collision mesh * sizeof(PxVec4).
+    ///
+    /// The device memory pointed to by this pointer is allocated when a shape is attached to the
+    /// deformable volume. Calling PxDeformableVolume::detachShape() will deallocate the memory.
+    ///
+    /// It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+    /// until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+    /// have finished, reading the data during a completion task is explicitly allowed. The
+    /// simulation will read and write directly from/into this buffer.
+    ///
+    /// It is the users' responsibility to initialize this buffer with the initial positions of
+    /// the vertices of the collision mesh. See PxDeformableVolumeExt::allocateAndInitializeHostMirror(),
+    /// PxDeformableVolumeExt::copyToDevice().
+    ///
+    /// PxVec4* A pointer to a device buffer containing positions and inverse masses of
+    /// the collision mesh.
+    pub fn PxDeformableVolume_getPositionInvMassBufferD_mut(self_: *mut PxDeformableVolume) -> *mut PxVec4;
+
+    /// Gets a pointer to a device buffer containing rest positions of the collision mesh vertices.
+    ///
+    /// This function returns a pointer to device memory for the rest positions of the deformable volume collision
+    /// mesh. This buffer is used to initialize the rest positions of the collision mesh vertices.
+    ///
+    /// It is mandatory to call PxDeformableVolume::markDirty() with PxDeformableVolumeDataFlag::eREST_POSITION when
+    /// updating data in this buffer.
+    ///
+    /// The simulation expects 4 floats per vertex, aligned to a 16B boundary. The first 3 specify the
+    /// rest position. The last float is unused. The size of the buffer is the number of vertices in
+    /// the collision mesh * sizeof(PxVec4).
+    ///
+    /// The device memory pointed to by this pointer is allocated when a shape is attached to the deformable volume.
+    /// Calling PxDeformableVolume::detachShape() will deallocate the memory.
+    ///
+    /// It is not allowed to write data into this buffer from the start of PxScene::simulate() until
+    /// PxScene::fetchResults() returns.
+    ///
+    /// It is the users' responsibility to initialize this buffer with the initial rest positions of the
+    /// vertices of the collision mesh. See PxDeformableVolumeExt::allocateAndInitializeHostMirror(),
+    /// PxDeformableVolumeExt::copyToDevice().
+    ///
+    /// PxVec4* A pointer to a device buffer containing the rest positions of the collision mesh.
+    pub fn PxDeformableVolume_getRestPositionBufferD_mut(self_: *mut PxDeformableVolume) -> *mut PxVec4;
+
+    /// Gets a pointer to a device buffer containing the vertex positions of the simulation mesh.
+    ///
+    /// This function returns a pointer to device memory for the positions and inverse masses of the deformable volume
+    /// simulation mesh. This buffer is used to both initialize/update the simulation mesh vertices
+    /// of the deformable volume and read the simulation results.
+    ///
+    /// It is mandatory to call PxDeformableVolume::markDirty() with PxDeformableVolumeDataFlag::eSIM_POSITION_INVMASS when
+    /// updating data in this buffer.
+    ///
+    /// The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary. The
+    /// first 3 floats specify the positions and the last float specifies the inverse mass of the vertex.
+    /// The size of the buffer is the number of vertices of the simulation mesh * sizeof(PxVec4).
+    ///
+    /// The device memory pointed to by this pointer is allocated when a simulation mesh is attached to the
+    /// deformable volume. Calling PxDeformableVolume::detachSimulationMesh() will deallocate the memory.
+    ///
+    /// It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+    /// until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+    /// have finished, reading the data during a completion task is explicitly allowed. The
+    /// simulation will read and write directly from/into this buffer.
+    ///
+    /// It is the users' responsibility to initialize this buffer with the initial positions of
+    /// the vertices of the simulation mesh. See PxDeformableVolumeExt::allocateAndInitializeHostMirror(),
+    /// PxDeformableVolumeExt::copyToDevice().
+    ///
+    /// PxVec4* A pointer to a device buffer containing the vertex positions of the simulation mesh.
+    pub fn PxDeformableVolume_getSimPositionInvMassBufferD_mut(self_: *mut PxDeformableVolume) -> *mut PxVec4;
+
+    /// Gets a pointer to a device buffer containing the vertex velocities of the simulation mesh.
+    ///
+    /// This function returns a pointer to device memory for the velocities of the deformable volume simulation mesh
+    /// vertices. This buffer is used to both initialize/update the simulation mesh vertex velocities
+    /// of the deformable volume and read the simulation results.
+    ///
+    /// It is mandatory to call PxDeformableVolume::markDirty() with PxDeformableVolumeDataFlag::eSIM_VELOCITY when
+    /// updating data in this buffer.
+    ///
+    /// The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary. The
+    /// first 3 specify the velocities for each vertex. The final float is unused. The size of the
+    /// buffer is the number of vertices of the simulation mesh * sizeof(PxVec4).
+    ///
+    /// The device memory pointed to by this pointer is allocated when a simulation mesh is attached to the
+    /// deformable volume. Calling PxDeformableVolume::detachSimulationMesh() will deallocate the memory.
+    ///
+    /// It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+    /// until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+    /// have finished, reading the data during a completion task is explicitly allowed. The
+    /// simulation will read and write directly from/into this buffer.
+    ///
+    /// It is the users' responsibility to initialize this buffer with the initial velocities of
+    /// the vertices of the simulation mesh. See PxDeformableVolumeExt::allocateAndInitializeHostMirror(),
+    /// PxDeformableVolumeExt::copyToDevice().
+    ///
+    /// PxVec4*  A pointer to a device buffer containing the vertex velocities of the simulation mesh.
+    pub fn PxDeformableVolume_getSimVelocityBufferD_mut(self_: *mut PxDeformableVolume) -> *mut PxVec4;
+
+    /// Marks per-vertex simulation state and configuration buffers dirty to signal to the simulation
+    /// that changes have been made.
+    ///
+    /// Calling this function is mandatory to notify the simulation of changes made in the positionInvMass,
+    /// simPositionInvMass, simVelocity and rest position buffers.
+    ///
+    /// This function can be called multiple times, and dirty flags are accumulated internally until
+    /// PxScene::simulate() is called.
+    pub fn PxDeformableVolume_markDirty_mut(self_: *mut PxDeformableVolume, flags: PxDeformableVolumeDataFlags);
+
+    /// Sets the device buffer containing the kinematic targets for this deformable volume.
+    ///
+    /// This function sets the kinematic targets for a deformable volume to a user-provided device buffer. This buffer is
+    /// read by the simulation to obtain the target position for each vertex of the simulation mesh.
+    ///
+    /// The simulation expects 4 consecutive float for each vertex, aligned to a 16B boundary. The first 3
+    /// floats specify the target positions. The last float determines (together with the flag argument)
+    /// if the target is active or not.
+    /// For a deformable volume with the flag PxDeformableBodyFlag::eKINEMATIC raised, all target positions are considered
+    /// valid. In case a deformable volume has the PxDeformableVolumeFlag::ePARTIALLY_KINEMATIC raised, only target
+    /// positions whose corresponding last float has been set to 0.f are considered valid target positions.
+    ///
+    /// The size of the buffer is the number of vertices of the simulation mesh * sizeof(PxVec4).
+    ///
+    /// It is the users responsibility to manage the memory pointed to by the input to this function,
+    /// as well as guaranteeing the integrity of the input data. In particular, this means that it is
+    /// not allowed to write this data from from the start of PxScene::simulate() until PxScene::fetchResults()
+    /// returns. The memory is not allowed to be deallocated until PxScene::fetchResults() returns.
+    ///
+    /// Calling this function with a null pointer for the positions will clear the input and resume normal
+    /// simulation. PxDeformableBodyFlag::eKINEMATIC or PxDeformableVolumeFlag::ePARTIALLY_KINEMATIC are ignored
+    /// if no targets are set.
+    ///
+    /// This call is persistent across calls to PxScene::simulate(). Once this function is called, the
+    /// simulation will look up the target positions from the same buffer for every call to PxScene::simulate().
+    /// The user is allowed to update the target positions without calling this function again, provided that
+    /// the synchronization requirements are adhered to (no changes between start of PxScene::simulate() until
+    /// PxScene::fetchResults() returns).
+    pub fn PxDeformableVolume_setKinematicTargetBufferD_mut(self_: *mut PxDeformableVolume, positions: *const PxVec4);
+
+    /// Attaches a simulation mesh
+    ///
+    /// Attaches the simulation mesh (geometry) and a state containing inverse mass, rest pose
+    /// etc. required to compute the deformation.
+    ///
+    /// Returns true if the operation was successful
+    pub fn PxDeformableVolume_attachSimulationMesh_mut(self_: *mut PxDeformableVolume, simulationMesh: *mut PxTetrahedronMesh, deformableVolumeAuxData: *mut PxDeformableVolumeAuxData) -> bool;
+
+    /// Detaches the simulation mesh
+    ///
+    /// Detaches the simulation mesh and simulation state used to compute the deformation.
+    pub fn PxDeformableVolume_detachSimulationMesh_mut(self_: *mut PxDeformableVolume);
+
+    /// Retrieves the simulation mesh pointer.
+    ///
+    /// Allows to access the geometry of the tetrahedral mesh used to compute the object's deformation
+    ///
+    /// Pointer to the simulation mesh
+    pub fn PxDeformableVolume_getSimulationMesh_mut(self_: *mut PxDeformableVolume) -> *mut PxTetrahedronMesh;
+
+    /// Const version of getSimulationMesh()
+    pub fn PxDeformableVolume_getSimulationMesh(self_: *const PxDeformableVolume) -> *const PxTetrahedronMesh;
+
+    /// Retrieve the collision mesh pointer.
+    ///
+    /// Allows to access the geometry of the tetrahedral mesh used to perform collision detection
+    ///
+    /// Pointer to the collision mesh
+    pub fn PxDeformableVolume_getCollisionMesh_mut(self_: *mut PxDeformableVolume) -> *mut PxTetrahedronMesh;
+
+    /// Const version of getCollisionMesh()
+    pub fn PxDeformableVolume_getCollisionMesh(self_: *const PxDeformableVolume) -> *const PxTetrahedronMesh;
+
+    /// Retrieves the simulation state pointer.
+    ///
+    /// Allows to access the additional data of the simulation mesh (inverse mass, rest state etc.).
+    /// The geometry part of the data is stored in the simulation mesh.
+    ///
+    /// Pointer to the simulation state
+    pub fn PxDeformableVolume_getDeformableVolumeAuxData_mut(self_: *mut PxDeformableVolume) -> *mut PxDeformableVolumeAuxData;
+
+    /// const version of getDeformableVolumeAuxData()
+    pub fn PxDeformableVolume_getDeformableVolumeAuxData(self_: *const PxDeformableVolume) -> *const PxDeformableVolumeAuxData;
+
+    /// Returns the GPU deformable volume index.
+    ///
+    /// The GPU index, or 0xFFFFFFFF if the deformable volume is not in a scene.
+    pub fn PxDeformableVolume_getGpuDeformableVolumeIndex_mut(self_: *mut PxDeformableVolume) -> u32;
+
+    /// Gets the concrete type name.
+    ///
+    /// The name of the concrete type.
+    pub fn PxDeformableVolume_getConcreteTypeName(self_: *const PxDeformableVolume) -> *const std::ffi::c_char;
+
+    /// Adjusts a deformable volume kinematic target such that it is properly set as active or inactive. Inactive targets will not affect vertex position, they are ignored by the solver.
+    ///
+    /// The target with adjusted w component
+    pub fn phys_PxConfigureDeformableVolumeKinematicTarget(target: *const PxVec4, isActive: bool) -> PxVec4;
+
+    /// Sets up a deformable volume kinematic target such that it is properly set as active or inactive. Inactive targets will not affect vertex position, they are ignored by the solver.
+    ///
+    /// The target with configured w component
+    pub fn phys_PxConfigureDeformableVolumeKinematicTarget_1(target: *const PxVec3, isActive: bool) -> PxVec4;
+
+    /// Sets the material model.
+    pub fn PxDeformableVolumeMaterial_setMaterialModel_mut(self_: *mut PxDeformableVolumeMaterial, model: PxDeformableVolumeMaterialModel);
+
+    /// Retrieves the material model.
+    ///
+    /// The material model.
+    pub fn PxDeformableVolumeMaterial_getMaterialModel(self_: *const PxDeformableVolumeMaterial) -> PxDeformableVolumeMaterialModel;
+
+    /// Gets the concrete type name.
+    ///
+    /// The name of the concrete type.
+    pub fn PxDeformableVolumeMaterial_getConcreteTypeName(self_: *const PxDeformableVolumeMaterial) -> *const std::ffi::c_char;
+
     /// Notification if an object or its memory gets released
     ///
     /// If release() gets called on a PxBase object, an eUSER_RELEASE event will get fired immediately. The object state can be queried in the callback but
@@ -9101,243 +11542,77 @@ extern "C" {
     /// allowed to dereference the object pointer in the callback.
     pub fn PxDeletionListener_onRelease_mut(self_: *mut PxDeletionListener, observed: *const PxBase, userData: *mut std::ffi::c_void, deletionEvent: PxDeletionEventFlag);
 
-    pub fn PxBaseMaterial_isKindOf(self_: *const PxBaseMaterial, name: *const std::ffi::c_char) -> bool;
+    /// Get positions and inverse masses for this particle buffer.
+    ///
+    /// A pointer to a device buffer containing the positions and inverse mass packed as PxVec4(pos.x, pos.y, pos.z, inverseMass).
+    pub fn PxParticleBuffer_getPositionInvMasses(self_: *const PxParticleBuffer) -> *mut PxVec4;
 
-    /// Sets young's modulus which defines the body's stiffness
-    pub fn PxFEMMaterial_setYoungsModulus_mut(self_: *mut PxFEMMaterial, young: f32);
+    /// Get velocities for this particle buffer.
+    ///
+    /// A pointer to a device buffer containing the velocities packed as PxVec4(vel.x, vel.y, vel.z, 0.0f).
+    pub fn PxParticleBuffer_getVelocities(self_: *const PxParticleBuffer) -> *mut PxVec4;
 
-    /// Retrieves the young's modulus value.
+    /// Get phases for this particle buffer.
     ///
-    /// The young's modulus value.
-    pub fn PxFEMMaterial_getYoungsModulus(self_: *const PxFEMMaterial) -> f32;
+    /// See [`PxParticlePhaseFlag`]
+    ///
+    /// A pointer to a device buffer containing the per-particle phases for this particle buffer.
+    pub fn PxParticleBuffer_getPhases(self_: *const PxParticleBuffer) -> *mut u32;
 
-    /// Sets the Poisson's ratio which defines the body's volume preservation. Completely incompressible materials have a poisson ratio of 0.5. Its value should not be set to exactly 0.5 because this leads to numerical problems.
-    pub fn PxFEMMaterial_setPoissons_mut(self_: *mut PxFEMMaterial, poisson: f32);
+    /// Set the number of active particles for this particle buffer.
+    ///
+    /// The number of active particles can be
+    /// <
+    /// = PxParticleBuffer::getMaxParticles(). The particle system will simulate the first
+    /// x particles in the [`PxParticleBuffer`], where x is the number of active particles.
+    pub fn PxParticleBuffer_setNbActiveParticles_mut(self_: *mut PxParticleBuffer, nbActiveParticles: u32);
 
-    /// Retrieves the Poisson's ratio.
+    /// Get the number of active particles for this particle buffer.
     ///
-    /// The Poisson's ratio.
-    pub fn PxFEMMaterial_getPoissons(self_: *const PxFEMMaterial) -> f32;
+    /// The number of active particles.
+    pub fn PxParticleBuffer_getNbActiveParticles(self_: *const PxParticleBuffer) -> u32;
 
-    /// Sets the dynamic friction value which defines the strength of resistance when two objects slide relative to each other while in contact.
-    pub fn PxFEMMaterial_setDynamicFriction_mut(self_: *mut PxFEMMaterial, dynamicFriction: f32);
+    /// Get the maximum number particles this particle buffer can hold.
+    ///
+    /// The maximum number of particles is specified when creating a [`PxParticleBuffer`]. See #PxPhysics::createParticleBuffer.
+    ///
+    /// The maximum number of particles.
+    pub fn PxParticleBuffer_getMaxParticles(self_: *const PxParticleBuffer) -> u32;
 
-    /// Retrieves the dynamic friction value
+    /// Get the start index for the first particle of this particle buffer in the complete list of
+    /// particles of the particle system this buffer is used in.
     ///
-    /// The dynamic friction value
-    pub fn PxFEMMaterial_getDynamicFriction(self_: *const PxFEMMaterial) -> f32;
+    /// The return value is only correct if the particle buffer is assigned to a particle system and at least
+    /// one call to simulate() has been performed.
+    ///
+    /// The index of the first particle in the complete particle list.
+    pub fn PxParticleBuffer_getFlatListStartIndex(self_: *const PxParticleBuffer) -> u32;
 
-    pub fn PxFilterData_new(anon_param0: PxEMPTY) -> PxFilterData;
+    /// Raise dirty flags on this particle buffer to communicate that the corresponding data has been updated
+    /// by the user.
+    ///
+    /// See [`PxParticleBufferFlag`].
+    pub fn PxParticleBuffer_raiseFlags_mut(self_: *mut PxParticleBuffer, flags: PxParticleBufferFlag);
 
-    /// Default constructor.
-    pub fn PxFilterData_new_1() -> PxFilterData;
+    /// Release this buffer and deallocate all the memory.
+    pub fn PxParticleBuffer_release_mut(self_: *mut PxParticleBuffer);
 
-    /// Constructor to set filter data initially.
-    pub fn PxFilterData_new_2(w0: u32, w1: u32, w2: u32, w3: u32) -> PxFilterData;
+    /// Retrieve unique index that does not change over the lifetime of a PxParticleBuffer.
+    pub fn PxParticleBuffer_getUniqueId(self_: *const PxParticleBuffer) -> u32;
 
-    /// (re)sets the structure to the default.
-    pub fn PxFilterData_setToDefault_mut(self_: *mut PxFilterData);
-
-    /// Extract filter object type from the filter attributes of a collision pair object
+    /// Sets a name string for the object that can be retrieved with getName().
     ///
-    /// The type of the collision pair object.
-    pub fn phys_PxGetFilterObjectType(attr: u32) -> PxFilterObjectType;
-
-    /// Specifies whether the collision object belongs to a kinematic rigid body
-    ///
-    /// True if the object belongs to a kinematic rigid body, else false
-    pub fn phys_PxFilterObjectIsKinematic(attr: u32) -> bool;
-
-    /// Specifies whether the collision object is a trigger shape
-    ///
-    /// True if the object is a trigger shape, else false
-    pub fn phys_PxFilterObjectIsTrigger(attr: u32) -> bool;
-
-    /// Filter method to specify how a pair of potentially colliding objects should be processed.
-    ///
-    /// This method gets called when the filter flags returned by the filter shader (see [`PxSimulationFilterShader`])
-    /// indicate that the filter callback should be invoked ([`PxFilterFlag::eCALLBACK`] or #PxFilterFlag::eNOTIFY set).
-    /// Return the PxFilterFlag flags and set the PxPairFlag flags to define what the simulation should do with the given
-    /// collision pair.
-    ///
-    /// Filter flags defining whether the pair should be discarded, temporarily ignored or processed and whether the pair
-    /// should be tracked and send a report on pair deletion through the filter callback
-    pub fn PxSimulationFilterCallback_pairFound_mut(self_: *mut PxSimulationFilterCallback, pairID: u32, attributes0: u32, filterData0: PxFilterData, a0: *const PxActor, s0: *const PxShape, attributes1: u32, filterData1: PxFilterData, a1: *const PxActor, s1: *const PxShape, pairFlags: *mut PxPairFlags) -> PxFilterFlags;
-
-    /// Callback to inform that a tracked collision pair is gone.
-    ///
-    /// This method gets called when a collision pair disappears or gets re-filtered. Only applies to
-    /// collision pairs which have been marked as filter callback pairs ([`PxFilterFlag::eNOTIFY`] set in #pairFound()).
-    pub fn PxSimulationFilterCallback_pairLost_mut(self_: *mut PxSimulationFilterCallback, pairID: u32, attributes0: u32, filterData0: PxFilterData, attributes1: u32, filterData1: PxFilterData, objectRemoved: bool);
-
-    /// Callback to give the opportunity to change the filter state of a tracked collision pair.
-    ///
-    /// This method gets called once per simulation step to let the application change the filter and pair
-    /// flags of a collision pair that has been reported in [`pairFound`]() and requested callbacks by
-    /// setting [`PxFilterFlag::eNOTIFY`]. To request a change of filter status, the target pair has to be
-    /// specified by its ID, the new filter and pair flags have to be provided and the method should return true.
-    ///
-    /// If this method changes the filter status of a collision pair and the pair should keep being tracked
-    /// by the filter callbacks then [`PxFilterFlag::eNOTIFY`] has to be set.
-    ///
-    /// The application is responsible to ensure that this method does not get called for pairs that have been
-    /// reported as lost, see [`pairLost`]().
-    ///
-    /// True if the changes should be applied. In this case the method will get called again. False if
-    /// no more status changes should be done in the current simulation step. In that case the provided flags will be discarded.
-    pub fn PxSimulationFilterCallback_statusChange_mut(self_: *mut PxSimulationFilterCallback, pairID: *mut u32, pairFlags: *mut PxPairFlags, filterFlags: *mut PxFilterFlags) -> bool;
-
-    /// Any combination of PxDataAccessFlag::eREADABLE and PxDataAccessFlag::eWRITABLE
-    pub fn PxLockedData_getDataAccessFlags_mut(self_: *mut PxLockedData) -> PxDataAccessFlags;
-
-    /// Unlocks the bulk data.
-    pub fn PxLockedData_unlock_mut(self_: *mut PxLockedData);
-
-    /// virtual destructor
-    pub fn PxLockedData_delete(self_: *mut PxLockedData);
-
-    /// Sets the coefficient of dynamic friction.
-    ///
-    /// The coefficient of dynamic friction should be in [0, PX_MAX_F32). If set to greater than staticFriction, the effective value of staticFriction will be increased to match.
-    ///
-    /// Sleeping:
-    /// Does
-    /// NOT
-    /// wake any actors which may be affected.
-    pub fn PxMaterial_setDynamicFriction_mut(self_: *mut PxMaterial, coef: f32);
-
-    /// Retrieves the DynamicFriction value.
-    ///
-    /// The coefficient of dynamic friction.
-    pub fn PxMaterial_getDynamicFriction(self_: *const PxMaterial) -> f32;
-
-    /// Sets the coefficient of static friction
-    ///
-    /// The coefficient of static friction should be in the range [0, PX_MAX_F32)
-    ///
-    /// Sleeping:
-    /// Does
-    /// NOT
-    /// wake any actors which may be affected.
-    pub fn PxMaterial_setStaticFriction_mut(self_: *mut PxMaterial, coef: f32);
-
-    /// Retrieves the coefficient of static friction.
-    ///
-    /// The coefficient of static friction.
-    pub fn PxMaterial_getStaticFriction(self_: *const PxMaterial) -> f32;
-
-    /// Sets the coefficient of restitution
-    ///
-    /// A coefficient of 0 makes the object bounce as little as possible, higher values up to 1.0 result in more bounce.
-    ///
-    /// This property is overloaded when PxMaterialFlag::eCOMPLIANT_CONTACT flag is enabled. This permits negative values for restitution to be provided.
-    /// The negative values are converted into spring stiffness terms for an implicit spring simulated at the contact site, with the spring positional error defined by
-    /// the contact separation value. Higher stiffness terms produce stiffer springs that behave more like a rigid contact.
-    ///
-    /// Sleeping:
-    /// Does
-    /// NOT
-    /// wake any actors which may be affected.
-    pub fn PxMaterial_setRestitution_mut(self_: *mut PxMaterial, rest: f32);
-
-    /// Retrieves the coefficient of restitution.
-    ///
-    /// See [`setRestitution`].
-    ///
-    /// The coefficient of restitution.
-    pub fn PxMaterial_getRestitution(self_: *const PxMaterial) -> f32;
-
-    /// Sets the coefficient of damping
-    ///
-    /// This property only affects the simulation if PxMaterialFlag::eCOMPLIANT_CONTACT is raised.
-    /// Damping works together with spring stiffness (set through a negative restitution value). Spring stiffness corrects positional error while
-    /// damping resists relative velocity. Setting a high damping coefficient can produce spongy contacts.
-    ///
-    /// Sleeping:
-    /// Does
-    /// NOT
-    /// wake any actors which may be affected.
-    pub fn PxMaterial_setDamping_mut(self_: *mut PxMaterial, damping: f32);
-
-    /// Retrieves the coefficient of damping.
-    ///
-    /// See [`setDamping`].
-    ///
-    /// The coefficient of damping.
-    pub fn PxMaterial_getDamping(self_: *const PxMaterial) -> f32;
-
-    /// Raises or clears a particular material flag.
-    ///
-    /// See the list of flags [`PxMaterialFlag`]
+    /// This is for debugging and is not used by the SDK. The string is not copied by the SDK,
+    /// only the pointer is stored.
     ///
     /// Default:
-    /// eIMPROVED_PATCH_FRICTION
-    ///
-    /// Sleeping:
-    /// Does
-    /// NOT
-    /// wake any actors which may be affected.
-    pub fn PxMaterial_setFlag_mut(self_: *mut PxMaterial, flag: PxMaterialFlag, b: bool);
+    /// NULL
+    pub fn PxParticleBuffer_setName_mut(self_: *mut PxParticleBuffer, name: *const std::ffi::c_char);
 
-    /// sets all the material flags.
+    /// Retrieves the name string set with setName().
     ///
-    /// See the list of flags [`PxMaterialFlag`]
-    ///
-    /// Default:
-    /// eIMPROVED_PATCH_FRICTION
-    ///
-    /// Sleeping:
-    /// Does
-    /// NOT
-    /// wake any actors which may be affected.
-    pub fn PxMaterial_setFlags_mut(self_: *mut PxMaterial, flags: PxMaterialFlags);
-
-    /// Retrieves the flags. See [`PxMaterialFlag`].
-    ///
-    /// The material flags.
-    pub fn PxMaterial_getFlags(self_: *const PxMaterial) -> PxMaterialFlags;
-
-    /// Sets the friction combine mode.
-    ///
-    /// See the enum ::PxCombineMode .
-    ///
-    /// Default:
-    /// PxCombineMode::eAVERAGE
-    ///
-    /// Sleeping:
-    /// Does
-    /// NOT
-    /// wake any actors which may be affected.
-    pub fn PxMaterial_setFrictionCombineMode_mut(self_: *mut PxMaterial, combMode: PxCombineMode);
-
-    /// Retrieves the friction combine mode.
-    ///
-    /// See [`setFrictionCombineMode`].
-    ///
-    /// The friction combine mode for this material.
-    pub fn PxMaterial_getFrictionCombineMode(self_: *const PxMaterial) -> PxCombineMode;
-
-    /// Sets the restitution combine mode.
-    ///
-    /// See the enum ::PxCombineMode .
-    ///
-    /// Default:
-    /// PxCombineMode::eAVERAGE
-    ///
-    /// Sleeping:
-    /// Does
-    /// NOT
-    /// wake any actors which may be affected.
-    pub fn PxMaterial_setRestitutionCombineMode_mut(self_: *mut PxMaterial, combMode: PxCombineMode);
-
-    /// Retrieves the restitution combine mode.
-    ///
-    /// See [`setRestitutionCombineMode`].
-    ///
-    /// The coefficient of restitution combine mode for this material.
-    pub fn PxMaterial_getRestitutionCombineMode(self_: *const PxMaterial) -> PxCombineMode;
-
-    pub fn PxMaterial_getConcreteTypeName(self_: *const PxMaterial) -> *const std::ffi::c_char;
+    /// Name string associated with object.
+    pub fn PxParticleBuffer_getName(self_: *const PxParticleBuffer) -> *const std::ffi::c_char;
 
     /// Construct parameters with default values.
     pub fn PxDiffuseParticleParams_new() -> PxDiffuseParticleParams;
@@ -9345,46 +11620,187 @@ extern "C" {
     /// (re)sets the structure to the default.
     pub fn PxDiffuseParticleParams_setToDefault_mut(self_: *mut PxDiffuseParticleParams);
 
+    /// Get a device buffer of positions and remaining lifetimes for the diffuse particles.
+    ///
+    /// A device buffer containing positions and lifetimes of diffuse particles packed as PxVec4(pos.x, pos.y, pos.z, lifetime).
+    pub fn PxParticleAndDiffuseBuffer_getDiffusePositionLifeTime(self_: *const PxParticleAndDiffuseBuffer) -> *mut PxVec4;
+
+    /// Get a device buffer of velocities for the diffuse particles.
+    ///
+    /// A device buffer containing velocities of diffuse particles.
+    pub fn PxParticleAndDiffuseBuffer_getDiffuseVelocities(self_: *const PxParticleAndDiffuseBuffer) -> *mut PxVec4;
+
+    /// Get number of currently active diffuse particles.
+    ///
+    /// The number of currently active diffuse particles.
+    pub fn PxParticleAndDiffuseBuffer_getNbActiveDiffuseParticles(self_: *const PxParticleAndDiffuseBuffer) -> u32;
+
+    /// Set the maximum possible number of diffuse particles for this buffer.
+    ///
+    /// Must be in the range [0, PxParticleAndDiffuseBuffer::getMaxDiffuseParticles()]
+    pub fn PxParticleAndDiffuseBuffer_setMaxActiveDiffuseParticles_mut(self_: *mut PxParticleAndDiffuseBuffer, maxActiveDiffuseParticles: u32);
+
+    /// Get maximum possible number of diffuse particles.
+    ///
+    /// The maximum possible number diffuse particles.
+    pub fn PxParticleAndDiffuseBuffer_getMaxDiffuseParticles(self_: *const PxParticleAndDiffuseBuffer) -> u32;
+
+    /// Set the parameters for diffuse particle simulation.
+    ///
+    /// See [`PxDiffuseParticleParams`]
+    pub fn PxParticleAndDiffuseBuffer_setDiffuseParticleParams_mut(self_: *mut PxParticleAndDiffuseBuffer, params: *const PxDiffuseParticleParams);
+
+    /// Get the parameters currently used for diffuse particle simulation.
+    ///
+    /// A PxDiffuseParticleParams structure.
+    pub fn PxParticleAndDiffuseBuffer_getDiffuseParticleParams(self_: *const PxParticleAndDiffuseBuffer) -> PxDiffuseParticleParams;
+
     /// Sets friction
-    pub fn PxParticleMaterial_setFriction_mut(self_: *mut PxParticleMaterial, friction: f32);
+    pub fn PxPBDMaterial_setFriction_mut(self_: *mut PxPBDMaterial, friction: f32);
 
     /// Retrieves the friction value.
     ///
     /// The friction value.
-    pub fn PxParticleMaterial_getFriction(self_: *const PxParticleMaterial) -> f32;
+    pub fn PxPBDMaterial_getFriction(self_: *const PxPBDMaterial) -> f32;
 
     /// Sets velocity damping term
-    pub fn PxParticleMaterial_setDamping_mut(self_: *mut PxParticleMaterial, damping: f32);
+    pub fn PxPBDMaterial_setDamping_mut(self_: *mut PxPBDMaterial, damping: f32);
 
     /// Retrieves the velocity damping term
     ///
     /// The velocity damping term.
-    pub fn PxParticleMaterial_getDamping(self_: *const PxParticleMaterial) -> f32;
+    pub fn PxPBDMaterial_getDamping(self_: *const PxPBDMaterial) -> f32;
 
     /// Sets adhesion term
-    pub fn PxParticleMaterial_setAdhesion_mut(self_: *mut PxParticleMaterial, adhesion: f32);
+    pub fn PxPBDMaterial_setAdhesion_mut(self_: *mut PxPBDMaterial, adhesion: f32);
 
     /// Retrieves the adhesion term
     ///
     /// The adhesion term.
-    pub fn PxParticleMaterial_getAdhesion(self_: *const PxParticleMaterial) -> f32;
+    pub fn PxPBDMaterial_getAdhesion(self_: *const PxPBDMaterial) -> f32;
 
     /// Sets gravity scale term
-    pub fn PxParticleMaterial_setGravityScale_mut(self_: *mut PxParticleMaterial, scale: f32);
+    pub fn PxPBDMaterial_setGravityScale_mut(self_: *mut PxPBDMaterial, scale: f32);
 
     /// Retrieves the gravity scale term
     ///
     /// The gravity scale term.
-    pub fn PxParticleMaterial_getGravityScale(self_: *const PxParticleMaterial) -> f32;
+    pub fn PxPBDMaterial_getGravityScale(self_: *const PxPBDMaterial) -> f32;
 
     /// Sets material adhesion radius scale. This is multiplied by the particle rest offset to compute the fall-off distance
     /// at which point adhesion ceases to operate.
-    pub fn PxParticleMaterial_setAdhesionRadiusScale_mut(self_: *mut PxParticleMaterial, scale: f32);
+    pub fn PxPBDMaterial_setAdhesionRadiusScale_mut(self_: *mut PxPBDMaterial, scale: f32);
 
     /// Retrieves the adhesion radius scale.
     ///
     /// The adhesion radius scale.
-    pub fn PxParticleMaterial_getAdhesionRadiusScale(self_: *const PxParticleMaterial) -> f32;
+    pub fn PxPBDMaterial_getAdhesionRadiusScale(self_: *const PxPBDMaterial) -> f32;
+
+    /// Sets viscosity
+    pub fn PxPBDMaterial_setViscosity_mut(self_: *mut PxPBDMaterial, viscosity: f32);
+
+    /// Retrieves the viscosity value.
+    ///
+    /// The viscosity value.
+    pub fn PxPBDMaterial_getViscosity(self_: *const PxPBDMaterial) -> f32;
+
+    /// Sets material vorticity confinement coefficient
+    pub fn PxPBDMaterial_setVorticityConfinement_mut(self_: *mut PxPBDMaterial, vorticityConfinement: f32);
+
+    /// Retrieves the vorticity confinement coefficient.
+    ///
+    /// The vorticity confinement coefficient.
+    pub fn PxPBDMaterial_getVorticityConfinement(self_: *const PxPBDMaterial) -> f32;
+
+    /// Sets material surface tension coefficient
+    pub fn PxPBDMaterial_setSurfaceTension_mut(self_: *mut PxPBDMaterial, surfaceTension: f32);
+
+    /// Retrieves the surface tension coefficient.
+    ///
+    /// The surface tension coefficient.
+    pub fn PxPBDMaterial_getSurfaceTension(self_: *const PxPBDMaterial) -> f32;
+
+    /// Sets material cohesion coefficient
+    pub fn PxPBDMaterial_setCohesion_mut(self_: *mut PxPBDMaterial, cohesion: f32);
+
+    /// Retrieves the cohesion coefficient.
+    ///
+    /// The cohesion coefficient.
+    pub fn PxPBDMaterial_getCohesion(self_: *const PxPBDMaterial) -> f32;
+
+    /// Sets material lift coefficient
+    ///
+    /// Particle-cloth, -rigids, -attachments and -volumes have been deprecated.
+    pub fn PxPBDMaterial_setLift_mut(self_: *mut PxPBDMaterial, lift: f32);
+
+    /// Retrieves the lift coefficient.
+    ///
+    /// Particle-cloth, -rigids, -attachments and -volumes have been deprecated.
+    ///
+    /// The lift coefficient.
+    pub fn PxPBDMaterial_getLift(self_: *const PxPBDMaterial) -> f32;
+
+    /// Sets material drag coefficient
+    ///
+    /// Particle-cloth, -rigids, -attachments and -volumes have been deprecated.
+    pub fn PxPBDMaterial_setDrag_mut(self_: *mut PxPBDMaterial, drag: f32);
+
+    /// Retrieves the drag coefficient.
+    ///
+    /// Particle-cloth, -rigids, -attachments and -volumes have been deprecated.
+    ///
+    /// The drag coefficient.
+    pub fn PxPBDMaterial_getDrag(self_: *const PxPBDMaterial) -> f32;
+
+    /// Sets the CFL coefficient. Limits the relative motion between two approaching fluid particles.
+    ///
+    /// The distance to which the motion is clamped is defined by CFLcoefficient*particleContactOffset*2.
+    /// A value of 0.5 will thus limit the appoaching motion to a distance of particleContactOffset.
+    /// A value much larger than one will typically not limit the motion of the particles.
+    pub fn PxPBDMaterial_setCFLCoefficient_mut(self_: *mut PxPBDMaterial, coefficient: f32);
+
+    /// Retrieves the CFL coefficient.
+    ///
+    /// The CFL coefficient.
+    pub fn PxPBDMaterial_getCFLCoefficient(self_: *const PxPBDMaterial) -> f32;
+
+    /// Sets material particle friction scale. This allows the application to scale up/down the frictional effect between particles independent of the friction
+    /// coefficient, which also defines frictional behavior between the particle and rigid bodies/soft bodies/cloth etc.
+    pub fn PxPBDMaterial_setParticleFrictionScale_mut(self_: *mut PxPBDMaterial, scale: f32);
+
+    /// Retrieves the particle friction scale.
+    ///
+    /// The particle friction scale.
+    pub fn PxPBDMaterial_getParticleFrictionScale(self_: *const PxPBDMaterial) -> f32;
+
+    /// Sets material particle adhesion scale value. This is the adhesive value between particles defined as a scaled multiple of the adhesion parameter.
+    pub fn PxPBDMaterial_setParticleAdhesionScale_mut(self_: *mut PxPBDMaterial, adhesion: f32);
+
+    /// Retrieves the particle adhesion scale value.
+    ///
+    /// The particle adhesion scale value.
+    pub fn PxPBDMaterial_getParticleAdhesionScale(self_: *const PxPBDMaterial) -> f32;
+
+    pub fn PxPBDMaterial_getConcreteTypeName(self_: *const PxPBDMaterial) -> *const std::ffi::c_char;
+
+    pub fn PxDeformableAttachmentData_new() -> PxDeformableAttachmentData;
+
+    /// Gets the two actors for this attachment.
+    pub fn PxDeformableAttachment_getActors(self_: *const PxDeformableAttachment, actor0: *mut *mut PxActor, actor1: *mut *mut PxActor);
+
+    /// Updates the pose of the attachment.
+    pub fn PxDeformableAttachment_updatePose_mut(self_: *mut PxDeformableAttachment, pose: *const PxTransform);
+
+    /// Returns string name of PxDeformableAttachment, used for serialization
+    pub fn PxDeformableAttachment_getConcreteTypeName(self_: *const PxDeformableAttachment) -> *const std::ffi::c_char;
+
+    pub fn PxDeformableElementFilterData_new() -> PxDeformableElementFilterData;
+
+    /// Gets the actors for this element filter.
+    pub fn PxDeformableElementFilter_getActors(self_: *const PxDeformableElementFilter, actor0: *mut *mut PxActor, actor1: *mut *mut PxActor);
+
+    /// Returns string name of PxDeformableElementFilter, used for serialization
+    pub fn PxDeformableElementFilter_getConcreteTypeName(self_: *const PxDeformableElementFilter) -> *const std::ffi::c_char;
 
     /// Destroys the instance it is called on.
     ///
@@ -9407,6 +11823,21 @@ extern "C" {
     /// A reference to the Foundation object.
     pub fn PxPhysics_getFoundation_mut(self_: *mut PxPhysics) -> *mut PxFoundation;
 
+    /// Gets PxPhysics object insertion interface.
+    ///
+    /// The insertion interface is needed for PxCreateTriangleMesh, PxCooking::createTriangleMesh etc., this allows runtime mesh creation.
+    pub fn PxPhysics_getPhysicsInsertionCallback_mut(self_: *mut PxPhysics) -> *mut PxInsertionCallback;
+
+    /// Retrieves the PxOmniPvd instance if there is one registered with PxPhysics.
+    ///
+    /// A pointer to a PxOmniPvd object.
+    pub fn PxPhysics_getOmniPvd_mut(self_: *mut PxPhysics) -> *mut PxOmniPvd;
+
+    /// Returns the simulation tolerance parameters.
+    ///
+    /// The current simulation tolerance parameters.
+    pub fn PxPhysics_getTolerancesScale(self_: *const PxPhysics) -> *const PxTolerancesScale;
+
     /// Creates an aggregate with the specified maximum size and filtering hint.
     ///
     /// The previous API used "bool enableSelfCollision" which should now silently evaluates
@@ -9419,10 +11850,10 @@ extern "C" {
     /// The new aggregate.
     pub fn PxPhysics_createAggregate_mut(self_: *mut PxPhysics, maxActor: u32, maxShape: u32, filterHint: u32) -> *mut PxAggregate;
 
-    /// Returns the simulation tolerance parameters.
+    /// Return the number of aggregates that currently exist.
     ///
-    /// The current simulation tolerance parameters.
-    pub fn PxPhysics_getTolerancesScale(self_: *const PxPhysics) -> *const PxTolerancesScale;
+    /// Number of aggregates.
+    pub fn PxPhysics_getNbAggregates(self_: *const PxPhysics) -> u32;
 
     /// Creates a triangle mesh object.
     ///
@@ -9451,11 +11882,6 @@ extern "C" {
     ///
     /// The new tetrahedron mesh.
     pub fn PxPhysics_createTetrahedronMesh_mut(self_: *mut PxPhysics, stream: *mut PxInputStream) -> *mut PxTetrahedronMesh;
-
-    /// Creates a softbody mesh object.
-    ///
-    /// The new softbody mesh.
-    pub fn PxPhysics_createSoftBodyMesh_mut(self_: *mut PxPhysics, stream: *mut PxInputStream) -> *mut PxSoftBodyMesh;
 
     /// Return the number of tetrahedron meshes that currently exist.
     ///
@@ -9512,6 +11938,11 @@ extern "C" {
     ///
     /// The number of convex mesh pointers written to userBuffer, this should be less or equal to bufferSize.
     pub fn PxPhysics_getConvexMeshes(self_: *const PxPhysics, userBuffer: *mut *mut PxConvexMesh, bufferSize: u32, startIndex: u32) -> u32;
+
+    /// Creates a deformable volume mesh object.
+    ///
+    /// The new deformable volume mesh.
+    pub fn PxPhysics_createDeformableVolumeMesh_mut(self_: *mut PxPhysics, stream: *mut PxInputStream) -> *mut PxDeformableVolumeMesh;
 
     /// Creates a bounding volume hierarchy.
     ///
@@ -9584,6 +12015,24 @@ extern "C" {
     /// Shared shapes are not mutable when they are attached to an actor
     pub fn PxPhysics_createShape_mut(self_: *mut PxPhysics, geometry: *const PxGeometry, material: *const PxMaterial, isExclusive: bool, shapeFlags: PxShapeFlags) -> *mut PxShape;
 
+    /// Creates a shape which may be attached to exactly one deformable volume actor
+    ///
+    /// The shape will be created with a reference count of 1.
+    ///
+    /// The shape
+    ///
+    /// Shared shapes are not mutable when they are attached to an actor
+    pub fn PxPhysics_createShape_mut_1(self_: *mut PxPhysics, geometry: *const PxGeometry, material: *const PxDeformableVolumeMaterial, isExclusive: bool, shapeFlags: PxShapeFlags) -> *mut PxShape;
+
+    /// Creates a shape which may be attached to exactly one deformable surface actor
+    ///
+    /// The shape will be created with a reference count of 1.
+    ///
+    /// The shape
+    ///
+    /// Shared shapes are not mutable when they are attached to an actor
+    pub fn PxPhysics_createShape_mut_2(self_: *mut PxPhysics, geometry: *const PxGeometry, material: *const PxDeformableSurfaceMaterial, isExclusive: bool, shapeFlags: PxShapeFlags) -> *mut PxShape;
+
     /// Creates a shape which may be attached to multiple actors
     ///
     /// The shape will be created with a reference count of 1.
@@ -9593,7 +12042,11 @@ extern "C" {
     /// Shared shapes are not mutable when they are attached to an actor
     ///
     /// Shapes created from *SDF* triangle-mesh geometries do not support more than one material.
-    pub fn PxPhysics_createShape_mut_1(self_: *mut PxPhysics, geometry: *const PxGeometry, materials: *const *mut PxMaterial, materialCount: u16, isExclusive: bool, shapeFlags: PxShapeFlags) -> *mut PxShape;
+    pub fn PxPhysics_createShape_mut_3(self_: *mut PxPhysics, geometry: *const PxGeometry, materials: *const *mut PxMaterial, materialCount: u16, isExclusive: bool, shapeFlags: PxShapeFlags) -> *mut PxShape;
+
+    pub fn PxPhysics_createShape_mut_4(self_: *mut PxPhysics, geometry: *const PxGeometry, materials: *const *mut PxDeformableSurfaceMaterial, materialCount: u16, isExclusive: bool, shapeFlags: PxShapeFlags) -> *mut PxShape;
+
+    pub fn PxPhysics_createShape_mut_5(self_: *mut PxPhysics, geometry: *const PxGeometry, materials: *const *mut PxDeformableVolumeMaterial, materialCount: u16, isExclusive: bool, shapeFlags: PxShapeFlags) -> *mut PxShape;
 
     /// Return the number of shapes that currently exist.
     ///
@@ -9617,10 +12070,78 @@ extern "C" {
     /// The new constraint shader.
     pub fn PxPhysics_createConstraint_mut(self_: *mut PxPhysics, actor0: *mut PxRigidActor, actor1: *mut PxRigidActor, connector: *mut PxConstraintConnector, shaders: *const PxConstraintShaderTable, dataSize: u32) -> *mut PxConstraint;
 
+    /// Return the number of constraints that currently exist.
+    ///
+    /// Number of constraints.
+    pub fn PxPhysics_getNbConstraints(self_: *const PxPhysics) -> u32;
+
     /// Creates a reduced-coordinate articulation with all fields initialized to their default values.
     ///
     /// the new articulation
     pub fn PxPhysics_createArticulationReducedCoordinate_mut(self_: *mut PxPhysics) -> *mut PxArticulationReducedCoordinate;
+
+    /// Return the number of articulations that currently exist.
+    ///
+    /// Number of articulations.
+    pub fn PxPhysics_getNbArticulations(self_: *const PxPhysics) -> u32;
+
+    /// Creates an attachment between two actors, based on the provided PxDeformableAttachmentData. At least one of the actors must be a deformable.
+    ///
+    /// An attachment is a collection of one or more positional constraints between a point on one actor and a point on another actor.
+    /// Attachments between two rigid objects are not permitted, use joints instead.
+    ///
+    /// The attachment is only active when both actors are added to the same scene or one of the actors is NULL.
+    ///
+    /// The PxDeformableAttachment created if successful, NULL otherwise.
+    pub fn PxPhysics_createDeformableAttachment_mut(self_: *mut PxPhysics, data: *const PxDeformableAttachmentData) -> *mut PxDeformableAttachment;
+
+    /// Creates an element-level collision filter between two actors, based on the provided PxDeformableElementFilterData. At least one of the actors must be a deformable.
+    ///
+    /// Element filters define how parts of deformable actors are excluded from collisions.
+    /// They are usually added to avoid conflicting attachment and contact constraints.
+    ///
+    /// The element filter is only active when both actors are added to the same scene or one of the actors is NULL.
+    ///
+    /// The PxDeformableElementFilter created if successful, NULL otherwise.
+    pub fn PxPhysics_createDeformableElementFilter_mut(self_: *mut PxPhysics, data: *const PxDeformableElementFilterData) -> *mut PxDeformableElementFilter;
+
+    /// Creates a deformable surface with all fields initialized to their default values.
+    ///
+    /// the new deformable surface
+    pub fn PxPhysics_createDeformableSurface_mut(self_: *mut PxPhysics, cudaContextManager: *mut PxCudaContextManager) -> *mut PxDeformableSurface;
+
+    /// Creates a FEM-based deformable volume with all fields initialized to their default values.
+    ///
+    /// the new deformable volume
+    pub fn PxPhysics_createDeformableVolume_mut(self_: *mut PxPhysics, cudaContextManager: *mut PxCudaContextManager) -> *mut PxDeformableVolume;
+
+    /// Creates a particle system with a position-based dynamics (PBD) solver.
+    ///
+    /// A PBD particle system can be used to simulate particle systems with fluid and granular particles. It also allows simulating cloth using
+    /// mass-spring constraints and rigid bodies by shape matching the bodies with particles.
+    ///
+    /// In order to accelerate neighborhood finding for particle-particle interactions (e.g.: for fluid density constraints) a regular grid is used.
+    /// This grid is built every time step but may provide inaccurate neighborhood information during the solver iterations. The neighborhood scale
+    /// parameter can be used to configure the grid such that it provides a more conservative neighborhood at the cost of run-time performance.
+    /// The grid cell width is defined as 2*particleContactOffset*neighborhoodScale.
+    ///
+    /// The maxNeighborhood defines how many particles fit into the neighborhood, at the cost of memory.
+    ///
+    /// Both maxNeighborhood and neighborhoodScale should be set as low as possible for performance, but high enough to not cause any behavioral degredation.
+    ///
+    /// the new particle system
+    pub fn PxPhysics_createPBDParticleSystem_mut(self_: *mut PxPhysics, cudaContextManager: *mut PxCudaContextManager, maxNeighborhood: u32, neighborhoodScale: f32) -> *mut PxPBDParticleSystem;
+
+    /// Create particle buffer to simulate fluid/granular material.
+    ///
+    /// PxParticleBuffer instance
+    pub fn PxPhysics_createParticleBuffer_mut(self_: *mut PxPhysics, maxParticles: u32, cudaContextManager: *mut PxCudaContextManager) -> *mut PxParticleBuffer;
+
+    /// Create a particle buffer for fluid dynamics with diffuse particles. Diffuse particles are used to simulate fluid effects
+    /// such as foam, spray and bubbles.
+    ///
+    /// PxParticleAndDiffuseBuffer instance
+    pub fn PxPhysics_createParticleAndDiffuseBuffer_mut(self_: *mut PxPhysics, maxParticles: u32, maxDiffuseParticles: u32, cudaContextManager: *mut PxCudaContextManager) -> *mut PxParticleAndDiffuseBuffer;
 
     /// Creates a new rigid body material with certain default properties.
     ///
@@ -9640,6 +12161,63 @@ extern "C" {
     ///
     /// The number of material pointers written to userBuffer, this should be less or equal to bufferSize.
     pub fn PxPhysics_getMaterials(self_: *const PxPhysics, userBuffer: *mut *mut PxMaterial, bufferSize: u32, startIndex: u32) -> u32;
+
+    /// Creates a new surface deformable material with certain default properties.
+    ///
+    /// The new surface deformable material.
+    pub fn PxPhysics_createDeformableSurfaceMaterial_mut(self_: *mut PxPhysics, youngs: f32, poissons: f32, dynamicFriction: f32, thickness: f32, bendingStiffness: f32, elasticityDamping: f32, bendingDamping: f32) -> *mut PxDeformableSurfaceMaterial;
+
+    /// Return the number of deformable surface materials that currently exist.
+    ///
+    /// Number of deformable surface materials.
+    pub fn PxPhysics_getNbDeformableSurfaceMaterials(self_: *const PxPhysics) -> u32;
+
+    /// Writes the array of deformable surface material pointers to a user buffer.
+    ///
+    /// Returns the number of pointers written.
+    ///
+    /// The ordering of the materials in the array is not specified.
+    ///
+    /// The number of material pointers written to userBuffer, this should be less or equal to bufferSize.
+    pub fn PxPhysics_getDeformableSurfaceMaterials(self_: *const PxPhysics, userBuffer: *mut *mut PxDeformableSurfaceMaterial, bufferSize: u32, startIndex: u32) -> u32;
+
+    /// Creates a new deformable volume material with certain default properties.
+    ///
+    /// The new deformable volume material.
+    pub fn PxPhysics_createDeformableVolumeMaterial_mut(self_: *mut PxPhysics, youngs: f32, poissons: f32, dynamicFriction: f32, elasticityDamping: f32) -> *mut PxDeformableVolumeMaterial;
+
+    /// Return the number of deformable volume materials that currently exist.
+    ///
+    /// Number of materials.
+    pub fn PxPhysics_getNbDeformableVolumeMaterials(self_: *const PxPhysics) -> u32;
+
+    /// Writes the array of deformable volume material pointers to a user buffer.
+    ///
+    /// Returns the number of pointers written.
+    ///
+    /// The ordering of the materials in the array is not specified.
+    ///
+    /// The number of material pointers written to userBuffer, this should be less or equal to bufferSize.
+    pub fn PxPhysics_getDeformableVolumeMaterials(self_: *const PxPhysics, userBuffer: *mut *mut PxDeformableVolumeMaterial, bufferSize: u32, startIndex: u32) -> u32;
+
+    /// Creates a new PBD material with certain default properties.
+    ///
+    /// The new PBD material.
+    pub fn PxPhysics_createPBDMaterial_mut(self_: *mut PxPhysics, friction: f32, damping: f32, adhesion: f32, viscosity: f32, vorticityConfinement: f32, surfaceTension: f32, cohesion: f32, lift: f32, drag: f32, cflCoefficient: f32, gravityScale: f32) -> *mut PxPBDMaterial;
+
+    /// Return the number of PBD materials that currently exist.
+    ///
+    /// Number of PBD materials.
+    pub fn PxPhysics_getNbPBDMaterials(self_: *const PxPhysics) -> u32;
+
+    /// Writes the array of PBD material pointers to a user buffer.
+    ///
+    /// Returns the number of pointers written.
+    ///
+    /// The ordering of the materials in the array is not specified.
+    ///
+    /// The number of material pointers written to userBuffer, this should be less or equal to bufferSize.
+    pub fn PxPhysics_getPBDMaterials(self_: *const PxPhysics, userBuffer: *mut *mut PxPBDMaterial, bufferSize: u32, startIndex: u32) -> u32;
 
     /// Register a deletion listener. Listeners will be called whenever an object is deleted.
     ///
@@ -9673,21 +12251,12 @@ extern "C" {
     /// The deletion listener has to be registered through [`registerDeletionListener`]() and configured to support restricted object sets prior to this method being used.
     pub fn PxPhysics_unregisterDeletionListenerObjects_mut(self_: *mut PxPhysics, observer: *mut PxDeletionListener, observables: *const *const PxBase, observableCount: u32);
 
-    /// Gets PxPhysics object insertion interface.
-    ///
-    /// The insertion interface is needed for PxCreateTriangleMesh, PxCooking::createTriangleMesh etc., this allows runtime mesh creation.
-    pub fn PxPhysics_getPhysicsInsertionCallback_mut(self_: *mut PxPhysics) -> *mut PxInsertionCallback;
-
     /// Creates an instance of the physics SDK.
     ///
     /// Creates an instance of this class. May not be a class member to avoid name mangling.
     /// Pass the constant [`PX_PHYSICS_VERSION`] as the argument.
     /// There may be only one instance of this class per process. Calling this method after an instance
     /// has been created already will result in an error message and NULL will be returned.
-    ///
-    /// Calling this will register all optional code modules (Articulations and HeightFields), preparing them for use.
-    /// If you do not need some of these modules, consider calling PxCreateBasePhysics() instead and registering needed
-    /// modules manually.
     ///
     /// PxPhysics instance on success, NULL if operation failed
     pub fn phys_PxCreatePhysics(version: u32, foundation: *mut PxFoundation, scale: *const PxTolerancesScale, trackOutstandingAllocations: bool, pvd: *mut PxPvd, omniPvd: *mut PxOmniPvd) -> *mut PxPhysics;
@@ -9820,70 +12389,6 @@ extern "C" {
     /// The energy threshold for participating in stabilization.
     pub fn PxRigidDynamic_getStabilizationThreshold(self_: *const PxRigidDynamic) -> f32;
 
-    /// Reads the PxRigidDynamic lock flags.
-    ///
-    /// See the list of flags [`PxRigidDynamicLockFlag`]
-    ///
-    /// The values of the PxRigidDynamicLock flags.
-    pub fn PxRigidDynamic_getRigidDynamicLockFlags(self_: *const PxRigidDynamic) -> PxRigidDynamicLockFlags;
-
-    /// Raises or clears a particular rigid dynamic lock flag.
-    ///
-    /// See the list of flags [`PxRigidDynamicLockFlag`]
-    ///
-    /// Default:
-    /// no flags are set
-    pub fn PxRigidDynamic_setRigidDynamicLockFlag_mut(self_: *mut PxRigidDynamic, flag: PxRigidDynamicLockFlag, value: bool);
-
-    pub fn PxRigidDynamic_setRigidDynamicLockFlags_mut(self_: *mut PxRigidDynamic, flags: PxRigidDynamicLockFlags);
-
-    /// Retrieves the linear velocity of an actor.
-    ///
-    /// It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
-    /// in PxContactModifyCallback or in contact report callbacks).
-    ///
-    /// The linear velocity of the actor.
-    pub fn PxRigidDynamic_getLinearVelocity(self_: *const PxRigidDynamic) -> PxVec3;
-
-    /// Sets the linear velocity of the actor.
-    ///
-    /// Note that if you continuously set the velocity of an actor yourself,
-    /// forces such as gravity or friction will not be able to manifest themselves, because forces directly
-    /// influence only the velocity/momentum of an actor.
-    ///
-    /// Default:
-    /// (0.0, 0.0, 0.0)
-    ///
-    /// Sleeping:
-    /// This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the
-    /// new velocity is non-zero.
-    ///
-    /// It is invalid to use this method if PxActorFlag::eDISABLE_SIMULATION is set.
-    pub fn PxRigidDynamic_setLinearVelocity_mut(self_: *mut PxRigidDynamic, linVel: *const PxVec3, autowake: bool);
-
-    /// Retrieves the angular velocity of the actor.
-    ///
-    /// It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
-    /// in PxContactModifyCallback or in contact report callbacks).
-    ///
-    /// The angular velocity of the actor.
-    pub fn PxRigidDynamic_getAngularVelocity(self_: *const PxRigidDynamic) -> PxVec3;
-
-    /// Sets the angular velocity of the actor.
-    ///
-    /// Note that if you continuously set the angular velocity of an actor yourself,
-    /// forces such as friction will not be able to rotate the actor, because forces directly influence only the velocity/momentum.
-    ///
-    /// Default:
-    /// (0.0, 0.0, 0.0)
-    ///
-    /// Sleeping:
-    /// This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the
-    /// new velocity is non-zero.
-    ///
-    /// It is invalid to use this method if PxActorFlag::eDISABLE_SIMULATION is set.
-    pub fn PxRigidDynamic_setAngularVelocity_mut(self_: *mut PxRigidDynamic, angVel: *const PxVec3, autowake: bool);
-
     /// Sets the wake counter for the actor.
     ///
     /// The wake counter value determines the minimum amount of time until the body can be put to sleep. Please note
@@ -9932,6 +12437,83 @@ extern "C" {
     /// based on whether a target pose has been set (see the comment in [`isSleeping`]()).
     pub fn PxRigidDynamic_putToSleep_mut(self_: *mut PxRigidDynamic);
 
+    /// Reads the PxRigidDynamic lock flags.
+    ///
+    /// See the list of flags [`PxRigidDynamicLockFlag`]
+    ///
+    /// The values of the PxRigidDynamic lock flags.
+    pub fn PxRigidDynamic_getRigidDynamicLockFlags(self_: *const PxRigidDynamic) -> PxRigidDynamicLockFlags;
+
+    /// Raises or clears a particular PxRigidDynamic lock flag.
+    ///
+    /// See the list of flags [`PxRigidDynamicLockFlag`]
+    ///
+    /// Default:
+    /// no flags are set
+    pub fn PxRigidDynamic_setRigidDynamicLockFlag_mut(self_: *mut PxRigidDynamic, flag: PxRigidDynamicLockFlag, value: bool);
+
+    /// Set all PxRigidDynamic lock flags.
+    pub fn PxRigidDynamic_setRigidDynamicLockFlags_mut(self_: *mut PxRigidDynamic, flags: PxRigidDynamicLockFlags);
+
+    /// Retrieves the actor's center-of-mass linear velocity.
+    ///
+    /// It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
+    /// in PxContactModifyCallback or in contact report callbacks).
+    ///
+    /// The linear velocity is reported with respect to the actor's center of mass and not the actor frame origin.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
+    /// The actor's center-of-mass linear velocity.
+    pub fn PxRigidDynamic_getLinearVelocity(self_: *const PxRigidDynamic) -> PxVec3;
+
+    /// Sets the actor's center-of-mass linear velocity.
+    ///
+    /// Note that if you continuously set the velocity of an actor yourself,
+    /// forces such as gravity or friction will not be able to manifest themselves, because forces directly
+    /// influence only the velocity/momentum of an actor.
+    ///
+    /// Default:
+    /// (0.0, 0.0, 0.0)
+    ///
+    /// Sleeping:
+    /// This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the
+    /// new velocity is non-zero.
+    ///
+    /// It is invalid to use this method if PxActorFlag::eDISABLE_SIMULATION is set.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
+    /// The linear velocity is applied with respect to the actor's center of mass and not the actor frame origin.
+    pub fn PxRigidDynamic_setLinearVelocity_mut(self_: *mut PxRigidDynamic, linVel: *const PxVec3, autowake: bool);
+
+    /// Retrieves the angular velocity of the actor.
+    ///
+    /// It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
+    /// in PxContactModifyCallback or in contact report callbacks).
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    ///
+    /// The angular velocity of the actor.
+    pub fn PxRigidDynamic_getAngularVelocity(self_: *const PxRigidDynamic) -> PxVec3;
+
+    /// Sets the angular velocity of the actor.
+    ///
+    /// Note that if you continuously set the angular velocity of an actor yourself,
+    /// forces such as friction will not be able to rotate the actor, because forces directly influence only the velocity/momentum.
+    ///
+    /// Default:
+    /// (0.0, 0.0, 0.0)
+    ///
+    /// Sleeping:
+    /// This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the
+    /// new velocity is non-zero.
+    ///
+    /// It is invalid to use this method if PxActorFlag::eDISABLE_SIMULATION is set.
+    ///
+    /// This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+    pub fn PxRigidDynamic_setAngularVelocity_mut(self_: *mut PxRigidDynamic, angVel: *const PxVec3, autowake: bool);
+
     /// Sets the solver iteration counts for the body.
     ///
     /// The solver iteration count determines how accurately joints and contacts are resolved.
@@ -9972,9 +12554,18 @@ extern "C" {
     /// See [`getContactReportThreshold`]().
     pub fn PxRigidDynamic_setContactReportThreshold_mut(self_: *mut PxRigidDynamic, threshold: f32);
 
+    /// Returns the GPU rigid dynamic index.
+    ///
+    /// This function only returns valid results if GPU dynamics is enabled.
+    ///
+    /// The GPU index, or 0xFFFFFFFF if the actor is not inserted into a PxScene.
+    pub fn PxRigidDynamic_getGPUIndex(self_: *const PxRigidDynamic) -> u32;
+
     pub fn PxRigidDynamic_getConcreteTypeName(self_: *const PxRigidDynamic) -> *const std::ffi::c_char;
 
     pub fn PxRigidStatic_getConcreteTypeName(self_: *const PxRigidStatic) -> *const std::ffi::c_char;
+
+    pub fn PxArticulationGPUAPIMaxCounts_new() -> PxArticulationGPUAPIMaxCounts;
 
     /// constructor sets to default.
     pub fn PxSceneQueryDesc_new() -> PxSceneQueryDesc;
@@ -10118,7 +12709,7 @@ extern "C" {
     pub fn PxSceneSQSystem_checkQueries_mut(self_: *mut PxSceneSQSystem, block: bool) -> bool;
 
     /// This method must be called after sceneQueriesUpdate. It will wait for the scene queries update to finish. If the user makes an illegal scene queries update call,
-    /// the SDK will issue an error message.
+    /// the SDK will issue an error	message.
     ///
     /// If a new AABB tree build finished, then during fetchQueries the current tree within the pruning structure is swapped with the new tree.
     pub fn PxSceneSQSystem_fetchQueries_mut(self_: *mut PxSceneSQSystem, block: bool) -> bool;
@@ -10181,6 +12772,9 @@ extern "C" {
     /// Please refer to the notes of the similar function in PxScene.
     pub fn PxSceneQuerySystem_shiftOrigin_mut(self_: *mut PxSceneQuerySystem, shift: *const PxVec3);
 
+    /// Visualizes the system's internal data-structures, for debugging purposes.
+    pub fn PxSceneQuerySystem_visualize(self_: *const PxSceneQuerySystem, prunerIndex: u32, out: *mut PxRenderOutput);
+
     /// Merges a pruning structure with the SQ system's internal pruners.
     pub fn PxSceneQuerySystem_merge_mut(self_: *mut PxSceneQuerySystem, pruningStructure: *const PxPruningStructure);
 
@@ -10238,6 +12832,10 @@ extern "C" {
     /// This function incrementally builds the internal trees/pruners. It is called asynchronously, i.e. this can be
     /// called from different threads for building multiple trees at the same time.
     pub fn PxSceneQuerySystem_sceneQueryBuildStep_mut(self_: *mut PxSceneQuerySystem, handle: *mut std::ffi::c_void);
+
+    pub fn PxGpuBroadPhaseDesc_new() -> PxGpuBroadPhaseDesc;
+
+    pub fn PxGpuBroadPhaseDesc_isValid(self_: *const PxGpuBroadPhaseDesc) -> bool;
 
     pub fn PxBroadPhaseDesc_new(type_: PxBroadPhaseType) -> PxBroadPhaseDesc;
 
@@ -10382,6 +12980,11 @@ extern "C" {
     /// Helper for single-threaded updates.
     ///
     /// This short helper function performs a single-theaded update and reports the results in a single call.
+    pub fn PxBroadPhase_updateAndFetchResults_mut(self_: *mut PxBroadPhase, results: *mut PxBroadPhaseResults, updateData: *const PxBroadPhaseUpdateData);
+
+    /// Helper for single-threaded updates.
+    ///
+    /// This short helper function performs a single-theaded update and reports the results in a single call.
     pub fn PxBroadPhase_update_mut_1(self_: *mut PxBroadPhase, results: *mut PxBroadPhaseResults, updateData: *const PxBroadPhaseUpdateData);
 
     /// Broadphase factory function.
@@ -10458,6 +13061,11 @@ extern "C" {
     /// Helper for single-threaded updates.
     ///
     /// This short helper function performs a single-theaded update and reports the results in a single call.
+    pub fn PxAABBManager_updateAndFetchResults_mut(self_: *mut PxAABBManager, results: *mut PxBroadPhaseResults);
+
+    /// Helper for single-threaded updates.
+    ///
+    /// This short helper function performs a single-theaded update and reports the results in a single call.
     pub fn PxAABBManager_update_mut_1(self_: *mut PxAABBManager, results: *mut PxBroadPhaseResults);
 
     /// AABB manager factory function.
@@ -10478,9 +13086,9 @@ extern "C" {
     /// true if the current settings are valid.
     pub fn PxSceneLimits_isValid(self_: *const PxSceneLimits) -> bool;
 
-    pub fn PxgDynamicsMemoryConfig_new() -> PxgDynamicsMemoryConfig;
+    pub fn PxGpuDynamicsMemoryConfig_new() -> PxGpuDynamicsMemoryConfig;
 
-    pub fn PxgDynamicsMemoryConfig_isValid(self_: *const PxgDynamicsMemoryConfig) -> bool;
+    pub fn PxGpuDynamicsMemoryConfig_isValid(self_: *const PxGpuDynamicsMemoryConfig) -> bool;
 
     /// constructor sets to default.
     pub fn PxSceneDesc_new(scale: *const PxTolerancesScale) -> PxSceneDesc;
@@ -10494,6 +13102,8 @@ extern "C" {
     pub fn PxSceneDesc_isValid(self_: *const PxSceneDesc) -> bool;
 
     pub fn PxSceneDesc_getTolerancesScale(self_: *const PxSceneDesc) -> *const PxTolerancesScale;
+
+    pub fn PxGpuDynamicsMemoryConfigStatistics_new() -> PxGpuDynamicsMemoryConfigStatistics;
 
     /// Get number of broadphase volumes added for the current simulation step.
     ///
@@ -10555,12 +13165,14 @@ extern "C" {
     /// This function is called when an aggregate leaves the broad-phase.
     pub fn PxBroadPhaseCallback_onObjectOutOfBounds_mut_1(self_: *mut PxBroadPhaseCallback, aggregate: *mut PxAggregate);
 
+    pub fn PxPostSolveCallback_delete(self_: *mut PxPostSolveCallback);
+
     /// Deletes the scene.
     ///
     /// Removes any actors and constraint shaders from this scene
     /// (if the user hasn't already done so).
     ///
-    /// Be sure to not keep a reference to this object after calling release.
+    /// Be sure	to not keep a reference to this object after calling release.
     /// Avoid release calls while the scene is simulating (in between simulate() and fetchResults() calls).
     pub fn PxScene_release_mut(self_: *mut PxScene);
 
@@ -10595,6 +13207,20 @@ extern "C" {
     ///
     /// scene timestamp
     pub fn PxScene_getTimestamp(self_: *const PxScene) -> u32;
+
+    /// Sets a name string for the Scene that can be retrieved with getName().
+    ///
+    /// This is for debugging and is not used by the SDK. The string is not copied by the SDK,
+    /// only the pointer is stored.
+    ///
+    /// Default:
+    /// NULL
+    pub fn PxScene_setName_mut(self_: *mut PxScene, name: *const std::ffi::c_char);
+
+    /// Retrieves the name string set with setName().
+    ///
+    /// Name string associated with the Scene.
+    pub fn PxScene_getName(self_: *const PxScene) -> *const std::ffi::c_char;
 
     /// Adds an articulation to this scene.
     ///
@@ -10734,8 +13360,38 @@ extern "C" {
     ///
     /// Do not use this method while the simulation is running. Calls to this method while the simulation is running will be ignored and NULL will be returned.
     ///
+    /// This list may contain actors that have been released after fetchResults() of the previous simulation step. It is the user's
+    /// responsibility to track such actors and avoid dereferencing the corresponding pointers.
+    ///
     /// A pointer to the list of active PxActors generated during the last call to fetchResults().
     pub fn PxScene_getActiveActors_mut(self_: *mut PxScene, nbActorsOut: *mut u32) -> *mut *mut PxActor;
+
+    /// Retrieve the number of deformable surfaces in the scene.
+    ///
+    /// the number of deformable surfaces.
+    ///
+    /// See getDeformableSurfaces()
+    pub fn PxScene_getNbDeformableSurfaces(self_: *const PxScene) -> u32;
+
+    /// Retrieve an array of all the deformable surfaces in the scene.
+    ///
+    /// Number of deformable surfaces written to the buffer
+    pub fn PxScene_getDeformableSurfaces(self_: *const PxScene, userBuffer: *mut *mut PxDeformableSurface, bufferSize: u32, startIndex: u32) -> u32;
+
+    /// Retrieve the number of deformable volumes in the scene.
+    ///
+    /// the number of deformable volumes.
+    pub fn PxScene_getNbDeformableVolumes(self_: *const PxScene) -> u32;
+
+    /// Retrieve an array of all the deformable volumes in the scene.
+    ///
+    /// Number of actors written to the buffer.
+    pub fn PxScene_getDeformableVolumes(self_: *const PxScene, userBuffer: *mut *mut PxDeformableVolume, bufferSize: u32, startIndex: u32) -> u32;
+
+    /// Retrieve the number of particle systems of the requested type in the scene.
+    ///
+    /// the number particle systems.
+    pub fn PxScene_getNbPBDParticleSystems(self_: *const PxScene) -> u32;
 
     /// Returns the number of articulations in the scene.
     ///
@@ -10825,6 +13481,12 @@ extern "C" {
     /// Return the cpu dispatcher that was set in PxSceneDesc::cpuDispatcher when creating the scene with PxPhysics::createScene
     pub fn PxScene_getCpuDispatcher(self_: *const PxScene) -> *mut PxCpuDispatcher;
 
+    /// Return the CUDA context manager that was set in PxSceneDesc::cudaContextManager when creating the scene with PxPhysics::createScene
+    ///
+    /// Platform specific:
+    /// Applies to PC GPU only.
+    pub fn PxScene_getCudaContextManager(self_: *const PxScene) -> *mut PxCudaContextManager;
+
     /// Reserves a new client ID.
     ///
     /// PX_DEFAULT_CLIENT is always available as the default clientID.
@@ -10894,6 +13556,16 @@ extern "C" {
     ///
     /// Size of shared filter data [bytes].
     pub fn PxScene_getFilterShaderDataSize(self_: *const PxScene) -> u32;
+
+    /// Gets the custom collision filter shader in use for this scene.
+    ///
+    /// Filter shader class that defines the collision pair filtering.
+    pub fn PxScene_getFilterShader(self_: *const PxScene) -> *mut std::ffi::c_void;
+
+    /// Gets the custom collision filter callback in use for this scene.
+    ///
+    /// Filter callback class that defines the collision pair filtering.
+    pub fn PxScene_getFilterCallback(self_: *const PxScene) -> *mut PxSimulationFilterCallback;
 
     /// Marks the object to reset interactions and re-run collision filters in the next simulation step.
     ///
@@ -11112,6 +13784,8 @@ extern "C" {
     pub fn PxScene_getFrictionCorrelationDistance(self_: *const PxScene) -> f32;
 
     /// Return the friction model.
+    ///
+    /// Since only the patch friction model is supported now, the friction type option is obsolete.
     pub fn PxScene_getFrictionType(self_: *const PxScene) -> PxFrictionType;
 
     /// Return the solver model.
@@ -11337,79 +14011,24 @@ extern "C" {
     /// the client, NULL if no PVD supported.
     pub fn PxScene_getScenePvdClient_mut(self_: *mut PxScene) -> *mut PxPvdSceneClient;
 
-    /// Copy GPU articulation data from the internal GPU buffer to a user-provided device buffer.
-    pub fn PxScene_copyArticulationData_mut(self_: *mut PxScene, data: *mut std::ffi::c_void, index: *mut std::ffi::c_void, dataType: PxArticulationGpuDataType, nbCopyArticulations: u32, copyEvent: *mut std::ffi::c_void);
+    /// Get the PxGpuDynamicsMemoryConfig that was passed into PxPhysics::createScene() as part of PxSceneDesc.
+    ///
+    /// This will return the values passed as initial configuration, for the actual minimal configuration that would be needed
+    /// for a specific simulation of a scene, see PxSimulationStatistics::gpuDynamicsMemoryConfigStatistics.
+    ///
+    /// The PxGpuDynamicsMemoryConfig used during scene creation.
+    pub fn PxScene_getGpuDynamicsConfig(self_: *const PxScene) -> PxGpuDynamicsMemoryConfig;
 
-    /// Apply GPU articulation data from a user-provided device buffer to the internal GPU buffer.
-    pub fn PxScene_applyArticulationData_mut(self_: *mut PxScene, data: *mut std::ffi::c_void, index: *mut std::ffi::c_void, dataType: PxArticulationGpuDataType, nbUpdatedArticulations: u32, waitEvent: *mut std::ffi::c_void, signalEvent: *mut std::ffi::c_void);
+    /// Get the direct-GPU API instance for this scene.
+    ///
+    /// Each object of PxDirectGPUAPI is directly associated with a PxScene, and there is only one PxDirectGPUAPI object per scene.
+    pub fn PxScene_getDirectGPUAPI_mut(self_: *mut PxScene) -> *mut PxDirectGPUAPI;
 
-    /// Copy GPU softbody data from the internal GPU buffer to a user-provided device buffer.
-    pub fn PxScene_copySoftBodyData_mut(self_: *mut PxScene, data: *mut *mut std::ffi::c_void, dataSizes: *mut std::ffi::c_void, softBodyIndices: *mut std::ffi::c_void, flag: PxSoftBodyDataFlag, nbCopySoftBodies: u32, maxSize: u32, copyEvent: *mut std::ffi::c_void);
+    /// Sets the post-solve callback for deformable surface GPU computations. Allows to schedule custom work to be done by the GPU as soon as possible after the deformable surface solver finishes.
+    pub fn PxScene_setDeformableSurfaceGpuPostSolveCallback_mut(self_: *mut PxScene, postSolveCallback: *mut PxPostSolveCallback);
 
-    /// Apply user-provided data to the internal softbody system.
-    pub fn PxScene_applySoftBodyData_mut(self_: *mut PxScene, data: *mut *mut std::ffi::c_void, dataSizes: *mut std::ffi::c_void, softBodyIndices: *mut std::ffi::c_void, flag: PxSoftBodyDataFlag, nbUpdatedSoftBodies: u32, maxSize: u32, applyEvent: *mut std::ffi::c_void);
-
-    /// Copy contact data from the internal GPU buffer to a user-provided device buffer.
-    ///
-    /// The contact data contains pointers to internal state and is only valid until the next call to simulate().
-    pub fn PxScene_copyContactData_mut(self_: *mut PxScene, data: *mut std::ffi::c_void, maxContactPairs: u32, numContactPairs: *mut std::ffi::c_void, copyEvent: *mut std::ffi::c_void);
-
-    /// Copy GPU rigid body data from the internal GPU buffer to a user-provided device buffer.
-    pub fn PxScene_copyBodyData_mut(self_: *mut PxScene, data: *mut PxGpuBodyData, index: *mut PxGpuActorPair, nbCopyActors: u32, copyEvent: *mut std::ffi::c_void);
-
-    /// Apply user-provided data to rigid body.
-    pub fn PxScene_applyActorData_mut(self_: *mut PxScene, data: *mut std::ffi::c_void, index: *mut PxGpuActorPair, flag: PxActorCacheFlag, nbUpdatedActors: u32, waitEvent: *mut std::ffi::c_void, signalEvent: *mut std::ffi::c_void);
-
-    /// Compute dense Jacobian matrices for specified articulations on the GPU.
-    ///
-    /// The size of Jacobians can vary by articulation, since it depends on the number of links, degrees-of-freedom, and whether the base is fixed.
-    ///
-    /// The size is determined using these formulas:
-    /// nCols = (fixedBase ? 0 : 6) + dofCount
-    /// nRows = (fixedBase ? 0 : 6) + (linkCount - 1) * 6;
-    ///
-    /// The user must ensure that adequate space is provided for each Jacobian matrix.
-    pub fn PxScene_computeDenseJacobians_mut(self_: *mut PxScene, indices: *const PxIndexDataPair, nbIndices: u32, computeEvent: *mut std::ffi::c_void);
-
-    /// Compute the joint-space inertia matrices that maps joint accelerations to joint forces: forces = M * accelerations on the GPU.
-    ///
-    /// The size of matrices can vary by articulation, since it depends on the number of links and degrees-of-freedom.
-    ///
-    /// The size is determined using this formula:
-    /// sizeof(float) * dofCount * dofCount
-    ///
-    /// The user must ensure that adequate space is provided for each mass matrix.
-    pub fn PxScene_computeGeneralizedMassMatrices_mut(self_: *mut PxScene, indices: *const PxIndexDataPair, nbIndices: u32, computeEvent: *mut std::ffi::c_void);
-
-    /// Computes the joint DOF forces required to counteract gravitational forces for the given articulation pose.
-    ///
-    /// The size of the result can vary by articulation, since it depends on the number of links and degrees-of-freedom.
-    ///
-    /// The size is determined using this formula:
-    /// sizeof(float) * dofCount
-    ///
-    /// The user must ensure that adequate space is provided for each articulation.
-    pub fn PxScene_computeGeneralizedGravityForces_mut(self_: *mut PxScene, indices: *const PxIndexDataPair, nbIndices: u32, computeEvent: *mut std::ffi::c_void);
-
-    /// Computes the joint DOF forces required to counteract coriolis and centrifugal forces for the given articulation pose.
-    ///
-    /// The size of the result can vary by articulation, since it depends on the number of links and degrees-of-freedom.
-    ///
-    /// The size is determined using this formula:
-    /// sizeof(float) * dofCount
-    ///
-    /// The user must ensure that adequate space is provided for each articulation.
-    pub fn PxScene_computeCoriolisAndCentrifugalForces_mut(self_: *mut PxScene, indices: *const PxIndexDataPair, nbIndices: u32, computeEvent: *mut std::ffi::c_void);
-
-    pub fn PxScene_getGpuDynamicsConfig(self_: *const PxScene) -> PxgDynamicsMemoryConfig;
-
-    /// Apply user-provided data to particle buffers.
-    ///
-    /// This function should be used if the particle buffer flags are already on the device. Otherwise, use PxParticleBuffer::raiseFlags()
-    /// from the CPU.
-    ///
-    /// This assumes the data has been changed directly in the PxParticleBuffer.
-    pub fn PxScene_applyParticleBufferData_mut(self_: *mut PxScene, indices: *const u32, bufferIndexPair: *const PxGpuParticleBufferIndexPair, flags: *const PxParticleBufferFlags, nbUpdatedBuffers: u32, waitEvent: *mut std::ffi::c_void, signalEvent: *mut std::ffi::c_void);
+    /// Sets the post-solve callback for deformable volume GPU computations. Allows to schedule custom work to be done by the GPU as soon as possible after the deformable volume solver finishes.
+    pub fn PxScene_setDeformableVolumeGpuPostSolveCallback_mut(self_: *mut PxScene, postSolveCallback: *mut PxPostSolveCallback);
 
     /// Constructor
     pub fn PxSceneReadLock_new_alloc(scene: *mut PxScene, file: *const std::ffi::c_char, line: u32) -> *mut PxSceneReadLock;
@@ -11456,6 +14075,11 @@ extern "C" {
     ///
     /// Number of contact points written to the buffer.
     pub fn PxContactPair_extractContacts(self_: *const PxContactPair, userBuffer: *mut PxContactPairPoint, bufferSize: u32) -> u32;
+
+    /// Extracts the friction anchors from the stream and stores them in a convenient format.
+    ///
+    /// Number of friction anchors written to the buffer.
+    pub fn PxContactPair_extractFrictionAnchors(self_: *const PxContactPair, userBuffer: *mut PxContactPairFrictionAnchor, bufferSize: u32) -> u32;
 
     /// Helper method to clone the contact pair and copy the contact data stream into a user buffer.
     ///
@@ -11542,8 +14166,6 @@ extern "C" {
 
     pub fn PxSimulationEventCallback_delete(self_: *mut PxSimulationEventCallback);
 
-    pub fn PxFEMParameters_new() -> PxFEMParameters;
-
     /// Release this object.
     pub fn PxPruningStructure_release_mut(self_: *mut PxPruningStructure);
 
@@ -11579,43 +14201,9 @@ extern "C" {
 
     pub fn PxPruningStructure_getConcreteTypeName(self_: *const PxPruningStructure) -> *const std::ffi::c_char;
 
-    pub fn PxExtendedVec3_new() -> PxExtendedVec3;
-
-    pub fn PxExtendedVec3_new_1(_x: f64, _y: f64, _z: f64) -> PxExtendedVec3;
-
-    pub fn PxExtendedVec3_isZero(self_: *const PxExtendedVec3) -> bool;
-
-    pub fn PxExtendedVec3_dot(self_: *const PxExtendedVec3, v: *const PxVec3) -> f64;
-
-    pub fn PxExtendedVec3_distanceSquared(self_: *const PxExtendedVec3, v: *const PxExtendedVec3) -> f64;
-
-    pub fn PxExtendedVec3_magnitudeSquared(self_: *const PxExtendedVec3) -> f64;
-
-    pub fn PxExtendedVec3_magnitude(self_: *const PxExtendedVec3) -> f64;
-
-    pub fn PxExtendedVec3_normalize_mut(self_: *mut PxExtendedVec3) -> f64;
-
-    pub fn PxExtendedVec3_isFinite(self_: *const PxExtendedVec3) -> bool;
-
-    pub fn PxExtendedVec3_maximum_mut(self_: *mut PxExtendedVec3, v: *const PxExtendedVec3);
-
-    pub fn PxExtendedVec3_minimum_mut(self_: *mut PxExtendedVec3, v: *const PxExtendedVec3);
-
-    pub fn PxExtendedVec3_set_mut(self_: *mut PxExtendedVec3, x_: f64, y_: f64, z_: f64);
-
-    pub fn PxExtendedVec3_setPlusInfinity_mut(self_: *mut PxExtendedVec3);
-
-    pub fn PxExtendedVec3_setMinusInfinity_mut(self_: *mut PxExtendedVec3);
-
-    pub fn PxExtendedVec3_cross_mut(self_: *mut PxExtendedVec3, left: *const PxExtendedVec3, right: *const PxVec3);
-
-    pub fn PxExtendedVec3_cross_mut_1(self_: *mut PxExtendedVec3, left: *const PxExtendedVec3, right: *const PxExtendedVec3);
-
-    pub fn PxExtendedVec3_cross(self_: *const PxExtendedVec3, v: *const PxExtendedVec3) -> PxExtendedVec3;
-
-    pub fn PxExtendedVec3_cross_mut_2(self_: *mut PxExtendedVec3, left: *const PxVec3, right: *const PxExtendedVec3);
-
     pub fn phys_toVec3(v: *const PxExtendedVec3) -> PxVec3;
+
+    pub fn phys_diff(p1: *const PxExtendedVec3, p0: *const PxExtendedVec3) -> PxVec3;
 
     pub fn PxObstacle_getType(self_: *const PxObstacle) -> PxGeometryType;
 
@@ -11936,8 +14524,6 @@ extern "C" {
     /// When the CCT touches a shape, the CCT's behavior w.r.t. this shape can be customized by users.
     /// This function retrieves the desired PxControllerBehaviorFlag flags capturing the desired behavior.
     ///
-    /// See comments about deprecated functions at the start of this class
-    ///
     /// Desired behavior flags for the given shape
     pub fn PxControllerBehaviorCallback_getBehaviorFlags_mut(self_: *mut PxControllerBehaviorCallback, shape: *const PxShape, actor: *const PxActor) -> PxControllerBehaviorFlags;
 
@@ -11948,8 +14534,6 @@ extern "C" {
     ///
     /// The flag PxControllerBehaviorFlag::eCCT_CAN_RIDE_ON_OBJECT is not supported.
     ///
-    /// See comments about deprecated functions at the start of this class
-    ///
     /// Desired behavior flags for the given controller
     pub fn PxControllerBehaviorCallback_getBehaviorFlags_mut_1(self_: *mut PxControllerBehaviorCallback, controller: *const PxController) -> PxControllerBehaviorFlags;
 
@@ -11957,8 +14541,6 @@ extern "C" {
     ///
     /// When the CCT touches an obstacle, the CCT's behavior w.r.t. this obstacle can be customized by users.
     /// This function retrieves the desired PxControllerBehaviorFlag flags capturing the desired behavior.
-    ///
-    /// See comments about deprecated functions at the start of this class
     ///
     /// Desired behavior flags for the given obstacle
     pub fn PxControllerBehaviorCallback_getBehaviorFlags_mut_2(self_: *mut PxControllerBehaviorCallback, obstacle: *const PxObstacle) -> PxControllerBehaviorFlags;
@@ -12084,10 +14666,12 @@ extern "C" {
     ///
     /// It is the user's responsibility to keep track of the summed total origin shift and adjust all input/output to/from PhysXCharacterKinematic accordingly.
     ///
-    /// This call will not automatically shift the PhysX scene and its objects. You need to call PxScene::shiftOrigin() seperately to keep the systems in sync.
+    /// This call will not automatically shift the PhysX scene and its objects. You need to call PxScene::shiftOrigin() separately to keep the systems in sync.
     pub fn PxControllerManager_shiftOrigin_mut(self_: *mut PxControllerManager, shift: *const PxVec3);
 
     /// Creates the controller manager.
+    ///
+    /// New controller manager, or NULL in case of failure (e.g. when a manager has already been created for that scene)
     ///
     /// The character controller is informed by [`PxDeletionListener::onRelease`]() when actors or shapes are released, and updates its internal
     /// caches accordingly. If character controller movement or a call to [`PxControllerManager::shiftOrigin`]() may overlap with actor/shape releases,
@@ -12138,9 +14722,17 @@ extern "C" {
     pub fn PxTetrahedronMeshDesc_isValid(self_: *const PxTetrahedronMeshDesc) -> bool;
 
     /// Constructor to build an empty simulation description
-    pub fn PxSoftBodySimulationDataDesc_new() -> PxSoftBodySimulationDataDesc;
+    pub fn PxDeformableVolumeSimulationDataDesc_new() -> PxDeformableVolumeSimulationDataDesc;
 
-    pub fn PxSoftBodySimulationDataDesc_isValid(self_: *const PxSoftBodySimulationDataDesc) -> bool;
+    pub fn PxDeformableVolumeSimulationDataDesc_isValid(self_: *const PxDeformableVolumeSimulationDataDesc) -> bool;
+
+    /// Desc initialization to default value.
+    pub fn PxBVH33MidphaseDesc_setToDefault_mut(self_: *mut PxBVH33MidphaseDesc);
+
+    /// Returns true if the descriptor is valid.
+    ///
+    /// true if the current settings are valid.
+    pub fn PxBVH33MidphaseDesc_isValid(self_: *const PxBVH33MidphaseDesc) -> bool;
 
     /// Desc initialization to default value.
     pub fn PxBVH34MidphaseDesc_setToDefault_mut(self_: *mut PxBVH34MidphaseDesc);
@@ -12177,6 +14769,9 @@ extern "C" {
 
     pub fn PxCookingParams_new(sc: *const PxTolerancesScale) -> PxCookingParams;
 
+    /// Gets standalone object insertion interface.
+    ///
+    /// This interface allows the creation of standalone objects that can exist without a PxPhysics or PxScene object.
     pub fn phys_PxGetStandaloneInsertionCallback() -> *mut PxInsertionCallback;
 
     /// Cooks a bounding volume hierarchy. The results are written to the stream.
@@ -12189,12 +14784,12 @@ extern "C" {
 
     /// Cooks and creates a bounding volume hierarchy without going through a stream.
     ///
-    /// This method does the same as cookBVH, but the produced BVH is not stored
+    /// This method does the same as PxCookBVH, but the produced BVH is not stored
     /// into a stream but is either directly inserted in PxPhysics, or created as a standalone
     /// object. Use this method if you are unable to cook offline.
     ///
     /// PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
-    /// or PxCooking::getStandaloneInsertionCallback().
+    /// or PxGetStandaloneInsertionCallback().
     ///
     /// PxBVH pointer on success
     pub fn phys_PxCreateBVH(desc: *const PxBVHDesc, insertionCallback: *mut PxInsertionCallback) -> *mut PxBVH;
@@ -12203,7 +14798,7 @@ extern "C" {
     ///
     /// To create a heightfield object there is an option to precompute some of calculations done while loading the heightfield data.
     ///
-    /// cookHeightField() allows a heightfield description to be cooked into a binary stream
+    /// PxCookHeightField() allows a heightfield description to be cooked into a binary stream
     /// suitable for loading and performing collision detection at runtime.
     ///
     /// true on success
@@ -12219,7 +14814,7 @@ extern "C" {
     /// To create a triangle mesh object it is necessary to first 'cook' the mesh data into
     /// a form which allows the SDK to perform efficient collision detection.
     ///
-    /// cookConvexMesh() allows a mesh description to be cooked into a binary stream
+    /// PxCookConvexMesh() allows a mesh description to be cooked into a binary stream
     /// suitable for loading and performing collision detection at runtime.
     ///
     /// The number of vertices and the number of convex polygons in a cooked convex mesh is limited to 255.
@@ -12231,12 +14826,12 @@ extern "C" {
 
     /// Cooks and creates a convex mesh without going through a stream.
     ///
-    /// This method does the same as cookConvexMesh, but the produced mesh is not stored
+    /// This method does the same as PxCookConvexMesh, but the produced mesh is not stored
     /// into a stream but is either directly inserted in PxPhysics, or created as a standalone
     /// object. Use this method if you are unable to cook offline.
     ///
     /// PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
-    /// or PxCooking::getStandaloneInsertionCallback().
+    /// or PxGetStandaloneInsertionCallback().
     ///
     /// PxConvexMesh pointer on success
     pub fn phys_PxCreateConvexMesh(params: *const PxCookingParams, desc: *const PxConvexMeshDesc, insertionCallback: *mut PxInsertionCallback, condition: *mut PxConvexMeshCookingResult) -> *mut PxConvexMesh;
@@ -12250,13 +14845,12 @@ extern "C" {
     /// true if all the validity conditions hold, false otherwise.
     pub fn phys_PxValidateConvexMesh(params: *const PxCookingParams, desc: *const PxConvexMeshDesc) -> bool;
 
-    /// Computed hull polygons from given vertices and triangles. Polygons are needed for PxConvexMeshDesc rather than triangles.
+    /// Compute hull polygons from given vertices and triangles. Polygons are needed for PxConvexMeshDesc rather than triangles.
     ///
     /// Please note that the resulting polygons may have different number of vertices. Some vertices may be removed.
     /// The output vertices, indices and polygons must be used to construct a hull.
     ///
-    /// The provided PxAllocatorCallback does allocate the out array's. It is the user responsibility to deallocated those
-    /// array's.
+    /// The provided PxAllocatorCallback does allocate the out arrays. It is the user responsibility to deallocated those arrays.
     ///
     /// true on success
     pub fn phys_PxComputeHullPolygons(params: *const PxCookingParams, mesh: *const PxSimpleTriangleMesh, inCallback: *mut PxAllocatorCallback, nbVerts: *mut u32, vertices: *mut *mut PxVec3, nbIndices: *mut u32, indices: *mut *mut u32, nbPolygons: *mut u32, hullPolygons: *mut *mut PxHullPolygon) -> bool;
@@ -12270,18 +14864,6 @@ extern "C" {
     /// true if all the validity conditions hold, false otherwise.
     pub fn phys_PxValidateTriangleMesh(params: *const PxCookingParams, desc: *const PxTriangleMeshDesc) -> bool;
 
-    /// Cooks and creates a triangle mesh without going through a stream.
-    ///
-    /// This method does the same as cookTriangleMesh, but the produced mesh is not stored
-    /// into a stream but is either directly inserted in PxPhysics, or created as a standalone
-    /// object. Use this method if you are unable to cook offline.
-    ///
-    /// PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
-    /// or PxCooking::getStandaloneInsertionCallback().
-    ///
-    /// PxTriangleMesh pointer on success.
-    pub fn phys_PxCreateTriangleMesh(params: *const PxCookingParams, desc: *const PxTriangleMeshDesc, insertionCallback: *mut PxInsertionCallback, condition: *mut PxTriangleMeshCookingResult) -> *mut PxTriangleMesh;
-
     /// Cooks a triangle mesh. The results are written to the stream.
     ///
     /// To create a triangle mesh object it is necessary to first 'cook' the mesh data into
@@ -12293,31 +14875,120 @@ extern "C" {
     /// true on success
     pub fn phys_PxCookTriangleMesh(params: *const PxCookingParams, desc: *const PxTriangleMeshDesc, stream: *mut PxOutputStream, condition: *mut PxTriangleMeshCookingResult) -> bool;
 
+    /// Cooks and creates a triangle mesh without going through a stream.
+    ///
+    /// This method does the same as PxCookTriangleMesh, but the produced mesh is not stored
+    /// into a stream but is either directly inserted in PxPhysics, or created as a standalone
+    /// object. Use this method if you are unable to cook offline.
+    ///
+    /// PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
+    /// or PxGetStandaloneInsertionCallback().
+    ///
+    /// PxTriangleMesh pointer on success.
+    pub fn phys_PxCreateTriangleMesh(params: *const PxCookingParams, desc: *const PxTriangleMeshDesc, insertionCallback: *mut PxInsertionCallback, condition: *mut PxTriangleMeshCookingResult) -> *mut PxTriangleMesh;
+
+    /// Cooks a tetrahedron mesh. The results are written to the stream.
+    ///
+    /// To create a tetrahedron mesh object it is necessary to first 'cook' the mesh data into
+    /// a form which allows the SDK to perform efficient collision detection.
+    ///
+    /// PxCookTetrahedronMesh() allows a mesh description to be cooked into a binary stream
+    /// suitable for loading and performing collision detection at runtime.
+    ///
+    /// true on success
+    pub fn phys_PxCookTetrahedronMesh(params: *const PxCookingParams, meshDesc: *const PxTetrahedronMeshDesc, stream: *mut PxOutputStream) -> bool;
+
+    /// Cooks and creates a tetrahedron mesh without going through a stream.
+    ///
+    /// This method does the same as PxCookTetrahedronMesh, but the produced mesh is not stored
+    /// into a stream but is either directly inserted in PxPhysics, or created as a standalone
+    /// object. Use this method if you are unable to cook offline.
+    ///
+    /// PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
+    /// or PxGetStandaloneInsertionCallback().
+    ///
+    /// PxTetrahedronMesh pointer on success.
+    pub fn phys_PxCreateTetrahedronMesh(params: *const PxCookingParams, meshDesc: *const PxTetrahedronMeshDesc, insertionCallback: *mut PxInsertionCallback) -> *mut PxTetrahedronMesh;
+
+    /// Cooks a deformable volume mesh. The results are written to the stream.
+    ///
+    /// To create a deformable volume mesh object it is necessary to first 'cook' the mesh data into
+    /// a form which allows the SDK to perform efficient collision detection and to store data
+    /// used during the FEM calculations.
+    ///
+    /// PxCookDeformableVolumeMesh() allows a mesh description to be cooked into a binary stream
+    /// suitable for loading and performing collision detection at runtime.
+    ///
+    /// true on success
+    pub fn phys_PxCookDeformableVolumeMesh(params: *const PxCookingParams, simulationMeshDesc: *const PxTetrahedronMeshDesc, collisionMeshDesc: *const PxTetrahedronMeshDesc, simulationDataDesc: *const PxDeformableVolumeSimulationDataDesc, stream: *mut PxOutputStream) -> bool;
+
+    /// Cooks and creates a deformable volume mesh without going through a stream.
+    ///
+    /// This method does the same as PxCookDeformableVolumeMesh, but the produced mesh is not stored
+    /// into a stream but is either directly inserted in PxPhysics, or created as a standalone
+    /// object. Use this method if you are unable to cook offline.
+    ///
+    /// PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
+    /// or PxGetStandaloneInsertionCallback().
+    ///
+    /// PxDeformableVolumeMesh pointer on success.
+    pub fn phys_PxCreateDeformableVolumeMesh(params: *const PxCookingParams, simulationMeshDesc: *const PxTetrahedronMeshDesc, collisionMeshDesc: *const PxTetrahedronMeshDesc, simulationDataDesc: *const PxDeformableVolumeSimulationDataDesc, insertionCallback: *mut PxInsertionCallback) -> *mut PxDeformableVolumeMesh;
+
+    /// Computes the mapping between collision and simulation mesh
+    ///
+    /// The deformable volume deformation is computed on the simulation mesh. To deform the collision mesh accordingly
+    /// it needs to be specified how its vertices need to be placed and updated inside the deformation mesh.
+    /// This method computes that embedding information.
+    ///
+    /// PxCollisionMeshMappingData pointer that describes how the collision mesh is embedded into the simulation mesh
+    pub fn phys_PxComputeModelsMapping(params: *const PxCookingParams, simulationMesh: *mut PxTetrahedronMeshData, collisionMesh: *const PxTetrahedronMeshData, collisionData: *const PxDeformableVolumeCollisionData, vertexToTet: *const PxBoundedData) -> *mut PxCollisionMeshMappingData;
+
+    /// Computes data to accelerate collision detection of tetrahedral meshes
+    ///
+    /// Computes data structures to speed up collision detection with tetrahedral meshes.
+    ///
+    /// PxCollisionTetrahedronMeshData pointer that describes the collision mesh
+    pub fn phys_PxComputeCollisionData(params: *const PxCookingParams, collisionMeshDesc: *const PxTetrahedronMeshDesc) -> *mut PxCollisionTetrahedronMeshData;
+
+    /// Computes data to accelerate collision detection of tetrahedral meshes
+    ///
+    /// Computes data to compute and store a deformable volume's deformation using FEM.
+    ///
+    /// PxSimulationTetrahedronMeshData pointer that describes the simulation mesh
+    pub fn phys_PxComputeSimulationData(params: *const PxCookingParams, simulationMeshDesc: *const PxTetrahedronMeshDesc) -> *mut PxSimulationTetrahedronMeshData;
+
+    /// Bundles all data required for deformable volume simulation
+    ///
+    /// Creates a container that provides everything to create a PxDeformableVolume
+    ///
+    /// PxDeformableVolumeMesh pointer that represents a deformable volume mesh bundling all data (simulation mesh, collision mesh etc.)
+    pub fn phys_PxAssembleDeformableVolumeMesh(simulationMesh: *mut PxTetrahedronMeshData, simulationData: *mut PxDeformableVolumeSimulationData, collisionMesh: *mut PxTetrahedronMeshData, collisionData: *mut PxDeformableVolumeCollisionData, mappingData: *mut PxCollisionMeshMappingData, insertionCallback: *mut PxInsertionCallback) -> *mut PxDeformableVolumeMesh;
+
     pub fn PxDefaultMemoryOutputStream_new_alloc(allocator: *mut PxAllocatorCallback) -> *mut PxDefaultMemoryOutputStream;
 
     pub fn PxDefaultMemoryOutputStream_delete(self_: *mut PxDefaultMemoryOutputStream);
 
-    pub fn PxDefaultMemoryOutputStream_write_mut(self_: *mut PxDefaultMemoryOutputStream, src: *const std::ffi::c_void, count: u32) -> u32;
+    pub fn PxDefaultMemoryOutputStream_write_mut(self_: *mut PxDefaultMemoryOutputStream, src: *const std::ffi::c_void, count: u64) -> u64;
 
-    pub fn PxDefaultMemoryOutputStream_getSize(self_: *const PxDefaultMemoryOutputStream) -> u32;
+    pub fn PxDefaultMemoryOutputStream_getSize(self_: *const PxDefaultMemoryOutputStream) -> u64;
 
     pub fn PxDefaultMemoryOutputStream_getData(self_: *const PxDefaultMemoryOutputStream) -> *mut u8;
 
-    pub fn PxDefaultMemoryInputData_new_alloc(data: *mut u8, length: u32) -> *mut PxDefaultMemoryInputData;
+    pub fn PxDefaultMemoryInputData_new_alloc(data: *const u8, length: u64) -> *mut PxDefaultMemoryInputData;
 
-    pub fn PxDefaultMemoryInputData_read_mut(self_: *mut PxDefaultMemoryInputData, dest: *mut std::ffi::c_void, count: u32) -> u32;
+    pub fn PxDefaultMemoryInputData_read_mut(self_: *mut PxDefaultMemoryInputData, dest: *mut std::ffi::c_void, count: u64) -> u64;
 
-    pub fn PxDefaultMemoryInputData_getLength(self_: *const PxDefaultMemoryInputData) -> u32;
+    pub fn PxDefaultMemoryInputData_getLength(self_: *const PxDefaultMemoryInputData) -> u64;
 
-    pub fn PxDefaultMemoryInputData_seek_mut(self_: *mut PxDefaultMemoryInputData, pos: u32);
+    pub fn PxDefaultMemoryInputData_seek_mut(self_: *mut PxDefaultMemoryInputData, pos: u64);
 
-    pub fn PxDefaultMemoryInputData_tell(self_: *const PxDefaultMemoryInputData) -> u32;
+    pub fn PxDefaultMemoryInputData_tell(self_: *const PxDefaultMemoryInputData) -> u64;
 
     pub fn PxDefaultFileOutputStream_new_alloc(name: *const std::ffi::c_char) -> *mut PxDefaultFileOutputStream;
 
     pub fn PxDefaultFileOutputStream_delete(self_: *mut PxDefaultFileOutputStream);
 
-    pub fn PxDefaultFileOutputStream_write_mut(self_: *mut PxDefaultFileOutputStream, src: *const std::ffi::c_void, count: u32) -> u32;
+    pub fn PxDefaultFileOutputStream_write_mut(self_: *mut PxDefaultFileOutputStream, src: *const std::ffi::c_void, count: u64) -> u64;
 
     pub fn PxDefaultFileOutputStream_isValid_mut(self_: *mut PxDefaultFileOutputStream) -> bool;
 
@@ -12325,13 +14996,13 @@ extern "C" {
 
     pub fn PxDefaultFileInputData_delete(self_: *mut PxDefaultFileInputData);
 
-    pub fn PxDefaultFileInputData_read_mut(self_: *mut PxDefaultFileInputData, dest: *mut std::ffi::c_void, count: u32) -> u32;
+    pub fn PxDefaultFileInputData_read_mut(self_: *mut PxDefaultFileInputData, dest: *mut std::ffi::c_void, count: u64) -> u64;
 
-    pub fn PxDefaultFileInputData_seek_mut(self_: *mut PxDefaultFileInputData, pos: u32);
+    pub fn PxDefaultFileInputData_seek_mut(self_: *mut PxDefaultFileInputData, pos: u64);
 
-    pub fn PxDefaultFileInputData_tell(self_: *const PxDefaultFileInputData) -> u32;
+    pub fn PxDefaultFileInputData_tell(self_: *const PxDefaultFileInputData) -> u64;
 
-    pub fn PxDefaultFileInputData_getLength(self_: *const PxDefaultFileInputData) -> u32;
+    pub fn PxDefaultFileInputData_getLength(self_: *const PxDefaultFileInputData) -> u64;
 
     pub fn PxDefaultFileInputData_isValid(self_: *const PxDefaultFileInputData) -> bool;
 
@@ -12376,7 +15047,7 @@ extern "C" {
 
     /// get the relative angular velocity of the joint
     ///
-    /// This function returns the angular velocity of  actor1 relative to actor0. The value is returned in the constraint frame of actor0
+    /// This function returns the angular velocity of actor1 relative to actor0. The value is returned in the constraint frame of actor0
     pub fn PxJoint_getRelativeAngularVelocity(self_: *const PxJoint) -> PxVec3;
 
     /// set the break force for this joint.
@@ -12460,9 +15131,6 @@ extern "C" {
     /// Owner Scene. NULL if not part of a scene.
     pub fn PxJoint_getScene(self_: *const PxJoint) -> *mut PxScene;
 
-    /// Put class meta data in stream, used for serialization
-    pub fn PxJoint_getBinaryMetaData(stream: *mut PxOutputStream);
-
     pub fn PxSpring_new(stiffness_: f32, damping_: f32) -> PxSpring;
 
     /// Helper function to setup a joint's global frame
@@ -12487,7 +15155,7 @@ extern "C" {
 
     /// Set the allowed minimum distance for the joint.
     ///
-    /// The minimum distance must be no more than the maximum distance
+    /// The minimum	distance must be no more than the maximum distance
     ///
     /// Default
     /// 0.0f
@@ -12502,7 +15170,7 @@ extern "C" {
 
     /// Set the allowed maximum distance for the joint.
     ///
-    /// The maximum distance must be no less than the minimum distance.
+    /// The maximum	distance must be no less than the minimum distance.
     ///
     /// Default
     /// 0.0f
@@ -12561,28 +15229,6 @@ extern "C" {
     /// the degree of damping of the joint spring of the joint
     pub fn PxDistanceJoint_getDamping(self_: *const PxDistanceJoint) -> f32;
 
-    /// Set the contact distance for the min
-    /// &
-    /// max distance limits.
-    ///
-    /// This is similar to the PxJointLimitParameters::contactDistance parameter for regular limits.
-    ///
-    /// The two most common values are 0 and infinite. Infinite means the internal constraints are
-    /// always created, resulting in the best simulation quality but slower performance. Zero means
-    /// the internal constraints are only created when the limits are violated, resulting in best
-    /// performance but worse simulation quality.
-    ///
-    /// Default
-    /// 0.0f
-    /// Range
-    /// [0, PX_MAX_F32)
-    pub fn PxDistanceJoint_setContactDistance_mut(self_: *mut PxDistanceJoint, contactDistance: f32);
-
-    /// Get the contact distance.
-    ///
-    /// the contact distance
-    pub fn PxDistanceJoint_getContactDistance(self_: *const PxDistanceJoint) -> f32;
-
     /// Set the flags specific to the Distance Joint.
     ///
     /// Default
@@ -12600,46 +15246,6 @@ extern "C" {
     /// Returns string name of PxDistanceJoint, used for serialization
     pub fn PxDistanceJoint_getConcreteTypeName(self_: *const PxDistanceJoint) -> *const std::ffi::c_char;
 
-    /// Create a distance Joint.
-    pub fn phys_PxContactJointCreate(physics: *mut PxPhysics, actor0: *mut PxRigidActor, localFrame0: *const PxTransform, actor1: *mut PxRigidActor, localFrame1: *const PxTransform) -> *mut PxContactJoint;
-
-    pub fn PxJacobianRow_new() -> PxJacobianRow;
-
-    pub fn PxJacobianRow_new_1(lin0: *const PxVec3, lin1: *const PxVec3, ang0: *const PxVec3, ang1: *const PxVec3) -> PxJacobianRow;
-
-    /// Set the current contact of the joint
-    pub fn PxContactJoint_setContact_mut(self_: *mut PxContactJoint, contact: *const PxVec3);
-
-    /// Set the current contact normal of the joint
-    pub fn PxContactJoint_setContactNormal_mut(self_: *mut PxContactJoint, contactNormal: *const PxVec3);
-
-    /// Set the current penetration of the joint
-    pub fn PxContactJoint_setPenetration_mut(self_: *mut PxContactJoint, penetration: f32);
-
-    /// Return the current contact of the joint
-    pub fn PxContactJoint_getContact(self_: *const PxContactJoint) -> PxVec3;
-
-    /// Return the current contact normal of the joint
-    pub fn PxContactJoint_getContactNormal(self_: *const PxContactJoint) -> PxVec3;
-
-    /// Return the current penetration value of the joint
-    pub fn PxContactJoint_getPenetration(self_: *const PxContactJoint) -> f32;
-
-    pub fn PxContactJoint_getRestitution(self_: *const PxContactJoint) -> f32;
-
-    pub fn PxContactJoint_setRestitution_mut(self_: *mut PxContactJoint, restitution: f32);
-
-    pub fn PxContactJoint_getBounceThreshold(self_: *const PxContactJoint) -> f32;
-
-    pub fn PxContactJoint_setBounceThreshold_mut(self_: *mut PxContactJoint, bounceThreshold: f32);
-
-    /// Returns string name of PxContactJoint, used for serialization
-    pub fn PxContactJoint_getConcreteTypeName(self_: *const PxContactJoint) -> *const std::ffi::c_char;
-
-    pub fn PxContactJoint_computeJacobians(self_: *const PxContactJoint, jacobian: *mut PxJacobianRow);
-
-    pub fn PxContactJoint_getNbJacobianRows(self_: *const PxContactJoint) -> u32;
-
     /// Create a fixed joint.
     pub fn phys_PxFixedJointCreate(physics: *mut PxPhysics, actor0: *mut PxRigidActor, localFrame0: *const PxTransform, actor1: *mut PxRigidActor, localFrame1: *const PxTransform) -> *mut PxFixedJoint;
 
@@ -12656,7 +15262,7 @@ extern "C" {
     pub fn PxJointLimitParameters_isSoft(self_: *const PxJointLimitParameters) -> bool;
 
     /// construct a linear hard limit
-    pub fn PxJointLinearLimit_new(scale: *const PxTolerancesScale, extent: f32, contactDist_deprecated: f32) -> PxJointLinearLimit;
+    pub fn PxJointLinearLimit_new(extent: f32) -> PxJointLinearLimit;
 
     /// construct a linear soft limit
     pub fn PxJointLinearLimit_new_1(extent: f32, spring: *const PxSpring) -> PxJointLinearLimit;
@@ -12669,7 +15275,7 @@ extern "C" {
     pub fn PxJointLinearLimit_delete(self_: *mut PxJointLinearLimit);
 
     /// Construct a linear hard limit pair. The lower distance value must be less than the upper distance value.
-    pub fn PxJointLinearLimitPair_new(scale: *const PxTolerancesScale, lowerLimit: f32, upperLimit: f32, contactDist_deprecated: f32) -> PxJointLinearLimitPair;
+    pub fn PxJointLinearLimitPair_new(scale: *const PxTolerancesScale, lowerLimit: f32, upperLimit: f32) -> PxJointLinearLimitPair;
 
     /// construct a linear soft limit pair
     pub fn PxJointLinearLimitPair_new_1(lowerLimit: f32, upperLimit: f32, spring: *const PxSpring) -> PxJointLinearLimitPair;
@@ -12684,7 +15290,7 @@ extern "C" {
     /// construct an angular hard limit pair.
     ///
     /// The lower value must be less than the upper value.
-    pub fn PxJointAngularLimitPair_new(lowerLimit: f32, upperLimit: f32, contactDist_deprecated: f32) -> PxJointAngularLimitPair;
+    pub fn PxJointAngularLimitPair_new(lowerLimit: f32, upperLimit: f32) -> PxJointAngularLimitPair;
 
     /// construct an angular soft limit pair.
     ///
@@ -12699,7 +15305,7 @@ extern "C" {
     pub fn PxJointAngularLimitPair_delete(self_: *mut PxJointAngularLimitPair);
 
     /// Construct a cone hard limit.
-    pub fn PxJointLimitCone_new(yLimitAngle: f32, zLimitAngle: f32, contactDist_deprecated: f32) -> PxJointLimitCone;
+    pub fn PxJointLimitCone_new(yLimitAngle: f32, zLimitAngle: f32) -> PxJointLimitCone;
 
     /// Construct a cone soft limit.
     pub fn PxJointLimitCone_new_1(yLimitAngle: f32, zLimitAngle: f32, spring: *const PxSpring) -> PxJointLimitCone;
@@ -12712,7 +15318,7 @@ extern "C" {
     pub fn PxJointLimitCone_delete(self_: *mut PxJointLimitCone);
 
     /// Construct a pyramid hard limit.
-    pub fn PxJointLimitPyramid_new(yLimitAngleMin: f32, yLimitAngleMax: f32, zLimitAngleMin: f32, zLimitAngleMax: f32, contactDist_deprecated: f32) -> PxJointLimitPyramid;
+    pub fn PxJointLimitPyramid_new(yLimitAngleMin: f32, yLimitAngleMax: f32, zLimitAngleMin: f32, zLimitAngleMax: f32) -> PxJointLimitPyramid;
 
     /// Construct a pyramid soft limit.
     pub fn PxJointLimitPyramid_new_1(yLimitAngleMin: f32, yLimitAngleMax: f32, zLimitAngleMin: f32, zLimitAngleMax: f32, spring: *const PxSpring) -> PxJointLimitPyramid;
@@ -12986,13 +15592,36 @@ extern "C" {
     /// the swing limit structure
     pub fn PxD6Joint_getPyramidSwingLimit(self_: *const PxD6Joint) -> PxJointLimitPyramid;
 
-    /// Set the drive parameters for the specified drive type.
+    /// Set the angular drive model to apply.
+    ///
+    /// The configuration will limit the allowed set of angular drive types (see [`PxD6Drive`]) to use
+    /// when calling [`PxD6Joint::setDrive`]().
+    ///
+    /// Changing the angular drive model, will reset all the parameters for the angular drives to
+    /// their default values (see [`PxD6Joint::setDrive`]() for information on the default values).
     ///
     /// Default
-    /// The default drive spring and damping values are zero, the force limit is zero, and no flags are set.
+    /// PxD6AngularDriveConfig::eSWING_TWIST
+    pub fn PxD6Joint_setAngularDriveConfig_mut(self_: *mut PxD6Joint, config: PxD6AngularDriveConfig);
+
+    /// Get the angular drive model to apply.
+    ///
+    /// The angular drive model to apply.
+    pub fn PxD6Joint_getAngularDriveConfig(self_: *const PxD6Joint) -> PxD6AngularDriveConfig;
+
+    /// Set the drive parameters for the specified drive type.
+    ///
+    /// The angular drive configuration (see [`PxD6AngularDriveConfig`]) defines what type of
+    /// angular drives will be accepted.
+    ///
+    /// Default
+    /// The default drive spring and damping values are zero, the force limit is PX_MAX_F32, and no flags are set.
     pub fn PxD6Joint_setDrive_mut(self_: *mut PxD6Joint, index: PxD6Drive, drive: *const PxD6JointDrive);
 
     /// Get the drive parameters for the specified drive type.
+    ///
+    /// The angular drive configuration (see [`PxD6AngularDriveConfig`]) defines what type of
+    /// angular drives will be accepted.
     pub fn PxD6Joint_getDrive(self_: *const PxD6Joint, index: PxD6Drive) -> PxD6JointDrive;
 
     /// Set the drive goal pose
@@ -13014,49 +15643,14 @@ extern "C" {
     /// Get the target goal velocity for joint drive.
     pub fn PxD6Joint_getDriveVelocity(self_: *const PxD6Joint, linear: *mut PxVec3, angular: *mut PxVec3);
 
-    /// Set the linear tolerance threshold for projection. Projection is enabled if PxConstraintFlag::ePROJECTION
-    /// is set for the joint.
+    /// Returns the GPU D6 joint index.
     ///
-    /// If the joint separates by more than this distance along its locked degrees of freedom, the solver
-    /// will move the bodies to close the distance.
+    /// Only use in combination with enabled GPU dynamics and enabled direct GPU API
+    /// (see [`PxSceneFlag::eENABLE_GPU_DYNAMICS`], #PxSceneFlag::eENABLE_DIRECT_GPU_API,
+    /// [`PxBroadPhaseType::eGPU`])
     ///
-    /// Setting a very small tolerance may result in simulation jitter or other artifacts.
-    ///
-    /// Sometimes it is not possible to project (for example when the joints form a cycle).
-    ///
-    /// Range:
-    /// [0, PX_MAX_F32)
-    /// Default:
-    /// 1e10f
-    pub fn PxD6Joint_setProjectionLinearTolerance_mut(self_: *mut PxD6Joint, tolerance: f32);
-
-    /// Get the linear tolerance threshold for projection.
-    ///
-    /// the linear tolerance threshold
-    pub fn PxD6Joint_getProjectionLinearTolerance(self_: *const PxD6Joint) -> f32;
-
-    /// Set the angular tolerance threshold for projection. Projection is enabled if
-    /// PxConstraintFlag::ePROJECTION is set for the joint.
-    ///
-    /// If the joint deviates by more than this angle around its locked angular degrees of freedom,
-    /// the solver will move the bodies to close the angle.
-    ///
-    /// Setting a very small tolerance may result in simulation jitter or other artifacts.
-    ///
-    /// Sometimes it is not possible to project (for example when the joints form a cycle).
-    ///
-    /// Range:
-    /// [0,Pi]
-    /// Default:
-    /// Pi
-    ///
-    /// Angular projection is implemented only for the case of two or three locked angular degrees of freedom.
-    pub fn PxD6Joint_setProjectionAngularTolerance_mut(self_: *mut PxD6Joint, tolerance: f32);
-
-    /// Get the angular tolerance threshold for projection.
-    ///
-    /// tolerance the angular tolerance threshold in radians
-    pub fn PxD6Joint_getProjectionAngularTolerance(self_: *const PxD6Joint) -> f32;
+    /// The GPU index, or PX_INVALID_D6_JOINT_GPU_INDEX if the joint is not part of a PxScene.
+    pub fn PxD6Joint_getGPUIndex(self_: *const PxD6Joint) -> u32;
 
     /// Returns string name of PxD6Joint, used for serialization
     pub fn PxD6Joint_getConcreteTypeName(self_: *const PxD6Joint) -> *const std::ffi::c_char;
@@ -13067,7 +15661,7 @@ extern "C" {
     /// Set the hinge/revolute joints connected by the gear joint.
     ///
     /// The passed joints can be either PxRevoluteJoint, PxD6Joint or PxArticulationJointReducedCoordinate.
-    /// The joints must define degrees of freedom around the twist axis. They cannot be null.
+    /// The joints must define degrees of freedom around the twist axis.
     ///
     /// Note that these joints are only used to compute the positional error correction term,
     /// used to adjust potential drift between jointed actors. The gear joint can run without
@@ -13078,6 +15672,9 @@ extern "C" {
     ///
     /// true if success
     pub fn PxGearJoint_setHinges_mut(self_: *mut PxGearJoint, hinge0: *const PxBase, hinge1: *const PxBase) -> bool;
+
+    /// Get the hinge/revolute joints connected by the gear joint.
+    pub fn PxGearJoint_getHinges(self_: *const PxGearJoint, hinge0: *mut *const PxBase, hinge1: *mut *const PxBase);
 
     /// Set the desired gear ratio.
     ///
@@ -13106,8 +15703,8 @@ extern "C" {
     /// &
     /// pinion joint.
     ///
-    /// The passed hinge joint can be either PxRevoluteJoint, PxD6Joint or PxArticulationJointReducedCoordinate. It cannot be null.
-    /// The passed prismatic joint can be either PxPrismaticJoint or PxD6Joint. It cannot be null.
+    /// The passed hinge joint can be either PxRevoluteJoint, PxD6Joint or PxArticulationJointReducedCoordinate.
+    /// The passed prismatic joint can be either PxPrismaticJoint or PxD6Joint.
     ///
     /// Note that these joints are only used to compute the positional error correction term,
     /// used to adjust potential drift between jointed actors. The rack
@@ -13122,6 +15719,13 @@ extern "C" {
     ///
     /// true if success
     pub fn PxRackAndPinionJoint_setJoints_mut(self_: *mut PxRackAndPinionJoint, hinge: *const PxBase, prismatic: *const PxBase) -> bool;
+
+    /// Get the hinge
+    /// &
+    /// prismatic joints connected by the rack
+    /// &
+    /// pinion joint.
+    pub fn PxRackAndPinionJoint_getJoints(self_: *const PxRackAndPinionJoint, hinge: *mut *const PxBase, prismatic: *mut *const PxBase);
 
     /// Set the desired ratio directly.
     ///
@@ -13168,18 +15772,32 @@ extern "C" {
     ///
     /// 1) Collision groups of the pair are enabled
     /// 2) Collision filtering equation is satisfied
+    ///
+    /// Each actor can belong to a single collision group. Use PxSetGroup to set the group of an actor and PxGetGroup to retrieve the group of an actor.
+    /// A collision group is an integer value between 0 and 31 defining which group the actor belongs to. Because that value is written to an actor's
+    /// shapes internally (it is stored in the shapes' PxFilterData), this feature does not work with shared shapes, unless they all belong to actors
+    /// whose groups are similar. For example it would not work to share a shape between actors A and B, and then assign A to group 0 and B to group 1,
+    /// as they would both internally try to write different group values to the same shape.
+    ///
+    /// Once actors are assigned to groups, it is possible to define how groups collide with each-other using the PxSetGroupCollisionFlag function.
+    /// Use this function to set a simple boolean value per group pairs, defining if the corresponding groups should collide. If not, collisions between
+    /// actors of these non-colliding groups will be automatically disabled by the PxDefaultSimulationFilterShader.
     pub fn phys_PxDefaultSimulationFilterShader(attributes0: u32, filterData0: PxFilterData, attributes1: u32, filterData1: PxFilterData, pairFlags: *mut PxPairFlags, constantBlock: *const std::ffi::c_void, constantBlockSize: u32) -> PxFilterFlags;
 
     /// Determines if collision detection is performed between a pair of groups
     ///
     /// Collision group is an integer between 0 and 31.
     ///
-    /// True if the groups could collide
+    /// PxGetGroupCollisionFlag(a, b) is the same as PxGetGroupCollisionFlag(b, a)
+    ///
+    /// True if the groups should collide
     pub fn phys_PxGetGroupCollisionFlag(group1: u16, group2: u16) -> bool;
 
     /// Specifies if collision should be performed by a pair of groups
     ///
     /// Collision group is an integer between 0 and 31.
+    ///
+    /// PxSetGroupCollisionFlag(a, b) is the same as PxSetGroupCollisionFlag(b, a)
     pub fn phys_PxSetGroupCollisionFlag(group1: u16, group2: u16, enable: bool);
 
     /// Retrieves the value set with PxSetGroup()
@@ -13232,14 +15850,9 @@ extern "C" {
     ///
     /// This is equivalent to the following
     ///
-    /// ```cpp
-    /// // reference count is 1
-    /// PxShape* shape(...) = PxGetPhysics().createShape(...);
-    /// // increments reference count
-    /// actor->attachShape(shape);
-    /// // releases user reference, leaving reference count at 1
-    /// shape->release();
-    /// ```
+    /// PxShape* shape(...) = PxGetPhysics().createShape(...);	// reference count is 1
+    /// actor->attachShape(shape);								// increments reference count
+    /// shape->release();										// releases user reference, leaving reference count at 1
     ///
     /// As a consequence, detachShape() will result in the release of the last reference, and the shape will be deleted.
     ///
@@ -13261,14 +15874,9 @@ extern "C" {
     ///
     /// This is equivalent to the following
     ///
-    /// ```cpp
-    /// // reference count is 1
-    /// PxShape* shape(...) = PxGetPhysics().createShape(...);
-    /// // increments reference count
-    /// actor->attachShape(shape);
-    /// // releases user reference, leaving reference count at 1
-    /// shape->release();
-    /// ```
+    /// PxShape* shape(...) = PxGetPhysics().createShape(...);	// reference count is 1
+    /// actor->attachShape(shape);								// increments reference count
+    /// shape->release();										// releases user reference, leaving reference count at 1
     ///
     /// As a consequence, detachShape() will result in the release of the last reference, and the shape will be deleted.
     ///
@@ -13299,6 +15907,12 @@ extern "C" {
     ///
     /// The PxBVH for this actor.
     pub fn PxRigidActorExt_createBVHFromActor(physics: *mut PxPhysics, actor: *const PxRigidActor) -> *mut PxBVH;
+
+    /// Compute mass properties of the convex core geometry.
+    pub fn PxConvexCoreExt_computeMassInfo(convex: *const PxConvexCoreGeometry, density1Mass: *mut f32, inertiaTensor: *mut PxMat33, centerOfMass: *mut PxVec3);
+
+    /// Visualize the convex core geometry
+    pub fn PxConvexCoreExt_visualize(convex: *const PxConvexCoreGeometry, pose: *const PxTransform, drawCore: bool, cullbox: *const PxBounds3, out: *mut PxRenderOutput);
 
     /// Default constructor.
     pub fn PxMassProperties_new() -> PxMassProperties;
@@ -13613,10 +16227,6 @@ extern "C" {
     /// True if the MTD has successfully been computed, i.e. if objects do overlap.
     pub fn phys_PxComputeHeightFieldPenetration(direction: *mut PxVec3, depth: *mut f32, geom: *const PxGeometry, geomPose: *const PxTransform, heightFieldGeom: *const PxHeightFieldGeometry, heightFieldPose: *const PxTransform, maxIter: u32, usedIter: *mut u32) -> bool;
 
-    pub fn PxXmlMiscParameter_new() -> PxXmlMiscParameter;
-
-    pub fn PxXmlMiscParameter_new_1(inUpVector: *mut PxVec3, inScale: PxTolerancesScale) -> PxXmlMiscParameter;
-
     /// Returns whether the collection is serializable with the externalReferences collection.
     ///
     /// Some definitions to explain whether a collection can be serialized or not:
@@ -13670,11 +16280,6 @@ extern "C" {
     /// skipping values that are already assigned to objects in the collection.
     pub fn PxSerialization_createSerialObjectIds(collection: *mut PxCollection, base: u64);
 
-    /// Creates a PxCollection from XML data.
-    ///
-    /// a pointer to a PxCollection if successful or NULL if it failed.
-    pub fn PxSerialization_createCollectionFromXml(inputData: *mut PxInputData, cooking: *mut PxCooking, sr: *mut PxSerializationRegistry, externalRefs: *const PxCollection, stringTable: *mut PxStringTable, outArgs: *mut PxXmlMiscParameter) -> *mut PxCollection;
-
     /// Deserializes a PxCollection from memory.
     ///
     /// Creates a collection from memory. If the collection has external dependencies another collection
@@ -13685,15 +16290,6 @@ extern "C" {
     /// which is defined by "PX_PHYSICS_VERSION_MAJOR.PX_PHYSICS_VERSION_MINOR.PX_PHYSICS_VERSION_BUGFIX-PX_BINARY_SERIAL_VERSION".
     /// For a list of compatible sdk releases refer to the documentation of PX_BINARY_SERIAL_VERSION.
     pub fn PxSerialization_createCollectionFromBinary(memBlock: *mut std::ffi::c_void, sr: *mut PxSerializationRegistry, externalRefs: *const PxCollection) -> *mut PxCollection;
-
-    /// Serializes a physics collection to an XML output stream.
-    ///
-    /// The collection to be serialized needs to be complete
-    ///
-    /// Serialization of objects in a scene that is simultaneously being simulated is not supported and leads to undefined behavior.
-    ///
-    /// true if the collection is successfully serialized.
-    pub fn PxSerialization_serializeCollectionToXml(outputStream: *mut PxOutputStream, collection: *mut PxCollection, sr: *mut PxSerializationRegistry, cooking: *mut PxCooking, externalRefs: *const PxCollection, inArgs: *mut PxXmlMiscParameter) -> bool;
 
     /// Serializes a collection to a binary stream.
     ///
@@ -14040,6 +16636,8 @@ extern "C" {
     /// An external SQ system instance
     pub fn phys_PxCreateExternalSceneQuerySystem(desc: *const PxSceneQueryDesc, contextID: u64) -> *mut PxSceneQuerySystem;
 
+    pub fn PxCustomSceneQuerySystem_delete(self_: *mut PxCustomSceneQuerySystem);
+
     /// Adds a pruner to the system.
     ///
     /// The internal PhysX scene-query system uses two regular pruners (one for static shapes, one for dynamic shapes) and an optional
@@ -14152,13 +16750,52 @@ extern "C" {
 
     /// Returns the index of the tetrahedron that contains a point
     ///
-    /// The index of the tetrahedon containing the point, -1 if not tetrahedron contains the opoint
+    /// The index of the tetrahedron containing the point, -1 if not tetrahedron contains the opoint
     pub fn PxTetrahedronMeshExt_findTetrahedronContainingPoint(mesh: *const PxTetrahedronMesh, point: *const PxVec3, bary: *mut PxVec4, tolerance: f32) -> i32;
 
     /// Returns the index of the tetrahedron closest to a point
     ///
-    /// The index of the tetrahedon closest to the point
+    /// The index of the tetrahedron closest to the point
     pub fn PxTetrahedronMeshExt_findTetrahedronClosestToPoint(mesh: *const PxTetrahedronMesh, point: *const PxVec3, bary: *mut PxVec4) -> i32;
+
+    /// Distributes a list of triangles masses to vertices.
+    ///
+    /// The mass for each triangle will be distributed in equal parts to the vertices of said triangle.
+    pub fn PxDeformableSurfaceExt_distributeTriangleMassToVertices(deformableSurface: *mut PxDeformableSurface, triangleMasses: *const f32, positionInvMassPinned: *mut PxVec4);
+
+    /// Distributes a uniform density to the vertices of a deformable surface.
+    ///
+    /// This method distributes mass based on a specified mass per unit area. The mass for each vertex is calculated
+    /// according to the area of the triangles connected to it, and the resulting mass is assigned to the vertex.
+    pub fn PxDeformableSurfaceExt_distributeDensityToVertices(deformableSurface: *mut PxDeformableSurface, massPerVolume: f32, clothThickness: f32, positionInvMassPinned: *mut PxVec4);
+
+    /// Distributes a total mass uniformly to the vertices of a deformable surface.
+    ///
+    /// This method calculates the total mass to be distributed across all vertices, and assigns a proportional mass to each
+    /// vertex based on the geometry of the surface. The mass is distributed equally to ensure the total mass of the surface
+    /// matches the specified value.
+    pub fn PxDeformableSurfaceExt_distributeMassToVertices(deformableSurface: *mut PxDeformableSurface, totalMass: f32, positionInvMassPinned: *mut PxVec4);
+
+    /// Allocates and initializes a pinned host memory from a PxTriangleMesh attached to a PxDeformableSurface using a PxShape.
+    ///
+    /// The user is responsible for deallocation and lifetime management of the positionInvMassPinned, velocityPinned
+    /// and restPositionsPinned buffers.
+    ///
+    /// This method fails if the deformable surface does not have a shape attached to it.
+    ///
+    /// The number of vertices in the surface deformable mesh.
+    pub fn PxDeformableSurfaceExt_allocateAndInitializeHostMirror(deformableSurface: *mut PxDeformableSurface, positions: *const PxVec3, velocities: *const PxVec3, restPositions: *const PxVec3, mass: f32, transform: *const PxTransform, cudaContextManager: *mut PxCudaContextManager, positionInvMassPinned: *mut *mut PxVec4, velocityPinned: *mut *mut PxVec4, restPositionPinned: *mut *mut PxVec4) -> u32;
+
+    /// Allocates and initializes a pinned host memory from given positions, velocities, and rest positions.
+    ///
+    /// The user is responsible for deallocation and lifetime management of the positionInvMassPinned, velocityPinned
+    /// and restPositionsPinned buffers.
+    ///
+    /// If the input 'restPositions' is a null pointer, positions are used in place of restPositions.
+    /// If the input 'velocities' is a null pointer, zero velocities are assigned to velocityPinned.
+    ///
+    /// The number of vertices in the surface deformable mesh.
+    pub fn PxDeformableSurfaceExt_allocateAndInitializeHostMirror_1(positions: *const PxVec3, velocities: *const PxVec3, restPositions: *const PxVec3, nbVertices: u32, mass: f32, transform: *const PxTransform, cudaContextManager: *mut PxCudaContextManager, positionInvMassPinned: *mut *mut PxVec4, velocityPinned: *mut *mut PxVec4, restPositionPinned: *mut *mut PxVec4) -> u32;
 
     /// Initialize the PhysXExtensions library.
     ///
@@ -14178,7 +16815,7 @@ extern "C" {
 
     pub fn PxRepXObject_isValid(self_: *const PxRepXObject) -> bool;
 
-    pub fn PxRepXInstantiationArgs_new(inPhysics: *mut PxPhysics, inCooking: *mut PxCooking, inStringTable: *mut PxStringTable) -> PxRepXInstantiationArgs;
+    pub fn PxRepXInstantiationArgs_new(inPhysics: *mut PxPhysics, inCooking: *const PxCookingParams, inStringTable: *mut PxStringTable) -> PxRepXInstantiationArgs;
 
     /// The type this Serializer is meant to operate on.
     pub fn PxRepXSerializer_getTypeName_mut(self_: *mut PxRepXSerializer) -> *const std::ffi::c_char;
@@ -14190,6 +16827,1003 @@ extern "C" {
     ///
     /// The new live object.  It can be an invalid object if the instantiation cannot take place.
     pub fn PxRepXSerializer_fileToObject_mut(self_: *mut PxRepXSerializer, inReader: *mut XmlReader, inAllocator: *mut XmlMemoryAllocator, inArgs: *mut PxRepXInstantiationArgs, inCollection: *mut PxCollection) -> PxRepXObject;
+
+    pub fn PxVehicleComponent_delete(self_: *mut PxVehicleComponent);
+
+    /// Update function for a vehicle component.
+    ///
+    /// True if subsequent components in a sequence should get updated, false if the sequence should
+    /// be aborted.
+    pub fn PxVehicleComponent_update_mut(self_: *mut PxVehicleComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleComponentSequence_new() -> PxVehicleComponentSequence;
+
+    /// Add a component to the sequence.
+    ///
+    /// True on success, else false (for example due to component count limit being reached).
+    pub fn PxVehicleComponentSequence_add_mut(self_: *mut PxVehicleComponentSequence, component: *mut PxVehicleComponent) -> bool;
+
+    /// Start a substepping group.
+    ///
+    /// All components added using [`add`]() will be added to the new substepping group until either the group
+    /// is marked as complete with a call to [`endSubstepGroup`]() or a subsequent substepping group is started with
+    /// a call to [`beginSubstepGroup`]().
+    ///
+    /// Groups can be nested with stacked calls to [`beginSubstepGroup`]().
+    ///
+    /// Each group opened by [`beginSubstepGroup`]() must be closed with a complementary #endSubstepGroup() prior to calling #update().
+    ///
+    /// Handle for the substepping group on success, else eINVALID_SUBSTEP_GROUP
+    pub fn PxVehicleComponentSequence_beginSubstepGroup_mut(self_: *mut PxVehicleComponentSequence, nbSubSteps: u8) -> u8;
+
+    /// End a substepping group
+    ///
+    /// The group most recently opened with [`beginSubstepGroup`]() will be closed by this call.
+    pub fn PxVehicleComponentSequence_endSubstepGroup_mut(self_: *mut PxVehicleComponentSequence);
+
+    /// Set the number of substeps to perform  for a specific substepping group.
+    pub fn PxVehicleComponentSequence_setSubsteps_mut(self_: *mut PxVehicleComponentSequence, subGroupHandle: u8, nbSteps: u8);
+
+    /// Update each component in the sequence.
+    ///
+    /// If the update method of a component in the sequence returns false, the update process gets aborted.
+    pub fn PxVehicleComponentSequence_update_mut(self_: *mut PxVehicleComponentSequence, dt: f32, context: *const PxVehicleSimulationContext);
+
+    pub fn PxVehicleAxleDescription_setToDefault_mut(self_: *mut PxVehicleAxleDescription);
+
+    /// Add an axle to the vehicle by specifying the number of wheels on the axle and an array of wheel ids specifying each wheel on the axle.
+    pub fn PxVehicleAxleDescription_addAxle_mut(self_: *mut PxVehicleAxleDescription, nbWheelsOnAxle: u32, wheelIdsOnAxle: *const u32);
+
+    /// Return the number of axles on the vehicle.
+    ///
+    /// The number of axles.
+    pub fn PxVehicleAxleDescription_getNbAxles(self_: *const PxVehicleAxleDescription) -> u32;
+
+    /// Return the number of wheels on the ith axle.
+    ///
+    /// The number of wheels on the specified axle.
+    pub fn PxVehicleAxleDescription_getNbWheelsOnAxle(self_: *const PxVehicleAxleDescription, i: u32) -> u32;
+
+    /// Return the wheel id of the jth wheel on the ith axle.
+    ///
+    /// The wheel id of the jth wheel on the ith axle.
+    pub fn PxVehicleAxleDescription_getWheelOnAxle(self_: *const PxVehicleAxleDescription, j: u32, i: u32) -> u32;
+
+    /// Return the number of wheels on the vehicle.
+    ///
+    /// The number of wheels.
+    pub fn PxVehicleAxleDescription_getNbWheels(self_: *const PxVehicleAxleDescription) -> u32;
+
+    /// Return the axle of a specified wheel.
+    ///
+    /// The axle of the specified wheel.
+    pub fn PxVehicleAxleDescription_getAxle(self_: *const PxVehicleAxleDescription, wheelId: u32) -> u32;
+
+    pub fn PxVehicleAxleDescription_isValid(self_: *const PxVehicleAxleDescription) -> bool;
+
+    pub fn PxVehicleAxleDescription_new() -> PxVehicleAxleDescription;
+
+    pub fn PxVehicleFrame_setToDefault_mut(self_: *mut PxVehicleFrame);
+
+    pub fn PxVehicleFrame_getFrame(self_: *const PxVehicleFrame) -> PxMat33;
+
+    pub fn PxVehicleFrame_getLngAxis(self_: *const PxVehicleFrame) -> PxVec3;
+
+    pub fn PxVehicleFrame_getLatAxis(self_: *const PxVehicleFrame) -> PxVec3;
+
+    pub fn PxVehicleFrame_getVrtAxis(self_: *const PxVehicleFrame) -> PxVec3;
+
+    pub fn PxVehicleFrame_isValid(self_: *const PxVehicleFrame) -> bool;
+
+    pub fn PxVehicleFrame_new() -> PxVehicleFrame;
+
+    pub fn PxVehicleScale_setToDefault_mut(self_: *mut PxVehicleScale);
+
+    pub fn PxVehicleScale_isValid(self_: *const PxVehicleScale) -> bool;
+
+    pub fn PxVehicleScale_new() -> PxVehicleScale;
+
+    pub fn PxVehicleTireSlipParams_setToDefault_mut(self_: *mut PxVehicleTireSlipParams);
+
+    pub fn PxVehicleTireSlipParams_transformAndScale(self_: *const PxVehicleTireSlipParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleTireSlipParams;
+
+    pub fn PxVehicleTireSlipParams_isValid(self_: *const PxVehicleTireSlipParams) -> bool;
+
+    pub fn PxVehicleTireSlipParams_new() -> PxVehicleTireSlipParams;
+
+    pub fn PxVehicleTireAxisStickyParams_transformAndScale(self_: *const PxVehicleTireAxisStickyParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleTireAxisStickyParams;
+
+    pub fn PxVehicleTireAxisStickyParams_isValid(self_: *const PxVehicleTireAxisStickyParams) -> bool;
+
+    pub fn PxVehicleTireAxisStickyParams_new() -> PxVehicleTireAxisStickyParams;
+
+    pub fn PxVehicleTireStickyParams_setToDefault_mut(self_: *mut PxVehicleTireStickyParams);
+
+    pub fn PxVehicleTireStickyParams_transformAndScale(self_: *const PxVehicleTireStickyParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleTireStickyParams;
+
+    pub fn PxVehicleTireStickyParams_isValid(self_: *const PxVehicleTireStickyParams) -> bool;
+
+    pub fn PxVehicleTireStickyParams_new() -> PxVehicleTireStickyParams;
+
+    pub fn PxVehiclePvdContext_setToDefault_mut(self_: *mut PxVehiclePvdContext);
+
+    pub fn PxVehiclePvdContext_new() -> PxVehiclePvdContext;
+
+    pub fn PxVehicleSimulationContext_new() -> PxVehicleSimulationContext;
+
+    pub fn PxVehicleSimulationContext_getType(self_: *const PxVehicleSimulationContext) -> PxVehicleSimulationContextType;
+
+    pub fn PxVehicleSimulationContext_setToDefault_mut(self_: *mut PxVehicleSimulationContext);
+
+    pub fn PxVehicleSimulationContext_transformAndScale(self_: *const PxVehicleSimulationContext, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleSimulationContext;
+
+    pub fn PxVehiclePhysXSimulationContext_new() -> PxVehiclePhysXSimulationContext;
+
+    pub fn PxVehiclePhysXSimulationContext_setToDefault_mut(self_: *mut PxVehiclePhysXSimulationContext);
+
+    pub fn PxVehiclePhysXSimulationContext_transformAndScale(self_: *const PxVehiclePhysXSimulationContext, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehiclePhysXSimulationContext;
+
+    pub fn PxVehicleRoadGeometryState_setToDefault_mut(self_: *mut PxVehicleRoadGeometryState);
+
+    pub fn PxVehicleRigidBodyState_setToDefault_mut(self_: *mut PxVehicleRigidBodyState);
+
+    /// Compute the vertical speed of the rigid body transformed to the world frame.
+    pub fn PxVehicleRigidBodyState_getVerticalSpeed(self_: *const PxVehicleRigidBodyState, frame: *const PxVehicleFrame) -> f32;
+
+    /// Compute the lateral speed of the rigid body transformed to the world frame.
+    pub fn PxVehicleRigidBodyState_getLateralSpeed(self_: *const PxVehicleRigidBodyState, frame: *const PxVehicleFrame) -> f32;
+
+    /// Compute the longitudinal speed of the rigid body transformed to the world frame.
+    pub fn PxVehicleRigidBodyState_getLongitudinalSpeed(self_: *const PxVehicleRigidBodyState, frame: *const PxVehicleFrame) -> f32;
+
+    pub fn PxVehiclePhysXRoadGeometryQueryState_setToDefault_mut(self_: *mut PxVehiclePhysXRoadGeometryQueryState);
+
+    pub fn PxVehiclePhysXActor_setToDefault_mut(self_: *mut PxVehiclePhysXActor);
+
+    pub fn PxVehiclePhysXSteerState_setToDefault_mut(self_: *mut PxVehiclePhysXSteerState);
+
+    pub fn phys_PxVehicleTransformFrameToFrame(srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, v: *const PxVec3) -> PxVec3;
+
+    pub fn phys_PxVehicleTransformFrameToFrame_1(srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale, v: *const PxVec3) -> PxVec3;
+
+    pub fn phys_PxVehicleTransformFrameToFrame_2(srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale, v: *const PxTransform) -> PxTransform;
+
+    pub fn phys_PxVehicleComputeTranslation(frame: *const PxVehicleFrame, lng: f32, lat: f32, vrt: f32) -> PxVec3;
+
+    pub fn phys_PxVehicleComputeRotation(frame: *const PxVehicleFrame, roll: f32, pitch: f32, yaw: f32) -> PxQuat;
+
+    pub fn phys_PxVehicleComputeSign(f: f32) -> f32;
+
+    /// Shift the origin of a vehicle by the specified vector.
+    ///
+    /// Call this method to adjust the internal data structures of vehicles to reflect the shifted origin location
+    /// (the shift vector will get subtracted from all world space spatial data).
+    ///
+    /// It is the user's responsibility to keep track of the summed total origin shift and adjust all input/output to/from the vehicle accordingly.
+    ///
+    /// This call will not automatically shift the PhysX scene and its objects. PxScene::shiftOrigin() must be called separately to keep the systems in sync.
+    ///
+    /// If there is no associated PxRigidActor then set physxActor to NULL.
+    ///
+    /// If there is an associated PxRigidActor and it is already in a PxScene then the complementary call to PxScene::shiftOrigin() will take care of
+    /// shifting the associated PxRigidActor.  This being the case, set physxActor to NULL.  physxActor should be a non-NULL pointer only when there is an
+    /// associated PxRigidActor and it is not part of a PxScene.  This can occur if the associated PxRigidActor is updated using PhysX immediate mode.
+    ///
+    /// If scene queries are independent of PhysX geometry then set queryStates to NULL.
+    pub fn phys_PxVehicleShiftOrigin(axleDesc: *const PxVehicleAxleDescription, shift: *const PxVec3, rigidBodyState: *mut PxVehicleRigidBodyState, roadGeometryStates: *mut PxVehicleRoadGeometryState, physxActor: *mut PxVehiclePhysXActor, physxQueryStates: *mut PxVehiclePhysXRoadGeometryQueryState);
+
+    pub fn PxVehicleVectorN_new_alloc(size: u32) -> *mut PxVehicleVectorN;
+
+    pub fn PxVehicleVectorN_delete(self_: *mut PxVehicleVectorN);
+
+    pub fn PxVehicleVectorN_getSize(self_: *const PxVehicleVectorN) -> u32;
+
+    pub fn PxVehicleMatrixNN_new_alloc() -> *mut PxVehicleMatrixNN;
+
+    pub fn PxVehicleMatrixNN_new_alloc_1(size: u32) -> *mut PxVehicleMatrixNN;
+
+    pub fn PxVehicleMatrixNN_delete(self_: *mut PxVehicleMatrixNN);
+
+    pub fn PxVehicleMatrixNN_get(self_: *const PxVehicleMatrixNN, i: u32, j: u32) -> f32;
+
+    pub fn PxVehicleMatrixNN_set_mut(self_: *mut PxVehicleMatrixNN, i: u32, j: u32, val: f32);
+
+    pub fn PxVehicleMatrixNN_getSize(self_: *const PxVehicleMatrixNN) -> u32;
+
+    pub fn PxVehicleMatrixNN_setSize_mut(self_: *mut PxVehicleMatrixNN, size: u32);
+
+    pub fn PxVehicleMatrixNNLUSolver_new_alloc() -> *mut PxVehicleMatrixNNLUSolver;
+
+    pub fn PxVehicleMatrixNNLUSolver_delete(self_: *mut PxVehicleMatrixNNLUSolver);
+
+    pub fn PxVehicleMatrixNNLUSolver_getDet(self_: *const PxVehicleMatrixNNLUSolver) -> f32;
+
+    pub fn PxVehicleMatrixNNLUSolver_decomposeLU_mut(self_: *mut PxVehicleMatrixNNLUSolver, A: *const PxVehicleMatrixNN);
+
+    pub fn PxVehicleMatrixNNLUSolver_solve(self_: *const PxVehicleMatrixNNLUSolver, b: *const PxVehicleVectorN, x: *mut PxVehicleVectorN) -> bool;
+
+    pub fn PxVehicleMatrixNGaussSeidelSolver_solve(self_: *const PxVehicleMatrixNGaussSeidelSolver, maxIterations: u32, tolerance: f32, A: *const PxVehicleMatrixNN, b: *const PxVehicleVectorN, result: *mut PxVehicleVectorN);
+
+    pub fn PxVehicleMatrix33Solver_solve(self_: *const PxVehicleMatrix33Solver, A_: *const PxVehicleMatrixNN, b_: *const PxVehicleVectorN, result: *mut PxVehicleVectorN) -> bool;
+
+    pub fn PxVehicleCommandValueResponseTable_delete(self_: *mut PxVehicleCommandValueResponseTable);
+
+    pub fn PxVehicleCommandNonLinearResponseParams_new() -> PxVehicleCommandNonLinearResponseParams;
+
+    pub fn PxVehicleCommandNonLinearResponseParams_clear_mut(self_: *mut PxVehicleCommandNonLinearResponseParams);
+
+    /// Add a table of normalised response vs speed and associated it with a specified command value.
+    ///
+    /// commandValueSpeedResponses must be authored as a series of strictly increasing speeds with form {speed, normalizedResponse}
+    ///
+    /// The responses added must form a series of strictly increasing command values.
+    pub fn PxVehicleCommandNonLinearResponseParams_addResponse_mut(self_: *mut PxVehicleCommandNonLinearResponseParams, commandValueSpeedResponses: *const PxVehicleCommandValueResponseTable) -> bool;
+
+    pub fn PxVehicleCommandResponseParams_new() -> PxVehicleCommandResponseParams;
+
+    pub fn PxVehicleBrakeCommandResponseParams_transformAndScale(self_: *const PxVehicleBrakeCommandResponseParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleBrakeCommandResponseParams;
+
+    pub fn PxVehicleBrakeCommandResponseParams_isValid(self_: *const PxVehicleBrakeCommandResponseParams, axleDesc: *const PxVehicleAxleDescription) -> bool;
+
+    pub fn PxVehicleBrakeCommandResponseParams_new() -> PxVehicleBrakeCommandResponseParams;
+
+    pub fn PxVehicleCommandState_setToDefault_mut(self_: *mut PxVehicleCommandState);
+
+    pub fn PxVehicleCommandState_new() -> PxVehicleCommandState;
+
+    pub fn PxVehicleDirectDriveTransmissionCommandState_setToDefault_mut(self_: *mut PxVehicleDirectDriveTransmissionCommandState);
+
+    pub fn PxVehicleEngineDriveTransmissionCommandState_setToDefault_mut(self_: *mut PxVehicleEngineDriveTransmissionCommandState);
+
+    pub fn PxVehicleEngineDriveTransmissionCommandState_new() -> PxVehicleEngineDriveTransmissionCommandState;
+
+    pub fn PxVehicleTankDriveTransmissionCommandState_setToDefault_mut(self_: *mut PxVehicleTankDriveTransmissionCommandState);
+
+    /// Compute the linear response to a command.
+    ///
+    /// The linear response of the specified  wheel to the command.
+    pub fn phys_PxVehicleLinearResponseCompute(command: f32, wheelId: u32, responseParams: *const PxVehicleCommandResponseParams) -> f32;
+
+    /// Compute the non-linear response to a command.
+    ///
+    /// responseParams is used to compute an interpolated normalized response to the combination of command and longitudinalSpeed.
+    /// The interpolated normalized response is then used in place of the command as input to PxVehicleComputeLinearResponse().
+    pub fn phys_PxVehicleNonLinearResponseCompute(command: f32, longitudinalSpeed: f32, wheelId: u32, responseParams: *const PxVehicleCommandResponseParams) -> f32;
+
+    pub fn PxVehicleDirectDriveThrottleCommandResponseParams_transformAndScale(self_: *const PxVehicleDirectDriveThrottleCommandResponseParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleDirectDriveThrottleCommandResponseParams;
+
+    pub fn PxVehicleDirectDriveThrottleCommandResponseParams_isValid(self_: *const PxVehicleDirectDriveThrottleCommandResponseParams, axleDesc: *const PxVehicleAxleDescription) -> bool;
+
+    pub fn PxVehicleDirectDriveThrottleCommandResponseParams_new() -> PxVehicleDirectDriveThrottleCommandResponseParams;
+
+    pub fn PxVehicleClutchCommandResponseParams_transformAndScale(self_: *const PxVehicleClutchCommandResponseParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleClutchCommandResponseParams;
+
+    pub fn PxVehicleClutchCommandResponseParams_isValid(self_: *const PxVehicleClutchCommandResponseParams) -> bool;
+
+    pub fn PxVehicleClutchCommandResponseParams_new() -> PxVehicleClutchCommandResponseParams;
+
+    pub fn PxVehicleClutchParams_transformAndScale(self_: *const PxVehicleClutchParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleClutchParams;
+
+    pub fn PxVehicleClutchParams_isValid(self_: *const PxVehicleClutchParams) -> bool;
+
+    pub fn PxVehicleClutchParams_new() -> PxVehicleClutchParams;
+
+    pub fn PxVehicleEngineParams_transformAndScale(self_: *const PxVehicleEngineParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleEngineParams;
+
+    pub fn PxVehicleEngineParams_isValid(self_: *const PxVehicleEngineParams) -> bool;
+
+    pub fn PxVehicleEngineParams_delete(self_: *mut PxVehicleEngineParams);
+
+    pub fn PxVehicleEngineParams_new() -> PxVehicleEngineParams;
+
+    pub fn PxVehicleGearboxParams_transformAndScale(self_: *const PxVehicleGearboxParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleGearboxParams;
+
+    pub fn PxVehicleGearboxParams_isValid(self_: *const PxVehicleGearboxParams) -> bool;
+
+    pub fn PxVehicleGearboxParams_new() -> PxVehicleGearboxParams;
+
+    pub fn PxVehicleAutoboxParams_transformAndScale(self_: *const PxVehicleAutoboxParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleAutoboxParams;
+
+    pub fn PxVehicleAutoboxParams_isValid(self_: *const PxVehicleAutoboxParams, gearboxParams: *const PxVehicleGearboxParams) -> bool;
+
+    pub fn PxVehicleAutoboxParams_new() -> PxVehicleAutoboxParams;
+
+    pub fn PxVehicleFourWheelDriveDifferentialLegacyParams_transformAndScale(self_: *const PxVehicleFourWheelDriveDifferentialLegacyParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleFourWheelDriveDifferentialLegacyParams;
+
+    pub fn PxVehicleFourWheelDriveDifferentialLegacyParams_isValid(self_: *const PxVehicleFourWheelDriveDifferentialLegacyParams, axleDesc: *const PxVehicleAxleDescription) -> bool;
+
+    pub fn PxVehicleFourWheelDriveDifferentialLegacyParams_new() -> PxVehicleFourWheelDriveDifferentialLegacyParams;
+
+    pub fn PxVehicleMultiWheelDriveDifferentialParams_setToDefault_mut(self_: *mut PxVehicleMultiWheelDriveDifferentialParams);
+
+    pub fn PxVehicleMultiWheelDriveDifferentialParams_transformAndScale(self_: *const PxVehicleMultiWheelDriveDifferentialParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleMultiWheelDriveDifferentialParams;
+
+    pub fn PxVehicleMultiWheelDriveDifferentialParams_isValid(self_: *const PxVehicleMultiWheelDriveDifferentialParams, axleDesc: *const PxVehicleAxleDescription) -> bool;
+
+    pub fn PxVehicleMultiWheelDriveDifferentialParams_new() -> PxVehicleMultiWheelDriveDifferentialParams;
+
+    pub fn PxVehicleFourWheelDriveDifferentialParams_setToDefault_mut(self_: *mut PxVehicleFourWheelDriveDifferentialParams);
+
+    pub fn PxVehicleFourWheelDriveDifferentialParams_isValid(self_: *const PxVehicleFourWheelDriveDifferentialParams, axleDesc: *const PxVehicleAxleDescription) -> bool;
+
+    pub fn PxVehicleFourWheelDriveDifferentialParams_transformAndScale(self_: *const PxVehicleFourWheelDriveDifferentialParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleFourWheelDriveDifferentialParams;
+
+    pub fn PxVehicleFourWheelDriveDifferentialParams_new() -> PxVehicleFourWheelDriveDifferentialParams;
+
+    pub fn PxVehicleTankDriveDifferentialParams_setToDefault_mut(self_: *mut PxVehicleTankDriveDifferentialParams);
+
+    /// Add a tank track by specifying the number of wheels along the track and an array of wheel ids specifying each wheel in the tank track.
+    pub fn PxVehicleTankDriveDifferentialParams_addTankTrack_mut(self_: *mut PxVehicleTankDriveDifferentialParams, nbWheelsInTrackToAdd: u32, wheelIdsInTrackToAdd: *const u32, thrustControllerIndex: u32);
+
+    /// Return the number of tracks.
+    ///
+    /// The number of tracks.
+    pub fn PxVehicleTankDriveDifferentialParams_getNbTracks(self_: *const PxVehicleTankDriveDifferentialParams) -> u32;
+
+    /// Return the number of wheels in the ith track.
+    ///
+    /// The number of wheels in the specified track.
+    pub fn PxVehicleTankDriveDifferentialParams_getNbWheelsInTrack(self_: *const PxVehicleTankDriveDifferentialParams, i: u32) -> u32;
+
+    /// Return the array of all wheels in the ith track.
+    ///
+    /// The array of wheels in the specified track.
+    pub fn PxVehicleTankDriveDifferentialParams_getWheelsInTrack(self_: *const PxVehicleTankDriveDifferentialParams, i: u32) -> *const u32;
+
+    /// Return the wheel id of the jth wheel in the ith track.
+    ///
+    /// The wheel id of the jth wheel in the ith track.
+    pub fn PxVehicleTankDriveDifferentialParams_getWheelInTrack(self_: *const PxVehicleTankDriveDifferentialParams, j: u32, i: u32) -> u32;
+
+    /// Return the index of the thrust controller that will control a specified track.
+    ///
+    /// The index of the thrust controller that will control the ith track.
+    pub fn PxVehicleTankDriveDifferentialParams_getThrustControllerIndex(self_: *const PxVehicleTankDriveDifferentialParams, i: u32) -> u32;
+
+    pub fn PxVehicleTankDriveDifferentialParams_transformAndScale(self_: *const PxVehicleTankDriveDifferentialParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleTankDriveDifferentialParams;
+
+    pub fn PxVehicleTankDriveDifferentialParams_isValid(self_: *const PxVehicleTankDriveDifferentialParams, axleDesc: *const PxVehicleAxleDescription) -> bool;
+
+    pub fn PxVehicleTankDriveDifferentialParams_new() -> PxVehicleTankDriveDifferentialParams;
+
+    pub fn PxVehicleClutchCommandResponseState_setToDefault_mut(self_: *mut PxVehicleClutchCommandResponseState);
+
+    pub fn PxVehicleEngineDriveThrottleCommandResponseState_setToDefault_mut(self_: *mut PxVehicleEngineDriveThrottleCommandResponseState);
+
+    pub fn PxVehicleEngineState_setToDefault_mut(self_: *mut PxVehicleEngineState);
+
+    pub fn PxVehicleGearboxState_setToDefault_mut(self_: *mut PxVehicleGearboxState);
+
+    pub fn PxVehicleAutoboxState_setToDefault_mut(self_: *mut PxVehicleAutoboxState);
+
+    pub fn PxVehicleDifferentialState_setToDefault_mut(self_: *mut PxVehicleDifferentialState);
+
+    pub fn PxVehicleWheelConstraintGroupState_setToDefault_mut(self_: *mut PxVehicleWheelConstraintGroupState);
+
+    /// Add a wheel constraint group by specifying the number of wheels in the group, an array of wheel ids specifying each wheel in the group
+    /// and a desired rotational speed relationship.
+    ///
+    /// constraintMultipliers[j] specifies the target rotational speed of the jth wheel in the constraint group as a multiplier of the rotational
+    /// speed of the zeroth wheel in the group.
+    pub fn PxVehicleWheelConstraintGroupState_addConstraintGroup_mut(self_: *mut PxVehicleWheelConstraintGroupState, nbWheelsInGroupToAdd: u32, wheelIdsInGroupToAdd: *const u32, constraintMultipliers: *const f32);
+
+    /// Return the number of wheel constraint groups in the vehicle.
+    ///
+    /// The number of wheel constraint groups.
+    pub fn PxVehicleWheelConstraintGroupState_getNbConstraintGroups(self_: *const PxVehicleWheelConstraintGroupState) -> u32;
+
+    /// Return the number of wheels in the ith constraint group.
+    ///
+    /// The number of wheels in the specified constraint group.
+    pub fn PxVehicleWheelConstraintGroupState_getNbWheelsInConstraintGroup(self_: *const PxVehicleWheelConstraintGroupState, i: u32) -> u32;
+
+    /// Return the wheel id of the jth wheel in the ith constraint group.
+    ///
+    /// The wheel id of the jth wheel in the ith constraint group.
+    pub fn PxVehicleWheelConstraintGroupState_getWheelInConstraintGroup(self_: *const PxVehicleWheelConstraintGroupState, j: u32, i: u32) -> u32;
+
+    /// Return the constraint multiplier of the jth wheel in the ith constraint group
+    ///
+    /// The constraint multiplier of the jth wheel in the ith constraint group.
+    pub fn PxVehicleWheelConstraintGroupState_getMultiplierInConstraintGroup(self_: *const PxVehicleWheelConstraintGroupState, j: u32, i: u32) -> f32;
+
+    pub fn PxVehicleClutchSlipState_setToDefault_mut(self_: *mut PxVehicleClutchSlipState);
+
+    /// Compute the coupling strength of the clutch.
+    ///
+    /// If the gear is in neutral the clutch is fully disengaged and the clutch strength is 0.
+    ///
+    /// A clutch response state of 0.0 denotes a fully engaged clutch with maximum strength.
+    ///
+    /// A clutch response state of 1.0 denotes a fully disengaged clutch with a strength of 0.0.
+    pub fn phys_PxVehicleClutchStrengthCompute(clutchResponseState: *const PxVehicleClutchCommandResponseState, gearboxParams: *const PxVehicleGearboxParams, gearboxState: *const PxVehicleGearboxState) -> f32;
+
+    /// Compute the damping rate of the engine.
+    ///
+    /// Engines typically have different damping rates with clutch engaged and disengaged.
+    ///
+    /// Engines typically have different damping rates at different throttle pedal values.
+    ///
+    /// In neutral gear the clutch is considered to be fully disengaged.
+    pub fn phys_PxVehicleEngineDampingRateCompute(engineParams: *const PxVehicleEngineParams, gearboxParams: *const PxVehicleGearboxParams, gearboxState: *const PxVehicleGearboxState, clutchResponseState: *const PxVehicleClutchCommandResponseState, throttleResponseState: *const PxVehicleEngineDriveThrottleCommandResponseState) -> f32;
+
+    /// Compute the gear ratio delivered by the gearbox in the current gear.
+    ///
+    /// The gear ratio is the product of the gear ratio of the current gear and the final gear ratio of the gearbox.
+    pub fn phys_PxVehicleGearRatioCompute(gearboxParams: *const PxVehicleGearboxParams, gearboxState: *const PxVehicleGearboxState) -> f32;
+
+    /// Compute the drive torque to deliver to the engine.
+    pub fn phys_PxVehicleEngineDriveTorqueCompute(engineParams: *const PxVehicleEngineParams, engineState: *const PxVehicleEngineState, throttleCommandResponseState: *const PxVehicleEngineDriveThrottleCommandResponseState) -> f32;
+
+    /// This API was introduced with the new Vehicle API for transition purposes but will be removed in a future version.
+    ///
+    /// Compute the contribution that each wheel makes to the averaged wheel speed at the clutch plate connected to the wheels driven by
+    /// the differential.
+    ///
+    /// Any wheel on an axle connected to the differential could have a non-zero value, depending on the way the differential couples to the wheels.
+    ///
+    /// Any wheel on an axle not connected to the differential will have a zero contribution to the averaged wheel speed.
+    pub fn phys_PxVehicleLegacyDifferentialWheelSpeedContributionsCompute(diffParams: *const PxVehicleFourWheelDriveDifferentialLegacyParams, nbWheels: u32, diffAveWheelSpeedContributions: *mut f32);
+
+    /// Compute the drive torque response to a throttle command.
+    pub fn phys_PxVehicleDirectDriveThrottleCommandResponseUpdate(throttle: f32, transmissionCommands: *const PxVehicleDirectDriveTransmissionCommandState, longitudinalSpeed: f32, wheelId: u32, throttleResponseParams: *const PxVehicleDirectDriveThrottleCommandResponseParams, throttleResponseState: *mut f32);
+
+    /// Determine the actuation state of a wheel given the brake torque, handbrake torque and drive torque applied to it.
+    pub fn phys_PxVehicleDirectDriveActuationStateUpdate(brakeTorque: f32, driveTorque: f32, actuationState: *mut PxVehicleWheelActuationState);
+
+    /// Forward integrate the angular speed of a wheel given the brake and drive torque applied to it
+    pub fn phys_PxVehicleDirectDriveUpdate(wheelParams: *const PxVehicleWheelParams, actuationState: *const PxVehicleWheelActuationState, brakeTorque: f32, driveTorque: f32, tireForce: *const PxVehicleTireForce, dt: f32, wheelRigidBody1dState: *mut PxVehicleWheelRigidBody1dState);
+
+    /// The autobox will not begin a gear change if a gear change is already ongoing.
+    ///
+    /// The autobox will not begin a gear change until a threshold time has lapsed since the last automated gear change.
+    ///
+    /// A gear change is considered as ongoing for as long as PxVehicleGearboxState::currentGear is different from
+    /// PxVehicleGearboxState::targetGear.
+    ///
+    /// The autobox will not shift down from 1st gear or up from reverse gear.
+    ///
+    /// The autobox shifts in single gear increments or decrements.
+    ///
+    /// The autobox instantiates a gear change by setting PxVehicleCommandState::targetGear to be different from
+    /// from PxVehicleGearboxState::currentGear
+    pub fn phys_PxVehicleAutoBoxUpdate(engineParams: *const PxVehicleEngineParams, gearboxParams: *const PxVehicleGearboxParams, autoboxParams: *const PxVehicleAutoboxParams, engineState: *const PxVehicleEngineState, gearboxState: *const PxVehicleGearboxState, dt: f32, targetGearCommand: *mut u32, autoboxState: *mut PxVehicleAutoboxState, throttle: *mut f32);
+
+    /// Propagate input gear commands to the gearbox state.
+    ///
+    /// Any ongoing gear change must complete before starting another.
+    ///
+    /// A gear change is considered as ongoing for as long as PxVehicleGearboxState::currentGear is different from
+    /// PxVehicleGearboxState::targetGear.
+    ///
+    /// The gearbox remains in neutral for the duration of the gear change.
+    ///
+    /// A gear change begins if PxVehicleCommandState::targetGear is different from PxVehicleGearboxState::currentGear.
+    pub fn phys_PxVehicleGearCommandResponseUpdate(targetGearCommand: u32, gearboxParams: *const PxVehicleGearboxParams, gearboxState: *mut PxVehicleGearboxState);
+
+    /// Propagate the input clutch command to the clutch response state.
+    pub fn phys_PxVehicleClutchCommandResponseLinearUpdate(clutchCommand: f32, clutchResponseParams: *const PxVehicleClutchCommandResponseParams, clutchResponse: *mut PxVehicleClutchCommandResponseState);
+
+    /// Propagate the input throttle command to the throttle response state.
+    pub fn phys_PxVehicleEngineDriveThrottleCommandResponseLinearUpdate(commands: *const PxVehicleCommandState, throttleResponse: *mut PxVehicleEngineDriveThrottleCommandResponseState);
+
+    /// Compute the fraction of available torque to be delivered to each wheel and gather a list of all
+    /// wheels connected to the differential.
+    pub fn phys_PxVehicleDifferentialStateUpdate_2(axleDescription: *const PxVehicleAxleDescription, diffParams: *const PxVehicleMultiWheelDriveDifferentialParams, diffState: *mut PxVehicleDifferentialState);
+
+    /// Update the current gear of the gearbox. If a gear change is ongoing then complete the gear change if a threshold
+    /// time has passed since the beginning of the gear change.
+    ///
+    /// A gear change is considered as ongoing for as long as PxVehicleGearboxState::currentGear is different from
+    /// PxVehicleGearboxState::targetGear.
+    pub fn phys_PxVehicleGearboxUpdate(gearboxParams: *const PxVehicleGearboxParams, dt: f32, gearboxState: *mut PxVehicleGearboxState);
+
+    pub fn PxVehicleSteerCommandResponseParams_transformAndScale(self_: *const PxVehicleSteerCommandResponseParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleSteerCommandResponseParams;
+
+    pub fn PxVehicleSteerCommandResponseParams_isValid(self_: *const PxVehicleSteerCommandResponseParams, axleDesc: *const PxVehicleAxleDescription) -> bool;
+
+    pub fn PxVehicleSteerCommandResponseParams_new() -> PxVehicleSteerCommandResponseParams;
+
+    pub fn PxVehicleAckermannParams_isValid(self_: *const PxVehicleAckermannParams, axleDesc: *const PxVehicleAxleDescription) -> bool;
+
+    pub fn PxVehicleAckermannParams_transformAndScale(self_: *const PxVehicleAckermannParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleAckermannParams;
+
+    pub fn PxVehicleAckermannParams_new() -> PxVehicleAckermannParams;
+
+    /// Compute the yaw angle response to a steer command.
+    pub fn phys_PxVehicleSteerCommandResponseUpdate(steer: f32, longitudinalSpeed: f32, wheelId: u32, steerResponseParams: *const PxVehicleSteerCommandResponseParams, steerResponseState: *mut f32);
+
+    pub fn PxVehicleWheelActuationState_setToDefault_mut(self_: *mut PxVehicleWheelActuationState);
+
+    pub fn PxVehicleWheelRigidBody1dState_setToDefault_mut(self_: *mut PxVehicleWheelRigidBody1dState);
+
+    pub fn PxVehicleWheelLocalPose_setToDefault_mut(self_: *mut PxVehicleWheelLocalPose);
+
+    pub fn PxVehicleWheelParams_transformAndScale(self_: *const PxVehicleWheelParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleWheelParams;
+
+    pub fn PxVehicleWheelParams_isValid(self_: *const PxVehicleWheelParams) -> bool;
+
+    pub fn PxVehicleWheelParams_new() -> PxVehicleWheelParams;
+
+    pub fn PxVehicleTireDirectionState_setToDefault_mut(self_: *mut PxVehicleTireDirectionState);
+
+    pub fn PxVehicleTireSpeedState_setToDefault_mut(self_: *mut PxVehicleTireSpeedState);
+
+    pub fn PxVehicleTireSlipState_setToDefault_mut(self_: *mut PxVehicleTireSlipState);
+
+    pub fn PxVehicleTireGripState_setToDefault_mut(self_: *mut PxVehicleTireGripState);
+
+    pub fn PxVehicleTireCamberAngleState_setToDefault_mut(self_: *mut PxVehicleTireCamberAngleState);
+
+    pub fn PxVehicleTireStickyState_setToDefault_mut(self_: *mut PxVehicleTireStickyState);
+
+    pub fn PxVehicleTireForce_setToDefault_mut(self_: *mut PxVehicleTireForce);
+
+    pub fn PxVehicleDirectDriveCommandResponseComponent_delete(self_: *mut PxVehicleDirectDriveCommandResponseComponent);
+
+    /// Compute a per wheel response to the input brake/handbrake/throttle/steer commands
+    /// and determine if there is an intention to accelerate the vehicle.
+    pub fn PxVehicleDirectDriveCommandResponseComponent_update_mut(self_: *mut PxVehicleDirectDriveCommandResponseComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleDirectDriveActuationStateComponent_delete(self_: *mut PxVehicleDirectDriveActuationStateComponent);
+
+    /// Compute the actuation state for each wheel given the brake, handbrake and throttle states.
+    /// \
+    pub fn PxVehicleDirectDriveActuationStateComponent_update_mut(self_: *mut PxVehicleDirectDriveActuationStateComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleDirectDrivetrainComponent_delete(self_: *mut PxVehicleDirectDrivetrainComponent);
+
+    pub fn PxVehicleDirectDrivetrainComponent_update_mut(self_: *mut PxVehicleDirectDrivetrainComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleEngineDriveCommandResponseComponent_delete(self_: *mut PxVehicleEngineDriveCommandResponseComponent);
+
+    pub fn PxVehicleEngineDriveCommandResponseComponent_update_mut(self_: *mut PxVehicleEngineDriveCommandResponseComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleMultiWheelDriveDifferentialStateComponent_delete(self_: *mut PxVehicleMultiWheelDriveDifferentialStateComponent);
+
+    pub fn PxVehicleMultiWheelDriveDifferentialStateComponent_getDataForMultiWheelDriveDifferentialStateComponent_mut(self_: *mut PxVehicleMultiWheelDriveDifferentialStateComponent, axleDescription: *mut *const PxVehicleAxleDescription, differentialParams: *mut *const PxVehicleMultiWheelDriveDifferentialParams, differentialState: *mut *mut PxVehicleDifferentialState);
+
+    pub fn PxVehicleMultiWheelDriveDifferentialStateComponent_update_mut(self_: *mut PxVehicleMultiWheelDriveDifferentialStateComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleFourWheelDriveDifferentialStateComponent_delete(self_: *mut PxVehicleFourWheelDriveDifferentialStateComponent);
+
+    pub fn PxVehicleFourWheelDriveDifferentialStateComponent_update_mut(self_: *mut PxVehicleFourWheelDriveDifferentialStateComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleTankDriveDifferentialStateComponent_delete(self_: *mut PxVehicleTankDriveDifferentialStateComponent);
+
+    pub fn PxVehicleTankDriveDifferentialStateComponent_update_mut(self_: *mut PxVehicleTankDriveDifferentialStateComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleLegacyFourWheelDriveDifferentialStateComponent_delete(self_: *mut PxVehicleLegacyFourWheelDriveDifferentialStateComponent);
+
+    pub fn PxVehicleLegacyFourWheelDriveDifferentialStateComponent_update_mut(self_: *mut PxVehicleLegacyFourWheelDriveDifferentialStateComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleEngineDriveActuationStateComponent_delete(self_: *mut PxVehicleEngineDriveActuationStateComponent);
+
+    pub fn PxVehicleEngineDriveActuationStateComponent_update_mut(self_: *mut PxVehicleEngineDriveActuationStateComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleEngineDrivetrainComponent_delete(self_: *mut PxVehicleEngineDrivetrainComponent);
+
+    pub fn PxVehicleEngineDrivetrainComponent_update_mut(self_: *mut PxVehicleEngineDrivetrainComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehiclePhysXRigidActorParams_new(_physxActorRigidBodyParams: *const PxVehicleRigidBodyParams, _physxActorName: *const std::ffi::c_char) -> PxVehiclePhysXRigidActorParams;
+
+    pub fn PxVehiclePhysXRigidActorShapeParams_new(_geometry: *const PxGeometry, _localPose: *const PxTransform, _material: *const PxMaterial, _flags: PxShapeFlags, _simulationFilterData: *const PxFilterData, _queryFilterData: *const PxFilterData) -> PxVehiclePhysXRigidActorShapeParams;
+
+    pub fn PxVehiclePhysXWheelParams_new(_axleDescription: *const PxVehicleAxleDescription, _wheelParams: *const PxVehicleWheelParams) -> PxVehiclePhysXWheelParams;
+
+    pub fn PxVehiclePhysXWheelShapeParams_new(_material: *const PxMaterial, _flags: PxShapeFlags, _simulationFilterData: PxFilterData, _queryFilterData: PxFilterData) -> PxVehiclePhysXWheelShapeParams;
+
+    /// Create a PxRigidDynamic instance, instantiate it with desired properties and populate it with PxShape instances.
+    ///
+    /// This is an alternative to PxVehiclePhysXArticulationLinkCreate.
+    ///
+    /// PxVehiclePhysXActorCreate primarily serves as an illustration of the instantiation of the PhysX class instances
+    /// required to simulate a vehicle with a PxRigidDynamic.
+    pub fn phys_PxVehiclePhysXActorCreate(vehicleFrame: *const PxVehicleFrame, rigidActorParams: *const PxVehiclePhysXRigidActorParams, rigidActorCmassLocalPose: *const PxTransform, rigidActorShapeParams: *const PxVehiclePhysXRigidActorShapeParams, wheelParams: *const PxVehiclePhysXWheelParams, wheelShapeParams: *const PxVehiclePhysXWheelShapeParams, physics: *mut PxPhysics, params: *const PxCookingParams, vehiclePhysXActor: *mut PxVehiclePhysXActor);
+
+    /// Configure an actor so that it is ready for vehicle simulation.
+    pub fn phys_PxVehiclePhysXActorConfigure(rigidActorParams: *const PxVehiclePhysXRigidActorParams, rigidActorCmassLocalPose: *const PxTransform, rigidBody: *mut PxRigidBody);
+
+    /// Create a PxArticulationReducedCoordinate and a single PxArticulationLink,
+    /// instantiate the PxArticulationLink with desired properties and populate it with PxShape instances.
+    ///
+    /// This is an alternative to PxVehiclePhysXActorCreate.
+    ///
+    /// PxVehiclePhysXArticulationLinkCreate primarily serves as an illustration of the instantiation of the PhysX class instances
+    /// required to simulate a vehicle as part of an articulated ensemble.
+    pub fn phys_PxVehiclePhysXArticulationLinkCreate(vehicleFrame: *const PxVehicleFrame, rigidActorParams: *const PxVehiclePhysXRigidActorParams, rigidActorCmassLocalPose: *const PxTransform, rigidActorShapeParams: *const PxVehiclePhysXRigidActorShapeParams, wheelParams: *const PxVehiclePhysXWheelParams, wheelShapeParams: *const PxVehiclePhysXWheelShapeParams, physics: *mut PxPhysics, params: *const PxCookingParams, vehiclePhysXActor: *mut PxVehiclePhysXActor);
+
+    /// Release the PxRigidDynamic, PxArticulationReducedCoordinate, PxArticulationLink and PxShape instances
+    /// instantiated by PxVehiclePhysXActorCreate or PxVehiclePhysXArticulationLinkCreate.
+    pub fn phys_PxVehiclePhysXActorDestroy(vehiclePhysXActor: *mut PxVehiclePhysXActor);
+
+    /// Wake up the physx actor if the actor is asleep and the commands signal an intent to
+    /// change the state of the vehicle.
+    ///
+    /// If the steering has changed, the actor will be woken up.
+    ///
+    /// On exit from PxVehiclePhysxActorWakeup, physxSteerState.previousSteerCommand is assigned to the value
+    /// of commands.steer so that the steer state may be propagated to the subsequent call to PxVehiclePhysxActorWakeup().
+    ///
+    /// If physxSteerState.previousSteerCommand has value PX_VEHICLE_UNSPECIFIED_STEER_STATE, the steering state
+    /// is treated as though it has not changed.
+    pub fn phys_PxVehiclePhysxActorWakeup(commands: *const PxVehicleCommandState, transmissionCommands: *const PxVehicleEngineDriveTransmissionCommandState, gearParams: *const PxVehicleGearboxParams, gearState: *const PxVehicleGearboxState, physxActor: *mut PxRigidBody, physxSteerState: *mut PxVehiclePhysXSteerState);
+
+    /// Read the rigid body state from a PhysX actor.
+    pub fn phys_PxVehicleReadRigidBodyStateFromPhysXActor(physxActor: *const PxRigidBody, rigidBodyState: *mut PxVehicleRigidBodyState);
+
+    /// Update the local pose of a PxShape that is associated with a wheel.
+    pub fn phys_PxVehicleWriteWheelLocalPoseToPhysXWheelShape(wheelLocalPose: *const PxTransform, wheelShapeLocalPose: *const PxTransform, shape: *mut PxShape);
+
+    /// Write the rigid body state to a PhysX actor.
+    pub fn phys_PxVehicleWriteRigidBodyStateToPhysXActor(physxActorUpdateMode: PxVehiclePhysXActorUpdateMode, rigidBodyState: *const PxVehicleRigidBodyState, dt: f32, physXActor: *mut PxRigidBody);
+
+    pub fn PxVehiclePhysXActorBeginComponent_delete(self_: *mut PxVehiclePhysXActorBeginComponent);
+
+    pub fn PxVehiclePhysXActorBeginComponent_update_mut(self_: *mut PxVehiclePhysXActorBeginComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehiclePhysXActorEndComponent_delete(self_: *mut PxVehiclePhysXActorEndComponent);
+
+    pub fn PxVehiclePhysXActorEndComponent_update_mut(self_: *mut PxVehiclePhysXActorEndComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehiclePhysXSuspensionLimitConstraintParams_transformAndScale(self_: *const PxVehiclePhysXSuspensionLimitConstraintParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehiclePhysXSuspensionLimitConstraintParams;
+
+    pub fn PxVehiclePhysXSuspensionLimitConstraintParams_isValid(self_: *const PxVehiclePhysXSuspensionLimitConstraintParams) -> bool;
+
+    pub fn PxVehiclePhysXSuspensionLimitConstraintParams_new() -> PxVehiclePhysXSuspensionLimitConstraintParams;
+
+    pub fn PxVehiclePhysXConstraintState_setToDefault_mut(self_: *mut PxVehiclePhysXConstraintState);
+
+    pub fn phys_vehicleConstraintSolverPrep(constraints: *mut Px1DConstraint, body0WorldOffset: *mut PxVec3Padded, maxConstraints: u32, anon_param3: *mut PxConstraintInvMassScale, constantBlock: *const std::ffi::c_void, bodyAToWorld: *const PxTransform, bodyBToWorld: *const PxTransform, anon_param7: bool, cA2w: *mut PxVec3Padded, cB2w: *mut PxVec3Padded) -> u32;
+
+    pub fn phys_visualiseVehicleConstraint(viz: *mut PxConstraintVisualizer, constantBlock: *const std::ffi::c_void, body0Transform: *const PxTransform, body1Transform: *const PxTransform, flags: u32);
+
+    pub fn PxVehicleConstraintConnector_new_alloc() -> *mut PxVehicleConstraintConnector;
+
+    pub fn PxVehicleConstraintConnector_new_alloc_1(vehicleConstraintState: *mut PxVehiclePhysXConstraintState) -> *mut PxVehicleConstraintConnector;
+
+    pub fn PxVehicleConstraintConnector_delete(self_: *mut PxVehicleConstraintConnector);
+
+    pub fn PxVehicleConstraintConnector_setConstraintState_mut(self_: *mut PxVehicleConstraintConnector, constraintState: *mut PxVehiclePhysXConstraintState);
+
+    pub fn PxVehicleConstraintConnector_prepareData_mut(self_: *mut PxVehicleConstraintConnector) -> *mut std::ffi::c_void;
+
+    pub fn PxVehicleConstraintConnector_getConstantBlock(self_: *const PxVehicleConstraintConnector) -> *const std::ffi::c_void;
+
+    pub fn PxVehicleConstraintConnector_getPrep(self_: *const PxVehicleConstraintConnector) -> *mut std::ffi::c_void;
+
+    pub fn PxVehicleConstraintConnector_onConstraintRelease_mut(self_: *mut PxVehicleConstraintConnector);
+
+    pub fn PxVehicleConstraintConnector_updateOmniPvdProperties(self_: *const PxVehicleConstraintConnector);
+
+    pub fn PxVehicleConstraintConnector_onComShift_mut(self_: *mut PxVehicleConstraintConnector, actor: u32);
+
+    pub fn PxVehicleConstraintConnector_onOriginShift_mut(self_: *mut PxVehicleConstraintConnector, shift: *const PxVec3);
+
+    pub fn PxVehicleConstraintConnector_getExternalReference_mut(self_: *mut PxVehicleConstraintConnector, typeID: *mut u32) -> *mut std::ffi::c_void;
+
+    pub fn PxVehicleConstraintConnector_getSerializable_mut(self_: *mut PxVehicleConstraintConnector) -> *mut PxBase;
+
+    pub fn PxVehiclePhysXConstraints_setToDefault_mut(self_: *mut PxVehiclePhysXConstraints);
+
+    /// Instantiate the PhysX custom constraints.
+    ///
+    /// Custom constraints will resolve excess suspension compression and velocity constraints that serve as
+    /// a replacement low speed tire model.
+    pub fn phys_PxVehicleConstraintsCreate(axleDescription: *const PxVehicleAxleDescription, physics: *mut PxPhysics, physxActor: *mut PxRigidBody, vehicleConstraints: *mut PxVehiclePhysXConstraints);
+
+    /// To ensure the constraints are processed by the PhysX scene they are marked as dirty prior to each simulate step.
+    pub fn phys_PxVehicleConstraintsDirtyStateUpdate(vehicleConstraints: *mut PxVehiclePhysXConstraints);
+
+    /// Destroy the PhysX custom constraints.
+    pub fn phys_PxVehicleConstraintsDestroy(vehicleConstraints: *mut PxVehiclePhysXConstraints);
+
+    /// Read constraint data from the vehicle's internal state for a single wheel and write it to a
+    /// structure that will be read by the associated PxScene and used to impose the constraints during the next
+    /// PxScene::simulate() step.
+    ///
+    /// Constraints include suspension constraints to account for suspension travel limit and sticky
+    /// tire constraints that bring the vehicle to rest at low longitudinal and lateral speed.
+    pub fn phys_PxVehiclePhysXConstraintStatesUpdate(suspensionParams: *const PxVehicleSuspensionParams, suspensionLimitParams: *const PxVehiclePhysXSuspensionLimitConstraintParams, suspensionState: *const PxVehicleSuspensionState, suspensionComplianceState: *const PxVehicleSuspensionComplianceState, groundPlaneNormal: *const PxVec3, tireStickyDampingLong: f32, tireStickyDampingLat: f32, tireDirectionState: *const PxVehicleTireDirectionState, tireStickyState: *const PxVehicleTireStickyState, rigidBodyState: *const PxVehicleRigidBodyState, constraintState: *mut PxVehiclePhysXConstraintState);
+
+    pub fn PxVehicleSuspensionParams_transformAndScale(self_: *const PxVehicleSuspensionParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleSuspensionParams;
+
+    pub fn PxVehicleSuspensionParams_isValid(self_: *const PxVehicleSuspensionParams) -> bool;
+
+    pub fn PxVehicleSuspensionParams_new() -> PxVehicleSuspensionParams;
+
+    pub fn PxVehicleSuspensionStateCalculationParams_transformAndScale(self_: *const PxVehicleSuspensionStateCalculationParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleSuspensionStateCalculationParams;
+
+    pub fn PxVehicleSuspensionStateCalculationParams_isValid(self_: *const PxVehicleSuspensionStateCalculationParams) -> bool;
+
+    pub fn PxVehicleSuspensionStateCalculationParams_new() -> PxVehicleSuspensionStateCalculationParams;
+
+    pub fn PxVehicleSuspensionComplianceParams_transformAndScale(self_: *const PxVehicleSuspensionComplianceParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleSuspensionComplianceParams;
+
+    pub fn PxVehicleSuspensionComplianceParams_isValid(self_: *const PxVehicleSuspensionComplianceParams) -> bool;
+
+    pub fn PxVehicleSuspensionComplianceParams_delete(self_: *mut PxVehicleSuspensionComplianceParams);
+
+    pub fn PxVehicleSuspensionComplianceParams_new() -> PxVehicleSuspensionComplianceParams;
+
+    pub fn PxVehicleSuspensionForceParams_transformAndScale(self_: *const PxVehicleSuspensionForceParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleSuspensionForceParams;
+
+    pub fn PxVehicleSuspensionForceParams_isValid(self_: *const PxVehicleSuspensionForceParams) -> bool;
+
+    pub fn PxVehicleSuspensionForceParams_new() -> PxVehicleSuspensionForceParams;
+
+    pub fn PxVehicleSuspensionForceLegacyParams_transformAndScale(self_: *const PxVehicleSuspensionForceLegacyParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleSuspensionForceLegacyParams;
+
+    pub fn PxVehicleSuspensionForceLegacyParams_isValid(self_: *const PxVehicleSuspensionForceLegacyParams) -> bool;
+
+    pub fn PxVehicleSuspensionForceLegacyParams_new() -> PxVehicleSuspensionForceLegacyParams;
+
+    pub fn PxVehicleAntiRollForceParams_transformAndScale(self_: *const PxVehicleAntiRollForceParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleAntiRollForceParams;
+
+    pub fn PxVehicleAntiRollForceParams_isValid(self_: *const PxVehicleAntiRollForceParams, axleDesc: *const PxVehicleAxleDescription) -> bool;
+
+    pub fn PxVehicleAntiRollForceParams_new() -> PxVehicleAntiRollForceParams;
+
+    pub fn PxVehicleSuspensionState_setToDefault_mut(self_: *mut PxVehicleSuspensionState, _jounce: f32, _separation: f32);
+
+    pub fn PxVehicleSuspensionState_new() -> PxVehicleSuspensionState;
+
+    pub fn PxVehicleSuspensionComplianceState_setToDefault_mut(self_: *mut PxVehicleSuspensionComplianceState);
+
+    pub fn PxVehicleSuspensionForce_setToDefault_mut(self_: *mut PxVehicleSuspensionForce);
+
+    pub fn PxVehicleAntiRollTorque_setToDefault_mut(self_: *mut PxVehicleAntiRollTorque);
+
+    pub fn PxVehiclePhysXConstraintComponent_delete(self_: *mut PxVehiclePhysXConstraintComponent);
+
+    pub fn PxVehiclePhysXConstraintComponent_update_mut(self_: *mut PxVehiclePhysXConstraintComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehiclePhysXRoadGeometryQueryParams_transformAndScale(self_: *const PxVehiclePhysXRoadGeometryQueryParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehiclePhysXRoadGeometryQueryParams;
+
+    pub fn PxVehiclePhysXRoadGeometryQueryParams_isValid(self_: *const PxVehiclePhysXRoadGeometryQueryParams) -> bool;
+
+    pub fn PxVehiclePhysXRoadGeometryQueryParams_new() -> PxVehiclePhysXRoadGeometryQueryParams;
+
+    pub fn PxVehiclePhysXMaterialFriction_isValid(self_: *const PxVehiclePhysXMaterialFriction) -> bool;
+
+    pub fn PxVehiclePhysXMaterialFrictionParams_isValid(self_: *const PxVehiclePhysXMaterialFrictionParams) -> bool;
+
+    /// Create a cylindrical mesh with unit radius and half-width.
+    ///
+    /// Return a PxConvexMesh instance that represents a convex hull with unit radius and half-width.
+    pub fn phys_PxVehicleUnitCylinderSweepMeshCreate(vehicleFrame: *const PxVehicleFrame, physics: *mut PxPhysics, params: *const PxCookingParams) -> *mut PxConvexMesh;
+
+    /// Release the mesh created with PxVehicleUnitCylinderSweepMeshCreate.
+    pub fn phys_PxVehicleUnitCylinderSweepMeshDestroy(mesh: *mut PxConvexMesh);
+
+    /// Compute the plane of the road geometry under a wheel and the tire friction of the contact.
+    ///
+    /// PxVehicleRoadGeometryState::hitState will have value false in the event that the there is no reachable road geometry under the wheel and
+    /// true if there is reachable road geometry under the wheel. Road geometry is considered reachable if the suspension can elongate from its
+    /// reference pose far enough to place wheel on the ground.
+    pub fn phys_PxVehiclePhysXRoadGeometryQueryUpdate(wheelParams: *const PxVehicleWheelParams, suspParams: *const PxVehicleSuspensionParams, queryType: PxVehiclePhysXRoadGeometryQueryType, filterCallback: *mut PxQueryFilterCallback, filterData: *const PxQueryFilterData, materialFrictionParams: *const PxVehiclePhysXMaterialFrictionParams, wheelYawAngle: f32, rigidBodyState: *const PxVehicleRigidBodyState, scene: *const PxScene, unitCylinderSweepMesh: *const PxConvexMesh, frame: *const PxVehicleFrame, roadGeomState: *mut PxVehicleRoadGeometryState, physxRoadGeometryState: *mut PxVehiclePhysXRoadGeometryQueryState);
+
+    pub fn PxVehiclePhysXRoadGeometrySceneQueryComponent_delete(self_: *mut PxVehiclePhysXRoadGeometrySceneQueryComponent);
+
+    pub fn PxVehiclePhysXRoadGeometrySceneQueryComponent_update_mut(self_: *mut PxVehiclePhysXRoadGeometrySceneQueryComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    /// Destory the attribute handles created by PxVehiclePvdAttributesCreate().
+    pub fn phys_PxVehiclePvdAttributesRelease(allocator: *mut PxAllocatorCallback, attributeHandles: *mut PxVehiclePvdAttributeHandles);
+
+    /// Create omnipvd objects that will be used to reflect an individual veicle in omnipvd.
+    ///
+    /// PxVehiclePvdObjectCreate() must be called after PxVehiclePvdAttributesCreate().
+    pub fn phys_PxVehiclePvdObjectCreate(nbWheels: u32, nbAntirolls: u32, maxNbPhysxMaterialFrictions: u32, contextHandle: u64, allocator: *mut PxAllocatorCallback) -> *mut PxVehiclePvdObjectHandles;
+
+    pub fn PxVehicleTireForceParams_transformAndScale(self_: *const PxVehicleTireForceParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleTireForceParams;
+
+    pub fn PxVehicleTireForceParams_isValid(self_: *const PxVehicleTireForceParams) -> bool;
+
+    pub fn PxVehicleTireForceParams_new() -> PxVehicleTireForceParams;
+
+    pub fn PxVehiclePVDComponent_delete(self_: *mut PxVehiclePVDComponent);
+
+    pub fn PxVehiclePVDComponent_update_mut(self_: *mut PxVehiclePVDComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleRigidBodyParams_transformAndScale(self_: *const PxVehicleRigidBodyParams, srcFrame: *const PxVehicleFrame, trgFrame: *const PxVehicleFrame, srcScale: *const PxVehicleScale, trgScale: *const PxVehicleScale) -> PxVehicleRigidBodyParams;
+
+    pub fn PxVehicleRigidBodyParams_isValid(self_: *const PxVehicleRigidBodyParams) -> bool;
+
+    pub fn PxVehicleRigidBodyParams_new() -> PxVehicleRigidBodyParams;
+
+    pub fn PxVehicleRigidBodyComponent_delete(self_: *mut PxVehicleRigidBodyComponent);
+
+    pub fn PxVehicleRigidBodyComponent_update_mut(self_: *mut PxVehicleRigidBodyComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    /// Compute the quaternion of a wheel in the rigid body frame.
+    ///
+    /// The quaterion of the wheel in the rigid body frame.
+    pub fn phys_PxVehicleComputeWheelLocalOrientation(frame: *const PxVehicleFrame, suspensionParams: *const PxVehicleSuspensionParams, camberAngle: f32, toeAngle: f32, steerAngle: f32, rotationAngle: f32) -> PxQuat;
+
+    /// Compute the quaternion of a wheel in the world frame.
+    ///
+    /// The quaterion of the wheel in the world frame.
+    pub fn phys_PxVehicleComputeWheelOrientation(frame: *const PxVehicleFrame, suspensionParams: *const PxVehicleSuspensionParams, camberAngle: f32, toeAngle: f32, steerAngle: f32, rigidBodyOrientation: *const PxQuat, rotationAngle: f32) -> PxQuat;
+
+    /// Compute the pose of the wheel in the rigid body frame.
+    ///
+    /// The pose of the wheel in the rigid body frame.
+    pub fn phys_PxVehicleComputeWheelLocalPose(frame: *const PxVehicleFrame, suspensionParams: *const PxVehicleSuspensionParams, suspensionState: *const PxVehicleSuspensionState, camberAngle: f32, toeAngle: f32, steerAngle: f32, rotationAngle: f32) -> PxTransform;
+
+    /// Compute the pose of the wheel in the rigid body frame.
+    ///
+    /// The pose of the wheel in the rigid body frame.
+    pub fn phys_PxVehicleComputeWheelLocalPose_1(frame: *const PxVehicleFrame, suspensionParams: *const PxVehicleSuspensionParams, suspensionState: *const PxVehicleSuspensionState, suspensionComplianceState: *const PxVehicleSuspensionComplianceState, steerAngle: f32, wheelState: *const PxVehicleWheelRigidBody1dState) -> PxTransform;
+
+    /// Compute the pose of the wheel in the world frame.
+    ///
+    /// The pose of the wheel in the world frame.
+    pub fn phys_PxVehicleComputeWheelPose(frame: *const PxVehicleFrame, suspensionParams: *const PxVehicleSuspensionParams, suspensionState: *const PxVehicleSuspensionState, camberAngle: f32, toeAngle: f32, steerAngle: f32, rigidBodyPose: *const PxTransform, rotationAngle: f32) -> PxTransform;
+
+    /// Compute the pose of the wheel in the world frame.
+    ///
+    /// The pose of the wheel in the world frame.
+    pub fn phys_PxVehicleComputeWheelPose_1(frame: *const PxVehicleFrame, suspensionParams: *const PxVehicleSuspensionParams, suspensionState: *const PxVehicleSuspensionState, suspensionComplianceState: *const PxVehicleSuspensionComplianceState, steerAngle: f32, rigidBodyPose: *const PxTransform, wheelState: *const PxVehicleWheelRigidBody1dState) -> PxTransform;
+
+    /// Check if the suspension could place the wheel on the ground or not.
+    ///
+    /// True if the wheel connects to the ground, else false.
+    pub fn phys_PxVehicleIsWheelOnGround(suspState: *const PxVehicleSuspensionState) -> bool;
+
+    /// Compute suspension travel direction in the world frame.
+    ///
+    /// The return value is the suspension travel direction in the world frame.
+    ///
+    /// The suspension travel direction is used to perform queries against the road geometry.
+    pub fn phys_PxVehicleComputeSuspensionDirection(suspensionParams: *const PxVehicleSuspensionParams, rigidBodyPose: *const PxTransform) -> PxVec3;
+
+    /// Compute the start pose of a suspension query.
+    pub fn phys_PxVehicleComputeWheelPoseForSuspensionQuery(frame: *const PxVehicleFrame, suspensionParams: *const PxVehicleSuspensionParams, steerAngle: f32, rigidBodyPose: *const PxTransform) -> PxTransform;
+
+    /// Compute the start point, direction and length of a suspension scene raycast.
+    ///
+    /// start, dir and dist together describe a raycast that begins at the top of wheel at maximum compression
+    /// and ends at the bottom of wheel at maximum droop.
+    pub fn phys_PxVehicleComputeSuspensionRaycast(frame: *const PxVehicleFrame, wheelParams: *const PxVehicleWheelParams, suspensionParams: *const PxVehicleSuspensionParams, steerAngle: f32, rigidBodyPose: *const PxTransform, start: *mut PxVec3, dir: *mut PxVec3, dist: *mut f32);
+
+    /// Compute the start pose, direction and length of a suspension scene sweep.
+    ///
+    /// start, dir and dist together describe a sweep that begins with the wheel placed at maximum
+    /// compression and ends at the maximum droop pose.
+    pub fn phys_PxVehicleComputeSuspensionSweep(frame: *const PxVehicleFrame, suspensionParams: *const PxVehicleSuspensionParams, steerAngle: f32, rigidBodyPose: *const PxTransform, start: *mut PxTransform, dir: *mut PxVec3, dist: *mut f32);
+
+    /// Compute the sprung masses of the suspension springs given (i) the number of sprung masses,
+    /// (ii) coordinates of the sprung masses in the rigid body frame, (iii) the center of mass offset of the rigid body, (iv) the
+    /// total mass of the rigid body, and (v) the direction of gravity
+    ///
+    /// True if the sprung masses were successfully computed, false if the sprung masses were not successfully computed.
+    pub fn phys_PxVehicleComputeSprungMasses(nbSprungMasses: u32, sprungMassCoordinates: *const PxVec3, totalMass: f32, gravityDirection: PxVehicleAxes, sprungMasses: *mut f32) -> bool;
+
+    /// Compute the suspension compression and compression speed for a single suspension.
+    pub fn phys_PxVehicleSuspensionStateUpdate(wheelParams: *const PxVehicleWheelParams, suspensionParams: *const PxVehicleSuspensionParams, suspensionStateCalcParams: *const PxVehicleSuspensionStateCalculationParams, suspensionStiffness: f32, suspensionDamping: f32, steerAngle: f32, roadGeometryState: *const PxVehicleRoadGeometryState, rigidBodyState: *const PxVehicleRigidBodyState, dt: f32, frame: *const PxVehicleFrame, gravity: *const PxVec3, suspState: *mut PxVehicleSuspensionState);
+
+    /// Compute the toe, camber and force application points that are affected by suspension compression.
+    pub fn phys_PxVehicleSuspensionComplianceUpdate(suspensionParams: *const PxVehicleSuspensionParams, complianceParams: *const PxVehicleSuspensionComplianceParams, suspensionState: *const PxVehicleSuspensionState, complianceState: *mut PxVehicleSuspensionComplianceState);
+
+    /// Compute the suspension force and torque arising from suspension compression and speed.
+    pub fn phys_PxVehicleSuspensionForceUpdate(suspensionParams: *const PxVehicleSuspensionParams, suspensionForceParams: *const PxVehicleSuspensionForceParams, roadGeometryState: *const PxVehicleRoadGeometryState, suspensionState: *const PxVehicleSuspensionState, complianceState: *const PxVehicleSuspensionComplianceState, rigidBodyState: *const PxVehicleRigidBodyState, gravity: *const PxVec3, vehicleMass: f32, suspensionForce: *mut PxVehicleSuspensionForce);
+
+    /// This API was introduced with the new Vehicle API for transition purposes but will be removed in a future version.
+    ///
+    /// Compute the suspension force and torque arising from suspension compression and speed.
+    ///
+    /// PxVehicleSuspensionLegacyForceUpdate implements the legacy force computation of PhysX 5.0 and earlier.
+    pub fn phys_PxVehicleSuspensionLegacyForceUpdate(suspensionParams: *const PxVehicleSuspensionParams, suspensionForceParams: *const PxVehicleSuspensionForceLegacyParams, roadGeometryState: *const PxVehicleRoadGeometryState, suspensionState: *const PxVehicleSuspensionState, complianceState: *const PxVehicleSuspensionComplianceState, rigidBodyState: *const PxVehicleRigidBodyState, gravity: *const PxVec3, suspensionForce: *mut PxVehicleSuspensionForce);
+
+    pub fn PxVehicleSuspensionComponent_delete(self_: *mut PxVehicleSuspensionComponent);
+
+    /// Update the suspension state and suspension compliance state and use those updated states to compute suspension and anti-roll forces/torques
+    /// to apply to the vehicle's rigid body.
+    ///
+    /// The suspension and anti-roll forces/torques are computed in the world frame.
+    pub fn PxVehicleSuspensionComponent_update_mut(self_: *mut PxVehicleSuspensionComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleLegacySuspensionComponent_delete(self_: *mut PxVehicleLegacySuspensionComponent);
+
+    /// Update the suspension state and suspension compliance state and use those updated states to compute suspension and anti-roll forces/torques
+    /// to apply to the vehicle's rigid body.
+    ///
+    /// The suspension and anti-roll forces are computed in the world frame.
+    ///
+    /// PxVehicleLegacySuspensionComponent::update() implements legacy suspension behaviour.
+    pub fn PxVehicleLegacySuspensionComponent_update_mut(self_: *mut PxVehicleLegacySuspensionComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    /// This API was introduced with the new Vehicle API for transition purposes but will be removed in a future version.
+    ///
+    /// Compute the longitudinal and lateral tire directions in the ground plane.
+    ///
+    /// PxVehicleTireDirsLegacyUpdate replicates the tire direction calculation of PhysX 5.0 and earlier.
+    pub fn phys_PxVehicleTireDirsLegacyUpdate(suspensionParams: *const PxVehicleSuspensionParams, steerAngle: f32, roadGeometryState: *const PxVehicleRoadGeometryState, rigidBodyState: *const PxVehicleRigidBodyState, frame: *const PxVehicleFrame, tireDirectionState: *mut PxVehicleTireDirectionState);
+
+    /// Compute the longitudinal and lateral tire directions in the ground plane.
+    ///
+    /// The difference between PxVehicleTireDirsUpdate and PxVehicleTireDirsLegacyUpdate is that
+    /// PxVehicleTireDirsUpdate accounts for suspension compliance while PxVehicleTireDirsLegacyUpdate does not.
+    pub fn phys_PxVehicleTireDirsUpdate(suspensionParams: *const PxVehicleSuspensionParams, steerAngle: f32, groundNormal: *const PxVec3, isWheelOnGround: bool, complianceState: *const PxVehicleSuspensionComplianceState, rigidBodyState: *const PxVehicleRigidBodyState, frame: *const PxVehicleFrame, tireDirectionState: *mut PxVehicleTireDirectionState);
+
+    /// Project the rigid body velocity at the tire  contact point along the tire longitudinal directions.
+    pub fn phys_PxVehicleTireSlipSpeedsUpdate(wheelParams: *const PxVehicleWheelParams, suspensionParams: *const PxVehicleSuspensionParams, steerAngle: f32, suspensionStates: *const PxVehicleSuspensionState, tireDirectionState: *const PxVehicleTireDirectionState, rigidBodyState: *const PxVehicleRigidBodyState, roadGeometryState: *const PxVehicleRoadGeometryState, frame: *const PxVehicleFrame, tireSpeedState: *mut PxVehicleTireSpeedState);
+
+    /// Compute a tire's longitudinal and lateral slip angles.
+    ///
+    /// Longitudinal slip angle has the following theoretical form: (wheelRotationSpeed*wheelRadius - longitudinalSpeed)/|longitudinalSpeed|
+    ///
+    /// Lateral slip angle has the following theoretical form: atan(lateralSpeed/|longitudinalSpeed|)
+    ///
+    /// The calculation of both longitudinal and lateral slip angles avoid a zero denominator using minimum values for the denominator set in
+    /// tireSlipParams.
+    pub fn phys_PxVehicleTireSlipsUpdate(wheelParams: *const PxVehicleWheelParams, tireSlipParams: *const PxVehicleTireSlipParams, actuationState: *const PxVehicleWheelActuationState, tireSpeedState: *mut PxVehicleTireSpeedState, wheelRigidBody1dState: *const PxVehicleWheelRigidBody1dState, tireSlipState: *mut PxVehicleTireSlipState);
+
+    /// This API was introduced with the new Vehicle API for transition purposes but will be removed in a future version.
+    ///
+    /// Compute a tire's longitudinal and lateral slip angles.
+    ///
+    /// Longitudinal slip angle has the following theoretical form: (wheelRotationSpeed*wheelRadius - longitudinalSpeed)/|longitudinalSpeed|
+    ///
+    /// Lateral slip angle has the following theoretical form: atan(lateralSpeed/|longitudinalSpeed|)
+    ///
+    /// The calculation of both longitudinal and lateral slip angles avoid a zero denominator using minimum values for the denominator set in
+    /// tireSlipParams.
+    pub fn phys_PxVehicleTireSlipsLegacyUpdate(wheelParams: *const PxVehicleWheelParams, tireSlipParams: *const PxVehicleTireSlipParams, actuationState: *const PxVehicleWheelActuationState, tireSpeedState: *mut PxVehicleTireSpeedState, wheelRigidBody1dState: *const PxVehicleWheelRigidBody1dState, tireSlipState: *mut PxVehicleTireSlipState);
+
+    /// Compute the camber angle of  the wheel
+    pub fn phys_PxVehicleTireCamberAnglesUpdate(suspensionParams: *const PxVehicleSuspensionParams, steerAngle: f32, groundNormal: *const PxVec3, isWheelOnGround: bool, complianceState: *const PxVehicleSuspensionComplianceState, rigidBodyState: *const PxVehicleRigidBodyState, frame: *const PxVehicleFrame, tireCamberAngleState: *mut PxVehicleTireCamberAngleState);
+
+    /// Compute the load and friction experienced by the tire.
+    ///
+    /// If the suspension cannot place the wheel on the ground the tire load and friction will be 0.0.
+    pub fn phys_PxVehicleTireGripUpdate(tireForceParams: *const PxVehicleTireForceParams, frictionCoefficient: f32, isWheelOnGround: bool, suspensionForce: *const PxVehicleSuspensionForce, tireSlipState: *const PxVehicleTireSlipState, tireGripState: *mut PxVehicleTireGripState);
+
+    /// Set the tire longitudinal and lateral slip values to 0.0 in the event that the tire has entred tire sticky state. This is
+    /// necessary to avoid both tire models being simultaneously active and interfering with each other.
+    ///
+    /// This function should not be invoked if there is no subsequent component to implement the sticky tire model.
+    pub fn phys_PxVehicleTireSlipsAccountingForStickyStatesUpdate(tireStickyState: *const PxVehicleTireStickyState, tireSlipState: *mut PxVehicleTireSlipState);
+
+    /// Compute the longitudinal and lateral forces in the world frame that develop on the tire as a consequence of
+    /// the tire's slip angles, friction and load.
+    pub fn phys_PxVehicleTireForcesUpdate(wheelParams: *const PxVehicleWheelParams, suspensionParams: *const PxVehicleSuspensionParams, tireForceParams: *const PxVehicleTireForceParams, complianceState: *const PxVehicleSuspensionComplianceState, tireGripState: *const PxVehicleTireGripState, tireDirectionState: *const PxVehicleTireDirectionState, tireSlipState: *const PxVehicleTireSlipState, tireCamberAngleState: *const PxVehicleTireCamberAngleState, rigidBodyState: *const PxVehicleRigidBodyState, tireForce: *mut PxVehicleTireForce);
+
+    pub fn PxVehicleTireComponent_delete(self_: *mut PxVehicleTireComponent);
+
+    pub fn PxVehicleTireComponent_update_mut(self_: *mut PxVehicleTireComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    pub fn PxVehicleLegacyTireComponent_delete(self_: *mut PxVehicleLegacyTireComponent);
+
+    pub fn PxVehicleLegacyTireComponent_update_mut(self_: *mut PxVehicleLegacyTireComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    /// Forward integrate the rotation angle of a wheel
+    ///
+    /// The rotation angle of the wheel plays no role in simulation but is important to compute the pose of the wheel for rendering.
+    ///
+    /// At low speeds and large  timesteps, wheel rotation speed can become noisy due to singularities in the tire slip computations.
+    /// At low speeds, therefore, the wheel speed used for integrating the angle is a blend of current angular speed and rolling angular speed if the
+    /// wheel experiences neither brake nor drive torque and can be placed on the ground. The blended rotation speed gets stored in
+    /// PxVehicleWheelRigidBody1dState::correctedRotationSpeed.
+    pub fn phys_PxVehicleWheelRotationAngleUpdate(wheelParams: *const PxVehicleWheelParams, actuationState: *const PxVehicleWheelActuationState, suspensionState: *const PxVehicleSuspensionState, tireSpeedState: *const PxVehicleTireSpeedState, thresholdForwardSpeedForWheelAngleIntegration: f32, dt: f32, wheelRigidBody1dState: *mut PxVehicleWheelRigidBody1dState);
+
+    pub fn PxVehicleWheelComponent_delete(self_: *mut PxVehicleWheelComponent);
+
+    pub fn PxVehicleWheelComponent_update_mut(self_: *mut PxVehicleWheelComponent, dt: f32, context: *const PxVehicleSimulationContext) -> bool;
+
+    /// Initialize the PhysX Vehicle library.
+    ///
+    /// This should be called before calling any functions or methods in extensions which may require allocation.
+    ///
+    /// This function does not need to be called before creating a PxDefaultAllocator object.
+    pub fn phys_PxInitVehicleExtension(foundation: *mut PxFoundation) -> bool;
+
+    /// Shut down the PhysX Vehicle library.
+    ///
+    /// This function should be called to cleanly shut down the PhysX Vehicle library before application exit.
+    ///
+    /// This function is required to be called to release foundation usage.
+    pub fn phys_PxCloseVehicleExtension();
 
     /// Connects the SDK to the PhysX Visual Debugger application.
     pub fn PxPvd_connect_mut(self_: *mut PxPvd, transport: *mut PxPvdTransport, flags: PxPvdInstrumentationFlags) -> bool;

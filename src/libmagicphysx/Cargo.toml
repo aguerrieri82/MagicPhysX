@@ -8,7 +8,7 @@ name = "physxnative"
 crate-type = ["cdylib"]
 
 [dependencies]
-physx-sys = "0.11.5"
+physx-sys = { path = "../../../physx-rs/physx-sys" }
 
 [dev-dependencies]
 regex = "1.7.3"
