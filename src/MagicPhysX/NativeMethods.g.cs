@@ -12,7 +12,7 @@ namespace PhysX
 {
     public static unsafe partial class NativeMethods
     {
-        const string __DllName = "physxnative";
+        const string __DllName = "physx-native";
 
 
 

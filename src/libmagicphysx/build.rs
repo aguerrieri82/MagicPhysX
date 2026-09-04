@@ -18,7 +18,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         .csharp_entry_point_prefix("")
         .csharp_namespace("PhysX")
         .csharp_class_name("NativeMethods")
-        .csharp_dll_name("physxnative")
+        .csharp_dll_name("physx-native")
         .csharp_class_accessibility("public")
         .generate_to_file(
             &rust_output,
