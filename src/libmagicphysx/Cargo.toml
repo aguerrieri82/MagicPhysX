@@ -5,7 +5,7 @@ edition = "2021"
 
 [lib]
 name = "physxnative"
-crate-type = ["cdylib"]
+crate-type = ["rlib"]
 
 [dependencies]
 physx-sys = { path = "../../../physx-rs/physx-sys" }

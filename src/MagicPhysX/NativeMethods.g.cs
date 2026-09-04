@@ -21,6 +21,12 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "physx_create_foundation", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxFoundation* physx_create_foundation();
 
+        [DllImport(__DllName, EntryPoint = "phys_PxFoundation_setErrorLevelBits", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxFoundation_setErrorLevelBits(PxFoundation* self_, uint mask);
+
+        [DllImport(__DllName, EntryPoint = "phys_PxFoundation_getErrorLevelBits", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint phys_PxFoundation_getErrorLevelBits(PxFoundation* self_);
+
         [DllImport(__DllName, EntryPoint = "physx_create_foundation_with_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxFoundation* physx_create_foundation_with_alloc(PxDefaultAllocator* allocator);
 
@@ -44,6 +50,12 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "create_raycast_filter_callback_func", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxQueryFilterCallback* create_raycast_filter_callback_func(delegate* unmanaged[Cdecl]<PxRigidActor*, PxFilterData*, PxShape*, uint, void*, PxQueryHitType> callback, void* userdata);
+
+        /// <summary>
+        ///  Destroy the returned callback object using PxQueryFilterCallback_delete.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "create_pre_and_post_raycast_filter_callback_func", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxQueryFilterCallback* create_pre_and_post_raycast_filter_callback_func(delegate* unmanaged[Cdecl]<PxRigidActor*, PxFilterData*, PxShape*, uint, void*, PxQueryHitType> preFilter, delegate* unmanaged[Cdecl]<PxFilterData*, PxQueryHit*, void*, PxQueryHitType> postFilter, void* userdata);
 
         [DllImport(__DllName, EntryPoint = "create_raycast_buffer", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxRaycastCallback* create_raycast_buffer();
@@ -144,14 +156,11 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxAllocatorCallback_deallocate_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxAllocatorCallback_deallocate_mut(PxAllocatorCallback* self_, void* ptr);
 
-        [DllImport(__DllName, EntryPoint = "PxAssertHandler_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxAssertHandler_delete(PxAssertHandler* self_);
-
-        [DllImport(__DllName, EntryPoint = "phys_PxGetAssertHandler", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxAssertHandler* phys_PxGetAssertHandler();
-
-        [DllImport(__DllName, EntryPoint = "phys_PxSetAssertHandler", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void phys_PxSetAssertHandler(PxAssertHandler* handler);
+        /// <summary>
+        ///  Built-in assert function
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxAssert", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxAssert(byte* exp, byte* file, int line, bool* ignore);
 
         /// <summary>
         ///  Destroys the instance it is called on.
@@ -172,13 +181,13 @@ namespace PhysX
         ///  Sets mask of errors to report.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxFoundation_setErrorLevel_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxFoundation_setErrorLevel_mut(PxFoundation* self_, uint mask);
+        public static extern void PxFoundation_setErrorLevel_mut(PxFoundation* self_, PxErrorCode mask);
 
         /// <summary>
         ///  Retrieves mask of errors to be reported.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxFoundation_getErrorLevel", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxFoundation_getErrorLevel(PxFoundation* self_);
+        public static extern PxErrorCode PxFoundation_getErrorLevel(PxFoundation* self_);
 
         /// <summary>
         ///  Retrieves the allocator this object was created with.
@@ -213,6 +222,14 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxFoundation_deregisterErrorCallback_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxFoundation_deregisterErrorCallback_mut(PxFoundation* self_, PxErrorCallback* callback);
 
+        [DllImport(__DllName, EntryPoint = "PxFoundation_error_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxFoundation_error_mut(PxFoundation* self_, PxErrorCode c, byte* file, int line, byte* messageFmt);
+
+        [DllImport(__DllName, EntryPoint = "PxFoundation_error_mut_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxFoundation_error_mut_1(PxFoundation* self_, PxErrorCode anon_param0, byte* file, int line, byte* messageFmt, byte* anon_param4);
+
         /// <summary>
         ///  Creates an instance of the foundation class
         ///
@@ -230,6 +247,14 @@ namespace PhysX
 
         [DllImport(__DllName, EntryPoint = "phys_PxGetFoundation", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxFoundation* phys_PxGetFoundation();
+
+        /// <summary>
+        ///  Similar to PxGetFoundation() except it handles the case if the foundation was not created already.
+        ///
+        ///  Pointer to the foundation if an instance is currently available, otherwise null.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxIsFoundationValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxFoundation* phys_PxIsFoundationValid();
 
         /// <summary>
         ///  Get the callback that will be used for all profiling.
@@ -253,7 +278,7 @@ namespace PhysX
         ///  Get the broadcasting allocator callback
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxGetBroadcastAllocator", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxAllocatorCallback* phys_PxGetBroadcastAllocator();
+        public static extern PxAllocatorCallback* phys_PxGetBroadcastAllocator(bool* reportAllocationNames);
 
         /// <summary>
         ///  Get the error callback
@@ -285,44 +310,70 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "phys_PxIncFoundationRefCount", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void phys_PxIncFoundationRefCount();
 
+        /// <summary>
+        ///  read from the stream. The number of bytes read may be less than the number requested.
+        ///
+        ///  the number of bytes read from the stream.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxInputStream_read_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern ulong PxInputStream_read_mut(PxInputStream* self_, void* dest, ulong count);
+
+        [DllImport(__DllName, EntryPoint = "PxInputStream_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxInputStream_delete(PxInputStream* self_);
+
+        /// <summary>
+        ///  return the length of the input data
+        ///
+        ///  size in bytes of the input data
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxInputData_getLength", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern ulong PxInputData_getLength(PxInputData* self_);
+
+        /// <summary>
+        ///  seek to the given offset from the start of the data.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxInputData_seek_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxInputData_seek_mut(PxInputData* self_, ulong offset);
+
+        /// <summary>
+        ///  return the current offset from the start of the data
+        ///
+        ///  the offset to seek to.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxInputData_tell", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern ulong PxInputData_tell(PxInputData* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxInputData_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxInputData_delete(PxInputData* self_);
+
+        /// <summary>
+        ///  write to the stream. The number of bytes written may be less than the number sent.
+        ///
+        ///  the number of bytes written to the stream by this call.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxOutputStream_write_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern ulong PxOutputStream_write_mut(PxOutputStream* self_, void* src, ulong count);
+
+        [DllImport(__DllName, EntryPoint = "PxOutputStream_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxOutputStream_delete(PxOutputStream* self_);
+
         [DllImport(__DllName, EntryPoint = "PxAllocator_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxAllocator PxAllocator_new(byte* anon_param0);
 
-        [DllImport(__DllName, EntryPoint = "PxAllocator_allocate_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void* PxAllocator_allocate_mut(PxAllocator* self_, nuint size, byte* file, int line);
+        [DllImport(__DllName, EntryPoint = "PxAllocator_allocate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void* PxAllocator_allocate(nuint size, byte* file, int line, uint* cookie);
 
-        [DllImport(__DllName, EntryPoint = "PxAllocator_deallocate_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxAllocator_deallocate_mut(PxAllocator* self_, void* ptr);
+        [DllImport(__DllName, EntryPoint = "PxAllocator_deallocate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxAllocator_deallocate(void* ptr, uint* cookie);
 
         [DllImport(__DllName, EntryPoint = "PxRawAllocator_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxRawAllocator PxRawAllocator_new(byte* anon_param0);
 
-        [DllImport(__DllName, EntryPoint = "PxRawAllocator_allocate_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void* PxRawAllocator_allocate_mut(PxRawAllocator* self_, nuint size, byte* anon_param1, int anon_param2);
+        [DllImport(__DllName, EntryPoint = "PxRawAllocator_allocate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void* PxRawAllocator_allocate(nuint size, byte* anon_param1, int anon_param2, uint* cookie);
 
-        [DllImport(__DllName, EntryPoint = "PxRawAllocator_deallocate_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxRawAllocator_deallocate_mut(PxRawAllocator* self_, void* ptr);
-
-        [DllImport(__DllName, EntryPoint = "PxVirtualAllocatorCallback_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxVirtualAllocatorCallback_delete(PxVirtualAllocatorCallback* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxVirtualAllocatorCallback_allocate_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void* PxVirtualAllocatorCallback_allocate_mut(PxVirtualAllocatorCallback* self_, nuint size, int group, byte* file, int line);
-
-        [DllImport(__DllName, EntryPoint = "PxVirtualAllocatorCallback_deallocate_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxVirtualAllocatorCallback_deallocate_mut(PxVirtualAllocatorCallback* self_, void* ptr);
-
-        [DllImport(__DllName, EntryPoint = "PxVirtualAllocator_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVirtualAllocator PxVirtualAllocator_new(PxVirtualAllocatorCallback* callback, int group);
-
-        [DllImport(__DllName, EntryPoint = "PxVirtualAllocator_allocate_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void* PxVirtualAllocator_allocate_mut(PxVirtualAllocator* self_, nuint size, byte* file, int line);
-
-        [DllImport(__DllName, EntryPoint = "PxVirtualAllocator_deallocate_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxVirtualAllocator_deallocate_mut(PxVirtualAllocator* self_, void* ptr);
-
-        [DllImport(__DllName, EntryPoint = "PxTempAllocatorChunk_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTempAllocatorChunk PxTempAllocatorChunk_new();
+        [DllImport(__DllName, EntryPoint = "PxRawAllocator_deallocate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxRawAllocator_deallocate(void* ptr, uint* cookie);
 
         [DllImport(__DllName, EntryPoint = "PxTempAllocator_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxTempAllocator PxTempAllocator_new(byte* anon_param0);
@@ -339,7 +390,7 @@ namespace PhysX
         ///  Pointer to memory block (same as input)
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxMemZero", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void* phys_PxMemZero(void* dest, uint count);
+        public static extern void* phys_PxMemZero(void* dest, nuint count);
 
         /// <summary>
         ///  Sets the bytes of the provided buffer to the specified value.
@@ -347,7 +398,7 @@ namespace PhysX
         ///  Pointer to memory block (same as input)
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxMemSet", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void* phys_PxMemSet(void* dest, int c, uint count);
+        public static extern void* phys_PxMemSet(void* dest, int c, nuint count);
 
         /// <summary>
         ///  Copies the bytes of one memory block to another. The memory blocks must not overlap.
@@ -357,7 +408,7 @@ namespace PhysX
         ///  Pointer to destination memory block
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxMemCopy", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void* phys_PxMemCopy(void* dest, void* src, uint count);
+        public static extern void* phys_PxMemCopy(void* dest, void* src, nuint count);
 
         /// <summary>
         ///  Copies the bytes of one memory block to another. The memory blocks can overlap.
@@ -367,46 +418,51 @@ namespace PhysX
         ///  Pointer to destination memory block
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxMemMove", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void* phys_PxMemMove(void* dest, void* src, uint count);
+        public static extern void* phys_PxMemMove(void* dest, void* src, nuint count);
 
         /// <summary>
         ///  Mark a specified amount of memory with 0xcd pattern. This is used to check that the meta data
         ///  definition for serialized classes is complete in checked builds.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxMarkSerializedMemory", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void phys_PxMarkSerializedMemory(void* ptr, uint byteSize);
+        public static extern void phys_PxMarkSerializedMemory(void* ptr, nuint byteSize);
 
         [DllImport(__DllName, EntryPoint = "phys_PxMemoryBarrier", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void phys_PxMemoryBarrier();
 
         /// <summary>
-        ///  Return the index of the highest set bit. Undefined for zero arg.
+        ///  Returns the index of the highest set bit. Not valid for zero arg.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxHighestSetBitUnsafe", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint phys_PxHighestSetBitUnsafe(uint v);
+        public static extern uint phys_PxHighestSetBitUnsafe(ulong v);
 
         /// <summary>
-        ///  Return the index of the highest set bit. Undefined for zero arg.
+        ///  Returns the index of the highest set bit. Not valid for zero arg.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxHighestSetBitUnsafe_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint phys_PxHighestSetBitUnsafe_1(uint v);
+
+        /// <summary>
+        ///  Returns the index of the lowest set bit. Undefined for zero arg.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxLowestSetBitUnsafe", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint phys_PxLowestSetBitUnsafe(uint v);
+        public static extern uint phys_PxLowestSetBitUnsafe(ulong v);
 
         /// <summary>
-        ///  Returns the index of the highest set bit. Returns 32 for v=0.
+        ///  Returns the index of the lowest set bit. Undefined for zero arg.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxLowestSetBitUnsafe_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint phys_PxLowestSetBitUnsafe_1(uint v);
+
+        /// <summary>
+        ///  Returns the number of leading zeros in v. Returns 32 for v=0.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxCountLeadingZeros", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint phys_PxCountLeadingZeros(uint v);
 
-        /// <summary>
-        ///  Prefetch aligned 64B x86, 32b ARM around
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxPrefetchLine", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void phys_PxPrefetchLine(void* ptr, uint offset);
 
-        /// <summary>
-        ///  Prefetch
-        ///  bytes starting at
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxPrefetch", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void phys_PxPrefetch(void* ptr, uint count);
 
@@ -420,11 +476,20 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "phys_PxNextPowerOfTwo", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint phys_PxNextPowerOfTwo(uint x);
 
+        [DllImport(__DllName, EntryPoint = "phys_PxNextPowerOfTwo_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern ulong phys_PxNextPowerOfTwo_1(ulong x);
+
         /// <summary>
-        ///  Return the index of the highest set bit. Not valid for zero arg.
+        ///  Return the index of the lowest set bit. Not valid for zero arg.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxLowestSetBit", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint phys_PxLowestSetBit(uint x);
+
+        /// <summary>
+        ///  Return the index of the lowest set bit. Not valid for zero arg.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxLowestSetBit_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint phys_PxLowestSetBit_1(ulong x);
 
         /// <summary>
         ///  Return the index of the highest set bit. Not valid for zero arg.
@@ -432,143 +497,152 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "phys_PxHighestSetBit", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint phys_PxHighestSetBit(uint x);
 
+        /// <summary>
+        ///  Return the index of the highest set bit. Not valid for zero arg.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxHighestSetBit_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint phys_PxHighestSetBit_1(ulong x);
+
         [DllImport(__DllName, EntryPoint = "phys_PxILog2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint phys_PxILog2(uint num);
 
-        /// <summary>
-        ///  default constructor leaves data uninitialized.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxVec3_new();
 
-        /// <summary>
-        ///  zero constructor.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxVec3_new_1(PxZERO anon_param0);
 
-        /// <summary>
-        ///  Assigns scalar parameter to all elements.
-        ///
-        ///  Useful to initialize to zero or one.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxVec3_new_2(float a);
 
-        /// <summary>
-        ///  Initializes from 3 scalar parameters.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxVec3_new_3(float nx, float ny, float nz);
 
-        /// <summary>
-        ///  tests for exact zero vector
-        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVec3_new_4", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxVec3_new_4(PxVec3* v);
+
         [DllImport(__DllName, EntryPoint = "PxVec3_isZero", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxVec3_isZero(PxVec3* self_);
 
-        /// <summary>
-        ///  returns true if all 3 elems of the vector are finite (not NAN or INF, etc.)
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_isFinite", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxVec3_isFinite(PxVec3* self_);
 
-        /// <summary>
-        ///  is normalized - used by API parameter validation
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_isNormalized", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxVec3_isNormalized(PxVec3* self_);
 
-        /// <summary>
-        ///  returns the squared magnitude
-        ///
-        ///  Avoids calling PxSqrt()!
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_magnitudeSquared", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec3_magnitudeSquared(PxVec3* self_);
 
-        /// <summary>
-        ///  returns the magnitude
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_magnitude", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec3_magnitude(PxVec3* self_);
 
-        /// <summary>
-        ///  returns the scalar product of this and other.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_dot", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec3_dot(PxVec3* self_, PxVec3* v);
 
-        /// <summary>
-        ///  cross product
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_cross", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxVec3_cross(PxVec3* self_, PxVec3* v);
 
-        /// <summary>
-        ///  returns a unit vector
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_getNormalized", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxVec3_getNormalized(PxVec3* self_);
 
-        /// <summary>
-        ///  normalizes the vector in place
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_normalize_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec3_normalize_mut(PxVec3* self_);
 
-        /// <summary>
-        ///  normalizes the vector in place. Does nothing if vector magnitude is under PX_NORMALIZATION_EPSILON.
-        ///  Returns vector magnitude if &gt;= PX_NORMALIZATION_EPSILON and 0.0f otherwise.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_normalizeSafe_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec3_normalizeSafe_mut(PxVec3* self_);
 
-        /// <summary>
-        ///  normalizes the vector in place. Asserts if vector magnitude is under PX_NORMALIZATION_EPSILON.
-        ///  returns vector magnitude.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_normalizeFast_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec3_normalizeFast_mut(PxVec3* self_);
 
-        /// <summary>
-        ///  a[i] * b[i], for all i.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_multiply", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxVec3_multiply(PxVec3* self_, PxVec3* a);
 
-        /// <summary>
-        ///  element-wise minimum
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_minimum", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxVec3_minimum(PxVec3* self_, PxVec3* v);
 
-        /// <summary>
-        ///  returns MIN(x, y, z);
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_minElement", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec3_minElement(PxVec3* self_);
 
-        /// <summary>
-        ///  element-wise maximum
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_maximum", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxVec3_maximum(PxVec3* self_, PxVec3* v);
 
-        /// <summary>
-        ///  returns MAX(x, y, z);
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_maxElement", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec3_maxElement(PxVec3* self_);
 
-        /// <summary>
-        ///  returns absolute values of components;
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec3_abs", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxVec3_abs(PxVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxExtendedVec3 PxExtendedVec3_new();
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxExtendedVec3 PxExtendedVec3_new_1(PxZERO anon_param0);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxExtendedVec3 PxExtendedVec3_new_2(double a);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxExtendedVec3 PxExtendedVec3_new_3(double nx, double ny, double nz);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_new_4", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxExtendedVec3 PxExtendedVec3_new_4(PxExtendedVec3* v);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_isZero", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxExtendedVec3_isZero(PxExtendedVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_isFinite", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxExtendedVec3_isFinite(PxExtendedVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_isNormalized", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxExtendedVec3_isNormalized(PxExtendedVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_magnitudeSquared", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern double PxExtendedVec3_magnitudeSquared(PxExtendedVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_magnitude", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern double PxExtendedVec3_magnitude(PxExtendedVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_dot", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern double PxExtendedVec3_dot(PxExtendedVec3* self_, PxExtendedVec3* v);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_cross", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxExtendedVec3 PxExtendedVec3_cross(PxExtendedVec3* self_, PxExtendedVec3* v);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_getNormalized", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxExtendedVec3 PxExtendedVec3_getNormalized(PxExtendedVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_normalize_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern double PxExtendedVec3_normalize_mut(PxExtendedVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_normalizeSafe_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern double PxExtendedVec3_normalizeSafe_mut(PxExtendedVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_normalizeFast_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern double PxExtendedVec3_normalizeFast_mut(PxExtendedVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_multiply", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxExtendedVec3 PxExtendedVec3_multiply(PxExtendedVec3* self_, PxExtendedVec3* a);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_minimum", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxExtendedVec3 PxExtendedVec3_minimum(PxExtendedVec3* self_, PxExtendedVec3* v);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_minElement", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern double PxExtendedVec3_minElement(PxExtendedVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_maximum", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxExtendedVec3 PxExtendedVec3_maximum(PxExtendedVec3* self_, PxExtendedVec3* v);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_maxElement", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern double PxExtendedVec3_maxElement(PxExtendedVec3* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_abs", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxExtendedVec3 PxExtendedVec3_abs(PxExtendedVec3* self_);
 
         [DllImport(__DllName, EntryPoint = "PxVec3Padded_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3Padded* PxVec3Padded_new_alloc();
@@ -582,111 +656,106 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxVec3Padded_new_alloc_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3Padded* PxVec3Padded_new_alloc_2(float f);
 
-        /// <summary>
-        ///  Default constructor, does not do any initialization.
-        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVec3Padded_new_alloc_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3Padded* PxVec3Padded_new_alloc_3(float _x, float _y, float _z);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_new();
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_new_1(PxIDENTITY anon_param0);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_new_2(PxZERO anon_param0);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_new_3(PxVec3* col0, PxVec3* col1, PxVec3* col2);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_new_4", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_new_4(float r);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_new_5", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_new_5(float* values);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_new_6", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_new_6(PxQuat* q);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_new_7", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_new_7(PxMat33* other);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_createDiagonal", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_createDiagonal(PxVec3* d);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_outer", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_outer(PxVec3* a, PxVec3* b);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_getTranspose", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_getTranspose(PxMat33* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_getInverse", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxMat33_getInverse(PxMat33* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_getDeterminant", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxMat33_getDeterminant(PxMat33* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_transform", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxMat33_transform(PxMat33* self_, PxVec3* other);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_transformTranspose", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxMat33_transformTranspose(PxMat33* self_, PxVec3* other);
+
+        [DllImport(__DllName, EntryPoint = "PxMat33_front", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float* PxMat33_front(PxMat33* self_);
+
         [DllImport(__DllName, EntryPoint = "PxQuat_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxQuat PxQuat_new();
 
-        /// <summary>
-        ///  identity constructor
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxQuat PxQuat_new_1(PxIDENTITY anon_param0);
 
-        /// <summary>
-        ///  Constructor from a scalar: sets the real part w to the scalar value, and the imaginary parts (x,y,z) to zero
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxQuat PxQuat_new_2(float r);
 
-        /// <summary>
-        ///  Constructor. Take note of the order of the elements!
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxQuat PxQuat_new_3(float nx, float ny, float nz, float nw);
 
-        /// <summary>
-        ///  Creates from angle-axis representation.
-        ///
-        ///  Axis must be normalized!
-        ///
-        ///  Angle is in radians!
-        ///
-        ///  Unit:
-        ///  Radians
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_new_4", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxQuat PxQuat_new_4(float angleRadians, PxVec3* unitAxis);
 
-        /// <summary>
-        ///  Creates from orientation matrix.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_new_5", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxQuat PxQuat_new_5(PxMat33* m);
+        public static extern PxQuat PxQuat_new_5(PxQuat* v);
 
-        /// <summary>
-        ///  returns true if quat is identity
-        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxQuat_new_6", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxQuat PxQuat_new_6(PxMat33* m);
+
         [DllImport(__DllName, EntryPoint = "PxQuat_isIdentity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxQuat_isIdentity(PxQuat* self_);
 
-        /// <summary>
-        ///  returns true if all elements are finite (not NAN or INF, etc.)
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_isFinite", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxQuat_isFinite(PxQuat* self_);
 
-        /// <summary>
-        ///  returns true if finite and magnitude is close to unit
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_isUnit", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxQuat_isUnit(PxQuat* self_);
 
-        /// <summary>
-        ///  returns true if finite and magnitude is reasonably close to unit to allow for some accumulation of error vs
-        ///  isValid
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_isSane", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxQuat_isSane(PxQuat* self_);
 
-        /// <summary>
-        ///  converts this quaternion to angle-axis representation
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_toRadiansAndUnitAxis", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxQuat_toRadiansAndUnitAxis(PxQuat* self_, float* angle, PxVec3* axis);
 
-        /// <summary>
-        ///  Gets the angle between this quat and the identity quaternion.
-        ///
-        ///  Unit:
-        ///  Radians
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_getAngle", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxQuat_getAngle(PxQuat* self_);
 
-        /// <summary>
-        ///  Gets the angle between this quat and the argument
-        ///
-        ///  Unit:
-        ///  Radians
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_getAngle_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxQuat_getAngle_1(PxQuat* self_, PxQuat* q);
 
-        /// <summary>
-        ///  This is the squared 4D vector length, should be 1 for unit quaternions.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_magnitudeSquared", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxQuat_magnitudeSquared(PxQuat* self_);
 
-        /// <summary>
-        ///  returns the scalar product of this and other.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_dot", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxQuat_dot(PxQuat* self_, PxQuat* v);
 
@@ -696,9 +765,6 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxQuat_magnitude", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxQuat_magnitude(PxQuat* self_);
 
-        /// <summary>
-        ///  maps to the closest unit quaternion.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_normalize_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxQuat_normalize_mut(PxQuat* self_);
 
@@ -708,44 +774,111 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxQuat_getImaginaryPart", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxQuat_getImaginaryPart(PxQuat* self_);
 
-        /// <summary>
-        ///  brief computes rotation of x-axis
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_getBasisVector0", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxQuat_getBasisVector0(PxQuat* self_);
 
-        /// <summary>
-        ///  brief computes rotation of y-axis
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_getBasisVector1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxQuat_getBasisVector1(PxQuat* self_);
 
-        /// <summary>
-        ///  brief computes rotation of z-axis
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_getBasisVector2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxQuat_getBasisVector2(PxQuat* self_);
 
-        /// <summary>
-        ///  rotates passed vec by this (assumed unitary)
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxQuat_rotate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxQuat_rotate(PxQuat* self_, PxVec3* v);
 
-        /// <summary>
-        ///  inverse rotates passed vec by this (assumed unitary)
-        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxQuat_getInvBasisVector0", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxQuat_getInvBasisVector0(PxQuat* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxQuat_getInvBasisVector1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxQuat_getInvBasisVector1(PxQuat* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxQuat_getInvBasisVector2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxQuat_getInvBasisVector2(PxQuat* self_);
+
         [DllImport(__DllName, EntryPoint = "PxQuat_rotateInv", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxQuat_rotateInv(PxQuat* self_, PxVec3* v);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new();
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new_1(PxIDENTITY anon_param0);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new_2(PxZERO anon_param0);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new_3(PxVec4* col0, PxVec4* col1, PxVec4* col2, PxVec4* col3);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new_4", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new_4(float r);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new_5", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new_5(PxVec3* col0, PxVec3* col1, PxVec3* col2, PxVec3* col3);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new_6", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new_6(float* values);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new_7", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new_7(PxQuat* q);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new_8", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new_8(PxVec4* diagonal);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new_9", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new_9(PxMat33* axes, PxVec3* position);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new_10", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new_10(PxTransform* t);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_new_11", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_new_11(PxMat44* other);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_getTranspose", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_getTranspose(PxMat44* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_transform", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4 PxMat44_transform(PxMat44* self_, PxVec4* other);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_transform_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxMat44_transform_1(PxMat44* self_, PxVec3* other);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_rotate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4 PxMat44_rotate(PxMat44* self_, PxVec4* other);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_rotate_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxMat44_rotate_1(PxMat44* self_, PxVec3* other);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_getBasis", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxMat44_getBasis(PxMat44* self_, uint num);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_getPosition", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxMat44_getPosition(PxMat44* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_setPosition_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMat44_setPosition_mut(PxMat44* self_, PxVec3* position);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_front", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float* PxMat44_front(PxMat44* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_scale_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMat44_scale_mut(PxMat44* self_, PxVec4* p);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_inverseRT", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat44 PxMat44_inverseRT(PxMat44* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxMat44_isFinite", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxMat44_isFinite(PxMat44* self_);
 
         [DllImport(__DllName, EntryPoint = "PxTransform_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxTransform PxTransform_new();
 
         [DllImport(__DllName, EntryPoint = "PxTransform_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTransform PxTransform_new_1(PxVec3* position);
+        public static extern PxTransform PxTransform_new_1(PxIDENTITY anon_param0);
 
         [DllImport(__DllName, EntryPoint = "PxTransform_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTransform PxTransform_new_2(PxIDENTITY anon_param0);
+        public static extern PxTransform PxTransform_new_2(PxVec3* position);
 
         [DllImport(__DllName, EntryPoint = "PxTransform_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxTransform PxTransform_new_3(PxQuat* orientation);
@@ -759,8 +892,14 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxTransform_new_6", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxTransform PxTransform_new_6(PxMat44* m);
 
+        [DllImport(__DllName, EntryPoint = "PxTransform_new_7", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransform PxTransform_new_7(PxTransform* other);
+
         [DllImport(__DllName, EntryPoint = "PxTransform_getInverse", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxTransform PxTransform_getInverse(PxTransform* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxTransform_getNormalized", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransform PxTransform_getNormalized(PxTransform* self_);
 
         [DllImport(__DllName, EntryPoint = "PxTransform_transform", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxTransform_transform(PxTransform* self_, PxVec3* input);
@@ -774,132 +913,83 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxTransform_rotateInv", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxTransform_rotateInv(PxTransform* self_, PxVec3* input);
 
-        /// <summary>
-        ///  Transform transform to parent (returns compound transform: first src, then *this)
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxTransform_transform_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxTransform PxTransform_transform_1(PxTransform* self_, PxTransform* src);
 
-        /// <summary>
-        ///  returns true if finite and q is a unit quaternion
-        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxTransform_transformInv_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransform PxTransform_transformInv_1(PxTransform* self_, PxTransform* src);
+
         [DllImport(__DllName, EntryPoint = "PxTransform_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxTransform_isValid(PxTransform* self_);
 
-        /// <summary>
-        ///  returns true if finite and quat magnitude is reasonably close to unit to allow for some accumulation of error
-        ///  vs isValid
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxTransform_isSane", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxTransform_isSane(PxTransform* self_);
 
-        /// <summary>
-        ///  returns true if all elems are finite (not NAN or INF, etc.)
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxTransform_isFinite", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxTransform_isFinite(PxTransform* self_);
 
-        /// <summary>
-        ///  Transform transform from parent (returns compound transform: first src, then this-&gt;inverse)
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxTransform_transformInv_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTransform PxTransform_transformInv_1(PxTransform* self_, PxTransform* src);
+        [DllImport(__DllName, EntryPoint = "PxTransformPadded_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransformPadded PxTransformPadded_new();
+
+        [DllImport(__DllName, EntryPoint = "PxTransformPadded_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransformPadded PxTransformPadded_new_1(PxTransform* other);
+
+        [DllImport(__DllName, EntryPoint = "PxTransformPadded_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransformPadded PxTransformPadded_new_2(PxIDENTITY anon_param0);
+
+        [DllImport(__DllName, EntryPoint = "PxTransformPadded_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransformPadded PxTransformPadded_new_3(PxVec3* position);
+
+        [DllImport(__DllName, EntryPoint = "PxTransformPadded_new_4", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransformPadded PxTransformPadded_new_4(PxQuat* orientation);
+
+        [DllImport(__DllName, EntryPoint = "PxTransformPadded_new_5", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransformPadded PxTransformPadded_new_5(PxVec3* p0, PxQuat* q0);
 
         /// <summary>
-        ///  return a normalized transform (i.e. one in which the quaternion has unit magnitude)
+        ///  Sets a rotation matrix around the X axis.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxTransform_getNormalized", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTransform PxTransform_getNormalized(PxTransform* self_);
+        [DllImport(__DllName, EntryPoint = "phys_PxSetRotX", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxSetRotX(PxMat33* m, float angle);
 
         /// <summary>
-        ///  Default constructor
+        ///  Sets a rotation matrix around the Y axis.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat33 PxMat33_new();
+        [DllImport(__DllName, EntryPoint = "phys_PxSetRotY", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxSetRotY(PxMat33* m, float angle);
 
         /// <summary>
-        ///  identity constructor
+        ///  Sets a rotation matrix around the Z axis.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat33 PxMat33_new_1(PxIDENTITY anon_param0);
+        [DllImport(__DllName, EntryPoint = "phys_PxSetRotZ", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxSetRotZ(PxMat33* m, float angle);
 
         /// <summary>
-        ///  zero constructor
+        ///  Returns a rotation quaternion around the X axis.
+        ///
+        ///  Quaternion that rotates around the desired axis
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat33 PxMat33_new_2(PxZERO anon_param0);
+        [DllImport(__DllName, EntryPoint = "phys_PxGetRotXQuat", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxQuat phys_PxGetRotXQuat(float angle);
 
         /// <summary>
-        ///  Construct from three base vectors
+        ///  Returns a rotation quaternion around the Y axis.
+        ///
+        ///  Quaternion that rotates around the desired axis
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat33 PxMat33_new_3(PxVec3* col0, PxVec3* col1, PxVec3* col2);
+        [DllImport(__DllName, EntryPoint = "phys_PxGetRotYQuat", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxQuat phys_PxGetRotYQuat(float angle);
 
         /// <summary>
-        ///  constructor from a scalar, which generates a multiple of the identity matrix
+        ///  Returns a rotation quaternion around the Z axis.
+        ///
+        ///  Quaternion that rotates around the desired axis
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_new_4", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat33 PxMat33_new_4(float r);
-
-        /// <summary>
-        ///  Construct from float[9]
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_new_5", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat33 PxMat33_new_5(float* values);
-
-        /// <summary>
-        ///  Construct from a quaternion
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_new_6", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat33 PxMat33_new_6(PxQuat* q);
-
-        /// <summary>
-        ///  Construct from diagonal, off-diagonals are zero.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_createDiagonal", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat33 PxMat33_createDiagonal(PxVec3* d);
-
-        /// <summary>
-        ///  Computes the outer product of two vectors
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_outer", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat33 PxMat33_outer(PxVec3* a, PxVec3* b);
-
-        /// <summary>
-        ///  Get transposed matrix
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_getTranspose", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat33 PxMat33_getTranspose(PxMat33* self_);
-
-        /// <summary>
-        ///  Get the real inverse
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_getInverse", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat33 PxMat33_getInverse(PxMat33* self_);
-
-        /// <summary>
-        ///  Get determinant
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_getDeterminant", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxMat33_getDeterminant(PxMat33* self_);
-
-        /// <summary>
-        ///  Transform vector by matrix, equal to v' = M*v
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_transform", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec3 PxMat33_transform(PxMat33* self_, PxVec3* other);
-
-        /// <summary>
-        ///  Transform vector by matrix transpose, v' = M^t*v
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat33_transformTranspose", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec3 PxMat33_transformTranspose(PxMat33* self_, PxVec3* other);
-
-        [DllImport(__DllName, EntryPoint = "PxMat33_front", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float* PxMat33_front(PxMat33* self_);
+        [DllImport(__DllName, EntryPoint = "phys_PxGetRotZQuat", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxQuat phys_PxGetRotZQuat(float angle);
 
         /// <summary>
         ///  Default constructor, not performing any initialization for performance reason.
@@ -1192,6 +1282,18 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxBroadcastingErrorCallback_reportError_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxBroadcastingErrorCallback_reportError_mut(PxBroadcastingErrorCallback* self_, PxErrorCode code, byte* message, byte* file, int line);
 
+        [DllImport(__DllName, EntryPoint = "PxFPUGuard_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxFPUGuard* PxFPUGuard_new_alloc();
+
+        [DllImport(__DllName, EntryPoint = "PxFPUGuard_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxFPUGuard_delete(PxFPUGuard* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxSIMDGuard_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxSIMDGuard* PxSIMDGuard_new_alloc([MarshalAs(UnmanagedType.U1)] bool enable);
+
+        [DllImport(__DllName, EntryPoint = "PxSIMDGuard_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxSIMDGuard_delete(PxSIMDGuard* self_);
+
         /// <summary>
         ///  Enables floating point exceptions for the scalar and SIMD unit
         /// </summary>
@@ -1204,279 +1306,65 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "phys_PxDisableFPExceptions", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void phys_PxDisableFPExceptions();
 
-        /// <summary>
-        ///  read from the stream. The number of bytes read may be less than the number requested.
-        ///
-        ///  the number of bytes read from the stream.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxInputStream_read_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxInputStream_read_mut(PxInputStream* self_, void* dest, uint count);
-
-        [DllImport(__DllName, EntryPoint = "PxInputStream_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxInputStream_delete(PxInputStream* self_);
-
-        /// <summary>
-        ///  return the length of the input data
-        ///
-        ///  size in bytes of the input data
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxInputData_getLength", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxInputData_getLength(PxInputData* self_);
-
-        /// <summary>
-        ///  seek to the given offset from the start of the data.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxInputData_seek_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxInputData_seek_mut(PxInputData* self_, uint offset);
-
-        /// <summary>
-        ///  return the current offset from the start of the data
-        ///
-        ///  the offset to seek to.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxInputData_tell", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxInputData_tell(PxInputData* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxInputData_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxInputData_delete(PxInputData* self_);
-
-        /// <summary>
-        ///  write to the stream. The number of bytes written may be less than the number sent.
-        ///
-        ///  the number of bytes written to the stream by this call.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxOutputStream_write_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxOutputStream_write_mut(PxOutputStream* self_, void* src, uint count);
-
-        [DllImport(__DllName, EntryPoint = "PxOutputStream_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxOutputStream_delete(PxOutputStream* self_);
-
-        /// <summary>
-        ///  default constructor leaves data uninitialized.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec4 PxVec4_new();
 
-        /// <summary>
-        ///  zero constructor.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec4 PxVec4_new_1(PxZERO anon_param0);
 
-        /// <summary>
-        ///  Assigns scalar parameter to all elements.
-        ///
-        ///  Useful to initialize to zero or one.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec4 PxVec4_new_2(float a);
 
-        /// <summary>
-        ///  Initializes from 3 scalar parameters.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec4 PxVec4_new_3(float nx, float ny, float nz, float nw);
 
-        /// <summary>
-        ///  Initializes from 3 scalar parameters.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_new_4", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec4 PxVec4_new_4(PxVec3* v, float nw);
 
-        /// <summary>
-        ///  Initializes from an array of scalar parameters.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_new_5", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec4 PxVec4_new_5(float* v);
 
-        /// <summary>
-        ///  tests for exact zero vector
-        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVec4_new_6", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4 PxVec4_new_6(PxVec4* v);
+
         [DllImport(__DllName, EntryPoint = "PxVec4_isZero", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxVec4_isZero(PxVec4* self_);
 
-        /// <summary>
-        ///  returns true if all 3 elems of the vector are finite (not NAN or INF, etc.)
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_isFinite", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxVec4_isFinite(PxVec4* self_);
 
-        /// <summary>
-        ///  is normalized - used by API parameter validation
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_isNormalized", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxVec4_isNormalized(PxVec4* self_);
 
-        /// <summary>
-        ///  returns the squared magnitude
-        ///
-        ///  Avoids calling PxSqrt()!
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_magnitudeSquared", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec4_magnitudeSquared(PxVec4* self_);
 
-        /// <summary>
-        ///  returns the magnitude
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_magnitude", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec4_magnitude(PxVec4* self_);
 
-        /// <summary>
-        ///  returns the scalar product of this and other.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_dot", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec4_dot(PxVec4* self_, PxVec4* v);
 
-        /// <summary>
-        ///  returns a unit vector
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_getNormalized", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec4 PxVec4_getNormalized(PxVec4* self_);
 
-        /// <summary>
-        ///  normalizes the vector in place
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_normalize_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxVec4_normalize_mut(PxVec4* self_);
 
-        /// <summary>
-        ///  a[i] * b[i], for all i.
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_multiply", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec4 PxVec4_multiply(PxVec4* self_, PxVec4* a);
 
-        /// <summary>
-        ///  element-wise minimum
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_minimum", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec4 PxVec4_minimum(PxVec4* self_, PxVec4* v);
 
-        /// <summary>
-        ///  element-wise maximum
-        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxVec4_maximum", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec4 PxVec4_maximum(PxVec4* self_, PxVec4* v);
 
         [DllImport(__DllName, EntryPoint = "PxVec4_getXYZ", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxVec4_getXYZ(PxVec4* self_);
-
-        /// <summary>
-        ///  Default constructor
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_new();
-
-        /// <summary>
-        ///  identity constructor
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_new_1(PxIDENTITY anon_param0);
-
-        /// <summary>
-        ///  zero constructor
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_new_2(PxZERO anon_param0);
-
-        /// <summary>
-        ///  Construct from four 4-vectors
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_new_3(PxVec4* col0, PxVec4* col1, PxVec4* col2, PxVec4* col3);
-
-        /// <summary>
-        ///  constructor that generates a multiple of the identity matrix
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_new_4", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_new_4(float r);
-
-        /// <summary>
-        ///  Construct from three base vectors and a translation
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_new_5", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_new_5(PxVec3* col0, PxVec3* col1, PxVec3* col2, PxVec3* col3);
-
-        /// <summary>
-        ///  Construct from float[16]
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_new_6", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_new_6(float* values);
-
-        /// <summary>
-        ///  Construct from a quaternion
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_new_7", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_new_7(PxQuat* q);
-
-        /// <summary>
-        ///  Construct from a diagonal vector
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_new_8", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_new_8(PxVec4* diagonal);
-
-        /// <summary>
-        ///  Construct from Mat33 and a translation
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_new_9", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_new_9(PxMat33* axes, PxVec3* position);
-
-        [DllImport(__DllName, EntryPoint = "PxMat44_new_10", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_new_10(PxTransform* t);
-
-        /// <summary>
-        ///  Get transposed matrix
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_getTranspose", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_getTranspose(PxMat44* self_);
-
-        /// <summary>
-        ///  Transform vector by matrix, equal to v' = M*v
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_transform", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec4 PxMat44_transform(PxMat44* self_, PxVec4* other);
-
-        /// <summary>
-        ///  Transform vector by matrix, equal to v' = M*v
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_transform_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec3 PxMat44_transform_1(PxMat44* self_, PxVec3* other);
-
-        /// <summary>
-        ///  Rotate vector by matrix, equal to v' = M*v
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_rotate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec4 PxMat44_rotate(PxMat44* self_, PxVec4* other);
-
-        /// <summary>
-        ///  Rotate vector by matrix, equal to v' = M*v
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMat44_rotate_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec3 PxMat44_rotate_1(PxMat44* self_, PxVec3* other);
-
-        [DllImport(__DllName, EntryPoint = "PxMat44_getBasis", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec3 PxMat44_getBasis(PxMat44* self_, uint num);
-
-        [DllImport(__DllName, EntryPoint = "PxMat44_getPosition", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec3 PxMat44_getPosition(PxMat44* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxMat44_setPosition_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxMat44_setPosition_mut(PxMat44* self_, PxVec3* position);
-
-        [DllImport(__DllName, EntryPoint = "PxMat44_front", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float* PxMat44_front(PxMat44* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxMat44_scale_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxMat44_scale_mut(PxMat44* self_, PxVec4* p);
-
-        [DllImport(__DllName, EntryPoint = "PxMat44_inverseRT", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMat44 PxMat44_inverseRT(PxMat44* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxMat44_isFinite", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxMat44_isFinite(PxMat44* self_);
 
         /// <summary>
         ///  Constructor
@@ -1676,27 +1564,139 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "phys_PxGetNextIndex3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint phys_PxGetNextIndex3(uint i);
 
+        /// <summary>
+        ///  Computes the barycentric coordinates for a point inside a tetrahedron.
+        ///
+        ///  This function calculates the barycentric coordinates of a point p with respect to a tetrahedron defined by vertices a, b, c, and d.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxComputeBarycentric", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxComputeBarycentric(PxVec3* a, PxVec3* b, PxVec3* c, PxVec3* d, PxVec3* p, PxVec4* bary);
+
+        /// <summary>
+        ///  Computes the barycentric coordinates for a point inside a triangle.
+        ///
+        ///  This function calculates the barycentric coordinates of a point p with respect to a triangle defined by vertices a, b, and c.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxComputeBarycentric_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxComputeBarycentric_1(PxVec3* a, PxVec3* b, PxVec3* c, PxVec3* p, PxVec4* bary);
+
+        /// <summary>
+        ///  Computes the barycentric coordinates for a point inside a triangle (deprecated).
+        ///
+        ///  This function is deprecated. Use PxComputeBarycentric instead.
+        /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_computeBarycentric", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void phys_computeBarycentric(PxVec3* a, PxVec3* b, PxVec3* c, PxVec3* d, PxVec3* p, PxVec4* bary);
+        public static extern void phys_computeBarycentric(PxVec3* a, PxVec3* b, PxVec3* c, PxVec3* p, PxVec4* bary);
 
+        /// <summary>
+        ///  Computes the barycentric coordinates for a point inside a tetrahedron (deprecated).
+        ///
+        ///  This function is deprecated. Use PxComputeBarycentric instead.
+        /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_computeBarycentric_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void phys_computeBarycentric_1(PxVec3* a, PxVec3* b, PxVec3* c, PxVec3* p, PxVec4* bary);
+        public static extern void phys_computeBarycentric_1(PxVec3* a, PxVec3* b, PxVec3* c, PxVec3* d, PxVec3* p, PxVec4* bary);
 
+        /// <summary>
+        ///  Performs linear interpolation between two values.
+        ///
+        ///  The interpolated value
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxLerp", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float phys_PxLerp(float a, float b, float t);
+
+        /// <summary>
+        ///  Performs bilinear interpolation.
+        ///
+        ///  The interpolated value
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxBiLerp", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float phys_PxBiLerp(float f00, float f10, float f01, float f11, float tx, float ty);
+
+        /// <summary>
+        ///  Performs trilinear interpolation.
+        ///
+        ///  The interpolated value
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxTriLerp", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float phys_PxTriLerp(float f000, float f100, float f010, float f110, float f001, float f101, float f011, float f111, float tx, float ty, float tz);
+
+        /// <summary>
+        ///  Computes the 1D index for a 3D grid point.
+        ///
+        ///  The 1D index corresponding to the 3D grid point
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxSDFIdx", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint phys_PxSDFIdx(uint i, uint j, uint k, uint nbX, uint nbY);
+
+        /// <summary>
+        ///  Samples the signed distance field (SDF) at a given local position.
+        ///
+        ///  This function samples the SDF at a given local position within the defined box bounds and calculates the interpolated distance value. It handles grid clamping and ensures that the sampled value is within the tolerance limit.
+        ///
+        ///  The sampled SDF value
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxSDFSample", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float phys_PxSDFSample(float* sdf, PxVec3* localPos, PxVec3* sdfBoxLower, PxVec3* sdfBoxHigher, float sdfDx, float invSdfDx, uint dimX, uint dimY, uint dimZ, float tolerance);
+
+        /// <summary>
+        ///  Performs linear interpolation between two values.
+        ///
+        ///  The interpolated value
+        ///
+        ///  Please use corresponding freestanding function outside of Interpolation scope.
+        /// </summary>
         [DllImport(__DllName, EntryPoint = "Interpolation_PxLerp", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float Interpolation_PxLerp(float a, float b, float t);
 
+        /// <summary>
+        ///  Performs bilinear interpolation.
+        ///
+        ///  The interpolated value
+        ///
+        ///  Please use corresponding freestanding function outside of Interpolation scope.
+        /// </summary>
         [DllImport(__DllName, EntryPoint = "Interpolation_PxBiLerp", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float Interpolation_PxBiLerp(float f00, float f10, float f01, float f11, float tx, float ty);
 
+        /// <summary>
+        ///  Performs trilinear interpolation.
+        ///
+        ///  The interpolated value
+        ///
+        ///  Please use corresponding freestanding function outside of Interpolation scope.
+        /// </summary>
         [DllImport(__DllName, EntryPoint = "Interpolation_PxTriLerp", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float Interpolation_PxTriLerp(float f000, float f100, float f010, float f110, float f001, float f101, float f011, float f111, float tx, float ty, float tz);
 
+        /// <summary>
+        ///  Computes the 1D index for a 3D grid point.
+        ///
+        ///  The 1D index corresponding to the 3D grid point
+        ///
+        ///  Please use corresponding freestanding function outside of Interpolation scope.
+        /// </summary>
         [DllImport(__DllName, EntryPoint = "Interpolation_PxSDFIdx", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint Interpolation_PxSDFIdx(uint i, uint j, uint k, uint nbX, uint nbY);
 
+        /// <summary>
+        ///  Samples the signed distance field (SDF) at a given local position.
+        ///
+        ///  This function samples the SDF at a given local position within the defined box bounds and calculates the interpolated distance value. It handles grid clamping and ensures that the sampled value is within the tolerance limit.
+        ///
+        ///  The sampled SDF value
+        ///
+        ///  Please use corresponding freestanding function outside of Interpolation scope.
+        /// </summary>
         [DllImport(__DllName, EntryPoint = "Interpolation_PxSDFSampleImpl", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float Interpolation_PxSDFSampleImpl(float* sdf, PxVec3* localPos, PxVec3* sdfBoxLower, PxVec3* sdfBoxHigher, float sdfDx, float invSdfDx, uint dimX, uint dimY, uint dimZ, float tolerance);
 
+        /// <summary>
+        ///  Samples the signed distance field (SDF) at a given local position with gradient computation (deprecated).
+        ///
+        ///  The sampled SDF value
+        ///
+        ///  Please use PxSDFSample.
+        /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxSdfSample", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float phys_PxSdfSample(float* sdf, PxVec3* localPos, PxVec3* sdfBoxLower, PxVec3* sdfBoxHigher, float sdfDx, float invSdfDx, uint dimX, uint dimY, uint dimZ, PxVec3* gradient, float tolerance);
 
@@ -1774,6 +1774,27 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxProfilerCallback_zoneEnd_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxProfilerCallback_zoneEnd_mut(PxProfilerCallback* self_, void* profilerData, byte* eventName, [MarshalAs(UnmanagedType.U1)] bool detached, ulong contextId);
 
+        /// <summary>
+        ///  Record integer data to be displayed in the profiler.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxProfilerCallback_recordData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxProfilerCallback_recordData_mut(PxProfilerCallback* self_, int value, byte* valueName, ulong contextId);
+
+        /// <summary>
+        ///  Record float data to be displayed in the profiler.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxProfilerCallback_recordData_mut_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxProfilerCallback_recordData_mut_1(PxProfilerCallback* self_, float value, byte* valueName, ulong contextId);
+
+        /// <summary>
+        ///  Record a frame marker to be displayed in the profiler.
+        ///
+        ///  Markers that have identical names will be displayed in the profiler
+        ///  along with the time between each of the markers. A frame counter will display the frame marker count.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxProfilerCallback_recordFrame_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxProfilerCallback_recordFrame_mut(PxProfilerCallback* self_, byte* name, ulong contextId);
+
         [DllImport(__DllName, EntryPoint = "PxProfileScoped_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxProfileScoped* PxProfileScoped_new_alloc(PxProfilerCallback* callback, byte* eventName, [MarshalAs(UnmanagedType.U1)] bool detached, ulong contextId);
 
@@ -1803,6 +1824,120 @@ namespace PhysX
 
         [DllImport(__DllName, EntryPoint = "PxSListImpl_getSize", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint PxSListImpl_getSize();
+
+        [DllImport(__DllName, EntryPoint = "PxSocket_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxSocket* PxSocket_new_alloc([MarshalAs(UnmanagedType.U1)] bool inEnableBuffering, [MarshalAs(UnmanagedType.U1)] bool blocking);
+
+        [DllImport(__DllName, EntryPoint = "PxSocket_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxSocket_delete(PxSocket* self_);
+
+        /// <summary>
+        ///  Opens a network socket for input and/or output
+        ///
+        ///  True if the connection was successful, false otherwise
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_connect_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxSocket_connect_mut(PxSocket* self_, byte* host, ushort port, uint timeout);
+
+        /// <summary>
+        ///  Opens a network socket for input and/or output as a server.  Put the connection in listening mode
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_listen_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxSocket_listen_mut(PxSocket* self_, ushort port);
+
+        /// <summary>
+        ///  Accept a connection on a socket that is in listening mode
+        ///
+        ///  This method only supports a single connection client.  Additional clients
+        ///  that connect to the listening port will overwrite the existing socket handle.
+        ///
+        ///  whether a connection was established
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_accept_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxSocket_accept_mut(PxSocket* self_, [MarshalAs(UnmanagedType.U1)] bool block);
+
+        /// <summary>
+        ///  Disconnects an open socket
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_disconnect_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxSocket_disconnect_mut(PxSocket* self_);
+
+        /// <summary>
+        ///  Returns whether the socket is currently open (connected) or not.
+        ///
+        ///  True if the socket is connected, false otherwise
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_isConnected", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxSocket_isConnected(PxSocket* self_);
+
+        /// <summary>
+        ///  Returns the name of the connected host. This is the same as the string
+        ///  that was supplied to the connect call.
+        ///
+        ///  The name of the connected host
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_getHost", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxSocket_getHost(PxSocket* self_);
+
+        /// <summary>
+        ///  Returns the port of the connected host. This is the same as the port
+        ///  that was supplied to the connect call.
+        ///
+        ///  The port of the connected host
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_getPort", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern ushort PxSocket_getPort(PxSocket* self_);
+
+        /// <summary>
+        ///  Flushes the output stream. Until the stream is flushed, there is no
+        ///  guarantee that the written data has actually reached the destination
+        ///  storage. Flush forces all buffered data to be sent to the output.
+        ///
+        ///  flush always blocks. If the socket is in non-blocking mode, this will result
+        ///  the thread spinning.
+        ///
+        ///  True if the flush was successful, false otherwise
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_flush_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxSocket_flush_mut(PxSocket* self_);
+
+        /// <summary>
+        ///  Writes data to the output stream.
+        ///
+        ///  Number of bytes actually written. This could be lower than length if the socket is non-blocking.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_write_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxSocket_write_mut(PxSocket* self_, byte* data, uint length);
+
+        /// <summary>
+        ///  Reads data from the output stream.
+        ///
+        ///  Number of bytes actually read. This could be lower than length if the stream end is
+        ///  encountered or the socket is non-blocking.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_read_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxSocket_read_mut(PxSocket* self_, byte* data, uint length);
+
+        /// <summary>
+        ///  Sets blocking mode of the socket.
+        ///  Socket must be connected, otherwise calling this method won't take any effect.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_setBlocking_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxSocket_setBlocking_mut(PxSocket* self_, [MarshalAs(UnmanagedType.U1)] bool blocking);
+
+        /// <summary>
+        ///  Returns whether read/write/flush calls to the socket are blocking.
+        ///
+        ///  True if the socket is blocking.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSocket_isBlocking", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxSocket_isBlocking(PxSocket* self_);
 
         [DllImport(__DllName, EntryPoint = "PxSyncImpl_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxSyncImpl* PxSyncImpl_new_alloc();
@@ -1845,6 +1980,138 @@ namespace PhysX
 
         [DllImport(__DllName, EntryPoint = "PxRunnable_execute_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxRunnable_execute_mut(PxRunnable* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_getDefaultStackSize", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxThreadImpl_getDefaultStackSize();
+
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_getId", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern nuint PxThreadImpl_getId();
+
+        /// <summary>
+        ///  Construct (but do not start) the thread object. The OS thread object will not be created
+        ///  until start() is called. Executes in the context
+        ///  of the spawning thread.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxThreadImpl* PxThreadImpl_new_alloc();
+
+        /// <summary>
+        ///  Deallocate all resources associated with the thread. Should be called in the
+        ///  context of the spawning thread.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxThreadImpl_delete(PxThreadImpl* self_);
+
+        /// <summary>
+        ///  Create the OS thread and start it running. Called in the context of the spawning thread.
+        ///  If an affinity mask has previously been set then it will be applied after the
+        ///  thread has been created.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_start_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxThreadImpl_start_mut(PxThreadImpl* self_, uint stackSize, PxRunnable* r);
+
+        /// <summary>
+        ///  Violently kill the current thread. Blunt instrument, not recommended since
+        ///  it can leave all kinds of things unreleased (stack, memory, mutexes...) Should
+        ///  be called in the context of the spawning thread.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_kill_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxThreadImpl_kill_mut(PxThreadImpl* self_);
+
+        /// <summary>
+        ///  Stop the thread. Signals the spawned thread that it should stop, so the
+        ///  thread should check regularly
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_signalQuit_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxThreadImpl_signalQuit_mut(PxThreadImpl* self_);
+
+        /// <summary>
+        ///  Wait for a thread to stop. Should be called in the context of the spawning
+        ///  thread. Returns false if the thread has not been started.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_waitForQuit_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxThreadImpl_waitForQuit_mut(PxThreadImpl* self_);
+
+        /// <summary>
+        ///  check whether the thread is signalled to quit. Called in the context of the
+        ///  spawned thread.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_quitIsSignalled_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxThreadImpl_quitIsSignalled_mut(PxThreadImpl* self_);
+
+        /// <summary>
+        ///  Cleanly shut down this thread. Called in the context of the spawned thread.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_quit_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxThreadImpl_quit_mut(PxThreadImpl* self_);
+
+        /// <summary>
+        ///  Change the affinity mask for this thread. The mask is a platform
+        ///  specific value.
+        ///
+        ///  On Windows, Linux, and Switch platforms, each set mask bit represents
+        ///  the index of a logical processor that the OS may schedule thread execution on.
+        ///  Bits outside the range of valid logical processors may be ignored or cause
+        ///  the function to return an error.
+        ///
+        ///  On Apple platforms, this function has no effect.
+        ///
+        ///  If the thread has not yet been started then the mask is stored
+        ///  and applied when the thread is started.
+        ///
+        ///  If the thread has already been started then this method	returns the
+        ///  previous affinity mask on success, otherwise it returns zero.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_setAffinityMask_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxThreadImpl_setAffinityMask_mut(PxThreadImpl* self_, uint mask);
+
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_getPriority", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxThreadPriority PxThreadImpl_getPriority(nuint threadId);
+
+        /// <summary>
+        ///  Set thread priority.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_setPriority_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxThreadImpl_setPriority_mut(PxThreadImpl* self_, PxThreadPriority prio);
+
+        /// <summary>
+        ///  set the thread's name
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_setName_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxThreadImpl_setName_mut(PxThreadImpl* self_, byte* name);
+
+        /// <summary>
+        ///  Put the current thread to sleep for the given number of milliseconds
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_sleep", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxThreadImpl_sleep(uint ms);
+
+        /// <summary>
+        ///  Yield the current thread's slot on the CPU
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_yield", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxThreadImpl_yield();
+
+        /// <summary>
+        ///  Inform the processor that we're in a busy wait to give it a chance to do something clever.
+        ///  yield() yields the thread, while yieldProcessor() aims to yield the processor
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_yieldProcessor", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxThreadImpl_yieldProcessor();
+
+        /// <summary>
+        ///  Return the number of physical cores (does not include hyper-threaded cores), returns 0 on failure
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_getNbPhysicalCores", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxThreadImpl_getNbPhysicalCores();
+
+        /// <summary>
+        ///  Size of this class.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxThreadImpl_getSize", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxThreadImpl_getSize();
 
         [DllImport(__DllName, EntryPoint = "phys_PxTlsAlloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint phys_PxTlsAlloc();
@@ -1894,120 +2161,11 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxTime_getLastTime", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern double PxTime_getLastTime(PxTime* self_);
 
-        /// <summary>
-        ///  default constructor leaves data uninitialized.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec2 PxVec2_new();
-
-        /// <summary>
-        ///  zero constructor.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec2 PxVec2_new_1(PxZERO anon_param0);
-
-        /// <summary>
-        ///  Assigns scalar parameter to all elements.
-        ///
-        ///  Useful to initialize to zero or one.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec2 PxVec2_new_2(float a);
-
-        /// <summary>
-        ///  Initializes from 2 scalar parameters.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec2 PxVec2_new_3(float nx, float ny);
-
-        /// <summary>
-        ///  tests for exact zero vector
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_isZero", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxVec2_isZero(PxVec2* self_);
-
-        /// <summary>
-        ///  returns true if all 2 elems of the vector are finite (not NAN or INF, etc.)
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_isFinite", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxVec2_isFinite(PxVec2* self_);
-
-        /// <summary>
-        ///  is normalized - used by API parameter validation
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_isNormalized", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxVec2_isNormalized(PxVec2* self_);
-
-        /// <summary>
-        ///  returns the squared magnitude
-        ///
-        ///  Avoids calling PxSqrt()!
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_magnitudeSquared", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxVec2_magnitudeSquared(PxVec2* self_);
-
-        /// <summary>
-        ///  returns the magnitude
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_magnitude", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxVec2_magnitude(PxVec2* self_);
-
-        /// <summary>
-        ///  returns the scalar product of this and other.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_dot", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxVec2_dot(PxVec2* self_, PxVec2* v);
-
-        /// <summary>
-        ///  returns a unit vector
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_getNormalized", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec2 PxVec2_getNormalized(PxVec2* self_);
-
-        /// <summary>
-        ///  normalizes the vector in place
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_normalize_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxVec2_normalize_mut(PxVec2* self_);
-
-        /// <summary>
-        ///  a[i] * b[i], for all i.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_multiply", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec2 PxVec2_multiply(PxVec2* self_, PxVec2* a);
-
-        /// <summary>
-        ///  element-wise minimum
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_minimum", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec2 PxVec2_minimum(PxVec2* self_, PxVec2* v);
-
-        /// <summary>
-        ///  returns MIN(x, y);
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_minElement", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxVec2_minElement(PxVec2* self_);
-
-        /// <summary>
-        ///  element-wise maximum
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_maximum", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec2 PxVec2_maximum(PxVec2* self_, PxVec2* v);
-
-        /// <summary>
-        ///  returns MAX(x, y);
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxVec2_maxElement", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxVec2_maxElement(PxVec2* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxStridedData_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxStridedData PxStridedData_new();
-
         [DllImport(__DllName, EntryPoint = "PxBoundedData_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxBoundedData PxBoundedData_new();
+
+        [DllImport(__DllName, EntryPoint = "PxBoundedData_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxBoundedData PxBoundedData_new_1(void* data_, uint stride_, uint count_);
 
         [DllImport(__DllName, EntryPoint = "PxDebugPoint_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxDebugPoint PxDebugPoint_new(PxVec3* p, uint* c);
@@ -2109,7 +2267,7 @@ namespace PhysX
         ///  This function is assumed to be called within the implementation of PxSerializer::exportData and PxSerializer::exportExtraData.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxSerializationContext_writeData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxSerializationContext_writeData_mut(PxSerializationContext* self_, void* data, uint size);
+        public static extern void PxSerializationContext_writeData_mut(PxSerializationContext* self_, void* data, ulong size);
 
         /// <summary>
         ///  Aligns the serialized data.
@@ -2184,12 +2342,16 @@ namespace PhysX
 
         /// <summary>
         ///  Register a RepX serializer for a concrete type
+        ///
+        ///  Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxSerializationRegistry_registerRepXSerializer_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxSerializationRegistry_registerRepXSerializer_mut(PxSerializationRegistry* self_, ushort type_, PxRepXSerializer* serializer);
 
         /// <summary>
         ///  Unregister a RepX serializer for a concrete type, and retrieves the corresponding serializer object.
+        ///
+        ///  Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
         ///
         ///  Unregistered PxRepxSerializer corresponding to type, NULL for types for which no RepX serializer has been registered.
         /// </summary>
@@ -2198,6 +2360,8 @@ namespace PhysX
 
         /// <summary>
         ///  Returns RepX serializer given the corresponding type name
+        ///
+        ///  Xml serialization is deprecated. An alternative serialization system is provided through USD Physics.
         ///
         ///  Registered PxRepXSerializer object corresponding to type name
         /// </summary>
@@ -2422,7 +2586,7 @@ namespace PhysX
         ///  Returns the reference count of the object.
         ///
         ///  At creation, the reference count of the object is 1. Every other object referencing this object increments the
-        ///  count by 1. When the reference count reaches 0, and only then, the object gets destroyed automatically.
+        ///  count by 1.	When the reference count reaches 0, and only then, the object gets destroyed automatically.
         ///
         ///  the current reference count.
         /// </summary>
@@ -2698,6 +2862,20 @@ namespace PhysX
         public static extern void PxBaseTask_release_mut(PxBaseTask* self_);
 
         /// <summary>
+        ///  Tells the scheduler if a task is high priority or not.
+        ///
+        ///  This function is a hint to the scheduler, to let it know that some tasks are
+        ///  higher priority than others. The scheduler should try to execute high priority
+        ///  tasks first, but there is no guarantee that it does (some schedulers can ignore
+        ///  this information).
+        ///
+        ///  True for high priority task, false for regular tasks
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxBaseTask_isHighPriority", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxBaseTask_isHighPriority(PxBaseTask* self_);
+
+        /// <summary>
         ///  Return PxTaskManager to which this task was submitted
         ///
         ///  Note, can return NULL if task was not submitted, or has been
@@ -2842,80 +3020,17 @@ namespace PhysX
         ///  True if the current settings are valid
         ///
         ///  A valid box has a positive extent in each direction (halfExtents.x &gt; 0, halfExtents.y &gt; 0, halfExtents.z &gt; 0).
-        ///  It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a box that has zero extent in any direction.
+        ///  It is illegal to call PxPhysics::createShape with a box that has zero extent in any direction.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxBoxGeometry_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxBoxGeometry_isValid(PxBoxGeometry* self_);
 
-        [DllImport(__DllName, EntryPoint = "PxBVHRaycastCallback_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxBVHRaycastCallback_delete(PxBVHRaycastCallback* self_);
+        [DllImport(__DllName, EntryPoint = "PxReportCallbackBase_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxReportCallbackBase* PxReportCallbackBase_new_alloc(uint capacity);
 
-        [DllImport(__DllName, EntryPoint = "PxBVHRaycastCallback_reportHit_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxBVHRaycastCallback_reportHit_mut(PxBVHRaycastCallback* self_, uint boundsIndex, float* distance);
-
-        [DllImport(__DllName, EntryPoint = "PxBVHOverlapCallback_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxBVHOverlapCallback_delete(PxBVHOverlapCallback* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxBVHOverlapCallback_reportHit_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxBVHOverlapCallback_reportHit_mut(PxBVHOverlapCallback* self_, uint boundsIndex);
-
-        [DllImport(__DllName, EntryPoint = "PxBVHTraversalCallback_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxBVHTraversalCallback_delete(PxBVHTraversalCallback* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxBVHTraversalCallback_visitNode_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxBVHTraversalCallback_visitNode_mut(PxBVHTraversalCallback* self_, PxBounds3* bounds);
-
-        [DllImport(__DllName, EntryPoint = "PxBVHTraversalCallback_reportLeaf_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxBVHTraversalCallback_reportLeaf_mut(PxBVHTraversalCallback* self_, uint nbPrims, uint* prims);
-
-        /// <summary>
-        ///  Raycast test against a BVH.
-        ///
-        ///  false if query has been aborted
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxBVH_raycast", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxBVH_raycast(PxBVH* self_, PxVec3* origin, PxVec3* unitDir, float maxDist, PxBVHRaycastCallback* cb, PxGeometryQueryFlags queryFlags);
-
-        /// <summary>
-        ///  Sweep test against a BVH.
-        ///
-        ///  false if query has been aborted
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxBVH_sweep", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxBVH_sweep(PxBVH* self_, PxGeometry* geom, PxTransform* pose, PxVec3* unitDir, float maxDist, PxBVHRaycastCallback* cb, PxGeometryQueryFlags queryFlags);
-
-        /// <summary>
-        ///  Overlap test against a BVH.
-        ///
-        ///  false if query has been aborted
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxBVH_overlap", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxBVH_overlap(PxBVH* self_, PxGeometry* geom, PxTransform* pose, PxBVHOverlapCallback* cb, PxGeometryQueryFlags queryFlags);
-
-        /// <summary>
-        ///  Frustum culling test against a BVH.
-        ///
-        ///  This is similar in spirit to an overlap query using a convex object around the frustum.
-        ///  However this specialized query has better performance, and can support more than the 6 planes
-        ///  of a frustum, which can be useful in portal-based engines.
-        ///
-        ///  On the other hand this test only returns a conservative number of bounds, i.e. some of the returned
-        ///  bounds may actually be outside the frustum volume, close to it but not touching it. This is usually
-        ///  an ok performance trade-off when the function is used for view-frustum culling.
-        ///
-        ///  false if query has been aborted
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxBVH_cull", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxBVH_cull(PxBVH* self_, uint nbPlanes, PxPlane* planes, PxBVHOverlapCallback* cb, PxGeometryQueryFlags queryFlags);
+        [DllImport(__DllName, EntryPoint = "PxReportCallbackBase_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxReportCallbackBase_delete(PxReportCallbackBase* self_);
 
         /// <summary>
         ///  Returns the number of bounds in the BVH.
@@ -2989,18 +3104,6 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxBVH_partialRefit_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxBVH_partialRefit_mut(PxBVH* self_);
 
-        /// <summary>
-        ///  Generic BVH traversal function.
-        ///
-        ///  This can be used to implement custom BVH traversal functions if provided ones are not enough.
-        ///  In particular this can be used to visualize the tree's bounds.
-        ///
-        ///  false if query has been aborted
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxBVH_traverse", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxBVH_traverse(PxBVH* self_, PxBVHTraversalCallback* cb);
-
         [DllImport(__DllName, EntryPoint = "PxBVH_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern byte* PxBVH_getConcreteTypeName(PxBVH* self_);
 
@@ -3016,7 +3119,7 @@ namespace PhysX
         ///  True if the current settings are valid.
         ///
         ///  A valid capsule has radius &gt; 0, halfHeight &gt;= 0.
-        ///  It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a capsule that has zero radius or height.
+        ///  It is illegal to call PxPhysics::createShape with a capsule that has zero radius or height.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxCapsuleGeometry_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -3187,7 +3290,7 @@ namespace PhysX
         ///  True if the current settings are valid for shape creation.
         ///
         ///  A valid convex mesh has a positive scale value in each direction (scale.x &gt; 0, scale.y &gt; 0, scale.z &gt; 0).
-        ///  It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a convex that has zero extent in any direction.
+        ///  It is illegal to call PxPhysics::createShape with a convex that has zero extent in any direction.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxConvexMeshGeometry_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -3205,7 +3308,7 @@ namespace PhysX
         ///  True if the current settings are valid
         ///
         ///  A valid sphere has radius &gt; 0.
-        ///  It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a sphere that has zero radius.
+        ///  It is illegal to call PxPhysics::createShape with a sphere that has zero radius.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxSphereGeometry_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -3238,7 +3341,7 @@ namespace PhysX
         ///  True if the current settings are valid for shape creation.
         ///
         ///  A valid triangle mesh has a positive scale value in each direction (scale.scale.x &gt; 0, scale.scale.y &gt; 0, scale.scale.z &gt; 0).
-        ///  It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a triangle mesh that has zero extents in any direction.
+        ///  It is illegal to call PxPhysics::createShape with a triangle mesh that has zero extents in any direction.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxTriangleMeshGeometry_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -3256,11 +3359,707 @@ namespace PhysX
         ///  True if the current settings are valid
         ///
         ///  A valid height field has a positive scale value in each direction (heightScale &gt; 0, rowScale &gt; 0, columnScale &gt; 0).
-        ///  It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a height field that has zero extents in any direction.
+        ///  It is illegal to call PxPhysics::createShape with a height field that has zero extents in any direction.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxHeightFieldGeometry_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxHeightFieldGeometry_isValid(PxHeightFieldGeometry* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxFilterData_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxFilterData PxFilterData_new(PxEMPTY anon_param0);
+
+        /// <summary>
+        ///  Default constructor.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFilterData_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxFilterData PxFilterData_new_1();
+
+        /// <summary>
+        ///  Constructor to set filter data initially.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFilterData_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxFilterData PxFilterData_new_2(uint w0, uint w1, uint w2, uint w3);
+
+        /// <summary>
+        ///  (re)sets the structure to the default.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFilterData_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxFilterData_setToDefault_mut(PxFilterData* self_);
+
+        /// <summary>
+        ///  Extract filter object type from the filter attributes of a collision pair object
+        ///
+        ///  The type of the collision pair object.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxGetFilterObjectType", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxFilterObjectType phys_PxGetFilterObjectType(uint attr);
+
+        /// <summary>
+        ///  Specifies whether the collision object belongs to a kinematic rigid body
+        ///
+        ///  True if the object belongs to a kinematic rigid body, else false
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxFilterObjectIsKinematic", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool phys_PxFilterObjectIsKinematic(uint attr);
+
+        /// <summary>
+        ///  Specifies whether the collision object is a trigger shape
+        ///
+        ///  True if the object is a trigger shape, else false
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxFilterObjectIsTrigger", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool phys_PxFilterObjectIsTrigger(uint attr);
+
+        /// <summary>
+        ///  Filter method to specify how a pair of potentially colliding objects should be processed.
+        ///
+        ///  This method gets called when the filter flags returned by the filter shader (see [`PxSimulationFilterShader`])
+        ///  indicate that the filter callback should be invoked ([`PxFilterFlag::eCALLBACK`] or #PxFilterFlag::eNOTIFY set).
+        ///  Return the PxFilterFlag flags and set the PxPairFlag flags to define what the simulation should do with the given
+        ///  collision pair.
+        ///
+        ///  Filter flags defining whether the pair should be discarded, temporarily ignored or processed and whether the pair
+        ///  should be tracked and send a report on pair deletion through the filter callback
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSimulationFilterCallback_pairFound_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxFilterFlags PxSimulationFilterCallback_pairFound_mut(PxSimulationFilterCallback* self_, ulong pairID, uint attributes0, PxFilterData filterData0, PxActor* a0, PxShape* s0, uint attributes1, PxFilterData filterData1, PxActor* a1, PxShape* s1, PxPairFlags* pairFlags);
+
+        /// <summary>
+        ///  Callback to inform that a tracked collision pair is gone.
+        ///
+        ///  This method gets called when a collision pair disappears or gets re-filtered. Only applies to
+        ///  collision pairs which have been marked as filter callback pairs ([`PxFilterFlag::eNOTIFY`] set in #pairFound()).
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSimulationFilterCallback_pairLost_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxSimulationFilterCallback_pairLost_mut(PxSimulationFilterCallback* self_, ulong pairID, uint attributes0, PxFilterData filterData0, uint attributes1, PxFilterData filterData1, [MarshalAs(UnmanagedType.U1)] bool objectRemoved);
+
+        /// <summary>
+        ///  Callback to give the opportunity to change the filter state of a tracked collision pair.
+        ///
+        ///  This method gets called once per simulation step to let the application change the filter and pair
+        ///  flags of a collision pair that has been reported in [`pairFound`]() and requested callbacks by
+        ///  setting [`PxFilterFlag::eNOTIFY`]. To request a change of filter status, the target pair has to be
+        ///  specified by its ID, the new filter and pair flags have to be provided and the method should return true.
+        ///
+        ///  If this method changes the filter status of a collision pair and the pair should keep being tracked
+        ///  by the filter callbacks then [`PxFilterFlag::eNOTIFY`] has to be set.
+        ///
+        ///  The application is responsible to ensure that this method does not get called for pairs that have been
+        ///  reported as lost, see [`pairLost`]().
+        ///
+        ///  True if the changes should be applied. In this case the method will get called again. False if
+        ///  no more status changes should be done in the current simulation step. In that case the provided flags will be discarded.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSimulationFilterCallback_statusChange_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxSimulationFilterCallback_statusChange_mut(PxSimulationFilterCallback* self_, ulong* pairID, PxPairFlags* pairFlags, PxFilterFlags* filterFlags);
+
+        /// <summary>
+        ///  Deletes the actor.
+        ///
+        ///  Do not keep a reference to the deleted instance.
+        ///
+        ///  If the actor belongs to a [`PxAggregate`] object, it is automatically removed from the aggregate.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxActor_release_mut(PxActor* self_);
+
+        /// <summary>
+        ///  Retrieves the type of actor.
+        ///
+        ///  The actor type of the actor.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_getType", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxActorType PxActor_getType(PxActor* self_);
+
+        /// <summary>
+        ///  Retrieves the scene which this actor belongs to.
+        ///
+        ///  Owner Scene. NULL if not part of a scene.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_getScene", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxScene* PxActor_getScene(PxActor* self_);
+
+        /// <summary>
+        ///  Sets a name string for the object that can be retrieved with getName().
+        ///
+        ///  This is for debugging and is not used by the SDK. The string is not copied by the SDK,
+        ///  only the pointer is stored.
+        ///
+        ///  Default:
+        ///  NULL
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_setName_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxActor_setName_mut(PxActor* self_, byte* name);
+
+        /// <summary>
+        ///  Retrieves the name string set with setName().
+        ///
+        ///  Name string associated with object.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_getName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxActor_getName(PxActor* self_);
+
+        /// <summary>
+        ///  Retrieves the axis aligned bounding box enclosing the actor.
+        ///
+        ///  It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
+        ///  in PxContactModifyCallback or in contact report callbacks).
+        ///
+        ///  The actor's bounding box.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_getWorldBounds", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxBounds3 PxActor_getWorldBounds(PxActor* self_, float inflation);
+
+        /// <summary>
+        ///  Raises or clears a particular actor flag.
+        ///
+        ///  See the list of flags [`PxActorFlag`]
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake the actor up automatically.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_setActorFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxActor_setActorFlag_mut(PxActor* self_, PxActorFlag flag, [MarshalAs(UnmanagedType.U1)] bool value);
+
+        /// <summary>
+        ///  Sets the actor flags.
+        ///
+        ///  See the list of flags [`PxActorFlag`]
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_setActorFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxActor_setActorFlags_mut(PxActor* self_, PxActorFlags inFlags);
+
+        /// <summary>
+        ///  Reads the PxActor flags.
+        ///
+        ///  See the list of flags [`PxActorFlag`]
+        ///
+        ///  The values of the PxActor flags.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_getActorFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxActorFlags PxActor_getActorFlags(PxActor* self_);
+
+        /// <summary>
+        ///  Assigns dynamic actors a dominance group identifier.
+        ///
+        ///  PxDominanceGroup is a 5 bit group identifier (legal range from 0 to 31).
+        ///
+        ///  The PxScene::setDominanceGroupPair() lets you set certain behaviors for pairs of dominance groups.
+        ///  By default every dynamic actor is created in group 0.
+        ///
+        ///  Default:
+        ///  0
+        ///
+        ///  Sleeping:
+        ///  Changing the dominance group does
+        ///  NOT
+        ///  wake the actor up automatically.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_setDominanceGroup_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxActor_setDominanceGroup_mut(PxActor* self_, byte dominanceGroup);
+
+        /// <summary>
+        ///  Retrieves the value set with setDominanceGroup().
+        ///
+        ///  The dominance group of this actor.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_getDominanceGroup", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte PxActor_getDominanceGroup(PxActor* self_);
+
+        /// <summary>
+        ///  Sets the owner client of an actor.
+        ///
+        ///  This cannot be done once the actor has been placed into a scene.
+        ///
+        ///  Default:
+        ///  PX_DEFAULT_CLIENT
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_setOwnerClient_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxActor_setOwnerClient_mut(PxActor* self_, byte inClient);
+
+        /// <summary>
+        ///  Returns the owner client that was specified at creation time.
+        ///
+        ///  This value cannot be changed once the object is placed into the scene.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_getOwnerClient", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte PxActor_getOwnerClient(PxActor* self_);
+
+        /// <summary>
+        ///  Retrieves the aggregate the actor might be a part of.
+        ///
+        ///  The aggregate the actor is a part of, or NULL if the actor does not belong to an aggregate.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_getAggregate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxAggregate* PxActor_getAggregate(PxActor* self_);
+
+        /// <summary>
+        ///  Sets the environment ID for this actor.
+        ///
+        ///  The environment ID is an extra built-in filter group for the GPU broadphase. Actors will only collide with each-other if they have the
+        ///  same environment ID.
+        ///
+        ///  The default value is PX_INVALID_U32. Actors with this ID will collide with other actors, regardless of which environment they are a part of.
+        ///
+        ///  The environment ID must be set before adding the actor to a scene, and cannot change while the actor is in the scene.
+        ///
+        ///  If it is not PX_INVALID_U32, the environment ID must be smaller than 1
+        ///  &lt;
+        ///  &lt;
+        ///  24, i.e. the system does not support more than 1
+        ///  &lt;
+        ///  &lt;
+        ///  24 environments.
+        ///
+        ///  Default:
+        ///  PX_INVALID_U32
+        ///
+        ///  This is not available for CPU broadphases.
+        ///
+        ///  True if success.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_setEnvironmentID_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxActor_setEnvironmentID_mut(PxActor* self_, uint envID);
+
+        /// <summary>
+        ///  Returns the environment ID for this actor.
+        ///
+        ///  Environment ID for this actor.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxActor_getEnvironmentID", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxActor_getEnvironmentID(PxActor* self_);
+
+        /// <summary>
+        ///  Destructor
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxParticleSystemCallback_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxParticleSystemCallback_delete(PxParticleSystemCallback* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxMultiCallback_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMultiCallback* PxMultiCallback_new_alloc();
+
+        /// <summary>
+        ///  Adds a callback
+        ///
+        ///  True if the callback was added
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMultiCallback_addCallback_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxMultiCallback_addCallback_mut(PxMultiCallback* self_, PxParticleSystemCallback* callback);
+
+        /// <summary>
+        ///  Removes a callback
+        ///
+        ///  True if the callback was removed
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMultiCallback_removeCallback_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxMultiCallback_removeCallback_mut(PxMultiCallback* self_, PxParticleSystemCallback* callback);
+
+        [DllImport(__DllName, EntryPoint = "PxMultiCallback_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMultiCallback_delete(PxMultiCallback* self_);
+
+        /// <summary>
+        ///  Sets the solver iteration counts for the body.
+        ///
+        ///  The solver iteration count determines how accurately joints and contacts are resolved.
+        ///  If you are having trouble with jointed bodies oscillating and behaving erratically, then
+        ///  setting a higher position iteration count may improve their stability.
+        ///
+        ///  If intersecting bodies are being depenetrated too violently, increase the number of velocity
+        ///  iterations. More velocity iterations will drive the relative exit velocity of the intersecting
+        ///  objects closer to the correct value given the restitution.
+        ///
+        ///  Default:
+        ///  4 position iterations, 1 velocity iteration
+        ///
+        ///  See [`getSolverIterationCounts`]()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setSolverIterationCounts_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setSolverIterationCounts_mut(PxPBDParticleSystem* self_, uint minPositionIters, uint minVelocityIters);
+
+        /// <summary>
+        ///  Retrieves the solver iteration counts.
+        ///
+        ///  See [`setSolverIterationCounts`]()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getSolverIterationCounts", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_getSolverIterationCounts(PxPBDParticleSystem* self_, uint* minPositionIters, uint* minVelocityIters);
+
+        /// <summary>
+        ///  Retrieves the collision filter settings.
+        ///
+        ///  The filter data
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getSimulationFilterData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxFilterData PxPBDParticleSystem_getSimulationFilterData(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set collision filter settings
+        ///
+        ///  Allows to control with which objects the particle system collides
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setSimulationFilterData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setSimulationFilterData_mut(PxPBDParticleSystem* self_, PxFilterData* data);
+
+        /// <summary>
+        ///  Set particle flag
+        ///
+        ///  Allows to control self collision etc.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setParticleFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setParticleFlag_mut(PxPBDParticleSystem* self_, PxParticleFlag flag, [MarshalAs(UnmanagedType.U1)] bool val);
+
+        /// <summary>
+        ///  Set particle flags
+        ///
+        ///  Allows to control self collision etc.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setParticleFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setParticleFlags_mut(PxPBDParticleSystem* self_, PxParticleFlags flags);
+
+        /// <summary>
+        ///  Retrieves the particle flags.
+        ///
+        ///  The particle flags
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getParticleFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxParticleFlags PxPBDParticleSystem_getParticleFlags(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set the maximal depenetration velocity particles can reach
+        ///
+        ///  Allows to limit the particles' maximal depenetration velocity to avoid that collision responses lead to very high particle velocities
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setMaxDepenetrationVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setMaxDepenetrationVelocity_mut(PxPBDParticleSystem* self_, float maxDepenetrationVelocity);
+
+        /// <summary>
+        ///  Retrieves maximal depenetration velocity a particle can have.
+        ///
+        ///  The maximal depenetration velocity
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getMaxDepenetrationVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDParticleSystem_getMaxDepenetrationVelocity(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set the maximal linear velocity particles can reach.
+        ///
+        ///  Allows to limit the particles' maximal velocity to control the maximal distance a particle can move per frame.
+        ///
+        ///  Default:
+        ///  PX_MAX_F32
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setMaxLinearVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setMaxLinearVelocity_mut(PxPBDParticleSystem* self_, float maxLinearVelocity);
+
+        /// <summary>
+        ///  Retrieves maximal linear velocity a particle can have.
+        ///
+        ///  The maximal linear velocity
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getMaxLinearVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDParticleSystem_getMaxLinearVelocity(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Use setMaxLinearVelocity() instead.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setMaxVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setMaxVelocity_mut(PxPBDParticleSystem* self_, float maxVelocity);
+
+        /// <summary>
+        ///  Use getMaxLinearVelocity() instead.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getMaxVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDParticleSystem_getMaxVelocity(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Return the cuda context manager
+        ///
+        ///  The cuda context manager
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getCudaContextManager", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxCudaContextManager* PxPBDParticleSystem_getCudaContextManager(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set the rest offset for the collision between particles and rigids or deformable bodies.
+        ///
+        ///  A particle and a rigid or deformable body will come to rest at a distance equal to the sum of their restOffset values.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setRestOffset_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setRestOffset_mut(PxPBDParticleSystem* self_, float restOffset);
+
+        /// <summary>
+        ///  Return the rest offset
+        ///
+        ///  the rest offset
+        ///
+        ///  See [`setRestOffset`]()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getRestOffset", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDParticleSystem_getRestOffset(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set the contact offset for the collision between particles and rigids or soft bodies
+        ///
+        ///  The contact offset needs to be larger than the rest offset.
+        ///  Contact constraints are generated for a particle and a rigid or deformable below the distance equal to the sum of their contacOffset values.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setContactOffset_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setContactOffset_mut(PxPBDParticleSystem* self_, float contactOffset);
+
+        /// <summary>
+        ///  Return the contact offset
+        ///
+        ///  the contact offset
+        ///
+        ///  See [`setContactOffset`]()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getContactOffset", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDParticleSystem_getContactOffset(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set the contact offset for the interactions between particles
+        ///
+        ///  The particle contact offset needs to be larger than the fluid rest offset and larger than the solid rest offset.
+        ///  Interactions for two particles are computed if their distance is below twice the particleContactOffset value.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setParticleContactOffset_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setParticleContactOffset_mut(PxPBDParticleSystem* self_, float particleContactOffset);
+
+        /// <summary>
+        ///  Return the particle contact offset
+        ///
+        ///  the particle contact offset
+        ///
+        ///  See [`setParticleContactOffset`]()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getParticleContactOffset", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDParticleSystem_getParticleContactOffset(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set the solid rest offset
+        ///
+        ///  Two solid particles (or a solid and a fluid particle) will come to rest at a distance equal to twice the solidRestOffset value.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setSolidRestOffset_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setSolidRestOffset_mut(PxPBDParticleSystem* self_, float solidRestOffset);
+
+        /// <summary>
+        ///  Return the solid rest offset
+        ///
+        ///  the solid rest offset
+        ///
+        ///  See [`setSolidRestOffset`]()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getSolidRestOffset", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDParticleSystem_getSolidRestOffset(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Reads the particle lock flags.
+        ///
+        ///  See the list of flags [`PxParticleLockFlag`]
+        ///
+        ///  The values of the particle lock flags.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getParticleLockFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxParticleLockFlags PxPBDParticleSystem_getParticleLockFlags(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Raises or clears a particular particle lock flag.
+        ///
+        ///  See the list of flags [`PxParticleLockFlag`]
+        ///
+        ///  Default:
+        ///  no flags are set
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setParticleLockFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setParticleLockFlag_mut(PxPBDParticleSystem* self_, PxParticleLockFlag flag, [MarshalAs(UnmanagedType.U1)] bool value);
+
+        /// <summary>
+        ///  Set all particle lock flags.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setParticleLockFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setParticleLockFlags_mut(PxPBDParticleSystem* self_, PxParticleLockFlags flags);
+
+        /// <summary>
+        ///  Creates combined particle flag with particle material and particle phase flags.
+        ///
+        ///  The combined particle group index and phase flags.
+        ///
+        ///  See [`PxParticlePhaseFlag`]
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_createPhase_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPBDParticleSystem_createPhase_mut(PxPBDParticleSystem* self_, PxPBDMaterial* material, PxParticlePhaseFlags flags);
+
+        /// <summary>
+        ///  Returns number of particle materials referenced by particle phases
+        ///
+        ///  The number of particle materials
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getNbParticleMaterials", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPBDParticleSystem_getNbParticleMaterials(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Returns particle materials referenced by particle phases
+        ///
+        ///  The particle materials
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getParticleMaterials", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPBDParticleSystem_getParticleMaterials(PxPBDParticleSystem* self_, PxPBDMaterial** userBuffer, uint bufferSize, uint startIndex);
+
+        /// <summary>
+        ///  Sets a user notify object which receives special simulation events when they occur.
+        ///
+        ///  Do not set the callback while the simulation is running. Calls to this method while the simulation is running will be ignored.
+        ///
+        ///  A call to fetchResultsParticleSystem() on the PxScene will synchronize the work such that the caller knows that all worke done in the callback completed.
+        ///
+        ///  See [`PxParticleSystemCallback`], #getParticleSystemCallback()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setParticleSystemCallback_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setParticleSystemCallback_mut(PxPBDParticleSystem* self_, PxParticleSystemCallback* callback);
+
+        /// <summary>
+        ///  Retrieves the simulationEventCallback pointer set with setSimulationEventCallback().
+        ///
+        ///  The current user notify pointer. See PxSimulationEventCallback.
+        ///
+        ///  See [`PxParticleSystemCallback`], #setParticleSystemCallback()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getParticleSystemCallback", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxParticleSystemCallback* PxPBDParticleSystem_getParticleSystemCallback(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Add an existing particle buffer to the particle system.
+        ///
+        ///  See [`PxParticleBuffer`].
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_addParticleBuffer_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_addParticleBuffer_mut(PxPBDParticleSystem* self_, PxParticleBuffer* particleBuffer);
+
+        /// <summary>
+        ///  Remove particle buffer from the particle system.
+        ///
+        ///  See [`PxParticleBuffer`].
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_removeParticleBuffer_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_removeParticleBuffer_mut(PxPBDParticleSystem* self_, PxParticleBuffer* particleBuffer);
+
+        /// <summary>
+        ///  Returns the GPU particle system index.
+        ///
+        ///  The GPU index, if the particle system is in a scene and PxSceneFlag::eENABLE_DIRECT_GPU_API is set, or 0xFFFFFFFF otherwise.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getGpuParticleSystemIndex_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPBDParticleSystem_getGpuParticleSystemIndex_mut(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set wind direction and intensity
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setWind_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setWind_mut(PxPBDParticleSystem* self_, PxVec3* wind);
+
+        /// <summary>
+        ///  Retrieves the wind direction and intensity.
+        ///
+        ///  The wind direction and intensity
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getWind", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxPBDParticleSystem_getWind(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set the fluid boundary density scale
+        ///
+        ///  Defines how strong of a contribution the boundary (typically a rigid surface) should have on a fluid particle's density.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setFluidBoundaryDensityScale_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setFluidBoundaryDensityScale_mut(PxPBDParticleSystem* self_, float fluidBoundaryDensityScale);
+
+        /// <summary>
+        ///  Return the fluid boundary density scale
+        ///
+        ///  the fluid boundary density scale
+        ///
+        ///  See [`setFluidBoundaryDensityScale`]()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getFluidBoundaryDensityScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDParticleSystem_getFluidBoundaryDensityScale(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set the fluid rest offset
+        ///
+        ///  Two fluid particles will come to rest at a distance equal to twice the fluidRestOffset value.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setFluidRestOffset_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setFluidRestOffset_mut(PxPBDParticleSystem* self_, float fluidRestOffset);
+
+        /// <summary>
+        ///  Return the fluid rest offset
+        ///
+        ///  the fluid rest offset
+        ///
+        ///  See [`setFluidRestOffset`]()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getFluidRestOffset", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDParticleSystem_getFluidRestOffset(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set the particle system grid size x dimension
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setGridSizeX_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setGridSizeX_mut(PxPBDParticleSystem* self_, uint gridSizeX);
+
+        /// <summary>
+        ///  Get the particle system grid size x dimension
+        ///
+        ///  [in] the x dimension in the particle grid
+        ///
+        ///  See [`setGridSizeX`]()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getGridSizeX", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPBDParticleSystem_getGridSizeX(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set the particle system grid size y dimension
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setGridSizeY_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setGridSizeY_mut(PxPBDParticleSystem* self_, uint gridSizeY);
+
+        /// <summary>
+        ///  Get the particle system grid size y dimension
+        ///
+        ///  [in] the y dimension in the particle grid
+        ///
+        ///  See [`setGridSizeY`]()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getGridSizeY", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPBDParticleSystem_getGridSizeY(PxPBDParticleSystem* self_);
+
+        /// <summary>
+        ///  Set the particle system grid size z dimension
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_setGridSizeZ_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDParticleSystem_setGridSizeZ_mut(PxPBDParticleSystem* self_, uint gridSizeZ);
+
+        /// <summary>
+        ///  Get the particle system grid size z dimension
+        ///
+        ///  [in] the z dimension in the particle grid
+        ///
+        ///  See [`setGridSizeZ`]()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getGridSizeZ", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPBDParticleSystem_getGridSizeZ(PxPBDParticleSystem* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxPBDParticleSystem_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxPBDParticleSystem_getConcreteTypeName(PxPBDParticleSystem* self_);
 
         /// <summary>
         ///  Default constructor.
@@ -3280,21 +4079,6 @@ namespace PhysX
         public static extern bool PxParticleSystemGeometry_isValid(PxParticleSystemGeometry* self_);
 
         /// <summary>
-        ///  Default constructor.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxHairSystemGeometry_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxHairSystemGeometry PxHairSystemGeometry_new();
-
-        /// <summary>
-        ///  Returns true if the geometry is valid.
-        ///
-        ///  True if the current settings are valid for shape creation.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxHairSystemGeometry_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxHairSystemGeometry_isValid(PxHairSystemGeometry* self_);
-
-        /// <summary>
         ///  Constructor. By default creates an empty object with a NULL mesh and identity scale.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxTetrahedronMeshGeometry_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
@@ -3306,7 +4090,7 @@ namespace PhysX
         ///  True if the current settings are valid for shape creation.
         ///
         ///  A valid tetrahedron mesh has a positive scale value in each direction (scale.scale.x &gt; 0, scale.scale.y &gt; 0, scale.scale.z &gt; 0).
-        ///  It is illegal to call PxRigidActor::createShape and PxPhysics::createShape with a tetrahedron mesh that has zero extents in any direction.
+        ///  It is illegal to call PxPhysics::createShape with a tetrahedron mesh that has zero extents in any direction.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxTetrahedronMeshGeometry_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -3342,83 +4126,17 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxGeomIndexPair_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxGeomIndexPair PxGeomIndexPair_new_1(uint _id0, uint _id1);
 
+        [DllImport(__DllName, EntryPoint = "PxGeomIndexClosePair_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxGeomIndexClosePair PxGeomIndexClosePair_new();
+
+        [DllImport(__DllName, EntryPoint = "PxGeomIndexClosePair_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxGeomIndexClosePair PxGeomIndexClosePair_new_1(uint _id0, uint _id1, float d);
+
         /// <summary>
         ///  For internal use
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "phys_PxCustomGeometry_getUniqueID", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint phys_PxCustomGeometry_getUniqueID();
-
-        /// <summary>
-        ///  Default constructor
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometryType_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxCustomGeometryType PxCustomGeometryType_new();
-
-        /// <summary>
-        ///  Invalid type
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometryType_INVALID", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxCustomGeometryType PxCustomGeometryType_INVALID();
-
-        /// <summary>
-        ///  Return custom type. The type purpose is for user to differentiate custom geometries. Not used by PhysX.
-        ///
-        ///  Unique ID of a custom geometry type.
-        ///
-        ///  User should use DECLARE_CUSTOM_GEOMETRY_TYPE and IMPLEMENT_CUSTOM_GEOMETRY_TYPE intead of overwriting this function.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometryCallbacks_getCustomType", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxCustomGeometryType PxCustomGeometryCallbacks_getCustomType(PxCustomGeometryCallbacks* self_);
-
-        /// <summary>
-        ///  Return local bounds.
-        ///
-        ///  Bounding box in the geometry local space.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometryCallbacks_getLocalBounds", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxBounds3 PxCustomGeometryCallbacks_getLocalBounds(PxCustomGeometryCallbacks* self_, PxGeometry* geometry);
-
-        /// <summary>
-        ///  Raycast. Cast a ray against the geometry in given pose.
-        ///
-        ///  Number of hits.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometryCallbacks_raycast", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxCustomGeometryCallbacks_raycast(PxCustomGeometryCallbacks* self_, PxVec3* origin, PxVec3* unitDir, PxGeometry* geom, PxTransform* pose, float maxDist, PxHitFlags hitFlags, uint maxHits, PxGeomRaycastHit* rayHits, uint stride, PxQueryThreadContext* threadContext);
-
-        /// <summary>
-        ///  Overlap. Test if geometries overlap.
-        ///
-        ///  True if there is overlap. False otherwise.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometryCallbacks_overlap", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxCustomGeometryCallbacks_overlap(PxCustomGeometryCallbacks* self_, PxGeometry* geom0, PxTransform* pose0, PxGeometry* geom1, PxTransform* pose1, PxQueryThreadContext* threadContext);
-
-        /// <summary>
-        ///  Sweep. Sweep one geometry against the other.
-        ///
-        ///  True if there is hit. False otherwise.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometryCallbacks_sweep", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxCustomGeometryCallbacks_sweep(PxCustomGeometryCallbacks* self_, PxVec3* unitDir, float maxDist, PxGeometry* geom0, PxTransform* pose0, PxGeometry* geom1, PxTransform* pose1, PxGeomSweepHit* sweepHit, PxHitFlags hitFlags, float inflation, PxQueryThreadContext* threadContext);
-
-        /// <summary>
-        ///  Compute custom geometry mass properties. For geometries usable with dynamic rigidbodies.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometryCallbacks_computeMassProperties", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxCustomGeometryCallbacks_computeMassProperties(PxCustomGeometryCallbacks* self_, PxGeometry* geometry, PxMassProperties* massProperties);
-
-        /// <summary>
-        ///  Compatible with PhysX's PCM feature. Allows to optimize contact generation.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometryCallbacks_usePersistentContactManifold", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxCustomGeometryCallbacks_usePersistentContactManifold(PxCustomGeometryCallbacks* self_, PxGeometry* geometry, float* breakingThreshold);
-
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometryCallbacks_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxCustomGeometryCallbacks_delete(PxCustomGeometryCallbacks* self_);
+        [DllImport(__DllName, EntryPoint = "PxCustomGeometry_getUniqueID", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxCustomGeometry_getUniqueID();
 
         /// <summary>
         ///  Default constructor.
@@ -3427,12 +4145,6 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxCustomGeometry_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxCustomGeometry PxCustomGeometry_new();
-
-        /// <summary>
-        ///  Constructor.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometry_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxCustomGeometry PxCustomGeometry_new_1(PxCustomGeometryCallbacks* _callbacks);
 
         /// <summary>
         ///  Returns true if the geometry is valid.
@@ -3444,10 +4156,43 @@ namespace PhysX
         public static extern bool PxCustomGeometry_isValid(PxCustomGeometry* self_);
 
         /// <summary>
-        ///  Returns the custom type of the custom geometry.
+        ///  Default constructor
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxCustomGeometry_getCustomType", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxCustomGeometryType PxCustomGeometry_getCustomType(PxCustomGeometry* self_);
+        [DllImport(__DllName, EntryPoint = "PxConvexCoreGeometry_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxConvexCoreGeometry PxConvexCoreGeometry_new();
+
+        /// <summary>
+        ///  Get the type of the core
+        ///
+        ///  The type of the core
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxConvexCoreGeometry_getCoreType", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxConvexCore PxConvexCoreGeometry_getCoreType(PxConvexCoreGeometry* self_);
+
+        /// <summary>
+        ///  Get a pointer to the core data.
+        ///
+        ///  A pointer to the core data.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxConvexCoreGeometry_getCoreData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void* PxConvexCoreGeometry_getCoreData(PxConvexCoreGeometry* self_);
+
+        /// <summary>
+        ///  Get the margin of the convex core geometry.
+        ///
+        ///  The margin size.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxConvexCoreGeometry_getMargin", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxConvexCoreGeometry_getMargin(PxConvexCoreGeometry* self_);
+
+        /// <summary>
+        ///  Check if the convex core geometry is valid.
+        ///
+        ///  True if the geometry is valid, false otherwise.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxConvexCoreGeometry_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxConvexCoreGeometry_isValid(PxConvexCoreGeometry* self_);
 
         [DllImport(__DllName, EntryPoint = "PxGeometryHolder_getType", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxGeometryType PxGeometryHolder_getType(PxGeometryHolder* self_);
@@ -3482,6 +4227,12 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxGeometryHolder_box", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxBoxGeometry* PxGeometryHolder_box(PxGeometryHolder* self_);
 
+        [DllImport(__DllName, EntryPoint = "PxGeometryHolder_convexCore_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxConvexCoreGeometry* PxGeometryHolder_convexCore_mut(PxGeometryHolder* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxGeometryHolder_convexCore", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxConvexCoreGeometry* PxGeometryHolder_convexCore(PxGeometryHolder* self_);
+
         [DllImport(__DllName, EntryPoint = "PxGeometryHolder_convexMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxConvexMeshGeometry* PxGeometryHolder_convexMesh_mut(PxGeometryHolder* self_);
 
@@ -3512,12 +4263,6 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxGeometryHolder_particleSystem", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxParticleSystemGeometry* PxGeometryHolder_particleSystem(PxGeometryHolder* self_);
 
-        [DllImport(__DllName, EntryPoint = "PxGeometryHolder_hairSystem_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxHairSystemGeometry* PxGeometryHolder_hairSystem_mut(PxGeometryHolder* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxGeometryHolder_hairSystem", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxHairSystemGeometry* PxGeometryHolder_hairSystem(PxGeometryHolder* self_);
-
         [DllImport(__DllName, EntryPoint = "PxGeometryHolder_custom_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxCustomGeometry* PxGeometryHolder_custom_mut(PxGeometryHolder* self_);
 
@@ -3536,7 +4281,7 @@ namespace PhysX
         /// <summary>
         ///  Raycast test against a geometry object.
         ///
-        ///  All geometry types are supported except PxParticleSystemGeometry, PxTetrahedronMeshGeometry and PxHairSystemGeometry.
+        ///  All geometry types are supported except PxParticleSystemGeometry and PxTetrahedronMeshGeometry.
         ///
         ///  Number of hits between the ray and the geometry object
         /// </summary>
@@ -3554,7 +4299,7 @@ namespace PhysX
         ///
         ///  PxHeightFieldGeometry vs. PxHeightFieldGeometry
         ///
-        ///  Anything involving PxParticleSystemGeometry, PxTetrahedronMeshGeometry or PxHairSystemGeometry.
+        ///  Anything involving PxParticleSystemGeometry or PxTetrahedronMeshGeometry
         ///
         ///  True if the two geometry objects overlap
         /// </summary>
@@ -3567,13 +4312,15 @@ namespace PhysX
         ///
         ///  The following combinations are supported.
         ///
-        ///  PxSphereGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
+        ///  PxSphereGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexCoreGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
         ///
-        ///  PxCapsuleGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
+        ///  PxCapsuleGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexCoreGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
         ///
-        ///  PxBoxGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
+        ///  PxBoxGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexCoreGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
         ///
-        ///  PxConvexMeshGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
+        ///  PxConvexCoreGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexCoreGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
+        ///
+        ///  PxConvexMeshGeometry vs. {PxSphereGeometry, PxPlaneGeometry, PxCapsuleGeometry, PxBoxGeometry, PxConvexCoreGeometry, PxConvexMeshGeometry, PxTriangleMeshGeometry, PxHeightFieldGeometry}
         ///
         ///  True if the swept geometry object geom0 hits the object geom1
         /// </summary>
@@ -3591,7 +4338,7 @@ namespace PhysX
         ///  - mesh/mesh
         ///  - mesh/heightfield
         ///  - heightfield/heightfield
-        ///  - anything involving PxParticleSystemGeometry, PxTetrahedronMeshGeometry or PxHairSystemGeometry
+        ///  - anything involving PxParticleSystemGeometry, PxTetrahedronMeshGeometry
         ///
         ///  The function returns a unit vector ('direction') and a penetration depth ('depth').
         ///
@@ -3611,7 +4358,7 @@ namespace PhysX
         /// <summary>
         ///  Computes distance between a point and a geometry object.
         ///
-        ///  Currently supported geometry objects: box, sphere, capsule, convex, mesh.
+        ///  Currently supported geometry objects: box, sphere, capsule, convex core, convex mesh, mesh.
         ///
         ///  For meshes, only the BVH34 midphase data-structure is supported.
         ///
@@ -3622,9 +4369,21 @@ namespace PhysX
 
         /// <summary>
         ///  computes the bounds for a geometry object
+        ///
+        ///  True if success, false if an error occurred and the bounds were not written out.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxGeometryQuery_computeGeomBounds", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxGeometryQuery_computeGeomBounds(PxBounds3* bounds, PxGeometry* geom, PxTransform* pose, float offset, float inflation, PxGeometryQueryFlags queryFlags);
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxGeometryQuery_computeGeomBounds(PxBounds3* bounds, PxGeometry* geom, PxTransform* pose, float offset, float inflation, PxGeometryQueryFlags queryFlags);
+
+        /// <summary>
+        ///  Generate collision contacts between a convex geometry and a single triangle
+        ///
+        ///  True if there was collision
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxGeometryQuery_generateTriangleContacts", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxGeometryQuery_generateTriangleContacts(PxGeometry* geom, PxTransform* pose, PxVec3* triangleVertices, uint triangleIndex, float contactDistance, float meshContactMargin, float toleranceLength, PxContactBuffer* contactBuffer);
 
         /// <summary>
         ///  Checks if provided geometry is valid.
@@ -3874,7 +4633,7 @@ namespace PhysX
         ///
         ///  This function returns a single closest hit across all the input triangles. Multiple hits are not supported.
         ///
-        ///  Supported hitFlags are PxHitFlag::eDEFAULT, PxHitFlag::eASSUME_NO_INITIAL_OVERLAP, PxHitFlag::ePRECISE_SWEEP, PxHitFlag::eMESH_BOTH_SIDES, PxHitFlag::eMESH_ANY.
+        ///  Supported hitFlags are PxHitFlag::eDEFAULT, PxHitFlag::eASSUME_NO_INITIAL_OVERLAP, PxHitFlag::ePRECISE_SWEEP, PxHitFlag::eMESH_BOTH_SIDES, PxHitFlag::eANY_HIT.
         ///
         ///  ePOSITION is only defined when there is no initial overlap (sweepHit.hadInitialOverlap() == false)
         ///
@@ -4164,8 +4923,16 @@ namespace PhysX
         /// <summary>
         ///  Decrements the reference count of a tetrahedron mesh and releases it if the new reference count is zero.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSoftBodyAuxData_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxSoftBodyAuxData_release_mut(PxSoftBodyAuxData* self_);
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeAuxData_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableVolumeAuxData_release_mut(PxDeformableVolumeAuxData* self_);
+
+        /// <summary>
+        ///  Get the inverse mass of each vertex of the tetrahedron mesh.
+        ///
+        ///  PxReal* A pointer to an array of inverse mass for each vertex of the tetrahedron mesh. Size: number of vertices * sizeof(PxReal).
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeAuxData_getGridModelInvMass_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float* PxDeformableVolumeAuxData_getGridModelInvMass_mut(PxDeformableVolumeAuxData* self_);
 
         /// <summary>
         ///  Returns the number of vertices.
@@ -4243,46 +5010,46 @@ namespace PhysX
         public static extern void PxTetrahedronMesh_release_mut(PxTetrahedronMesh* self_);
 
         /// <summary>
-        ///  Const accecssor to the softbody's collision mesh.
+        ///  Const accecssor to the deformable volume's collision mesh.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSoftBodyMesh_getCollisionMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTetrahedronMesh* PxSoftBodyMesh_getCollisionMesh(PxSoftBodyMesh* self_);
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeMesh_getCollisionMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTetrahedronMesh* PxDeformableVolumeMesh_getCollisionMesh(PxDeformableVolumeMesh* self_);
 
         /// <summary>
-        ///  Accecssor to the softbody's collision mesh.
+        ///  Accecssor to the deformable volume's collision mesh.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSoftBodyMesh_getCollisionMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTetrahedronMesh* PxSoftBodyMesh_getCollisionMesh_mut(PxSoftBodyMesh* self_);
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeMesh_getCollisionMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTetrahedronMesh* PxDeformableVolumeMesh_getCollisionMesh_mut(PxDeformableVolumeMesh* self_);
 
         /// <summary>
-        ///  Const accessor to the softbody's simulation mesh.
+        ///  Const accessor to the deformable volume's simulation mesh.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSoftBodyMesh_getSimulationMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTetrahedronMesh* PxSoftBodyMesh_getSimulationMesh(PxSoftBodyMesh* self_);
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeMesh_getSimulationMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTetrahedronMesh* PxDeformableVolumeMesh_getSimulationMesh(PxDeformableVolumeMesh* self_);
 
         /// <summary>
-        ///  Accecssor to the softbody's simulation mesh.
+        ///  Accecssor to the deformable volume's simulation mesh.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSoftBodyMesh_getSimulationMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTetrahedronMesh* PxSoftBodyMesh_getSimulationMesh_mut(PxSoftBodyMesh* self_);
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeMesh_getSimulationMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTetrahedronMesh* PxDeformableVolumeMesh_getSimulationMesh_mut(PxDeformableVolumeMesh* self_);
 
         /// <summary>
-        ///  Const accessor to the softbodies simulation state.
+        ///  Const accessor to the deformable volume's simulation state.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSoftBodyMesh_getSoftBodyAuxData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxSoftBodyAuxData* PxSoftBodyMesh_getSoftBodyAuxData(PxSoftBodyMesh* self_);
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeMesh_getDeformableVolumeAuxData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolumeAuxData* PxDeformableVolumeMesh_getDeformableVolumeAuxData(PxDeformableVolumeMesh* self_);
 
         /// <summary>
-        ///  Accessor to the softbody's auxilary data like mass and rest pose information
+        ///  Accessor to the deformable volume's auxilary data like mass and rest pose information
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSoftBodyMesh_getSoftBodyAuxData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxSoftBodyAuxData* PxSoftBodyMesh_getSoftBodyAuxData_mut(PxSoftBodyMesh* self_);
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeMesh_getDeformableVolumeAuxData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolumeAuxData* PxDeformableVolumeMesh_getDeformableVolumeAuxData_mut(PxDeformableVolumeMesh* self_);
 
         /// <summary>
         ///  Decrements the reference count of a tetrahedron mesh and releases it if the new reference count is zero.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSoftBodyMesh_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxSoftBodyMesh_release_mut(PxSoftBodyMesh* self_);
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeMesh_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableVolumeMesh_release_mut(PxDeformableVolumeMesh* self_);
 
         [DllImport(__DllName, EntryPoint = "PxCollisionMeshMappingData_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxCollisionMeshMappingData_release_mut(PxCollisionMeshMappingData* self_);
@@ -4294,10 +5061,10 @@ namespace PhysX
         public static extern PxTetrahedronMeshData* PxCollisionTetrahedronMeshData_getMesh_mut(PxCollisionTetrahedronMeshData* self_);
 
         [DllImport(__DllName, EntryPoint = "PxCollisionTetrahedronMeshData_getData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxSoftBodyCollisionData* PxCollisionTetrahedronMeshData_getData(PxCollisionTetrahedronMeshData* self_);
+        public static extern PxDeformableVolumeCollisionData* PxCollisionTetrahedronMeshData_getData(PxCollisionTetrahedronMeshData* self_);
 
         [DllImport(__DllName, EntryPoint = "PxCollisionTetrahedronMeshData_getData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxSoftBodyCollisionData* PxCollisionTetrahedronMeshData_getData_mut(PxCollisionTetrahedronMeshData* self_);
+        public static extern PxDeformableVolumeCollisionData* PxCollisionTetrahedronMeshData_getData_mut(PxCollisionTetrahedronMeshData* self_);
 
         [DllImport(__DllName, EntryPoint = "PxCollisionTetrahedronMeshData_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxCollisionTetrahedronMeshData_release_mut(PxCollisionTetrahedronMeshData* self_);
@@ -4306,152 +5073,10 @@ namespace PhysX
         public static extern PxTetrahedronMeshData* PxSimulationTetrahedronMeshData_getMesh_mut(PxSimulationTetrahedronMeshData* self_);
 
         [DllImport(__DllName, EntryPoint = "PxSimulationTetrahedronMeshData_getData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxSoftBodySimulationData* PxSimulationTetrahedronMeshData_getData_mut(PxSimulationTetrahedronMeshData* self_);
+        public static extern PxDeformableVolumeSimulationData* PxSimulationTetrahedronMeshData_getData_mut(PxSimulationTetrahedronMeshData* self_);
 
         [DllImport(__DllName, EntryPoint = "PxSimulationTetrahedronMeshData_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxSimulationTetrahedronMeshData_release_mut(PxSimulationTetrahedronMeshData* self_);
-
-        /// <summary>
-        ///  Deletes the actor.
-        ///
-        ///  Do not keep a reference to the deleted instance.
-        ///
-        ///  If the actor belongs to a [`PxAggregate`] object, it is automatically removed from the aggregate.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxActor_release_mut(PxActor* self_);
-
-        /// <summary>
-        ///  Retrieves the type of actor.
-        ///
-        ///  The actor type of the actor.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_getType", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxActorType PxActor_getType(PxActor* self_);
-
-        /// <summary>
-        ///  Retrieves the scene which this actor belongs to.
-        ///
-        ///  Owner Scene. NULL if not part of a scene.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_getScene", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxScene* PxActor_getScene(PxActor* self_);
-
-        /// <summary>
-        ///  Sets a name string for the object that can be retrieved with getName().
-        ///
-        ///  This is for debugging and is not used by the SDK. The string is not copied by the SDK,
-        ///  only the pointer is stored.
-        ///
-        ///  Default:
-        ///  NULL
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_setName_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxActor_setName_mut(PxActor* self_, byte* name);
-
-        /// <summary>
-        ///  Retrieves the name string set with setName().
-        ///
-        ///  Name string associated with object.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_getName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern byte* PxActor_getName(PxActor* self_);
-
-        /// <summary>
-        ///  Retrieves the axis aligned bounding box enclosing the actor.
-        ///
-        ///  It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
-        ///  in PxContactModifyCallback or in contact report callbacks).
-        ///
-        ///  The actor's bounding box.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_getWorldBounds", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxBounds3 PxActor_getWorldBounds(PxActor* self_, float inflation);
-
-        /// <summary>
-        ///  Raises or clears a particular actor flag.
-        ///
-        ///  See the list of flags [`PxActorFlag`]
-        ///
-        ///  Sleeping:
-        ///  Does
-        ///  NOT
-        ///  wake the actor up automatically.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_setActorFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxActor_setActorFlag_mut(PxActor* self_, PxActorFlag flag, [MarshalAs(UnmanagedType.U1)] bool value);
-
-        /// <summary>
-        ///  Sets the actor flags.
-        ///
-        ///  See the list of flags [`PxActorFlag`]
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_setActorFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxActor_setActorFlags_mut(PxActor* self_, PxActorFlags inFlags);
-
-        /// <summary>
-        ///  Reads the PxActor flags.
-        ///
-        ///  See the list of flags [`PxActorFlag`]
-        ///
-        ///  The values of the PxActor flags.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_getActorFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxActorFlags PxActor_getActorFlags(PxActor* self_);
-
-        /// <summary>
-        ///  Assigns dynamic actors a dominance group identifier.
-        ///
-        ///  PxDominanceGroup is a 5 bit group identifier (legal range from 0 to 31).
-        ///
-        ///  The PxScene::setDominanceGroupPair() lets you set certain behaviors for pairs of dominance groups.
-        ///  By default every dynamic actor is created in group 0.
-        ///
-        ///  Default:
-        ///  0
-        ///
-        ///  Sleeping:
-        ///  Changing the dominance group does
-        ///  NOT
-        ///  wake the actor up automatically.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_setDominanceGroup_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxActor_setDominanceGroup_mut(PxActor* self_, byte dominanceGroup);
-
-        /// <summary>
-        ///  Retrieves the value set with setDominanceGroup().
-        ///
-        ///  The dominance group of this actor.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_getDominanceGroup", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern byte PxActor_getDominanceGroup(PxActor* self_);
-
-        /// <summary>
-        ///  Sets the owner client of an actor.
-        ///
-        ///  This cannot be done once the actor has been placed into a scene.
-        ///
-        ///  Default:
-        ///  PX_DEFAULT_CLIENT
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_setOwnerClient_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxActor_setOwnerClient_mut(PxActor* self_, byte inClient);
-
-        /// <summary>
-        ///  Returns the owner client that was specified at creation time.
-        ///
-        ///  This value cannot be changed once the object is placed into the scene.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_getOwnerClient", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern byte PxActor_getOwnerClient(PxActor* self_);
-
-        /// <summary>
-        ///  Retrieves the aggregate the actor might be a part of.
-        ///
-        ///  The aggregate the actor is a part of, or NULL if the actor does not belong to an aggregate.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxActor_getAggregate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxAggregate* PxActor_getAggregate(PxActor* self_);
 
         [DllImport(__DllName, EntryPoint = "phys_PxGetAggregateFilterHint", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint phys_PxGetAggregateFilterHint(PxAggregateType type_, [MarshalAs(UnmanagedType.U1)] bool enableSelfCollision);
@@ -4509,7 +5134,7 @@ namespace PhysX
         ///  Adds an articulation to the aggregate object.
         ///
         ///  A warning is output if the total number of actors is reached (every articulation link counts as an actor),
-        ///  or if the incoming articulation already belongs to an aggregate.
+        ///  or if the incoming articulation already belongs	to an aggregate.
         ///
         ///  If the aggregate belongs to a scene, adding an articulation to the aggregate also adds the articulation to that scene.
         ///
@@ -4541,6 +5166,14 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxAggregate_getNbActors", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint PxAggregate_getNbActors(PxAggregate* self_);
+
+        /// <summary>
+        ///  Retrieves max amount of actors that can be contained in the aggregate.
+        ///
+        ///  Max actor size.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxAggregate_getMaxNbActors", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxAggregate_getMaxNbActors(PxAggregate* self_);
 
         /// <summary>
         ///  Retrieves max amount of shapes that can be contained in the aggregate.
@@ -4577,6 +5210,47 @@ namespace PhysX
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxAggregate_getSelfCollision(PxAggregate* self_);
 
+        /// <summary>
+        ///  Sets the environment ID for this aggregate.
+        ///
+        ///  The environment ID is an extra built-in filter group for the GPU broadphase. Aggregates will only collide with actors or aggregates that
+        ///  have the same environment ID.
+        ///
+        ///  The default value is PX_INVALID_U32. Aggregates with this ID will collide with other actors or aggregates, regardless of which environment
+        ///  they are a part of.
+        ///
+        ///  The environment ID must be set before adding the aggregate to a scene, and cannot change while the aggregate is in the scene.
+        ///
+        ///  If it is not PX_INVALID_U32, the environment ID must be smaller than 1
+        ///  &lt;
+        ///  &lt;
+        ///  24, i.e. the system does not support more than 1
+        ///  &lt;
+        ///  &lt;
+        ///  24 environments.
+        ///
+        ///  Aggregated actors must have a default environment ID (PX_INVALID_U32). The environment ID of the aggregate is used in the broadphase, not
+        ///  the environment IDs from aggregated actors.
+        ///
+        ///  Default:
+        ///  PX_INVALID_U32
+        ///
+        ///  This is not available for CPU broadphases.
+        ///
+        ///  True if success.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxAggregate_setEnvironmentID_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxAggregate_setEnvironmentID_mut(PxAggregate* self_, uint envID);
+
+        /// <summary>
+        ///  Returns the environment ID for this aggregate.
+        ///
+        ///  Environment ID for this aggregate.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxAggregate_getEnvironmentID", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxAggregate_getEnvironmentID(PxAggregate* self_);
+
         [DllImport(__DllName, EntryPoint = "PxAggregate_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern byte* PxAggregate_getConcreteTypeName(PxAggregate* self_);
 
@@ -4596,25 +5270,25 @@ namespace PhysX
         ///  Visualize joint linear limit
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxConstraintVisualizer_visualizeLinearLimit_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxConstraintVisualizer_visualizeLinearLimit_mut(PxConstraintVisualizer* self_, PxTransform* t0, PxTransform* t1, float value, [MarshalAs(UnmanagedType.U1)] bool active);
+        public static extern void PxConstraintVisualizer_visualizeLinearLimit_mut(PxConstraintVisualizer* self_, PxTransform* t0, PxTransform* t1, float value);
 
         /// <summary>
         ///  Visualize joint angular limit
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxConstraintVisualizer_visualizeAngularLimit_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxConstraintVisualizer_visualizeAngularLimit_mut(PxConstraintVisualizer* self_, PxTransform* t0, float lower, float upper, [MarshalAs(UnmanagedType.U1)] bool active);
+        public static extern void PxConstraintVisualizer_visualizeAngularLimit_mut(PxConstraintVisualizer* self_, PxTransform* t0, float lower, float upper);
 
         /// <summary>
         ///  Visualize limit cone
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxConstraintVisualizer_visualizeLimitCone_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxConstraintVisualizer_visualizeLimitCone_mut(PxConstraintVisualizer* self_, PxTransform* t, float tanQSwingY, float tanQSwingZ, [MarshalAs(UnmanagedType.U1)] bool active);
+        public static extern void PxConstraintVisualizer_visualizeLimitCone_mut(PxConstraintVisualizer* self_, PxTransform* t, float tanQSwingY, float tanQSwingZ);
 
         /// <summary>
         ///  Visualize joint double cone
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxConstraintVisualizer_visualizeDoubleCone_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxConstraintVisualizer_visualizeDoubleCone_mut(PxConstraintVisualizer* self_, PxTransform* t, float angle, [MarshalAs(UnmanagedType.U1)] bool active);
+        public static extern void PxConstraintVisualizer_visualizeDoubleCone_mut(PxConstraintVisualizer* self_, PxTransform* t, float angle);
 
         /// <summary>
         ///  Visualize line
@@ -4629,6 +5303,12 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxConstraintConnector_prepareData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void* PxConstraintConnector_prepareData_mut(PxConstraintConnector* self_);
+
+        /// <summary>
+        ///  this function is called by the SDK to update OmniPVD's view of it
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxConstraintConnector_updateOmniPvdProperties", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxConstraintConnector_updateOmniPvdProperties(PxConstraintConnector* self_);
 
         /// <summary>
         ///  Constraint release callback
@@ -4666,6 +5346,18 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxConstraintConnector_onOriginShift_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxConstraintConnector_onOriginShift_mut(PxConstraintConnector* self_, PxVec3* shift);
+
+        /// <summary>
+        ///  Fetches external data for a constraint.
+        ///
+        ///  This function is used by the SDK to acquire a reference to the owner of a constraint and a unique
+        ///  owner type ID. This information will be passed on when a breakable constraint breaks or when
+        ///  [`PxConstraint::getExternalReference`]() is called.
+        ///
+        ///  Reference to the external object which owns the constraint.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxConstraintConnector_getExternalReference_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void* PxConstraintConnector_getExternalReference_mut(PxConstraintConnector* self_, uint* typeID);
 
         /// <summary>
         ///  Obtain a reference to a PxBase interface if the constraint has one.
@@ -4728,11 +5420,29 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxArticulationLimit_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxArticulationLimit PxArticulationLimit_new_1(float low_, float high_);
 
+        [DllImport(__DllName, EntryPoint = "PxPerformanceEnvelope_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxPerformanceEnvelope PxPerformanceEnvelope_new(PxEMPTY* anon_param0);
+
+        [DllImport(__DllName, EntryPoint = "PxPerformanceEnvelope_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxPerformanceEnvelope PxPerformanceEnvelope_new_1(float maxEffort_, float maxActuatorVelocity_, float velocityDependentResistance_, float speedEffortGradient_);
+
+        [DllImport(__DllName, EntryPoint = "PxJointFrictionParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxJointFrictionParams PxJointFrictionParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxJointFrictionParams_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxJointFrictionParams PxJointFrictionParams_new_1(float staticFrictionEffort_, float dynamicFrictionEffort_, float viscousFrictionCoefficient_);
+
         [DllImport(__DllName, EntryPoint = "PxArticulationDrive_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxArticulationDrive PxArticulationDrive_new();
+        public static extern PxArticulationDrive PxArticulationDrive_new(PxEMPTY* anon_param0);
 
         [DllImport(__DllName, EntryPoint = "PxArticulationDrive_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxArticulationDrive PxArticulationDrive_new_1(float stiffness_, float damping_, float maxForce_, PxArticulationDriveType driveType_);
+        public static extern PxArticulationDrive PxArticulationDrive_new_1();
+
+        [DllImport(__DllName, EntryPoint = "PxArticulationDrive_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxArticulationDrive PxArticulationDrive_new_2(float stiffness_, float damping_, float maxForce_, PxArticulationDriveType driveType_);
+
+        [DllImport(__DllName, EntryPoint = "PxArticulationDrive_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxArticulationDrive PxArticulationDrive_new_3(float stiffness_, float damping_, PxPerformanceEnvelope envelope_, PxArticulationDriveType driveType_);
 
         [DllImport(__DllName, EntryPoint = "PxTGSSolverBodyVel_projectVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxTGSSolverBodyVel_projectVelocity(PxTGSSolverBodyVel* self_, PxVec3* lin, PxVec3* ang);
@@ -4747,6 +5457,8 @@ namespace PhysX
         ///  Sets the spring rest length for the sub-tendon from the root to this leaf attachment.
         ///
         ///  Setting this on non-leaf attachments has no effect.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationAttachment_setRestLength_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationAttachment_setRestLength_mut(PxArticulationAttachment* self_, float restLength);
@@ -4755,6 +5467,8 @@ namespace PhysX
         ///  Gets the spring rest length for the sub-tendon from the root to this leaf attachment.
         ///
         ///  The rest length.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationAttachment_getRestLength", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxArticulationAttachment_getRestLength(PxArticulationAttachment* self_);
@@ -4763,6 +5477,8 @@ namespace PhysX
         ///  Sets the low and high limit on the length of the sub-tendon from the root to this leaf attachment.
         ///
         ///  Setting this on non-leaf attachments has no effect.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationAttachment_setLimitParameters_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationAttachment_setLimitParameters_mut(PxArticulationAttachment* self_, PxArticulationTendonLimit* parameters);
@@ -4771,12 +5487,16 @@ namespace PhysX
         ///  Gets the low and high limit on the length of the sub-tendon from the root to this leaf attachment.
         ///
         ///  Struct with the low and high limit.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationAttachment_getLimitParameters", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxArticulationTendonLimit PxArticulationAttachment_getLimitParameters(PxArticulationAttachment* self_);
 
         /// <summary>
         ///  Sets the attachment's relative offset in the link actor frame.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationAttachment_setRelativeOffset_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationAttachment_setRelativeOffset_mut(PxArticulationAttachment* self_, PxVec3* offset);
@@ -4785,12 +5505,16 @@ namespace PhysX
         ///  Gets the attachment's relative offset in the link actor frame.
         ///
         ///  The relative offset in the link actor frame.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationAttachment_getRelativeOffset", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxArticulationAttachment_getRelativeOffset(PxArticulationAttachment* self_);
 
         /// <summary>
         ///  Sets the attachment coefficient.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationAttachment_setCoefficient_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationAttachment_setCoefficient_mut(PxArticulationAttachment* self_, float coefficient);
@@ -4799,6 +5523,8 @@ namespace PhysX
         ///  Gets the attachment coefficient.
         ///
         ///  The scale that the distance between this attachment and its parent is multiplied by when summing up the spatial tendon's length.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationAttachment_getCoefficient", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxArticulationAttachment_getCoefficient(PxArticulationAttachment* self_);
@@ -4858,12 +5584,16 @@ namespace PhysX
         ///
         ///  RecipCoefficient is commonly expected to be 1/coefficient, but it can be set to different values to tune behavior; for example, zero can be used to
         ///  have a joint axis only participate in the length computation of the tendon, but not have any tendon force applied to it.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationTendonJoint_setCoefficient_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationTendonJoint_setCoefficient_mut(PxArticulationTendonJoint* self_, PxArticulationAxis axis, float coefficient, float recipCoefficient);
 
         /// <summary>
         ///  Gets the tendon joint coefficient.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationTendonJoint_getCoefficient", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationTendonJoint_getCoefficient(PxArticulationTendonJoint* self_, PxArticulationAxis* axis, float* coefficient, float* recipCoefficient);
@@ -4911,6 +5641,8 @@ namespace PhysX
 
         /// <summary>
         ///  Sets the spring stiffness term acting on the tendon length.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationTendon_setStiffness_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationTendon_setStiffness_mut(PxArticulationTendon* self_, float stiffness);
@@ -4919,12 +5651,16 @@ namespace PhysX
         ///  Gets the spring stiffness of the tendon.
         ///
         ///  The spring stiffness.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationTendon_getStiffness", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxArticulationTendon_getStiffness(PxArticulationTendon* self_);
 
         /// <summary>
         ///  Sets the damping term acting both on the tendon length and tendon-length limits.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationTendon_setDamping_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationTendon_setDamping_mut(PxArticulationTendon* self_, float damping);
@@ -4933,6 +5669,8 @@ namespace PhysX
         ///  Gets the damping term acting both on the tendon length and tendon-length limits.
         ///
         ///  The damping term.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationTendon_getDamping", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxArticulationTendon_getDamping(PxArticulationTendon* self_);
@@ -4941,6 +5679,8 @@ namespace PhysX
         ///  Sets the limit stiffness term acting on the tendon's length limits.
         ///
         ///  For spatial tendons, this parameter applies to all its leaf attachments / sub-tendons.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationTendon_setLimitStiffness_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationTendon_setLimitStiffness_mut(PxArticulationTendon* self_, float stiffness);
@@ -4951,6 +5691,8 @@ namespace PhysX
         ///  For spatial tendons, this parameter applies to all its leaf attachments / sub-tendons.
         ///
         ///  The limit stiffness term.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationTendon_getLimitStiffness", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxArticulationTendon_getLimitStiffness(PxArticulationTendon* self_);
@@ -4960,6 +5702,8 @@ namespace PhysX
         ///
         ///  An offset defines an amount to be added to the accumulated length computed for the tendon. It allows the
         ///  application to actuate the tendon by shortening or lengthening it.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationTendon_setOffset_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationTendon_setOffset_mut(PxArticulationTendon* self_, float offset, [MarshalAs(UnmanagedType.U1)] bool autowake);
@@ -4968,6 +5712,8 @@ namespace PhysX
         ///  Gets the length offset term for the tendon.
         ///
         ///  The offset term.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationTendon_getOffset", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxArticulationTendon_getOffset(PxArticulationTendon* self_);
@@ -5065,6 +5811,8 @@ namespace PhysX
         ///
         ///  The spring of the tendon is not exerting any force on the articulation when the rest length is equal to the
         ///  tendon's accumulated length plus the tendon offset.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationFixedTendon_setRestLength_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationFixedTendon_setRestLength_mut(PxArticulationFixedTendon* self_, float restLength);
@@ -5073,6 +5821,8 @@ namespace PhysX
         ///  Gets the spring rest length of the tendon.
         ///
         ///  The spring rest length of the tendon.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationFixedTendon_getRestLength", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxArticulationFixedTendon_getRestLength(PxArticulationFixedTendon* self_);
@@ -5081,6 +5831,8 @@ namespace PhysX
         ///  Sets the low and high limit on the length of the tendon.
         ///
         ///  The limits, together with the damping and limit stiffness parameters, act on the accumulated length of the tendon.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationFixedTendon_setLimitParameters_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationFixedTendon_setLimitParameters_mut(PxArticulationFixedTendon* self_, PxArticulationTendonLimit* parameter);
@@ -5089,6 +5841,8 @@ namespace PhysX
         ///  Gets the low and high limit on the length of the tendon.
         ///
         ///  Struct with the low and high limit.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationFixedTendon_getLimitParameters", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxArticulationTendonLimit PxArticulationFixedTendon_getLimitParameters(PxArticulationFixedTendon* self_);
@@ -5101,6 +5855,119 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxArticulationFixedTendon_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern byte* PxArticulationFixedTendon_getConcreteTypeName(PxArticulationFixedTendon* self_);
 
+        /// <summary>
+        ///  Releases the mimic joint.
+        ///
+        ///  Releasing a mimic joint is not allowed while the articulation is in a scene. In order to
+        ///  release a mimic joint, remove and then re-add the articulation to the scene.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationMimicJoint_release_mut(PxArticulationMimicJoint* self_);
+
+        /// <summary>
+        ///  Returns the articulation that this mimic joint is part of.
+        ///
+        ///  A reference to the articulation.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_getArticulation", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxArticulationReducedCoordinate* PxArticulationMimicJoint_getArticulation(PxArticulationMimicJoint* self_);
+
+        /// <summary>
+        ///  Get the gear of a mimic joint.
+        ///
+        ///  The gear ratio.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_getGearRatio", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxArticulationMimicJoint_getGearRatio(PxArticulationMimicJoint* self_);
+
+        /// <summary>
+        ///  Set the gear ratio of a mimic joint.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_setGearRatio_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationMimicJoint_setGearRatio_mut(PxArticulationMimicJoint* self_, float gearRatio);
+
+        /// <summary>
+        ///  Get the offset of a mimic joint.
+        ///
+        ///  The offset.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_getOffset", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxArticulationMimicJoint_getOffset(PxArticulationMimicJoint* self_);
+
+        /// <summary>
+        ///  Set the offset of a mimic joint.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_setOffset_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationMimicJoint_setOffset_mut(PxArticulationMimicJoint* self_, float offset);
+
+        /// <summary>
+        ///  Get the natural frequency of a mimic joint.
+        ///
+        ///  The natural frequency.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_getNaturalFrequency", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxArticulationMimicJoint_getNaturalFrequency(PxArticulationMimicJoint* self_);
+
+        /// <summary>
+        ///  Set the natural frequency of a mimic joint.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_setNaturalFrequency_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationMimicJoint_setNaturalFrequency_mut(PxArticulationMimicJoint* self_, float naturalFrequency);
+
+        /// <summary>
+        ///  Get the damping ratio of a mimic joint.
+        ///
+        ///  The damping ratio.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_getDampingRatio", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxArticulationMimicJoint_getDampingRatio(PxArticulationMimicJoint* self_);
+
+        /// <summary>
+        ///  Set the damping ratio of a mimic joint.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_setDampingRatio_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationMimicJoint_setDampingRatio_mut(PxArticulationMimicJoint* self_, float dampingRatio);
+
+        /// <summary>
+        ///  Return the jointA specified in PxArticulationReducedCoordinate::createMimicJoint()
+        ///
+        ///  The jointA specified in PxArticulationReducedCoordinate::createMimicJoint()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_getJointA", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxArticulationJointReducedCoordinate* PxArticulationMimicJoint_getJointA(PxArticulationMimicJoint* self_);
+
+        /// <summary>
+        ///  Return the jointB specified in PxArticulationReducedCoordinate::createMimicJoint()
+        ///
+        ///  The jointB specified in PxArticulationReducedCoordinate::createMimicJoint()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_getJointB", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxArticulationJointReducedCoordinate* PxArticulationMimicJoint_getJointB(PxArticulationMimicJoint* self_);
+
+        /// <summary>
+        ///  Return the axisA specified in PxArticulationReducedCoordinate::createMimicJoint()
+        ///
+        ///  The axisA specified in PxArticulationReducedCoordinate::createMimicJoint()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_getAxisA", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxArticulationAxis PxArticulationMimicJoint_getAxisA(PxArticulationMimicJoint* self_);
+
+        /// <summary>
+        ///  Return the axisB specified in PxArticulationReducedCoordinate::createMimicJoint()
+        ///
+        ///  The axisB specified in PxArticulationReducedCoordinate::createMimicJoint()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_getAxisB", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxArticulationAxis PxArticulationMimicJoint_getAxisB(PxArticulationMimicJoint* self_);
+
+        /// <summary>
+        ///  Returns the string name of the dynamic type.
+        ///
+        ///  The string name.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationMimicJoint_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxArticulationMimicJoint_getConcreteTypeName(PxArticulationMimicJoint* self_);
+
         [DllImport(__DllName, EntryPoint = "PxArticulationCache_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxArticulationCache PxArticulationCache_new();
 
@@ -5109,98 +5976,6 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationCache_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationCache_release_mut(PxArticulationCache* self_);
-
-        /// <summary>
-        ///  Releases the sensor.
-        ///
-        ///  Releasing a sensor is not allowed while the articulation is in a scene. In order to
-        ///  release a sensor, remove and then re-add the articulation to the scene.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationSensor_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxArticulationSensor_release_mut(PxArticulationSensor* self_);
-
-        /// <summary>
-        ///  Returns the spatial force in the local frame of the sensor.
-        ///
-        ///  The spatial force.
-        ///
-        ///  This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
-        ///  and in PxContactModifyCallback or in contact report callbacks.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationSensor_getForces", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxSpatialForce PxArticulationSensor_getForces(PxArticulationSensor* self_);
-
-        /// <summary>
-        ///  Returns the relative pose between this sensor and the body frame of the link that the sensor is attached to.
-        ///
-        ///  The link body frame is at the center of mass and aligned with the principal axes of inertia, see PxRigidBody::getCMassLocalPose.
-        ///
-        ///  The transform link body frame -&gt; sensor frame.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationSensor_getRelativePose", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTransform PxArticulationSensor_getRelativePose(PxArticulationSensor* self_);
-
-        /// <summary>
-        ///  Sets the relative pose between this sensor and the body frame of the link that the sensor is attached to.
-        ///
-        ///  The link body frame is at the center of mass and aligned with the principal axes of inertia, see PxRigidBody::getCMassLocalPose.
-        ///
-        ///  Setting the sensor relative pose is not allowed while the articulation is in a scene. In order to
-        ///  set the pose, remove and then re-add the articulation to the scene.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationSensor_setRelativePose_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxArticulationSensor_setRelativePose_mut(PxArticulationSensor* self_, PxTransform* pose);
-
-        /// <summary>
-        ///  Returns the link that this sensor is attached to.
-        ///
-        ///  A pointer to the link.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationSensor_getLink", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxArticulationLink* PxArticulationSensor_getLink(PxArticulationSensor* self_);
-
-        /// <summary>
-        ///  Returns the index of this sensor inside the articulation.
-        ///
-        ///  The return value is only valid for sensors attached to articulations that are in a scene.
-        ///
-        ///  The low-level index, or 0xFFFFFFFF if the articulation is not in a scene.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationSensor_getIndex", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxArticulationSensor_getIndex(PxArticulationSensor* self_);
-
-        /// <summary>
-        ///  Returns the articulation that this sensor is part of.
-        ///
-        ///  A pointer to the articulation.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationSensor_getArticulation", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxArticulationReducedCoordinate* PxArticulationSensor_getArticulation(PxArticulationSensor* self_);
-
-        /// <summary>
-        ///  Returns the sensor's flags.
-        ///
-        ///  The current set of flags of the sensor.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationSensor_getFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxArticulationSensorFlags PxArticulationSensor_getFlags(PxArticulationSensor* self_);
-
-        /// <summary>
-        ///  Sets a flag of the sensor.
-        ///
-        ///  Setting the sensor flags is not allowed while the articulation is in a scene. In order to
-        ///  set the flags, remove and then re-add the articulation to the scene.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationSensor_setFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxArticulationSensor_setFlag_mut(PxArticulationSensor* self_, PxArticulationSensorFlag flag, [MarshalAs(UnmanagedType.U1)] bool enabled);
-
-        /// <summary>
-        ///  Returns the string name of the dynamic type.
-        ///
-        ///  The string name.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationSensor_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern byte* PxArticulationSensor_getConcreteTypeName(PxArticulationSensor* self_);
 
         /// <summary>
         ///  Returns the scene which this articulation belongs to.
@@ -5239,18 +6014,18 @@ namespace PhysX
         /// <summary>
         ///  Returns true if this articulation is sleeping.
         ///
-        ///  When an actor does not move for a period of time, it is no longer simulated in order to save time. This state
+        ///  When an actor does not move for a period of time, it is no longer simulated in order to reduce computational cost. This state
         ///  is called sleeping. However, because the object automatically wakes up when it is either touched by an awake object,
         ///  or a sleep-affecting property is changed by the user, the entire sleep mechanism should be transparent to the user.
         ///
         ///  An articulation can only go to sleep if all links are ready for sleeping. An articulation is guaranteed to be awake
         ///  if at least one of the following holds:
         ///
-        ///  The wake counter is positive (see [`setWakeCounter`]()).
+        ///  The wake counter of any link in the articulation is positive (see [`setWakeCounter`]()).
         ///
-        ///  The linear or angular velocity of any link is non-zero.
+        ///  The mass-normalized energy of any link in the articulation is above a threshold (see [`setSleepThreshold`]()).
         ///
-        ///  A non-zero force or torque has been applied to the articulation or any of its links.
+        ///  A non-zero force or torque has been applied to any joint or link.
         ///
         ///  If an articulation is sleeping, the following state is guaranteed:
         ///
@@ -5281,6 +6056,9 @@ namespace PhysX
         ///  The articulation will sleep if the energy of each link is below this threshold.
         ///
         ///  This call may not be made during simulation.
+        ///
+        ///  Default:
+        ///  5e-5f * PxTolerancesScale::speed * PxTolerancesScale::speed;
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_setSleepThreshold_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationReducedCoordinate_setSleepThreshold_mut(PxArticulationReducedCoordinate* self_, float threshold);
@@ -5301,7 +6079,7 @@ namespace PhysX
         ///  This value has no effect if PxSceneFlag::eENABLE_STABILIZATION was not enabled on the PxSceneDesc.
         ///
         ///  Default:
-        ///  0.01 * PxTolerancesScale::speed * PxTolerancesScale::speed
+        ///  5e-6f * PxTolerancesScale::speed * PxTolerancesScale::speed
         ///
         ///  This call may not be made during simulation.
         /// </summary>
@@ -5321,9 +6099,9 @@ namespace PhysX
         /// <summary>
         ///  Sets the wake counter for the articulation in seconds.
         ///
-        ///  - The wake counter value determines the minimum amount of time until the articulation can be put to sleep.
-        ///  - An articulation will not be put to sleep if the energy is above the specified threshold (see [`setSleepThreshold`]())
-        ///  or if other awake objects are touching it.
+        ///  - The wake counter value specifies a time threshold used to determine whether an articulation may be put to sleep.
+        ///  - The articulation will be put to sleep if all links have experienced a mass-normalised energy less than a threshold for at least
+        ///  a threshold time, as specified by the wake counter.
         ///  - Passing in a positive value will wake up the articulation automatically.
         ///
         ///  Default:
@@ -5347,7 +6125,7 @@ namespace PhysX
         /// <summary>
         ///  Wakes up the articulation if it is sleeping.
         ///
-        ///  - The articulation will get woken up and might cause other touching objects to wake up as well during the next simulation step.
+        ///  - The articulation will be woken up and might cause other touching objects to wake up as well during the next simulation step.
         ///  - This will set the wake counter of the articulation to the value specified in [`PxSceneDesc::wakeCounterResetValue`].
         ///
         ///  This call may only be made on articulations that are in a scene, and may not be made during simulation,
@@ -5368,58 +6146,17 @@ namespace PhysX
         public static extern void PxArticulationReducedCoordinate_putToSleep_mut(PxArticulationReducedCoordinate* self_);
 
         /// <summary>
-        ///  Sets the limit on the magnitude of the linear velocity of the articulation's center of mass.
-        ///
-        ///  - The limit acts on the linear velocity of the entire articulation. The velocity is calculated from the total momentum
-        ///  and the spatial inertia of the articulation.
-        ///  - The limit only applies to floating-base articulations.
-        ///  - A benefit of the COM velocity limit is that it is evenly applied to the whole articulation, which results in fewer visual
-        ///  artifacts compared to link rigid-body damping or joint-velocity limits. However, these per-link or per-degree-of-freedom
-        ///  limits may still help avoid numerical issues.
-        ///
-        ///  This call may not be made during simulation.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_setMaxCOMLinearVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxArticulationReducedCoordinate_setMaxCOMLinearVelocity_mut(PxArticulationReducedCoordinate* self_, float maxLinearVelocity);
-
-        /// <summary>
-        ///  Gets the limit on the magnitude of the linear velocity of the articulation's center of mass.
-        ///
-        ///  The maximal linear velocity magnitude.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getMaxCOMLinearVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxArticulationReducedCoordinate_getMaxCOMLinearVelocity(PxArticulationReducedCoordinate* self_);
-
-        /// <summary>
-        ///  Sets the limit on the magnitude of the angular velocity at the articulation's center of mass.
-        ///
-        ///  - The limit acts on the angular velocity of the entire articulation. The velocity is calculated from the total momentum
-        ///  and the spatial inertia of the articulation.
-        ///  - The limit only applies to floating-base articulations.
-        ///  - A benefit of the COM velocity limit is that it is evenly applied to the whole articulation, which results in fewer visual
-        ///  artifacts compared to link rigid-body damping or joint-velocity limits. However, these per-link or per-degree-of-freedom
-        ///  limits may still help avoid numerical issues.
-        ///
-        ///  This call may not be made during simulation.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_setMaxCOMAngularVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxArticulationReducedCoordinate_setMaxCOMAngularVelocity_mut(PxArticulationReducedCoordinate* self_, float maxAngularVelocity);
-
-        /// <summary>
-        ///  Gets the limit on the magnitude of the angular velocity at the articulation's center of mass.
-        ///
-        ///  The maximal angular velocity magnitude.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getMaxCOMAngularVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxArticulationReducedCoordinate_getMaxCOMAngularVelocity(PxArticulationReducedCoordinate* self_);
-
-        /// <summary>
         ///  Adds a link to the articulation with default attribute values.
         ///
         ///  The new link, or NULL if the link cannot be created.
         ///
         ///  Creating a link is not allowed while the articulation is in a scene. In order to add a link,
         ///  remove and then re-add the articulation to the scene.
+        ///
+        ///  When the articulation is added to a scene, the root link adopts the specified pose. The pose of the
+        ///  root link is propagated through the ensemble of links from parent to child after accounting for each child's
+        ///  inbound joint frames and the joint positions set by PxArticulationJointReducedCoordinate::setJointPosition().
+        ///  As a consequence, the pose of each non-root link is automatically overwritten when adding the articulation to the scene.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_createLink_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxArticulationLink* PxArticulationReducedCoordinate_createLink_mut(PxArticulationReducedCoordinate* self_, PxArticulationLink* parent, PxTransform* pose);
@@ -5427,9 +6164,11 @@ namespace PhysX
         /// <summary>
         ///  Releases the articulation, and all its links and corresponding joints.
         ///
-        ///  Attached sensors and tendons are released automatically when the articulation is released.
+        ///  Attached mimic joints and tendons are released automatically when the articulation is released.
         ///
         ///  This call may not be made during simulation.
+        ///
+        ///  This call does not release any PxArticulationCache instance that has been instantiated using [`createCache`]()
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationReducedCoordinate_release_mut(PxArticulationReducedCoordinate* self_);
@@ -5444,6 +6183,8 @@ namespace PhysX
 
         /// <summary>
         ///  Returns the set of links in the articulation in the order that they were added to the articulation using createLink.
+        ///
+        ///  The order of the links may be different from the order in which the data is stored in the cache, see PxArticulationLink::getLinkIndex.
         ///
         ///  The number of links written into the buffer.
         /// </summary>
@@ -5487,9 +6228,9 @@ namespace PhysX
         public static extern PxBounds3 PxArticulationReducedCoordinate_getWorldBounds(PxArticulationReducedCoordinate* self_, float inflation);
 
         /// <summary>
-        ///  Returns the aggregate the articulation might be a part of.
+        ///  Returns the aggregate associated with the articulation.
         ///
-        ///  The aggregate the articulation is a part of, or NULL if the articulation does not belong to an aggregate.
+        ///  The aggregate associated with the articulation or NULL if the articulation does not belong to an aggregate.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getAggregate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxAggregate* PxArticulationReducedCoordinate_getAggregate(PxArticulationReducedCoordinate* self_);
@@ -5513,7 +6254,7 @@ namespace PhysX
         /// <summary>
         ///  Returns the articulation's flags.
         ///
-        ///  The flags.
+        ///  The articulation's flags.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getArticulationFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxArticulationFlags PxArticulationReducedCoordinate_getArticulationFlags(PxArticulationReducedCoordinate* self_);
@@ -5533,7 +6274,7 @@ namespace PhysX
         /// <summary>
         ///  Creates an articulation cache that can be used to read and write internal articulation data.
         ///
-        ///  - When the structure of the articulation changes (e.g. adding a link or sensor) after the cache was created,
+        ///  - When the structure of the articulation changes (e.g. adding a link) after the cache was created,
         ///  the cache needs to be released and recreated.
         ///  - Free the memory allocated for the cache by calling the release() method on the cache.
         ///  - Caches can only be created by articulations that are in a scene.
@@ -5572,6 +6313,17 @@ namespace PhysX
         ///  - a nonzero root velocity is applied
         ///
         ///  This call may only be made on articulations that are in a scene, and may not be made during simulation.
+        ///
+        ///  Calling applyCache(cache, PxArticulationCacheFlag::eROOT_TRANSFORM) has the same outcome as calling
+        ///  PxArticulationReducedCoordinate::setRootGlobalPose() followed by PxArticulationReducedCoordinate::updateKinematic(PxArticulationKinematicFlag::ePOSITION).
+        ///  Similarly, calling applyCache(cache, PxArticulationCacheFlag::eROOT_VELOCITIES) is the cache equivalent of calling
+        ///  PxArticulationReducedCoordinate::setRootLinearVelocity() followed by PxArticulationReducedCoordinate::updateKinematic(PxArticulationKinematicFlag::eVELOCITY).
+        ///  Joint positions follow a similar pattern with applyCache(cache, PxArticulationCacheFlag::ePOSITION) having the same outcome as callling
+        ///  PxArticulationJointReducedCoordinate::setJointPosition() followed by PxArticulationReducedCoordinate::updateKinematic(PxArticulationKinematicFlag::ePOSITION).
+        ///  Finally, joint velocities updated with applyCache(PxArticulationCacheFlag::eVELOCITY) will produce the same outcome as calling
+        ///  PxArticulationJointReducedCoordinate::setJointVelocity() followed by PxArticulationReducedCoordinate::updateKinematic(PxArticulationKinematicFlag::eVELOCITY).
+        ///
+        ///  This method should not be used if the direct GPU API is enabled. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_applyCache_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationReducedCoordinate_applyCache_mut(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache, PxArticulationCacheFlags flags, [MarshalAs(UnmanagedType.U1)] bool autowake);
@@ -5580,6 +6332,8 @@ namespace PhysX
         ///  Copies internal data of the articulation to the cache.
         ///
         ///  This call may only be made on articulations that are in a scene, and may not be made during simulation.
+        ///
+        ///  This method should not be used if the direct GPU API is enabled. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_copyInternalStateToCache", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationReducedCoordinate_copyInternalStateToCache(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache, PxArticulationCacheFlags flags);
@@ -5591,6 +6345,8 @@ namespace PhysX
         ///  - The reduced-coordinate data follows the cache indexing convention, see PxArticulationCache::jointVelocity.
         ///
         ///  The articulation must be in a scene.
+        ///
+        ///  This can be used as a helper function to prepare per joint cache data such as PxArticulationCache::jointVelocity.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_packJointData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationReducedCoordinate_packJointData(PxArticulationReducedCoordinate* self_, float* maximum, float* reduced);
@@ -5610,9 +6366,9 @@ namespace PhysX
         ///  Prepares common articulation data based on articulation pose for inverse dynamics calculations.
         ///
         ///  Usage:
-        ///  1. Set articulation pose (joint positions and base transform) via articulation cache and applyCache().
-        ///  1. Call commonInit.
-        ///  1. Call inverse dynamics computation method.
+        ///  -[``] Set articulation pose (joint positions and base transform) via articulation cache and applyCache().
+        ///  -[``] Call commonInit.
+        ///  -[``] Call inverse dynamics computation method.
         ///
         ///  This call may only be made on articulations that are in a scene, and may not be made during simulation.
         /// </summary>
@@ -5620,10 +6376,18 @@ namespace PhysX
         public static extern void PxArticulationReducedCoordinate_commonInit(PxArticulationReducedCoordinate* self_);
 
         /// <summary>
-        ///  Computes the joint DOF forces required to counteract gravitational forces for the given articulation pose.
+        ///  Computes the forces required to counteract gravitational forces for the given articulation pose.
         ///
-        ///  - Inputs - Articulation pose (joint positions + base transform).
-        ///  - Outputs - Joint forces to counteract gravity (in cache).
+        ///  In the case of a fixed-base articulation, the gravity compensation force accounts for the gravity on all the links and provides
+        ///  the force required to compensate the gravitational forces for all the joint DoFs.
+        ///  The indexing follows the internal DOF index order, see PxArticulationCache::jointVelocity.
+        ///
+        ///  In the case of a floating-base articulation, the gravity compensation force also accounts for the gravity on the root link and also provides
+        ///  the force on the root required to compensate its gravitational force. The indexing is:
+        ///  | Root force X | Root force Y | Root force Z | Root torque X | Root torque Y | Root torque Z | Force/Torque DOF 0 | ... | Force/Torque DOF N |
+        ///
+        ///  - Inputs:	Articulation pose (joint positions + base transform).
+        ///  - Outputs:	Forces to counteract gravity (in cache).
         ///
         ///  - The joint forces returned are determined purely by gravity for the articulation in the current joint and base pose, and joints at rest;
         ///  i.e. external forces, joint velocities, and joint accelerations are set to zero. Joint drives are also not considered in the computation.
@@ -5631,30 +6395,37 @@ namespace PhysX
         ///
         ///  This call may only be made on articulations that are in a scene, and may not be made during simulation.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_computeGeneralizedGravityForce", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxArticulationReducedCoordinate_computeGeneralizedGravityForce(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache);
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_computeGravityCompensation", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationReducedCoordinate_computeGravityCompensation(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache);
 
         /// <summary>
-        ///  Computes the joint DOF forces required to counteract Coriolis and centrifugal forces for the given articulation state.
+        ///  Computes the joint DOF forces (and root force) required to counteract Coriolis and centrifugal forces for the given articulation state.
         ///
-        ///  - Inputs - Articulation state (joint positions and velocities (in cache), and base transform and spatial velocity).
-        ///  - Outputs - Joint forces to counteract Coriolis and centrifugal forces (in cache).
+        ///  In the case of a fixed-base articulation, the Coriolis and centrifugal compensation force accounts for forces resulting to the current
+        ///  joint velocities. The indexing follows the internal DOF index order, see PxArticulationCache::jointVelocity.
         ///
-        ///  - The joint forces returned are determined purely by the articulation's state; i.e. external forces, gravity, and joint accelerations are set to zero.
+        ///  In the case of a floating-base articulation, the Coriolis and centrifugal compensation force also accounts for forces resulting to the current
+        ///  root velocity. The indexing is:
+        ///  | Root force X | Root force Y | Root force Z | Root torque X | Root torque Y | Root torque Z | Force/Torque DOF 0 | ... | Force/Torque DOF N |
+        ///
+        ///  - Inputs:	Articulation state (joint positions and velocities (in cache), and base transform and spatial velocity).
+        ///  - Outputs:	Joint forces (and root force) to counteract Coriolis and centrifugal forces (in cache).
+        ///
+        ///  - The forces returned are determined purely by the articulation's state; i.e. external forces, gravity, and joint accelerations are set to zero.
         ///  Joint drives and potential damping terms, such as link angular or linear damping, or joint friction, are also not considered in the computation.
         ///  - Prior to the computation, update/set the base spatial velocity with PxArticulationCache::rootLinkData and applyCache().
         ///  - commonInit() must be called before the computation, and after setting the articulation pose via applyCache().
         ///
         ///  This call may only be made on articulations that are in a scene, and may not be made during simulation.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_computeCoriolisAndCentrifugalForce", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxArticulationReducedCoordinate_computeCoriolisAndCentrifugalForce(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache);
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_computeCoriolisCompensation", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationReducedCoordinate_computeCoriolisCompensation(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache);
 
         /// <summary>
         ///  Computes the joint DOF forces required to counteract external spatial forces applied to articulation links.
         ///
-        ///  - Inputs - External forces on links (in cache), articulation pose (joint positions + base transform).
-        ///  - Outputs - Joint forces to counteract the external forces (in cache).
+        ///  - Inputs:	External forces on links (in cache), articulation pose (joint positions + base transform).
+        ///  - Outputs:	Joint forces to counteract the external forces (in cache).
         ///
         ///  - Only the external spatial forces provided in the cache and the articulation pose are considered in the computation.
         ///  - The external spatial forces are with respect to the links' centers of mass, and not the actor's origin.
@@ -5668,11 +6439,11 @@ namespace PhysX
         /// <summary>
         ///  Computes the joint accelerations for the given articulation state and joint forces.
         ///
-        ///  - Inputs - Joint forces (in cache) and articulation state (joint positions and velocities (in cache), and base transform and spatial velocity).
-        ///  - Outputs - Joint accelerations (in cache).
+        ///  - Inputs:	Joint forces (in cache) and articulation state (joint positions and velocities (in cache), and base transform and spatial velocity).
+        ///  - Outputs:	Joint accelerations (in cache).
         ///
-        ///  - The computation includes Coriolis terms and gravity. However, joint drives and potential damping terms are not considered in the computation
-        ///  (for example, linear link damping or joint friction).
+        ///  - The computation includes Coriolis terms and gravity. However, joint drives, external forces, and potential damping (link damping, friction) terms
+        ///  are not considered in the computation.
         ///  - Prior to the computation, update/set the base spatial velocity with PxArticulationCache::rootLinkData and applyCache().
         ///  - commonInit() must be called before the computation, and after setting the articulation pose via applyCache().
         ///
@@ -5682,14 +6453,14 @@ namespace PhysX
         public static extern void PxArticulationReducedCoordinate_computeJointAcceleration(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache);
 
         /// <summary>
-        ///  Computes the joint forces for the given articulation state and joint accelerations, not considering gravity.
+        ///  Computes the joint forces for the given articulation pose and joint accelerations, not considering gravity and velocity.
         ///
-        ///  - Inputs - Joint accelerations (in cache) and articulation state (joint positions and velocities (in cache), and base transform and spatial velocity).
-        ///  - Outputs - Joint forces (in cache).
+        ///  - Inputs:	Joint accelerations (in cache).
+        ///  - Outputs:	Joint forces (in cache).
         ///
-        ///  - The computation includes Coriolis terms. However, joint drives and potential damping terms are not considered in the computation
+        ///  - Gravity, Coriolis effects, joint drives and potential damping terms are not considered in the computation
         ///  (for example, linear link damping or joint friction).
-        ///  - Prior to the computation, update/set the base spatial velocity with PxArticulationCache::rootLinkData and applyCache().
+        ///  - To compute the joint force for a different pose, the joint positions and root transform first need to be applied with applyCache() as this function ignores any values set to joint positions and root transform in the cache
         ///  - commonInit() must be called before the computation, and after setting the articulation pose via applyCache().
         ///
         ///  This call may only be made on articulations that are in a scene, and may not be made during simulation.
@@ -5709,6 +6480,8 @@ namespace PhysX
         public static extern void PxArticulationReducedCoordinate_computeDenseJacobian(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache, uint* nRows, uint* nCols);
 
         /// <summary>
+        ///  The API related to loop joints will be removed in a future version once a replacement is made available.
+        ///
         ///  Computes the coefficient matrix for contact forces.
         ///
         ///  - The matrix dimension is getCoefficientMatrixSize() = getDofs() * getNbLoopJoints(), and the DOF (column) indexing follows the internal DOF order, see PxArticulationCache::jointVelocity.
@@ -5722,6 +6495,8 @@ namespace PhysX
         public static extern void PxArticulationReducedCoordinate_computeCoefficientMatrix(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache);
 
         /// <summary>
+        ///  The API related to loop joints will be removed in a future version once a replacement is made available.
+        ///
         ///  Computes the lambda values when the test impulse is 1.
         ///
         ///  - The user must allocate memory for PxArticulationCache::lambda where the required size of the PxReal array is equal to getNbLoopJoints().
@@ -5736,19 +6511,66 @@ namespace PhysX
         public static extern bool PxArticulationReducedCoordinate_computeLambda(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache, PxArticulationCache* initialState, float* jointTorque, uint maxIter);
 
         /// <summary>
-        ///  Compute the joint-space inertia matrix that maps joint accelerations to joint forces: forces = M * accelerations.
+        ///  Compute the mass matrix M that maps accelerations to forces: forces = M * accelerations.
         ///
-        ///  - Inputs - Articulation pose (joint positions and base transform).
-        ///  - Outputs - Mass matrix (in cache).
+        ///  In the case of a fixed-base articulation, the mass matrix maps joint accelerations to joint forces.
+        ///  The indexing follows the internal DOF index order, see PxArticulationCache::jointVelocity.
+        ///
+        ///  In the case of a floating-base articulation, the mass matrix also includes terms required to map root accelerations
+        ///  to root forces. The mass matrix should be used with accelerations and forces that follows the indexing below:
+        ///  | Root force X       |     | Root linear acceleration X  |
+        ///  | Root force Y	     |     | Root linear acceleration Y  |
+        ///  | Root force Z       |     | Root linear acceleration Z  |
+        ///  | Root torque X      |     | Root angular acceleration X |
+        ///  | Root torque Y      |     | Root angular acceleration Y |
+        ///  | Root torque Z      | = M | Root angular acceleration Z |
+        ///  | Force/Torque DOF 0 |     | Joint acceleration 0        |
+        ///  | Force/Torque DOF 1 |     | Joint acceleration 1        |
+        ///  | ...                |     | ...                         |
+        ///  | Force/Torque DOF N |     | Joint acceleration N        |
+        ///
+        ///  - Inputs:	Articulation pose (joint positions and base transform).
+        ///  - Outputs:	Mass matrix (in cache).
         ///
         ///  commonInit() must be called before the computation, and after setting the articulation pose via applyCache().
         ///
         ///  This call may only be made on articulations that are in a scene, and may not be made during simulation.
+        ///
+        ///  The mass matrix is indexed [nCols * row + column].
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_computeGeneralizedMassMatrix", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxArticulationReducedCoordinate_computeGeneralizedMassMatrix(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache);
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_computeMassMatrix", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationReducedCoordinate_computeMassMatrix(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache);
 
         /// <summary>
+        ///  Compute the articulation's center of mass.
+        ///
+        ///  The articulation's center of mass given either in the world frame (rootFrame = false) or in the root frame
+        ///  (rootFrame = true). PxVec3(0.0f) is returned if the articulation is not in a scene or the call is made during simulation.
+        ///
+        ///  This call may only be made on articulations that are in a scene, and may not be made during simulation.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_computeArticulationCOM", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxArticulationReducedCoordinate_computeArticulationCOM(PxArticulationReducedCoordinate* self_, [MarshalAs(UnmanagedType.U1)] bool rootFrame);
+
+        /// <summary>
+        ///  Compute the centroidal momentum matrix and corresponding bias force of an articulation.
+        ///
+        ///  - Inputs:	Articulation state (joint positions and velocities, and base transform and spatial velocity),
+        ///  articulation mass matrix, Coriolis and Centrifugal compensation forces.
+        ///  - Outputs:	Centroidal momentum matrix and bias force (in cache).
+        ///
+        ///  commonInit(), computeMassMatrix() and computeCoriolisCompensation() must be called before the computation,
+        ///  and after setting the articulation pose and velocities via applyCache().
+        ///
+        ///  This call may only be made on articulations that are in a scene, and may not be made during simulation.
+        ///  This call may also only be made for floating-base articulations.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_computeCentroidalMomentumMatrix", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationReducedCoordinate_computeCentroidalMomentumMatrix(PxArticulationReducedCoordinate* self_, PxArticulationCache* cache);
+
+        /// <summary>
+        ///  The API related to loop joints will be removed in a future version once a replacement is made available.
+        ///
         ///  Adds a loop joint to the articulation system for inverse dynamics.
         ///
         ///  This call may not be made during simulation.
@@ -5757,6 +6579,8 @@ namespace PhysX
         public static extern void PxArticulationReducedCoordinate_addLoopJoint_mut(PxArticulationReducedCoordinate* self_, PxConstraint* joint);
 
         /// <summary>
+        ///  The API related to loop joints will be removed in a future version once a replacement is made available.
+        ///
         ///  Removes a loop joint from the articulation for inverse dynamics.
         ///
         ///  This call may not be made during simulation.
@@ -5765,6 +6589,8 @@ namespace PhysX
         public static extern void PxArticulationReducedCoordinate_removeLoopJoint_mut(PxArticulationReducedCoordinate* self_, PxConstraint* joint);
 
         /// <summary>
+        ///  The API related to loop joints will be removed in a future version once a replacement is made available.
+        ///
         ///  Returns the number of loop joints in the articulation for inverse dynamics.
         ///
         ///  The number of loop joints.
@@ -5773,6 +6599,8 @@ namespace PhysX
         public static extern uint PxArticulationReducedCoordinate_getNbLoopJoints(PxArticulationReducedCoordinate* self_);
 
         /// <summary>
+        ///  The API related to loop joints will be removed in a future version once a replacement is made available.
+        ///
         ///  Returns the set of loop constraints (i.e. joints) in the articulation.
         ///
         ///  The number of constraints written into the buffer.
@@ -5781,6 +6609,8 @@ namespace PhysX
         public static extern uint PxArticulationReducedCoordinate_getLoopJoints(PxArticulationReducedCoordinate* self_, PxConstraint** userBuffer, uint bufferSize, uint startIndex);
 
         /// <summary>
+        ///  The API related to loop joints will be removed in a future version once a replacement is made available.
+        ///
         ///  Returns the required size of the coefficient matrix in the articulation.
         ///
         ///  Size of the coefficient matrix (equal to getDofs() * getNbLoopJoints()).
@@ -5791,13 +6621,17 @@ namespace PhysX
         public static extern uint PxArticulationReducedCoordinate_getCoefficientMatrixSize(PxArticulationReducedCoordinate* self_);
 
         /// <summary>
-        ///  Sets the root link transform (world to actor frame).
+        ///  Sets the root link transform in the world frame.
         ///
-        ///  - For performance, prefer PxArticulationCache::rootLinkData to set the root link transform in a batch articulation state update.
         ///  - Use updateKinematic() after all state updates to the articulation via non-cache API such as this method,
         ///  in order to update link states for the next simulation frame or querying.
         ///
         ///  This call may not be made during simulation.
+        ///
+        ///  PxArticulationCache::rootLinkData similarly allows the root link pose to be updated and potentially offers better performance
+        ///  if the root link pose is to be updated along with other state variables.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_setRootGlobalPose_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationReducedCoordinate_setRootGlobalPose_mut(PxArticulationReducedCoordinate* self_, PxTransform* pose, [MarshalAs(UnmanagedType.U1)] bool autowake);
@@ -5805,12 +6639,15 @@ namespace PhysX
         /// <summary>
         ///  Returns the root link transform (world to actor frame).
         ///
-        ///  For performance, prefer PxArticulationCache::rootLinkData to get the root link transform in a batch query.
-        ///
         ///  The root link transform.
         ///
         ///  This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
         ///  and in PxContactModifyCallback or in contact report callbacks.
+        ///
+        ///  PxArticulationCache::rootLinkData similarly allows the root link pose to be queried and potentially offers better performance if the root
+        ///  link pose is to be queried along with other state variables.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getRootGlobalPose", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxTransform PxArticulationReducedCoordinate_getRootGlobalPose(PxArticulationReducedCoordinate* self_);
@@ -5819,12 +6656,16 @@ namespace PhysX
         ///  Sets the root link linear center-of-mass velocity.
         ///
         ///  - The linear velocity is with respect to the link's center of mass and not the actor frame origin.
-        ///  - For performance, prefer PxArticulationCache::rootLinkData to set the root link velocity in a batch articulation state update.
         ///  - The articulation is woken up if the input velocity is nonzero (ignoring autowake) and the articulation is in a scene.
         ///  - Use updateKinematic() after all state updates to the articulation via non-cache API such as this method,
         ///  in order to update link states for the next simulation frame or querying.
         ///
         ///  This call may not be made during simulation, except in a split simulation in-between [`PxScene::fetchCollision`] and #PxScene::advance.
+        ///
+        ///  PxArticulationCache::rootLinkData similarly allows the root link linear velocity to be updated and potentially offers better performance
+        ///  if the root link linear velocity is to be updated along with other state variables.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_setRootLinearVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationReducedCoordinate_setRootLinearVelocity_mut(PxArticulationReducedCoordinate* self_, PxVec3* linearVelocity, [MarshalAs(UnmanagedType.U1)] bool autowake);
@@ -5833,12 +6674,16 @@ namespace PhysX
         ///  Gets the root link center-of-mass linear velocity.
         ///
         ///  - The linear velocity is with respect to the link's center of mass and not the actor frame origin.
-        ///  - For performance, prefer PxArticulationCache::rootLinkData to get the root link velocity in a batch query.
         ///
         ///  The root link center-of-mass linear velocity.
         ///
         ///  This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
         ///  and in PxContactModifyCallback or in contact report callbacks.
+        ///
+        ///  PxArticulationCache::rootLinkData similarly allows the root link linear velocity to be queried and potentially offers better performance
+        ///  if the root link linear velocity is to be queried along with other state variables.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getRootLinearVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxArticulationReducedCoordinate_getRootLinearVelocity(PxArticulationReducedCoordinate* self_);
@@ -5846,12 +6691,16 @@ namespace PhysX
         /// <summary>
         ///  Sets the root link angular velocity.
         ///
-        ///  - For performance, prefer PxArticulationCache::rootLinkData to set the root link velocity in a batch articulation state update.
         ///  - The articulation is woken up if the input velocity is nonzero (ignoring autowake) and the articulation is in a scene.
         ///  - Use updateKinematic() after all state updates to the articulation via non-cache API such as this method,
         ///  in order to update link states for the next simulation frame or querying.
         ///
         ///  This call may not be made during simulation, except in a split simulation in-between [`PxScene::fetchCollision`] and #PxScene::advance.
+        ///
+        ///  PxArticulationCache::rootLinkData similarly allows the root link angular velocity to be updated and potentially offers better performance
+        ///  if the root link angular velocity is to be updated along with other state variables.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_setRootAngularVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationReducedCoordinate_setRootAngularVelocity_mut(PxArticulationReducedCoordinate* self_, PxVec3* angularVelocity, [MarshalAs(UnmanagedType.U1)] bool autowake);
@@ -5859,12 +6708,15 @@ namespace PhysX
         /// <summary>
         ///  Gets the root link angular velocity.
         ///
-        ///  For performance, prefer PxArticulationCache::rootLinkData to get the root link velocity in a batch query.
-        ///
         ///  The root link angular velocity.
         ///
         ///  This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
         ///  and in PxContactModifyCallback or in contact report callbacks.
+        ///
+        ///  PxArticulationCache::rootLinkData similarly allows the root link angular velocity to be queried and potentially offers better performance
+        ///  if the root link angular velocity is to be queried along with other state variables.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getRootAngularVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxArticulationReducedCoordinate_getRootAngularVelocity(PxArticulationReducedCoordinate* self_);
@@ -5877,8 +6729,11 @@ namespace PhysX
         ///
         ///  The link's center-of-mass classical acceleration, or 0 if the call is made before the articulation participated in a first simulation step.
         ///
-        ///  This call may only be made on articulations that are in a scene, and it is not allowed to use this method while the simulation
-        ///  is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(), and in PxContactModifyCallback or in contact report callbacks.
+        ///  This call may only be made on articulations that are in a scene. It is not allowed to use this method while the simulation
+        ///  is running.  The exceptions to this rule are a split simulation during [`PxScene::collide`]() and up to #PxScene::advance();
+        ///  in PxContactModifyCallback; and in contact report callbacks.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getLinkAcceleration_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxSpatialVelocity PxArticulationReducedCoordinate_getLinkAcceleration_mut(PxArticulationReducedCoordinate* self_, uint linkId);
@@ -5886,10 +6741,10 @@ namespace PhysX
         /// <summary>
         ///  Returns the GPU articulation index.
         ///
-        ///  The GPU index, or 0xFFFFFFFF if the articulation is not in a scene or PxSceneFlag::eSUPPRESS_READBACK is not set.
+        ///  The GPU index, or 0xFFFFFFFF if the articulation is not in a scene.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getGpuArticulationIndex_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxArticulationReducedCoordinate_getGpuArticulationIndex_mut(PxArticulationReducedCoordinate* self_);
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getGPUIndex", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxArticulationReducedCoordinate_getGPUIndex(PxArticulationReducedCoordinate* self_);
 
         /// <summary>
         ///  Creates a spatial tendon to attach to the articulation with default attribute values.
@@ -5898,6 +6753,8 @@ namespace PhysX
         ///
         ///  Creating a spatial tendon is not allowed while the articulation is in a scene. In order to
         ///  add the tendon, remove and then re-add the articulation to the scene.
+        ///
+        ///  The spatial tendon is released with PxArticulationReducedCoordinate::release()
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_createSpatialTendon_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxArticulationSpatialTendon* PxArticulationReducedCoordinate_createSpatialTendon_mut(PxArticulationReducedCoordinate* self_);
@@ -5909,20 +6766,11 @@ namespace PhysX
         ///
         ///  Creating a fixed tendon is not allowed while the articulation is in a scene. In order to
         ///  add the tendon, remove and then re-add the articulation to the scene.
+        ///
+        ///  The fixed tendon is released with PxArticulationReducedCoordinate::release()
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_createFixedTendon_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxArticulationFixedTendon* PxArticulationReducedCoordinate_createFixedTendon_mut(PxArticulationReducedCoordinate* self_);
-
-        /// <summary>
-        ///  Creates a force sensor attached to a link of the articulation.
-        ///
-        ///  The new sensor.
-        ///
-        ///  Creating a sensor is not allowed while the articulation is in a scene. In order to
-        ///  add the sensor, remove and then re-add the articulation to the scene.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_createSensor_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxArticulationSensor* PxArticulationReducedCoordinate_createSensor_mut(PxArticulationReducedCoordinate* self_, PxArticulationLink* link, PxTransform* relativePose);
 
         /// <summary>
         ///  Returns the spatial tendons attached to the articulation.
@@ -5939,8 +6787,8 @@ namespace PhysX
         ///
         ///  The number of tendons.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getNbSpatialTendons_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxArticulationReducedCoordinate_getNbSpatialTendons_mut(PxArticulationReducedCoordinate* self_);
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getNbSpatialTendons", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxArticulationReducedCoordinate_getNbSpatialTendons(PxArticulationReducedCoordinate* self_);
 
         /// <summary>
         ///  Returns the fixed tendons attached to the articulation.
@@ -5957,31 +6805,51 @@ namespace PhysX
         ///
         ///  The number of tendons.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getNbFixedTendons_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxArticulationReducedCoordinate_getNbFixedTendons_mut(PxArticulationReducedCoordinate* self_);
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getNbFixedTendons", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxArticulationReducedCoordinate_getNbFixedTendons(PxArticulationReducedCoordinate* self_);
 
         /// <summary>
-        ///  Returns the sensors attached to the articulation.
+        ///  Create a mimic joint that will enforce a relationship between two joints.
         ///
-        ///  The order of the sensors in the buffer is not necessarily identical to the order in which the sensors were added to the articulation.
+        ///  If naturalFrequency is less than or equal to zero it is assumed that the mimic joint has no compliance and is a hard constraint.
         ///
-        ///  The number of sensors written into the buffer.
+        ///  If dampingRatio is less than or equal to zero it is assumed that the mimic joint has no compliance and is a hard constraint.
+        ///
+        ///  In the absence of compliance, the mimic joint enforces the rule: qA + gearRatio*qB + offset = 0 with qA denoting the
+        ///  joint position of the specified degree of freedom of jointA and qB denoting the joint position of the specified degree of freedom of jointB.
+        ///
+        ///  Larger values of naturalFrequency and dampingRatio will make the mimic joint stiffer and more akin to a hard constraint.
+        ///
+        ///  A damping ratio less than 1.0 is not recommended.
+        ///
+        ///  If dampingRatio is less than or equal to zero and naturalFrequency greater than zero, the mimic joint will behave as a hard constraint.
+        ///  If dampingRatio is greater than zero and naturalFrequency less than or equal to zero, the mimic joint will also behave as a hard constraint.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getSensors", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxArticulationReducedCoordinate_getSensors(PxArticulationReducedCoordinate* self_, PxArticulationSensor** userBuffer, uint bufferSize, uint startIndex);
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_createMimicJoint_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxArticulationMimicJoint* PxArticulationReducedCoordinate_createMimicJoint_mut(PxArticulationReducedCoordinate* self_, PxArticulationJointReducedCoordinate* jointA, PxArticulationAxis axisA, PxArticulationJointReducedCoordinate* jointB, PxArticulationAxis axisB, float gearRatio, float offset, float naturalFrequency, float dampingRatio);
 
         /// <summary>
-        ///  Returns the number of sensors in the articulation.
+        ///  Returns the mimic joints added to the articulation.
         ///
-        ///  The number of sensors.
+        ///  The order of the mimic joints in the buffer is not necessarily identical to the order in which the mimic joints were added to the articulation.
+        ///
+        ///  The number of mimic joints written into the buffer.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getNbSensors_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxArticulationReducedCoordinate_getNbSensors_mut(PxArticulationReducedCoordinate* self_);
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getMimicJoints", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxArticulationReducedCoordinate_getMimicJoints(PxArticulationReducedCoordinate* self_, PxArticulationMimicJoint** userBuffer, uint bufferSize, uint startIndex);
+
+        /// <summary>
+        ///  Returns the number of mimic joints in the articulation.
+        ///
+        ///  The number of mimic joints.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getNbMimicJoints", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxArticulationReducedCoordinate_getNbMimicJoints(PxArticulationReducedCoordinate* self_);
 
         /// <summary>
         ///  Update link velocities and/or positions in the articulation.
         ///
-        ///  For performance, prefer the PxArticulationCache API that performs batch articulation state updates.
+        ///  An alternative that potentially offers better performance is to use the PxArticulationCache API.
         ///
         ///  If the application updates the root state (position and velocity) or joint state via any combination of
         ///  the non-cache API calls
@@ -6000,6 +6868,14 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_updateKinematic_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationReducedCoordinate_updateKinematic_mut(PxArticulationReducedCoordinate* self_, PxArticulationKinematicFlags flags);
+
+        /// <summary>
+        ///  Returns the string name of the dynamic type.
+        ///
+        ///  The string name.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationReducedCoordinate_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxArticulationReducedCoordinate_getConcreteTypeName(PxArticulationReducedCoordinate* self_);
 
         /// <summary>
         ///  Gets the parent articulation link of this joint.
@@ -6053,7 +6929,10 @@ namespace PhysX
         ///  Sets the joint type (e.g. revolute).
         ///
         ///  Setting the joint type is not allowed while the articulation is in a scene.
-        ///  In order to set the joint type, remove and then re-add the articulation to the scene.
+        ///  In order to amend the joint type, remove and then re-add the articulation to the scene.
+        ///
+        ///  Default:
+        ///  PxArticulationJointType::eUNDEFINED
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setJointType_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationJointReducedCoordinate_setJointType_mut(PxArticulationJointReducedCoordinate* self_, PxArticulationJointType jointType);
@@ -6071,6 +6950,9 @@ namespace PhysX
         ///
         ///  Setting the motion of joint axes is not allowed while the articulation is in a scene.
         ///  In order to set the motion, remove and then re-add the articulation to the scene.
+        ///
+        ///  Default:
+        ///  PxArticulationMotion::eLOCKED
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setMotion_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationJointReducedCoordinate_setMotion_mut(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis, PxArticulationMotion motion);
@@ -6092,7 +6974,16 @@ namespace PhysX
         ///
         ///  This call is not allowed while the simulation is running.
         ///
-        ///  For spherical joints, limit.min and limit.max must both be in range [-Pi, Pi].
+        ///  For PxArticulationJointType::eSPHERICAL, limit.min and limit.max must both be in range [-Pi, Pi].
+        ///
+        ///  For PxArticulationJointType::eREVOLUTE, limit.min and limit.max must both be in range [-2*Pi, 2*Pi].
+        ///
+        ///  For PxArticulationJointType::eREVOLUTE_UNWRAPPED, limit.min and limit.max must both be in range [-PX_MAX_REAL, PX_MAX_REAL].
+        ///
+        ///  For PxArticulationJointType::ePRISMATIC, limit.min and limit.max must both be in range [-PX_MAX_REAL, PX_MAX_REAL].
+        ///
+        ///  Default:
+        ///  (0,0)
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setLimitParams_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationJointReducedCoordinate_setLimitParams_mut(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis, PxArticulationLimit* limit);
@@ -6111,6 +7002,9 @@ namespace PhysX
         ///  See PxArticulationDrive for parameter details; and the manual for further information, and the drives' implicit spring-damper (i.e. PD control) implementation in particular.
         ///
         ///  This call is not allowed while the simulation is running.
+        ///
+        ///  Default:
+        ///  PxArticulationDrive(0.0f, 0.0f, 0.0f, PxArticulationDriveType::eNONE)
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setDriveParams_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationJointReducedCoordinate_setDriveParams_mut(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis, PxArticulationDrive* drive);
@@ -6130,17 +7024,24 @@ namespace PhysX
         ///
         ///  This call is not allowed while the simulation is running.
         ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
         ///  For spherical joints, target must be in range [-Pi, Pi].
         ///
-        ///  The target is specified in the parent frame of the joint. If Gp, Gc are the parent and child actor poses in the world frame and Lp, Lc are the parent and child joint frames expressed in the parent and child actor frames then the joint will drive the parent and child links to poses that obey Gp * Lp * J = Gc * Lc. For joints restricted to angular motion, J has the form PxTranfsorm(PxVec3(PxZero), PxExp(PxVec3(twistTarget, swing1Target, swing2Target))).  For joints restricted to linear motion, J has the form PxTransform(PxVec3(XTarget, YTarget, ZTarget), PxQuat(PxIdentity)).
+        ///  The target is specified in the parent frame of the joint. If Gp, Gc are the parent and child actor poses in the world frame and Lp, Lc are the parent and child joint frames expressed in the parent and child actor frames then the joint will drive the parent and child links to poses that obey Gp * Lp * J = Gc * Lc. For joints restricted to angular motion, J has the form PxTransform(PxVec3(PxZero), PxExp(PxVec3(twistTarget, swing1Target, swing2Target))).  For joints restricted to linear motion, J has the form PxTransform(PxVec3(XTarget, YTarget, ZTarget), PxQuat(PxIdentity)).
         ///
         ///  For spherical joints with more than 1 degree of freedom, the joint target angles taken together can collectively represent a rotation of greater than Pi around a vector. When this happens the rotation that matches the joint drive target is not the shortest path rotation.  The joint pose J that is the outcome after driving to the target pose will always be the equivalent of the shortest path rotation.
+        ///
+        ///  Default:
+        ///  0.0
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setDriveTarget_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationJointReducedCoordinate_setDriveTarget_mut(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis, float target, [MarshalAs(UnmanagedType.U1)] bool autowake);
 
         /// <summary>
         ///  Returns the joint drive position target for the given axis.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         ///
         ///  The target position.
         /// </summary>
@@ -6153,12 +7054,19 @@ namespace PhysX
         ///  The target units are linear units (equivalent to scene units) per second for a translational axis, or radians per second for a rotational axis.
         ///
         ///  This call is not allowed while the simulation is running.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
+        ///  Default:
+        ///  0.0
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setDriveVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationJointReducedCoordinate_setDriveVelocity_mut(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis, float targetVel, [MarshalAs(UnmanagedType.U1)] bool autowake);
 
         /// <summary>
         ///  Returns the joint drive velocity target for the given axis.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         ///
         ///  The target velocity.
         /// </summary>
@@ -6172,6 +7080,9 @@ namespace PhysX
         ///  - The armature is in mass units for a prismatic (i.e. linear) joint, and in mass units * (scene linear units)^2 for a rotational joint.
         ///
         ///  This call is not allowed while the simulation is running.
+        ///
+        ///  Default:
+        ///  0.0
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setArmature_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationJointReducedCoordinate_setArmature_mut(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis, float armature);
@@ -6196,6 +7107,9 @@ namespace PhysX
         ///  zero stiffness and zero velocity target, and an appropriately dimensioned damping parameter.
         ///
         ///  This call is not allowed while the simulation is running.
+        ///
+        ///  Default:
+        ///  0.05
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setFrictionCoefficient_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationJointReducedCoordinate_setFrictionCoefficient_mut(PxArticulationJointReducedCoordinate* self_, float coefficient);
@@ -6209,12 +7123,37 @@ namespace PhysX
         public static extern float PxArticulationJointReducedCoordinate_getFrictionCoefficient(PxArticulationJointReducedCoordinate* self_);
 
         /// <summary>
+        ///  Configures joint friction.
+        ///
+        ///  See PxJointFrictionParams for parameter details; and the manual for further information. The new friction model is applied to all axes where setFrictionParams() has been called.
+        ///  For axes where setFrictionParams() hasn't been used, the deprecated friction model remains in effect. See setFrictionCoefficient().
+        ///
+        ///  This call is not allowed while the simulation is running.
+        ///
+        ///  Default:
+        ///  PxJointFrictionParams(0.0f, 0.0f, 0.0f)
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setFrictionParams_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationJointReducedCoordinate_setFrictionParams_mut(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis, PxJointFrictionParams* jointFrictionParams);
+
+        /// <summary>
+        ///  Gets per-axis joint friction parameters struct.
+        ///
+        ///  The joint friction parameters.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_getFrictionParams", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxJointFrictionParams PxArticulationJointReducedCoordinate_getFrictionParams(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis);
+
+        /// <summary>
         ///  Sets the maximal joint velocity enforced for all axes.
         ///
         ///  - The solver will apply appropriate joint-space impulses in order to enforce the per-axis joint-velocity limit.
         ///  - The velocity units are linear units (equivalent to scene units) per second for a translational axis, or radians per second for a rotational axis.
         ///
         ///  This call is not allowed while the simulation is running.
+        ///
+        ///  Default:
+        ///  100.0
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setMaxJointVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationJointReducedCoordinate_setMaxJointVelocity_mut(PxArticulationJointReducedCoordinate* self_, float maxJointV);
@@ -6228,6 +7167,28 @@ namespace PhysX
         public static extern float PxArticulationJointReducedCoordinate_getMaxJointVelocity(PxArticulationJointReducedCoordinate* self_);
 
         /// <summary>
+        ///  Sets the maximal joint velocity enforced for the given axis.
+        ///
+        ///  - The solver will apply appropriate joint-space impulses in order to enforce the per-axis joint-velocity limit.
+        ///  - The velocity units are linear units (equivalent to scene units) per second for a translational axis, or radians per second for a rotational axis.
+        ///
+        ///  This call is not allowed while the simulation is running.
+        ///
+        ///  Default:
+        ///  100.0
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setMaxJointVelocity_mut_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationJointReducedCoordinate_setMaxJointVelocity_mut_1(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis, float maxJointV);
+
+        /// <summary>
+        ///  Gets the maximal joint velocity enforced for the given axis.
+        ///
+        ///  The maximal joint velocity for the given axis.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_getMaxJointVelocity_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxArticulationJointReducedCoordinate_getMaxJointVelocity_1(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis);
+
+        /// <summary>
         ///  Sets the joint position for the given axis.
         ///
         ///  - For performance, prefer PxArticulationCache::jointPosition to set joint positions in a batch articulation state update.
@@ -6236,11 +7197,22 @@ namespace PhysX
         ///
         ///  This call is not allowed while the simulation is running.
         ///
-        ///  For spherical joints, jointPos must be in range [-Pi, Pi].
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         ///
-        ///  Joint position is specified in the parent frame of the joint. If Gp, Gc are the parent and child actor poses in the world frame and Lp, Lc are the parent and child joint frames expressed in the parent and child actor frames then the parent and child links will be given poses that obey Gp * Lp * J = Gc * Lc with J denoting the joint pose. For joints restricted to angular motion, J has the form PxTranfsorm(PxVec3(PxZero), PxExp(PxVec3(twistPos, swing1Pos, swing2Pos))).  For joints restricted to linear motion, J has the form PxTransform(PxVec3(xPos, yPos, zPos), PxQuat(PxIdentity)).
+        ///  For PxArticulationJointType::eSPHERICAL, jointPos must be in range [-Pi, Pi].
+        ///
+        ///  For PxArticulationJointType::eREVOLUTE, jointPos must be in range [-2*Pi, 2*Pi].
+        ///
+        ///  For PxArticulationJointType::eREVOLUTE_UNWRAPPED, jointPos must be in range [-PX_MAX_REAL, PX_MAX_REAL].
+        ///
+        ///  For PxArticulationJointType::ePRISMATIC, jointPos must be in range [-PX_MAX_REAL, PX_MAX_REAL].
+        ///
+        ///  Joint position is specified in the parent frame of the joint. If Gp, Gc are the parent and child actor poses in the world frame and Lp, Lc are the parent and child joint frames expressed in the parent and child actor frames then the parent and child links will be given poses that obey Gp * Lp * J = Gc * Lc with J denoting the joint pose. For joints restricted to angular motion, J has the form PxTransform(PxVec3(PxZero), PxExp(PxVec3(twistPos, swing1Pos, swing2Pos))).  For joints restricted to linear motion, J has the form PxTransform(PxVec3(xPos, yPos, zPos), PxQuat(PxIdentity)).
         ///
         ///  For spherical joints with more than 1 degree of freedom, the input joint positions taken together can collectively represent a rotation of greater than Pi around a vector. When this happens the rotation that matches the joint positions is not the shortest path rotation.  The joint pose J that is the outcome of setting and applying the joint positions will always be the equivalent of the shortest path rotation.
+        ///
+        ///  Default:
+        ///  0.0
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setJointPosition_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationJointReducedCoordinate_setJointPosition_mut(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis, float jointPos);
@@ -6254,6 +7226,8 @@ namespace PhysX
         ///
         ///  This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
         ///  and in PxContactModifyCallback or in contact report callbacks.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_getJointPosition", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxArticulationJointReducedCoordinate_getJointPosition(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis);
@@ -6266,6 +7240,11 @@ namespace PhysX
         ///  in order to update link states for the next simulation frame or querying.
         ///
         ///  This call is not allowed while the simulation is running.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
+        ///  Default:
+        ///  0.0
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setJointVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxArticulationJointReducedCoordinate_setJointVelocity_mut(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis, float jointVel);
@@ -6279,6 +7258,8 @@ namespace PhysX
         ///
         ///  This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
         ///  and in PxContactModifyCallback or in contact report callbacks.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_getJointVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxArticulationJointReducedCoordinate_getJointVelocity(PxArticulationJointReducedCoordinate* self_, PxArticulationAxis axis);
@@ -6292,15 +7273,24 @@ namespace PhysX
         public static extern byte* PxArticulationJointReducedCoordinate_getConcreteTypeName(PxArticulationJointReducedCoordinate* self_);
 
         /// <summary>
-        ///  Decrements the reference count of a shape and releases it if the new reference count is zero.
+        ///  Sets a name string for the object that can be retrieved with getName().
         ///
-        ///  Note that in releases prior to PhysX 3.3 this method did not have reference counting semantics and was used to destroy a shape
-        ///  created with PxActor::createShape(). In PhysX 3.3 and above, this usage is deprecated, instead, use PxRigidActor::detachShape() to detach
-        ///  a shape from an actor. If the shape to be detached was created with PxActor::createShape(), the actor holds the only counted reference,
-        ///  and so when the shape is detached it will also be destroyed.
+        ///  This is for debugging and is not used by the SDK. The string is not copied by the SDK,
+        ///  only the pointer is stored.
+        ///
+        ///  Default:
+        ///  NULL
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxShape_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxShape_release_mut(PxShape* self_);
+        [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_setName_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxArticulationJointReducedCoordinate_setName_mut(PxArticulationJointReducedCoordinate* self_, byte* name);
+
+        /// <summary>
+        ///  Retrieves the name string set with setName().
+        ///
+        ///  Name string associated with object.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxArticulationJointReducedCoordinate_getName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxArticulationJointReducedCoordinate_getName(PxArticulationJointReducedCoordinate* self_);
 
         /// <summary>
         ///  Adjust the geometry of the shape.
@@ -6410,6 +7400,28 @@ namespace PhysX
         public static extern void PxShape_setMaterials_mut(PxShape* self_, PxMaterial** materials, ushort materialCount);
 
         /// <summary>
+        ///  Assigns surface deformable material(s) to the shape. Will remove existing materials from the shape.
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake the associated actor up automatically.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxShape_setDeformableSurfaceMaterials_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxShape_setDeformableSurfaceMaterials_mut(PxShape* self_, PxDeformableSurfaceMaterial** materials, ushort materialCount);
+
+        /// <summary>
+        ///  Assigns deformable volume material(s) to the shape. Will remove existing materials from the shape.
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake the associated actor up automatically.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxShape_setDeformableVolumeMaterials_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxShape_setDeformableVolumeMaterials_mut(PxShape* self_, PxDeformableVolumeMaterial** materials, ushort materialCount);
+
+        /// <summary>
         ///  Returns the number of materials assigned to the shape.
         ///
         ///  You can use [`getMaterials`]() to retrieve the material pointers.
@@ -6432,6 +7444,30 @@ namespace PhysX
         public static extern uint PxShape_getMaterials(PxShape* self_, PxMaterial** userBuffer, uint bufferSize, uint startIndex);
 
         /// <summary>
+        ///  Retrieve all the surface deformable material pointers associated with the shape.
+        ///
+        ///  You can retrieve the number of material pointers by calling [`getNbMaterials`]()
+        ///
+        ///  Note: The returned data may contain invalid pointers if you release materials using [`PxMaterial::release`]().
+        ///
+        ///  Number of material pointers written to the buffer.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxShape_getDeformableSurfaceMaterials", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxShape_getDeformableSurfaceMaterials(PxShape* self_, PxDeformableSurfaceMaterial** userBuffer, uint bufferSize, uint startIndex);
+
+        /// <summary>
+        ///  Retrieve all the deformable volume material pointers associated with the shape.
+        ///
+        ///  You can retrieve the number of material pointers by calling [`getNbMaterials`]()
+        ///
+        ///  Note: The returned data may contain invalid pointers if you release materials using [`PxMaterial::release`]().
+        ///
+        ///  Number of material pointers written to the buffer.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxShape_getDeformableVolumeMaterials", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxShape_getDeformableVolumeMaterials(PxShape* self_, PxDeformableVolumeMaterial** userBuffer, uint bufferSize, uint startIndex);
+
+        /// <summary>
         ///  Retrieve material from given triangle index.
         ///
         ///  The input index is the internal triangle index as used inside the SDK. This is the index
@@ -6439,7 +7475,7 @@ namespace PhysX
         ///
         ///  This function is only useful for triangle meshes or heightfields, which have per-triangle
         ///  materials. For other shapes or SDF triangle meshes, the function returns the single material
-        ///  associated with the shape, regardless of the index.
+        ///  associated with the	shape, regardless of the index.
         ///
         ///  Material from input triangle
         ///
@@ -6527,10 +7563,15 @@ namespace PhysX
         /// <summary>
         ///  Sets torsional patch radius.
         ///
-        ///  This defines the radius of the contact patch used to apply torsional friction. If the radius is 0, no torsional friction
-        ///  will be applied. If the radius is &gt; 0, some torsional friction will be applied. This is proportional to the penetration depth
-        ///  so, if the shapes are separated or penetration is zero, no torsional friction will be applied. It is used to approximate
-        ///  rotational friction introduced by the compression of contacting surfaces.
+        ///  This defines the radius of the contact patch used to apply torsional friction. If the radius is 0 (and minTorsionalPatchRadius
+        ///  is 0 too, see [`setMinTorsionalPatchRadius`]), no torsional friction will be applied. If the radius is &gt; 0, some torsional friction
+        ///  will be applied. This is proportional to the penetration depth so, if the shapes are separated or penetration is zero, no
+        ///  torsional friction will be applied. It is used to approximate rotational friction introduced by the compression of contacting surfaces.
+        ///
+        ///  Will only be active, if the friction patch has a single anchor point only. This is for example the case, if a contact patch
+        ///  has a single contact point.
+        ///
+        ///  Only supported in combination with solver type PxSolverType::eTGS.
         ///
         ///  Default:
         ///  0.0
@@ -6541,10 +7582,7 @@ namespace PhysX
         /// <summary>
         ///  Gets torsional patch radius.
         ///
-        ///  This defines the radius of the contact patch used to apply torsional friction. If the radius is 0, no torsional friction
-        ///  will be applied. If the radius is &gt; 0, some torsional friction will be applied. This is proportional to the penetration depth
-        ///  so, if the shapes are separated or penetration is zero, no torsional friction will be applied. It is used to approximate
-        ///  rotational friction introduced by the compression of contacting surfaces.
+        ///  See [`setTorsionalPatchRadius`] for more info.
         ///
         ///  The torsional patch radius of the shape.
         /// </summary>
@@ -6559,6 +7597,8 @@ namespace PhysX
         ///
         ///  If the radius is &gt; 0, some torsional friction will be applied regardless of the value of torsionalPatchRadius or the amount of penetration.
         ///
+        ///  Will only be active in certain cases, see [`setTorsionalPatchRadius`] for details.
+        ///
         ///  Default:
         ///  0.0
         /// </summary>
@@ -6568,15 +7608,22 @@ namespace PhysX
         /// <summary>
         ///  Gets minimum torsional patch radius.
         ///
-        ///  This defines the minimum radius of the contact patch used to apply torsional friction. If the radius is 0, the amount of torsional friction
-        ///  that will be applied will be entirely dependent on the value of torsionalPatchRadius.
-        ///
-        ///  If the radius is &gt; 0, some torsional friction will be applied regardless of the value of torsionalPatchRadius or the amount of penetration.
+        ///  See [`setMinTorsionalPatchRadius`] for more info.
         ///
         ///  The minimum torsional patch radius of the shape.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxShape_getMinTorsionalPatchRadius", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxShape_getMinTorsionalPatchRadius(PxShape* self_);
+
+        /// <summary>
+        ///  Returns the GPU shape index.
+        ///
+        ///  This function only returns valid results if GPU dynamics is enabled.
+        ///
+        ///  The GPU index, or 0xFFFFFFFF if the shape is not attached to a PxActor that is inserted into a PxScene.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxShape_getGPUIndex", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxShape_getGPUIndex(PxShape* self_);
 
         /// <summary>
         ///  Sets shape flags
@@ -6672,6 +7719,8 @@ namespace PhysX
         ///  It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
         ///  in PxContactModifyCallback or in contact report callbacks).
         ///
+        ///  If this actor is a PxRigidDynamic or PxArticulationLink, this method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
         ///  Global pose of object.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRigidActor_getGlobalPose", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
@@ -6694,6 +7743,11 @@ namespace PhysX
         ///  moving actors into other actors, thus causing overlap (an invalid physical state)
         ///
         ///  moving an actor that is connected by a joint to another away from the other (thus causing joint error)
+        ///
+        ///  It is not allowed to use this method if the actor is part of a [`PxPruningStructure`] that has not been
+        ///  added to a scene yet.
+        ///
+        ///  If this actor is a PxRigidDynamic or PxArticulationLink, this method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
         ///
         ///  Sleeping:
         ///  This call wakes dynamic actors if they are sleeping and the autowake parameter is true (default).
@@ -6789,8 +7843,20 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxNodeIndex_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxNodeIndex PxNodeIndex_new_1(uint id);
 
+        [DllImport(__DllName, EntryPoint = "PxNodeIndex_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxNodeIndex PxNodeIndex_new_2(ulong ind);
+
+        [DllImport(__DllName, EntryPoint = "PxNodeIndex_new_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxNodeIndex PxNodeIndex_new_3(uint id, uint linkData, [MarshalAs(UnmanagedType.U1)] bool anon_param2);
+
+        [DllImport(__DllName, EntryPoint = "PxNodeIndex_getInd", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern ulong PxNodeIndex_getInd(PxNodeIndex* self_);
+
         [DllImport(__DllName, EntryPoint = "PxNodeIndex_index", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint PxNodeIndex_index(PxNodeIndex* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxNodeIndex_linkData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxNodeIndex_linkData(PxNodeIndex* self_);
 
         [DllImport(__DllName, EntryPoint = "PxNodeIndex_articulationLinkId", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint PxNodeIndex_articulationLinkId(PxNodeIndex* self_);
@@ -6812,9 +7878,6 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxNodeIndex_setIndices_mut_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxNodeIndex_setIndices_mut_1(PxNodeIndex* self_, uint index);
 
-        [DllImport(__DllName, EntryPoint = "PxNodeIndex_getInd", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern ulong PxNodeIndex_getInd(PxNodeIndex* self_);
-
         /// <summary>
         ///  Sets the pose of the center of mass relative to the actor.
         ///
@@ -6822,6 +7885,10 @@ namespace PhysX
         ///
         ///  Setting an unrealistic center of mass which is a long way from the body can make it difficult for
         ///  the SDK to solve constraints. Perhaps leading to instability and jittering bodies.
+        ///
+        ///  Changing this transform will not update the linear velocity reported by getLinearVelocity() to account
+        ///  for the shift in center of mass. If the shift should be accounted for, the user should update the velocity
+        ///  using setLinearVelocity().
         ///
         ///  Default:
         ///  the identity transform
@@ -6933,7 +8000,7 @@ namespace PhysX
         ///  Zero represents no damping. The damping coefficient must be nonnegative.
         ///
         ///  Default:
-        ///  0.0
+        ///  0.05 for PxArticulationLink, 0.0 for PxRigidDynamic
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRigidBody_setLinearDamping_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxRigidBody_setLinearDamping_mut(PxRigidBody* self_, float linDamp);
@@ -6973,6 +8040,8 @@ namespace PhysX
         ///  It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
         ///  in PxContactModifyCallback or in contact report callbacks).
         ///
+        ///  The linear velocity is reported with respect to the rigid body's center of mass and not the actor frame origin.
+        ///
         ///  The linear velocity of the actor.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRigidBody_getLinearVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
@@ -6993,15 +8062,18 @@ namespace PhysX
         ///  Lets you set the maximum linear velocity permitted for this actor.
         ///
         ///  With this function, you can set the  maximum linear velocity permitted for this rigid body.
-        ///  Higher angular velocities are clamped to this value.
+        ///  Higher linear velocities are clamped to this value.
         ///
-        ///  Note: The angular velocity is clamped to the set value
+        ///  Note: The linear velocity is clamped to the set value
         ///  before
         ///  the solver, which means that
         ///  the limit may still be momentarily exceeded.
         ///
+        ///  Enforcing the limit introduces momentum into the simulation, causing potentially unphysical behavior.
+        ///  For articulation links, consider using joint damping and limits instead, which preserve momentum.
+        ///
         ///  Default:
-        ///  PX_MAX_F32
+        ///  100 * PxTolerancesScale::length /s for PxArticulationLink, 1e^16 lengthUnits/s for PxRigidDynamic
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRigidBody_setMaxLinearVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxRigidBody_setMaxLinearVelocity_mut(PxRigidBody* self_, float maxLinVel);
@@ -7028,8 +8100,14 @@ namespace PhysX
         ///  the solver, which means that
         ///  the limit may still be momentarily exceeded.
         ///
+        ///  Enforcing the limit introduces momentum into the simulation, causing potentially unphysical behavior.
+        ///  For articulation links, consider using joint damping and limits instead, which preserve momentum.
+        ///
         ///  Default:
-        ///  100.0
+        ///  50.0 rad/s for PxArticulationLink, 100.0 rad/s for PxRigidDynamic
+        ///
+        ///  Range:
+        ///  [0, 1e^16) rad/s
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRigidBody_setMaxAngularVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxRigidBody_setMaxAngularVelocity_mut(PxRigidBody* self_, float maxAngVel);
@@ -7041,6 +8119,32 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRigidBody_getMaxAngularVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern float PxRigidBody_getMaxAngularVelocity(PxRigidBody* self_);
+
+        /// <summary>
+        ///  Retrieves the linear acceleration of an actor.
+        ///
+        ///  For PxArticulationLink objects, this function is always available.
+        ///
+        ///  For PxRigidDynamic actors, this function only returns valid results if PxSceneFlag::eENABLE_BODY_ACCELERATIONS is enabled.
+        ///  If that flag is not enabled, the function returns zero for PxRigidDynamic actors.
+        ///
+        ///  The linear acceleration of the actor, or zero if PxSceneFlag::eENABLE_BODY_ACCELERATIONS is disabled and the object is a PxRigidDynamic.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxRigidBody_getLinearAcceleration", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxRigidBody_getLinearAcceleration(PxRigidBody* self_);
+
+        /// <summary>
+        ///  Retrieves the angular acceleration of an actor.
+        ///
+        ///  For PxArticulationLink objects, this function is always available.
+        ///
+        ///  For PxRigidDynamic actors, this function only returns valid results if PxSceneFlag::eENABLE_BODY_ACCELERATIONS is enabled.
+        ///  If that flag is not enabled, the function returns zero for PxRigidDynamic actors.
+        ///
+        ///  The angular acceleration of the actor, or zero if PxSceneFlag::eENABLE_BODY_ACCELERATIONS is disabled and the object is a PxRigidDynamic.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxRigidBody_getAngularAcceleration", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxRigidBody_getAngularAcceleration(PxRigidBody* self_);
 
         /// <summary>
         ///  Applies a force (or impulse) defined in the global coordinate frame to the actor at its center of mass.
@@ -7057,12 +8161,17 @@ namespace PhysX
         ///
         ///  It is invalid to use this method if the actor has not been added to a scene already or if PxActorFlag::eDISABLE_SIMULATION is set.
         ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
         ///  The force modes PxForceMode::eIMPULSE and PxForceMode::eVELOCITY_CHANGE can not be applied to articulation links.
         ///
         ///  if this is called on an articulation link, only the link is updated, not the entire articulation.
         ///
         ///  see [`PxRigidBodyExt::computeVelocityDeltaFromImpulse`] for details of how to compute the change in linear velocity that
         ///  will arise from the application of an impulsive force, where an impulsive force is applied force multiplied by a timestep.
+        ///
+        ///  Forces will be cleared automatically after they are applied during the next simulation step. If the forces should be retained for
+        ///  the following steps, PxRigidBodyFlag::eRETAIN_ACCELERATIONS should be raised.
         ///
         ///  Sleeping:
         ///  This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the force is non-zero.
@@ -7082,12 +8191,17 @@ namespace PhysX
         ///
         ///  It is invalid to use this method if the actor has not been added to a scene already or if PxActorFlag::eDISABLE_SIMULATION is set.
         ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
         ///  The force modes PxForceMode::eIMPULSE and PxForceMode::eVELOCITY_CHANGE can not be applied to articulation links.
         ///
         ///  if this called on an articulation link, only the link is updated, not the entire articulation.
         ///
         ///  see [`PxRigidBodyExt::computeVelocityDeltaFromImpulse`] for details of how to compute the change in angular velocity that
         ///  will arise from the application of an impulsive torque, where an impulsive torque is an applied torque multiplied by a timestep.
+        ///
+        ///  Torques will be cleared after they are applied during the next simulation step. If the Torques should be retained for the following
+        ///  steps, PxRigidBodyFlag::eRETAIN_ACCELERATIONS should be raised.
         ///
         ///  Sleeping:
         ///  This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the torque is non-zero.
@@ -7108,6 +8222,8 @@ namespace PhysX
         ///
         ///  The force modes PxForceMode::eIMPULSE and PxForceMode::eVELOCITY_CHANGE can not be applied to articulation links.
         ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
         ///  It is invalid to use this method if the actor has not been added to a scene already or if PxActorFlag::eDISABLE_SIMULATION is set.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRigidBody_clearForce_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
@@ -7126,6 +8242,8 @@ namespace PhysX
         ///
         ///  The force modes PxForceMode::eIMPULSE and PxForceMode::eVELOCITY_CHANGE can not be applied to articulation links.
         ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
         ///  It is invalid to use this method if the actor has not been added to a scene already or if PxActorFlag::eDISABLE_SIMULATION is set.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRigidBody_clearTorque_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
@@ -7138,7 +8256,12 @@ namespace PhysX
         ///
         ///  The force modes PxForceMode::eIMPULSE and PxForceMode::eVELOCITY_CHANGE can not be applied to articulation links.
         ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
         ///  It is invalid to use this method if the actor has not been added to a scene already or if PxActorFlag::eDISABLE_SIMULATION is set.
+        ///
+        ///  Forces and torques will be cleared after they are applied during the next simulation step. If they should be retained for the following
+        ///  steps, PxRigidBodyFlag::eRETAIN_ACCELERATIONS should be raised.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRigidBody_setForceAndTorque_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxRigidBody_setForceAndTorque_mut(PxRigidBody* self_, PxVec3* force, PxVec3* torque, PxForceMode mode);
@@ -7186,7 +8309,7 @@ namespace PhysX
         ///  scenes which the constraint solver can't converge, e.g. scenes where an object is being dragged through a wall with a constraint.
         ///  A value of 0 ensures that the pair of objects stop at the exact time-of-impact and will not gently drift through each-other. However, with very small/thin objects initially in
         ///  contact, this can lead to a large amount of time being dropped and increases the chances of jamming. Jamming occurs when the an object is persistently in contact with an object
-        ///  such that the time-of-impact is 0, which results in no time being advanced for those objects in that CCD pass.
+        ///  such that the time-of-impact is	0, which results in no time being advanced for those objects in that CCD pass.
         ///
         ///  The chances of jamming can be reduced by increasing the number of CCD mass
         /// </summary>
@@ -7219,7 +8342,7 @@ namespace PhysX
 
         /// <summary>
         ///  Sets a limit on the impulse that may be applied at a contact. The maximum impulse at a contact between two dynamic or kinematic
-        ///  bodies will be the minimum of the two limit values. For a collision between a static and a dynamic body, the impulse is limited
+        ///  bodies will be the minimum	of the two limit values. For a collision between a static and a dynamic body, the impulse is limited
         ///  by the value for the dynamic body.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRigidBody_setMaxContactImpulse_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
@@ -7307,6 +8430,11 @@ namespace PhysX
         /// <summary>
         ///  Gets the low-level link index that may be used to index into members of PxArticulationCache.
         ///
+        ///  The low-level indices are built after an articulation is added to the scene following a breadth-first approach,
+        ///  where all the links at the current depth are indexed sequentially before moving to the links at the next depth level.
+        ///  The root of the articulation has therefore the index 0.
+        ///  Note that the low-level indices may be different from the order in which the links were originally added to the articulation.
+        ///
         ///  The return value is only valid for articulations that are in a scene.
         ///
         ///  The low-level index, or 0xFFFFFFFF if the articulation is not in a scene.
@@ -7350,7 +8478,6 @@ namespace PhysX
         /// <summary>
         ///  Get the linear velocity of the link.
         ///
-        ///  - The linear velocity is with respect to the link's center of mass and not the actor frame origin.
         ///  - For performance, prefer PxArticulationCache::linkVelocity to get link spatial velocities in a batch query.
         ///  - When the articulation state is updated via non-cache API, use PxArticulationReducedCoordinate::updateKinematic before querying velocity.
         ///
@@ -7358,6 +8485,8 @@ namespace PhysX
         ///
         ///  This call is not allowed while the simulation is running except in a split simulation during [`PxScene::collide`]() and up to #PxScene::advance(),
         ///  and in PxContactModifyCallback or in contact report callbacks.
+        ///
+        ///  The linear velocity is reported with respect to the link's center of mass and not the actor frame origin.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationLink_getLinearVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxArticulationLink_getLinearVelocity(PxArticulationLink* self_);
@@ -7383,9 +8512,6 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxArticulationLink_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern byte* PxArticulationLink_getConcreteTypeName(PxArticulationLink* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxConeLimitedConstraint_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxConeLimitedConstraint PxConeLimitedConstraint_new();
 
         /// <summary>
         ///  Releases a PxConstraint instance.
@@ -7516,6 +8642,225 @@ namespace PhysX
 
         [DllImport(__DllName, EntryPoint = "PxConstraint_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern byte* PxConstraint_getConcreteTypeName(PxConstraint* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxConstraint_getGPUIndex", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxConstraint_getGPUIndex(PxConstraint* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxBaseMaterial_isKindOf", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxBaseMaterial_isKindOf(PxBaseMaterial* self_, byte* name);
+
+        /// <summary>
+        ///  Sets the coefficient of dynamic friction.
+        ///
+        ///  The coefficient of dynamic friction should be in [0, PX_MAX_F32). If set to greater than staticFriction, the effective value of staticFriction will be increased to match.
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake any actors which may be affected.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_setDynamicFriction_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMaterial_setDynamicFriction_mut(PxMaterial* self_, float coef);
+
+        /// <summary>
+        ///  Retrieves the DynamicFriction value.
+        ///
+        ///  The coefficient of dynamic friction.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_getDynamicFriction", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxMaterial_getDynamicFriction(PxMaterial* self_);
+
+        /// <summary>
+        ///  Sets the coefficient of static friction
+        ///
+        ///  The coefficient of static friction should be in the range [0, PX_MAX_F32)
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake any actors which may be affected.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_setStaticFriction_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMaterial_setStaticFriction_mut(PxMaterial* self_, float coef);
+
+        /// <summary>
+        ///  Retrieves the coefficient of static friction.
+        ///
+        ///  The coefficient of static friction.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_getStaticFriction", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxMaterial_getStaticFriction(PxMaterial* self_);
+
+        /// <summary>
+        ///  Sets the coefficient of restitution or the spring stiffness for compliant contact
+        ///
+        ///  A coefficient of 0 makes the object bounce as little as possible, higher values up to 1.0 result in more bounce.
+        ///  If a negative value is provided it is interpreted as stiffness term for an implicit spring
+        ///  simulated at the contact site, with the spring positional error defined by
+        ///  the contact separation value. Higher stiffness terms produce stiffer springs that behave more like a rigid contact.
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake any actors which may be affected.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_setRestitution_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMaterial_setRestitution_mut(PxMaterial* self_, float rest);
+
+        /// <summary>
+        ///  Retrieves the coefficient of restitution.
+        ///
+        ///  See [`setRestitution`].
+        ///
+        ///  The coefficient of restitution.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_getRestitution", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxMaterial_getRestitution(PxMaterial* self_);
+
+        /// <summary>
+        ///  Sets the coefficient of damping
+        ///
+        ///  This property only affects the simulation if compliant contact mode is enabled, i.e., a negative restitution value is set.
+        ///  Damping works together with spring stiffness. Spring stiffness corrects positional error while
+        ///  damping resists relative velocity. Setting a high damping coefficient can produce spongy contacts.
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake any actors which may be affected.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_setDamping_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMaterial_setDamping_mut(PxMaterial* self_, float damping);
+
+        /// <summary>
+        ///  Retrieves the coefficient of damping.
+        ///
+        ///  See [`setDamping`].
+        ///
+        ///  The coefficient of damping.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_getDamping", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxMaterial_getDamping(PxMaterial* self_);
+
+        /// <summary>
+        ///  Raises or clears a particular material flag.
+        ///
+        ///  See the list of flags [`PxMaterialFlag`]
+        ///
+        ///  Default:
+        ///  No flag raised.
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake any actors which may be affected.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_setFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMaterial_setFlag_mut(PxMaterial* self_, PxMaterialFlag flag, [MarshalAs(UnmanagedType.U1)] bool b);
+
+        /// <summary>
+        ///  sets all the material flags.
+        ///
+        ///  See the list of flags [`PxMaterialFlag`]
+        ///
+        ///  Default:
+        ///  No flag raised.
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake any actors which may be affected.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_setFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMaterial_setFlags_mut(PxMaterial* self_, PxMaterialFlags flags);
+
+        /// <summary>
+        ///  Retrieves the flags. See [`PxMaterialFlag`].
+        ///
+        ///  The material flags.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_getFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMaterialFlags PxMaterial_getFlags(PxMaterial* self_);
+
+        /// <summary>
+        ///  Sets the friction combine mode.
+        ///
+        ///  See the enum ::PxCombineMode .
+        ///
+        ///  Default:
+        ///  PxCombineMode::eAVERAGE
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake any actors which may be affected.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_setFrictionCombineMode_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMaterial_setFrictionCombineMode_mut(PxMaterial* self_, PxCombineMode combMode);
+
+        /// <summary>
+        ///  Retrieves the friction combine mode.
+        ///
+        ///  See [`setFrictionCombineMode`].
+        ///
+        ///  The friction combine mode for this material.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_getFrictionCombineMode", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxCombineMode PxMaterial_getFrictionCombineMode(PxMaterial* self_);
+
+        /// <summary>
+        ///  Sets the restitution combine mode.
+        ///
+        ///  See the enum ::PxCombineMode .
+        ///
+        ///  Default:
+        ///  PxCombineMode::eAVERAGE
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake any actors which may be affected.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_setRestitutionCombineMode_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMaterial_setRestitutionCombineMode_mut(PxMaterial* self_, PxCombineMode combMode);
+
+        /// <summary>
+        ///  Retrieves the restitution combine mode.
+        ///
+        ///  See [`setRestitutionCombineMode`].
+        ///
+        ///  The coefficient of restitution combine mode for this material.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_getRestitutionCombineMode", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxCombineMode PxMaterial_getRestitutionCombineMode(PxMaterial* self_);
+
+        /// <summary>
+        ///  Sets the damping combine mode.
+        ///
+        ///  See the enum ::PxCombineMode .
+        ///
+        ///  Default:
+        ///  PxCombineMode::eAVERAGE
+        ///
+        ///  Sleeping:
+        ///  Does
+        ///  NOT
+        ///  wake any actors which may be affected.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_setDampingCombineMode_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxMaterial_setDampingCombineMode_mut(PxMaterial* self_, PxCombineMode combMode);
+
+        /// <summary>
+        ///  Retrieves the damping combine mode.
+        ///
+        ///  The damping combine mode for this material.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxMaterial_getDampingCombineMode", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxCombineMode PxMaterial_getDampingCombineMode(PxMaterial* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxMaterial_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxMaterial_getConcreteTypeName(PxMaterial* self_);
 
         /// <summary>
         ///  Constructor
@@ -7723,6 +9068,90 @@ namespace PhysX
         public static extern bool PxContactStreamIterator_advanceToIndex_mut(PxContactStreamIterator* self_, uint initialIndex);
 
         /// <summary>
+        ///  Constructor
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFrictionAnchorStreamIterator_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxFrictionAnchorStreamIterator PxFrictionAnchorStreamIterator_new(byte* contactPatches, byte* frictionPatches, uint patchCount);
+
+        /// <summary>
+        ///  Check if there are more patches.
+        ///
+        ///  true if there are more patches.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFrictionAnchorStreamIterator_hasNextPatch", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxFrictionAnchorStreamIterator_hasNextPatch(PxFrictionAnchorStreamIterator* self_);
+
+        /// <summary>
+        ///  Advance to the next patch.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFrictionAnchorStreamIterator_nextPatch_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxFrictionAnchorStreamIterator_nextPatch_mut(PxFrictionAnchorStreamIterator* self_);
+
+        /// <summary>
+        ///  Check if current patch has more friction anchors.
+        ///
+        ///  true if there are more friction anchors in current patch.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFrictionAnchorStreamIterator_hasNextFrictionAnchor", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxFrictionAnchorStreamIterator_hasNextFrictionAnchor(PxFrictionAnchorStreamIterator* self_);
+
+        /// <summary>
+        ///  Advance to the next friction anchor in the patch.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFrictionAnchorStreamIterator_nextFrictionAnchor_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxFrictionAnchorStreamIterator_nextFrictionAnchor_mut(PxFrictionAnchorStreamIterator* self_);
+
+        /// <summary>
+        ///  Get the friction anchor's position.
+        ///
+        ///  The friction anchor's position.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFrictionAnchorStreamIterator_getPosition", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3* PxFrictionAnchorStreamIterator_getPosition(PxFrictionAnchorStreamIterator* self_);
+
+        /// <summary>
+        ///  Get the friction anchor's impulse.
+        ///
+        ///  The friction anchor's impulse.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFrictionAnchorStreamIterator_getImpulse", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3* PxFrictionAnchorStreamIterator_getImpulse(PxFrictionAnchorStreamIterator* self_);
+
+        /// <summary>
+        ///  Get the friction anchor's normal.
+        ///
+        ///  The friction anchor's normal.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFrictionAnchorStreamIterator_getNormal", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3* PxFrictionAnchorStreamIterator_getNormal(PxFrictionAnchorStreamIterator* self_);
+
+        /// <summary>
+        ///  Get current patch's static friction coefficient.
+        ///
+        ///  The patch's static friction coefficient.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFrictionAnchorStreamIterator_getStaticFriction", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxFrictionAnchorStreamIterator_getStaticFriction(PxFrictionAnchorStreamIterator* self_);
+
+        /// <summary>
+        ///  Get current patch's dynamic friction coefficient.
+        ///
+        ///  The patch's dynamic friction coefficient.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFrictionAnchorStreamIterator_getDynamicFriction", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxFrictionAnchorStreamIterator_getDynamicFriction(PxFrictionAnchorStreamIterator* self_);
+
+        /// <summary>
+        ///  Get current patch's combined material flags.
+        ///
+        ///  The patch's combined material flags.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxFrictionAnchorStreamIterator_getMaterialFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMaterialFlags PxFrictionAnchorStreamIterator_getMaterialFlags(PxFrictionAnchorStreamIterator* self_);
+
+        /// <summary>
         ///  Get the position of a specific contact point in the set.
         ///
         ///  Position to the requested point in world space
@@ -7776,6 +9205,8 @@ namespace PhysX
 
         /// <summary>
         ///  Alter the target velocity of a specific contact point in the set.
+        ///
+        ///  The sign of the velocity needs to be flipped depending on the order of the actors in the pair. There is no guarantee about the consistency of the order from frame to frame.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxContactSet_setTargetVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxContactSet_setTargetVelocity_mut(PxContactSet* self_, uint i, PxVec3* v);
@@ -7983,6 +9414,941 @@ namespace PhysX
         public static extern void PxCCDContactModifyCallback_onCCDContactModify_mut(PxCCDContactModifyCallback* self_, PxContactModifyPair* pairs, uint count);
 
         /// <summary>
+        ///  Raises or clears a particular deformable body flag.
+        ///
+        ///  See the list of flags [`PxDeformableBodyFlag`]
+        ///
+        ///  Default:
+        ///  No flags are set
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_setDeformableBodyFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_setDeformableBodyFlag_mut(PxDeformableBody* self_, PxDeformableBodyFlag flag, [MarshalAs(UnmanagedType.U1)] bool val);
+
+        /// <summary>
+        ///  Sets deformable body flags.
+        ///
+        ///  See the list of flags [`PxDeformableBodyFlag`]
+        ///
+        ///  Default:
+        ///  No flags are set
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_setDeformableBodyFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_setDeformableBodyFlags_mut(PxDeformableBody* self_, PxDeformableBodyFlags flags);
+
+        /// <summary>
+        ///  Reads the deformable body flags.
+        ///
+        ///  See the list of flags [`PxDeformableBodyFlag`]
+        ///
+        ///  The values of the deformable body flags.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getDeformableBodyFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableBodyFlags PxDeformableBody_getDeformableBodyFlags(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Sets the linear damping parameter.
+        ///
+        ///  After every timestep the velocity is reduced while the magnitude of the
+        ///  reduction depends on the linearDamping value.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_setLinearDamping_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_setLinearDamping_mut(PxDeformableBody* self_, float linearDamping);
+
+        /// <summary>
+        ///  Retrieves linear velocity damping parameter.
+        ///
+        ///  The linear damping parameter
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getLinearDamping", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableBody_getLinearDamping(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Sets the maximal velocity vertices can reach
+        ///
+        ///  Allows to limit the vertices' maximal velocity to control the maximal distance a vertex can move per frame
+        ///  Default:
+        ///  1.0e32
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_setMaxLinearVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_setMaxLinearVelocity_mut(PxDeformableBody* self_, float maxLinearVelocity);
+
+        /// <summary>
+        ///  Retrieves maximal velocity a vertex can have.
+        ///
+        ///  The maximal velocity
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getMaxLinearVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableBody_getMaxLinearVelocity(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Sets the maximal depenetration velocity vertices can reach
+        ///
+        ///  Allows to limit the vertices' maximal depenetration velocity to avoid that collision responses lead to very high particle velocities
+        ///  Default:
+        ///  1.0e32
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_setMaxDepenetrationVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_setMaxDepenetrationVelocity_mut(PxDeformableBody* self_, float maxDepenetrationVelocity);
+
+        /// <summary>
+        ///  Retrieves maximal depenetration velocity a vertex can have.
+        ///
+        ///  The maximal depenetration velocity
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getMaxDepenetrationVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableBody_getMaxDepenetrationVelocity(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Sets the self collision filter distance.
+        ///
+        ///  Penetration distance that needs to be exceeded before contacts for self collision are generated.
+        ///  Will only have an effect if self collisions are enabled.
+        ///  Default:
+        ///  0.1
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_setSelfCollisionFilterDistance_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_setSelfCollisionFilterDistance_mut(PxDeformableBody* self_, float selfCollisionFilterDistance);
+
+        /// <summary>
+        ///  Retrieves the self collision filter distance.
+        ///
+        ///  The self collision filter distance
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getSelfCollisionFilterDistance", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableBody_getSelfCollisionFilterDistance(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Sets the solver iteration count for the deformable body.
+        ///
+        ///  Since deformables are currently implemented using an XPBD solver (extended position based dynamics), minVelocityIters is ignored.
+        ///  Default:
+        ///  4 position iterations, 1 velocity iteration
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_setSolverIterationCounts_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_setSolverIterationCounts_mut(PxDeformableBody* self_, uint minPositionIters, uint minVelocityIters);
+
+        /// <summary>
+        ///  Retrieves the solver iteration counts.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getSolverIterationCounts", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_getSolverIterationCounts(PxDeformableBody* self_, uint* minPositionIters, uint* minVelocityIters);
+
+        /// <summary>
+        ///  Sets the threshold controlling sleeping of the deformable body.
+        ///
+        ///  Threshold that defines the maximal magnitude of the linear motion a deformable body can move in one second
+        ///  before it becomes a candidate for sleeping.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_setSleepThreshold_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_setSleepThreshold_mut(PxDeformableBody* self_, float sleepThreshold);
+
+        /// <summary>
+        ///  Retrieves the sleep threshold.
+        ///
+        ///  The sleep threshold
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getSleepThreshold", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableBody_getSleepThreshold(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Sets the threshold controlling settling phase before sleeping of the deformable body.
+        ///
+        ///  Threshold that defines the maximal magnitude of the linear motion a deformable body can move
+        ///  in one second before it becomes a candidate for sleeping and settling damping is engaged.
+        ///  The settling threshold needs to be higher than the sleep threshold.
+        ///  Default:
+        ///  0.1
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_setSettlingThreshold_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_setSettlingThreshold_mut(PxDeformableBody* self_, float settlingThreshold);
+
+        /// <summary>
+        ///  Retrieves the settling threshold.
+        ///
+        ///  The settling threshold
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getSettlingThreshold", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableBody_getSettlingThreshold(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Sets the damping parameter used for settling phase.
+        ///
+        ///  If the maximum linear velocity of the deformable body falls below the settling threshold, the deformable body
+        ///  enters the settling phase in which the settling damping is applied.
+        ///
+        ///  Default:
+        ///  10.0
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_setSettlingDamping_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_setSettlingDamping_mut(PxDeformableBody* self_, float settlingDamping);
+
+        /// <summary>
+        ///  Retrieves settling damping parameter.
+        ///
+        ///  The settling damping parameter
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getSettlingDamping", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableBody_getSettlingDamping(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Sets the wake counter for the deformable body.
+        ///
+        ///  The wake counter value determines the minimum amount of time until the deformable body can be put to sleep. Please note
+        ///  that a deformable body will not be put to sleep if any vertex velocity is above the specified threshold
+        ///  or if other awake objects are touching it.
+        ///
+        ///  Passing in a positive value will wake the deformable body up automatically.
+        ///
+        ///  Default:
+        ///  0.4 (which corresponds to 20 frames for a time step of 0.02)
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_setWakeCounter_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_setWakeCounter_mut(PxDeformableBody* self_, float wakeCounterValue);
+
+        /// <summary>
+        ///  Returns the wake counter of the deformable body.
+        ///
+        ///  The wake counter of the deformable body.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getWakeCounter", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableBody_getWakeCounter(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Returns true if this deformable body is sleeping.
+        ///
+        ///  When an actor does not move for a period of time, it is no longer simulated in order to save time. This state
+        ///  is called sleeping. However, because the object automatically wakes up when it is either touched by an awake object,
+        ///  or a sleep-affecting property is changed by the user, the entire sleep mechanism should be transparent to the user.
+        ///
+        ///  A deformable volume can only go to sleep if all vertices are ready for sleeping. A deformable body is guaranteed to be awake
+        ///  if at least one of the following holds:
+        ///
+        ///  The wake counter is positive (
+        ///
+        ///  The velocity of any vertex is above the sleep threshold.
+        ///
+        ///  If a deformable body is sleeping, the following state is guaranteed:
+        ///
+        ///  The wake counter is zero.
+        ///
+        ///  The linear velocity of all vertices is zero.
+        ///
+        ///  When a deformable body gets inserted into a scene, it will be considered asleep if all the points above hold, else it will
+        ///  be treated as awake.
+        ///
+        ///  It is invalid to use this method if the deformable body has not been added to a scene already.
+        ///
+        ///  True if the deformable body is sleeping.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_isSleeping", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxDeformableBody_isSleeping(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Retrieve a shape pointer belonging to the actor.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getShape_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxShape* PxDeformableBody_getShape_mut(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Attaches a shape
+        ///
+        ///  Attaches the shape to use for collision detection for deformable surfaces and volumes.
+        ///  Each deformable needs to have exactly one exclusive shape attached for simulation. If a shape has
+        ///  already been attached to a deformable, detachShape needs to be called prior to attaching
+        ///  a new shape.
+        ///
+        ///  Deformable surfaces need a shape with triangle mesh geometry, which can be created with
+        ///  PxPhysics::createShape(const PxGeometry
+        ///  &amp;
+        ///  , const PxDeformableSurfaceMaterial
+        ///  &amp;
+        ///  material, bool, PxShapeFlags), or
+        ///  PxPhysics::createShape(const PxGeometry
+        ///  &amp;
+        ///  , PxDeformableSurfaceMaterial*const*, PxU16, bool, PxShapeFlags)
+        ///  Deformable surfaces use the same triangle mesh for collision detection and dynamics computations.
+        ///
+        ///  Deformable volumes need a shape with tetrahedron mesh geometry, which can be created with
+        ///  PxPhysics::createShape(const PxGeometry
+        ///  &amp;
+        ///  , const PxDeformableVolumeMaterial
+        ///  &amp;
+        ///  material, bool, PxShapeFlags), or
+        ///  PxPhysics::createShape(const PxGeometry
+        ///  &amp;
+        ///  , PxDeformableVolumeMaterial*const*, PxU16, bool, PxShapeFlags)
+        ///  Deformable volumes additionally need a separate tetrahedron mesh for dynamics, which can be attached using
+        ///  PxDeformbleVolume::attachSimulationMesh.
+        ///
+        ///  Returns true if the operation was successful
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_attachShape_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxDeformableBody_attachShape_mut(PxDeformableBody* self_, PxShape* shape);
+
+        /// <summary>
+        ///  Detaches the shape
+        ///
+        ///  Detaches the shape used for collision detection.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_detachShape_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableBody_detachShape_mut(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Returns the cuda context manager
+        ///
+        ///  The cuda context manager
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableBody_getCudaContextManager", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxCudaContextManager* PxDeformableBody_getCudaContextManager(PxDeformableBody* self_);
+
+        /// <summary>
+        ///  Raises or clears a particular deformable surface flag.
+        ///
+        ///  See the list of flags [`PxDeformableSurfaceFlag`]
+        ///
+        ///  Default:
+        ///  No flags are set
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_setDeformableSurfaceFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableSurface_setDeformableSurfaceFlag_mut(PxDeformableSurface* self_, PxDeformableSurfaceFlag flag, [MarshalAs(UnmanagedType.U1)] bool val);
+
+        /// <summary>
+        ///  Sets deformable surface flags.
+        ///
+        ///  See the list of flags [`PxDeformableSurfaceFlag`]
+        ///
+        ///  Default:
+        ///  No flags are set
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_setDeformableSurfaceFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableSurface_setDeformableSurfaceFlags_mut(PxDeformableSurface* self_, PxDeformableSurfaceFlags flags);
+
+        /// <summary>
+        ///  Reads the deformable surface flags.
+        ///
+        ///  See the list of flags [`PxDeformableSurfaceFlag`]
+        ///
+        ///  The values of the deformable surface flags.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_getDeformableSurfaceFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableSurfaceFlags PxDeformableSurface_getDeformableSurfaceFlags(PxDeformableSurface* self_);
+
+        /// <summary>
+        ///  Sets the number of collision pair updates per timestep.
+        ///
+        ///  Collision pair is updated at least once per timestep and increasing the frequency provides better collision pairs.
+        ///  Default:
+        ///  1
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_setNbCollisionPairUpdatesPerTimestep_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableSurface_setNbCollisionPairUpdatesPerTimestep_mut(PxDeformableSurface* self_, uint frequency);
+
+        /// <summary>
+        ///  Retrieves number of collision pair updates per timestep.
+        ///
+        ///  The number of collision pair updates per timestep.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_getNbCollisionPairUpdatesPerTimestep", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxDeformableSurface_getNbCollisionPairUpdatesPerTimestep(PxDeformableSurface* self_);
+
+        /// <summary>
+        ///  Sets the number of collision substeps in each sub-timestep.
+        ///
+        ///  Collision constraints can be applied multiple times in each sub-timestep
+        ///  Default:
+        ///  1
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_setNbCollisionSubsteps_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableSurface_setNbCollisionSubsteps_mut(PxDeformableSurface* self_, uint frequency);
+
+        /// <summary>
+        ///  Retrieves the number of collision substeps in each sub-timestep.
+        ///
+        ///  The number of collision substeps in each sub-timestep.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_getNbCollisionSubsteps", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxDeformableSurface_getNbCollisionSubsteps(PxDeformableSurface* self_);
+
+        /// <summary>
+        ///  Gets a pointer to a device buffer containing positions and inverse masses of the
+        ///  surface deformable.
+        ///
+        ///  This function returns a pointer to device memory for the positions and inverse masses of
+        ///  the surface deformable. The device memory buffer is used to both initialize/update the vertices of the surface deformable and
+        ///  read the simulation results.
+        ///
+        ///  It is mandatory to call PxDeformableSurface::markDirty() with PxDeformableSurfaceDataFlag::ePOSITION_INVMASS when
+        ///  updating data in this buffer.
+        ///
+        ///  The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary.
+        ///  The first 3 floats specify the positions and the last float specifies the inverse mass of the vertex.
+        ///  The size of the buffer is the number of vertices of the surface deformable mesh * sizeof(PxVec4).
+        ///
+        ///  The device memory pointed to by this pointer is allocated when a shape is attached to the
+        ///  deformable surface. Calling PxDeformableSurface::detachShape() will deallocate the memory.
+        ///
+        ///  It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+        ///  until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+        ///  have finished, reading the data during a completion task is explicitly allowed. The
+        ///  simulation will read and write directly from/into this buffer.
+        ///
+        ///  It is the users' responsibility to initialize this buffer with the initial positions of
+        ///  the vertices of the surface deformable mesh.
+        ///
+        ///  PxVec4* A pointer to a device buffer containing positions and inverse masses of
+        ///  the surface deformable mesh.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_getPositionInvMassBufferD_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4* PxDeformableSurface_getPositionInvMassBufferD_mut(PxDeformableSurface* self_);
+
+        /// <summary>
+        ///  Gets a pointer to a device buffer containing velocities of the deformable surface.
+        ///
+        ///  This function returns a pointer to device memory for the velocities of the deformable surface. This buffer
+        ///  is used to both initialize/update the vertices of the surface deformable and read the simulation results.
+        ///
+        ///  It is mandatory to call PxDeformableSurface::markDirty() with PxDeformableSurfaceDataFlag::eVELOCITY when
+        ///  updating data in this buffer.
+        ///
+        ///  The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary. The
+        ///  first 3 floats specify the velocity of the vertex. The final float is unused. The size of
+        ///  the buffer is the number of vertices of the surface deformable mesh * sizeof(PxVec4).
+        ///
+        ///  The device memory pointed to by this pointer is allocated when a shape is attached to the
+        ///  deformable surface. Calling PxDeformableSurface::detachShape() will deallocate the memory.
+        ///
+        ///  It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+        ///  until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+        ///  have finished, reading the data during a completion task is explicitly allowed. The
+        ///  simulation will read and write directly from/into this buffer.
+        ///
+        ///  It is the users' responsibility to initialize this buffer with the initial velocities of
+        ///  the vertices of the surface deformable mesh.
+        ///
+        ///  PxVec4* A pointer to a device buffer containing the velocities of the surface deformable mesh.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_getVelocityBufferD_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4* PxDeformableSurface_getVelocityBufferD_mut(PxDeformableSurface* self_);
+
+        /// <summary>
+        ///  Gets a pointer to a device buffer containing the rest positions of the deformable surface.
+        ///
+        ///  This function returns a pointer to device memory for the rest positions of the deformable surface.
+        ///  This buffer is used to initialize/update the rest positions of the vertices of the deformable surface.
+        ///
+        ///  It is mandatory to call PxDeformableSurface::markDirty() with PxDeformableSurfaceDataFlag::eREST_POSITION when
+        ///  updating data in this buffer.
+        ///
+        ///  The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary.
+        ///  The first 3 specify the rest position. The last float is unused. The size of the buffer
+        ///  is the number of vertices of the surface deformable mesh * sizeof(PxVec4).
+        ///
+        ///  The device memory pointed to by this pointer is allocated when a shape is attached to the
+        ///  deformable surface. Calling PxDeformableSurface::detachShape() will deallocate the memory.
+        ///
+        ///  It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+        ///  until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+        ///  have finished, reading the data during a completion task is explicitly allowed. The
+        ///  simulation will read directly from this buffer.
+        ///
+        ///  It is the users' responsibility to initialize this buffer with the initial rest positions of
+        ///  the vertices of the surface deformable mesh.
+        ///
+        ///  PxVec4* A pointer to a device buffer containing the rest positions of the surface deformable mesh.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_getRestPositionBufferD_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4* PxDeformableSurface_getRestPositionBufferD_mut(PxDeformableSurface* self_);
+
+        /// <summary>
+        ///  Marks per-vertex simulation state and configuration buffers dirty to signal to the simulation
+        ///  that changes have been made.
+        ///
+        ///  Calling this function is required to notify the simulation of changes made in the positionInvMass,
+        ///  velocity and rest position buffers.
+        ///
+        ///  This function can be called multiple times, and dirty flags are accumulated internally until
+        ///  PxScene::simulate() is called.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_markDirty_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableSurface_markDirty_mut(PxDeformableSurface* self_, PxDeformableSurfaceDataFlags flags);
+
+        /// <summary>
+        ///  Gets the concrete type name.
+        ///
+        ///  The name of the concrete type.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurface_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxDeformableSurface_getConcreteTypeName(PxDeformableSurface* self_);
+
+        /// <summary>
+        ///  Sets young's modulus which defines the body's stiffness
+        ///
+        ///  Default:
+        ///  1.e6
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableMaterial_setYoungsModulus_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableMaterial_setYoungsModulus_mut(PxDeformableMaterial* self_, float young);
+
+        /// <summary>
+        ///  Retrieves the young's modulus value.
+        ///
+        ///  The young's modulus value.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableMaterial_getYoungsModulus", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableMaterial_getYoungsModulus(PxDeformableMaterial* self_);
+
+        /// <summary>
+        ///  Sets the Poisson's ratio which defines the body's volume preservation.
+        ///
+        ///  Default:
+        ///  0.45
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableMaterial_setPoissons_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableMaterial_setPoissons_mut(PxDeformableMaterial* self_, float poisson);
+
+        /// <summary>
+        ///  Retrieves the Poisson's ratio.
+        ///
+        ///  The Poisson's ratio.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableMaterial_getPoissons", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableMaterial_getPoissons(PxDeformableMaterial* self_);
+
+        /// <summary>
+        ///  Sets the dynamic friction value which defines the strength of resistance when two objects slide relative to each other while in contact.
+        ///
+        ///  Default:
+        ///  0.0
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableMaterial_setDynamicFriction_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableMaterial_setDynamicFriction_mut(PxDeformableMaterial* self_, float dynamicFriction);
+
+        /// <summary>
+        ///  Retrieves the dynamic friction value
+        ///
+        ///  The dynamic friction value
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableMaterial_getDynamicFriction", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableMaterial_getDynamicFriction(PxDeformableMaterial* self_);
+
+        /// <summary>
+        ///  Sets material damping
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableMaterial_setElasticityDamping_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableMaterial_setElasticityDamping_mut(PxDeformableMaterial* self_, float elasticityDamping);
+
+        /// <summary>
+        ///  Retrieves the material damping.
+        ///
+        ///  damping.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableMaterial_getElasticityDamping", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableMaterial_getElasticityDamping(PxDeformableMaterial* self_);
+
+        /// <summary>
+        ///  Sets material thickness
+        ///
+        ///  Default:
+        ///  0.001
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceMaterial_setThickness_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableSurfaceMaterial_setThickness_mut(PxDeformableSurfaceMaterial* self_, float thickness);
+
+        /// <summary>
+        ///  Retrieves the material thickness.
+        ///
+        ///  Default:
+        ///  0.001
+        ///
+        ///  thickness.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceMaterial_getThickness", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableSurfaceMaterial_getThickness(PxDeformableSurfaceMaterial* self_);
+
+        /// <summary>
+        ///  Sets material bending stiffness
+        ///
+        ///  Default:
+        ///  0.0
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceMaterial_setBendingStiffness_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableSurfaceMaterial_setBendingStiffness_mut(PxDeformableSurfaceMaterial* self_, float bendingStiffness);
+
+        /// <summary>
+        ///  Retrieves the material bending stiffness.
+        ///
+        ///  bendingStiffness.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceMaterial_getBendingStiffness", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableSurfaceMaterial_getBendingStiffness(PxDeformableSurfaceMaterial* self_);
+
+        /// <summary>
+        ///  Sets material bending damping
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceMaterial_setBendingDamping_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableSurfaceMaterial_setBendingDamping_mut(PxDeformableSurfaceMaterial* self_, float bendingDamping);
+
+        /// <summary>
+        ///  Retrieves the material bending damping.
+        ///
+        ///  bending damping.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceMaterial_getBendingDamping", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableSurfaceMaterial_getBendingDamping(PxDeformableSurfaceMaterial* self_);
+
+        /// <summary>
+        ///  Gets the concrete type name.
+        ///
+        ///  The name of the concrete type.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceMaterial_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxDeformableSurfaceMaterial_getConcreteTypeName(PxDeformableSurfaceMaterial* self_);
+
+        /// <summary>
+        ///  Raises or clears a particular deformable volume flag.
+        ///
+        ///  See the list of flags [`PxDeformableVolumeFlag`]
+        ///
+        ///  Default:
+        ///  No flags are set
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_setDeformableVolumeFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableVolume_setDeformableVolumeFlag_mut(PxDeformableVolume* self_, PxDeformableVolumeFlag flag, [MarshalAs(UnmanagedType.U1)] bool val);
+
+        /// <summary>
+        ///  Sets deformable volume flags.
+        ///
+        ///  See the list of flags [`PxDeformableVolumeFlag`]
+        ///
+        ///  Default:
+        ///  No flags are set
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_setDeformableVolumeFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableVolume_setDeformableVolumeFlags_mut(PxDeformableVolume* self_, PxDeformableVolumeFlags flags);
+
+        /// <summary>
+        ///  Reads the deformable volume flags.
+        ///
+        ///  See the list of flags [`PxDeformableVolumeFlag`]
+        ///
+        ///  The values of the deformable volume flags.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getDeformableVolumeFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolumeFlags PxDeformableVolume_getDeformableVolumeFlags(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Sets the self collision stress tolerance.
+        ///
+        ///  Stress threshold to deactivate collision contacts in case the local stress magnitude exceeds the threshold.
+        ///  Default:
+        ///  0.9
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_setSelfCollisionStressTolerance_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableVolume_setSelfCollisionStressTolerance_mut(PxDeformableVolume* self_, float selfCollisionStressTolerance);
+
+        /// <summary>
+        ///  Retrieves the self collision stress tolerance.
+        ///
+        ///  The self collision filter distance
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getSelfCollisionStressTolerance", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxDeformableVolume_getSelfCollisionStressTolerance(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Gets a pointer to a device buffer containing positions and inverse masses of the
+        ///  collision mesh.
+        ///
+        ///  This function returns a pointer to device memory for the positions and inverse masses of
+        ///  the deformable volume. This buffer is used to both initialize/update the collision mesh vertices
+        ///  of the deformable volume and read the simulation results.
+        ///
+        ///  It is mandatory to call PxDeformableVolume::markDirty() with PxDeformableVolumeDataFlag::ePOSITION_INVMASS
+        ///  when updating data in this buffer.
+        ///
+        ///  The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary.
+        ///  The first 3 floats specify the vertex position and the last float contains the inverse mass of the
+        ///  vertex. The size of the buffer is the number of vertices of the collision mesh * sizeof(PxVec4).
+        ///
+        ///  The device memory pointed to by this pointer is allocated when a shape is attached to the
+        ///  deformable volume. Calling PxDeformableVolume::detachShape() will deallocate the memory.
+        ///
+        ///  It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+        ///  until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+        ///  have finished, reading the data during a completion task is explicitly allowed. The
+        ///  simulation will read and write directly from/into this buffer.
+        ///
+        ///  It is the users' responsibility to initialize this buffer with the initial positions of
+        ///  the vertices of the collision mesh. See PxDeformableVolumeExt::allocateAndInitializeHostMirror(),
+        ///  PxDeformableVolumeExt::copyToDevice().
+        ///
+        ///  PxVec4* A pointer to a device buffer containing positions and inverse masses of
+        ///  the collision mesh.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getPositionInvMassBufferD_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4* PxDeformableVolume_getPositionInvMassBufferD_mut(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Gets a pointer to a device buffer containing rest positions of the collision mesh vertices.
+        ///
+        ///  This function returns a pointer to device memory for the rest positions of the deformable volume collision
+        ///  mesh. This buffer is used to initialize the rest positions of the collision mesh vertices.
+        ///
+        ///  It is mandatory to call PxDeformableVolume::markDirty() with PxDeformableVolumeDataFlag::eREST_POSITION when
+        ///  updating data in this buffer.
+        ///
+        ///  The simulation expects 4 floats per vertex, aligned to a 16B boundary. The first 3 specify the
+        ///  rest position. The last float is unused. The size of the buffer is the number of vertices in
+        ///  the collision mesh * sizeof(PxVec4).
+        ///
+        ///  The device memory pointed to by this pointer is allocated when a shape is attached to the deformable volume.
+        ///  Calling PxDeformableVolume::detachShape() will deallocate the memory.
+        ///
+        ///  It is not allowed to write data into this buffer from the start of PxScene::simulate() until
+        ///  PxScene::fetchResults() returns.
+        ///
+        ///  It is the users' responsibility to initialize this buffer with the initial rest positions of the
+        ///  vertices of the collision mesh. See PxDeformableVolumeExt::allocateAndInitializeHostMirror(),
+        ///  PxDeformableVolumeExt::copyToDevice().
+        ///
+        ///  PxVec4* A pointer to a device buffer containing the rest positions of the collision mesh.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getRestPositionBufferD_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4* PxDeformableVolume_getRestPositionBufferD_mut(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Gets a pointer to a device buffer containing the vertex positions of the simulation mesh.
+        ///
+        ///  This function returns a pointer to device memory for the positions and inverse masses of the deformable volume
+        ///  simulation mesh. This buffer is used to both initialize/update the simulation mesh vertices
+        ///  of the deformable volume and read the simulation results.
+        ///
+        ///  It is mandatory to call PxDeformableVolume::markDirty() with PxDeformableVolumeDataFlag::eSIM_POSITION_INVMASS when
+        ///  updating data in this buffer.
+        ///
+        ///  The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary. The
+        ///  first 3 floats specify the positions and the last float specifies the inverse mass of the vertex.
+        ///  The size of the buffer is the number of vertices of the simulation mesh * sizeof(PxVec4).
+        ///
+        ///  The device memory pointed to by this pointer is allocated when a simulation mesh is attached to the
+        ///  deformable volume. Calling PxDeformableVolume::detachSimulationMesh() will deallocate the memory.
+        ///
+        ///  It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+        ///  until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+        ///  have finished, reading the data during a completion task is explicitly allowed. The
+        ///  simulation will read and write directly from/into this buffer.
+        ///
+        ///  It is the users' responsibility to initialize this buffer with the initial positions of
+        ///  the vertices of the simulation mesh. See PxDeformableVolumeExt::allocateAndInitializeHostMirror(),
+        ///  PxDeformableVolumeExt::copyToDevice().
+        ///
+        ///  PxVec4* A pointer to a device buffer containing the vertex positions of the simulation mesh.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getSimPositionInvMassBufferD_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4* PxDeformableVolume_getSimPositionInvMassBufferD_mut(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Gets a pointer to a device buffer containing the vertex velocities of the simulation mesh.
+        ///
+        ///  This function returns a pointer to device memory for the velocities of the deformable volume simulation mesh
+        ///  vertices. This buffer is used to both initialize/update the simulation mesh vertex velocities
+        ///  of the deformable volume and read the simulation results.
+        ///
+        ///  It is mandatory to call PxDeformableVolume::markDirty() with PxDeformableVolumeDataFlag::eSIM_VELOCITY when
+        ///  updating data in this buffer.
+        ///
+        ///  The simulation expects 4 consecutive floats for each vertex, aligned to a 16B boundary. The
+        ///  first 3 specify the velocities for each vertex. The final float is unused. The size of the
+        ///  buffer is the number of vertices of the simulation mesh * sizeof(PxVec4).
+        ///
+        ///  The device memory pointed to by this pointer is allocated when a simulation mesh is attached to the
+        ///  deformable volume. Calling PxDeformableVolume::detachSimulationMesh() will deallocate the memory.
+        ///
+        ///  It is not allowed to write to this buffer from the start of the PxScene::simulate() call
+        ///  until PxScene::fetchResults() returns. Reading the data is allowed once all the PhysX tasks
+        ///  have finished, reading the data during a completion task is explicitly allowed. The
+        ///  simulation will read and write directly from/into this buffer.
+        ///
+        ///  It is the users' responsibility to initialize this buffer with the initial velocities of
+        ///  the vertices of the simulation mesh. See PxDeformableVolumeExt::allocateAndInitializeHostMirror(),
+        ///  PxDeformableVolumeExt::copyToDevice().
+        ///
+        ///  PxVec4*  A pointer to a device buffer containing the vertex velocities of the simulation mesh.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getSimVelocityBufferD_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4* PxDeformableVolume_getSimVelocityBufferD_mut(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Marks per-vertex simulation state and configuration buffers dirty to signal to the simulation
+        ///  that changes have been made.
+        ///
+        ///  Calling this function is mandatory to notify the simulation of changes made in the positionInvMass,
+        ///  simPositionInvMass, simVelocity and rest position buffers.
+        ///
+        ///  This function can be called multiple times, and dirty flags are accumulated internally until
+        ///  PxScene::simulate() is called.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_markDirty_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableVolume_markDirty_mut(PxDeformableVolume* self_, PxDeformableVolumeDataFlags flags);
+
+        /// <summary>
+        ///  Sets the device buffer containing the kinematic targets for this deformable volume.
+        ///
+        ///  This function sets the kinematic targets for a deformable volume to a user-provided device buffer. This buffer is
+        ///  read by the simulation to obtain the target position for each vertex of the simulation mesh.
+        ///
+        ///  The simulation expects 4 consecutive float for each vertex, aligned to a 16B boundary. The first 3
+        ///  floats specify the target positions. The last float determines (together with the flag argument)
+        ///  if the target is active or not.
+        ///  For a deformable volume with the flag PxDeformableBodyFlag::eKINEMATIC raised, all target positions are considered
+        ///  valid. In case a deformable volume has the PxDeformableVolumeFlag::ePARTIALLY_KINEMATIC raised, only target
+        ///  positions whose corresponding last float has been set to 0.f are considered valid target positions.
+        ///
+        ///  The size of the buffer is the number of vertices of the simulation mesh * sizeof(PxVec4).
+        ///
+        ///  It is the users responsibility to manage the memory pointed to by the input to this function,
+        ///  as well as guaranteeing the integrity of the input data. In particular, this means that it is
+        ///  not allowed to write this data from from the start of PxScene::simulate() until PxScene::fetchResults()
+        ///  returns. The memory is not allowed to be deallocated until PxScene::fetchResults() returns.
+        ///
+        ///  Calling this function with a null pointer for the positions will clear the input and resume normal
+        ///  simulation. PxDeformableBodyFlag::eKINEMATIC or PxDeformableVolumeFlag::ePARTIALLY_KINEMATIC are ignored
+        ///  if no targets are set.
+        ///
+        ///  This call is persistent across calls to PxScene::simulate(). Once this function is called, the
+        ///  simulation will look up the target positions from the same buffer for every call to PxScene::simulate().
+        ///  The user is allowed to update the target positions without calling this function again, provided that
+        ///  the synchronization requirements are adhered to (no changes between start of PxScene::simulate() until
+        ///  PxScene::fetchResults() returns).
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_setKinematicTargetBufferD_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableVolume_setKinematicTargetBufferD_mut(PxDeformableVolume* self_, PxVec4* positions);
+
+        /// <summary>
+        ///  Attaches a simulation mesh
+        ///
+        ///  Attaches the simulation mesh (geometry) and a state containing inverse mass, rest pose
+        ///  etc. required to compute the deformation.
+        ///
+        ///  Returns true if the operation was successful
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_attachSimulationMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxDeformableVolume_attachSimulationMesh_mut(PxDeformableVolume* self_, PxTetrahedronMesh* simulationMesh, PxDeformableVolumeAuxData* deformableVolumeAuxData);
+
+        /// <summary>
+        ///  Detaches the simulation mesh
+        ///
+        ///  Detaches the simulation mesh and simulation state used to compute the deformation.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_detachSimulationMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableVolume_detachSimulationMesh_mut(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Retrieves the simulation mesh pointer.
+        ///
+        ///  Allows to access the geometry of the tetrahedral mesh used to compute the object's deformation
+        ///
+        ///  Pointer to the simulation mesh
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getSimulationMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTetrahedronMesh* PxDeformableVolume_getSimulationMesh_mut(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Const version of getSimulationMesh()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getSimulationMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTetrahedronMesh* PxDeformableVolume_getSimulationMesh(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Retrieve the collision mesh pointer.
+        ///
+        ///  Allows to access the geometry of the tetrahedral mesh used to perform collision detection
+        ///
+        ///  Pointer to the collision mesh
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getCollisionMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTetrahedronMesh* PxDeformableVolume_getCollisionMesh_mut(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Const version of getCollisionMesh()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getCollisionMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTetrahedronMesh* PxDeformableVolume_getCollisionMesh(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Retrieves the simulation state pointer.
+        ///
+        ///  Allows to access the additional data of the simulation mesh (inverse mass, rest state etc.).
+        ///  The geometry part of the data is stored in the simulation mesh.
+        ///
+        ///  Pointer to the simulation state
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getDeformableVolumeAuxData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolumeAuxData* PxDeformableVolume_getDeformableVolumeAuxData_mut(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  const version of getDeformableVolumeAuxData()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getDeformableVolumeAuxData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolumeAuxData* PxDeformableVolume_getDeformableVolumeAuxData(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Returns the GPU deformable volume index.
+        ///
+        ///  The GPU index, or 0xFFFFFFFF if the deformable volume is not in a scene.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getGpuDeformableVolumeIndex_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxDeformableVolume_getGpuDeformableVolumeIndex_mut(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Gets the concrete type name.
+        ///
+        ///  The name of the concrete type.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolume_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxDeformableVolume_getConcreteTypeName(PxDeformableVolume* self_);
+
+        /// <summary>
+        ///  Adjusts a deformable volume kinematic target such that it is properly set as active or inactive. Inactive targets will not affect vertex position, they are ignored by the solver.
+        ///
+        ///  The target with adjusted w component
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxConfigureDeformableVolumeKinematicTarget", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4 phys_PxConfigureDeformableVolumeKinematicTarget(PxVec4* target, [MarshalAs(UnmanagedType.U1)] bool isActive);
+
+        /// <summary>
+        ///  Sets up a deformable volume kinematic target such that it is properly set as active or inactive. Inactive targets will not affect vertex position, they are ignored by the solver.
+        ///
+        ///  The target with configured w component
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxConfigureDeformableVolumeKinematicTarget_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4 phys_PxConfigureDeformableVolumeKinematicTarget_1(PxVec3* target, [MarshalAs(UnmanagedType.U1)] bool isActive);
+
+        /// <summary>
+        ///  Sets the material model.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeMaterial_setMaterialModel_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableVolumeMaterial_setMaterialModel_mut(PxDeformableVolumeMaterial* self_, PxDeformableVolumeMaterialModel model);
+
+        /// <summary>
+        ///  Retrieves the material model.
+        ///
+        ///  The material model.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeMaterial_getMaterialModel", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolumeMaterialModel PxDeformableVolumeMaterial_getMaterialModel(PxDeformableVolumeMaterial* self_);
+
+        /// <summary>
+        ///  Gets the concrete type name.
+        ///
+        ///  The name of the concrete type.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeMaterial_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxDeformableVolumeMaterial_getConcreteTypeName(PxDeformableVolumeMaterial* self_);
+
+        /// <summary>
         ///  Notification if an object or its memory gets released
         ///
         ///  If release() gets called on a PxBase object, an eUSER_RELEASE event will get fired immediately. The object state can be queried in the callback but
@@ -7997,349 +10363,113 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxDeletionListener_onRelease_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxDeletionListener_onRelease_mut(PxDeletionListener* self_, PxBase* observed, void* userData, PxDeletionEventFlag deletionEvent);
 
-        [DllImport(__DllName, EntryPoint = "PxBaseMaterial_isKindOf", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxBaseMaterial_isKindOf(PxBaseMaterial* self_, byte* name);
-
         /// <summary>
-        ///  Sets young's modulus which defines the body's stiffness
+        ///  Get positions and inverse masses for this particle buffer.
+        ///
+        ///  A pointer to a device buffer containing the positions and inverse mass packed as PxVec4(pos.x, pos.y, pos.z, inverseMass).
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxFEMMaterial_setYoungsModulus_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxFEMMaterial_setYoungsModulus_mut(PxFEMMaterial* self_, float young);
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_getPositionInvMasses", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4* PxParticleBuffer_getPositionInvMasses(PxParticleBuffer* self_);
 
         /// <summary>
-        ///  Retrieves the young's modulus value.
+        ///  Get velocities for this particle buffer.
         ///
-        ///  The young's modulus value.
+        ///  A pointer to a device buffer containing the velocities packed as PxVec4(vel.x, vel.y, vel.z, 0.0f).
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxFEMMaterial_getYoungsModulus", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxFEMMaterial_getYoungsModulus(PxFEMMaterial* self_);
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_getVelocities", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4* PxParticleBuffer_getVelocities(PxParticleBuffer* self_);
 
         /// <summary>
-        ///  Sets the Poisson's ratio which defines the body's volume preservation. Completely incompressible materials have a poisson ratio of 0.5. Its value should not be set to exactly 0.5 because this leads to numerical problems.
+        ///  Get phases for this particle buffer.
+        ///
+        ///  See [`PxParticlePhaseFlag`]
+        ///
+        ///  A pointer to a device buffer containing the per-particle phases for this particle buffer.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxFEMMaterial_setPoissons_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxFEMMaterial_setPoissons_mut(PxFEMMaterial* self_, float poisson);
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_getPhases", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint* PxParticleBuffer_getPhases(PxParticleBuffer* self_);
 
         /// <summary>
-        ///  Retrieves the Poisson's ratio.
+        ///  Set the number of active particles for this particle buffer.
         ///
-        ///  The Poisson's ratio.
+        ///  The number of active particles can be
+        ///  &lt;
+        ///  = PxParticleBuffer::getMaxParticles(). The particle system will simulate the first
+        ///  x particles in the [`PxParticleBuffer`], where x is the number of active particles.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxFEMMaterial_getPoissons", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxFEMMaterial_getPoissons(PxFEMMaterial* self_);
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_setNbActiveParticles_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxParticleBuffer_setNbActiveParticles_mut(PxParticleBuffer* self_, uint nbActiveParticles);
 
         /// <summary>
-        ///  Sets the dynamic friction value which defines the strength of resistance when two objects slide relative to each other while in contact.
+        ///  Get the number of active particles for this particle buffer.
+        ///
+        ///  The number of active particles.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxFEMMaterial_setDynamicFriction_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxFEMMaterial_setDynamicFriction_mut(PxFEMMaterial* self_, float dynamicFriction);
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_getNbActiveParticles", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxParticleBuffer_getNbActiveParticles(PxParticleBuffer* self_);
 
         /// <summary>
-        ///  Retrieves the dynamic friction value
+        ///  Get the maximum number particles this particle buffer can hold.
         ///
-        ///  The dynamic friction value
+        ///  The maximum number of particles is specified when creating a [`PxParticleBuffer`]. See #PxPhysics::createParticleBuffer.
+        ///
+        ///  The maximum number of particles.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxFEMMaterial_getDynamicFriction", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxFEMMaterial_getDynamicFriction(PxFEMMaterial* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxFilterData_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxFilterData PxFilterData_new(PxEMPTY anon_param0);
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_getMaxParticles", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxParticleBuffer_getMaxParticles(PxParticleBuffer* self_);
 
         /// <summary>
-        ///  Default constructor.
+        ///  Get the start index for the first particle of this particle buffer in the complete list of
+        ///  particles of the particle system this buffer is used in.
+        ///
+        ///  The return value is only correct if the particle buffer is assigned to a particle system and at least
+        ///  one call to simulate() has been performed.
+        ///
+        ///  The index of the first particle in the complete particle list.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxFilterData_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxFilterData PxFilterData_new_1();
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_getFlatListStartIndex", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxParticleBuffer_getFlatListStartIndex(PxParticleBuffer* self_);
 
         /// <summary>
-        ///  Constructor to set filter data initially.
+        ///  Raise dirty flags on this particle buffer to communicate that the corresponding data has been updated
+        ///  by the user.
+        ///
+        ///  See [`PxParticleBufferFlag`].
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxFilterData_new_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxFilterData PxFilterData_new_2(uint w0, uint w1, uint w2, uint w3);
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_raiseFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxParticleBuffer_raiseFlags_mut(PxParticleBuffer* self_, PxParticleBufferFlag flags);
 
         /// <summary>
-        ///  (re)sets the structure to the default.
+        ///  Release this buffer and deallocate all the memory.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxFilterData_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxFilterData_setToDefault_mut(PxFilterData* self_);
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxParticleBuffer_release_mut(PxParticleBuffer* self_);
 
         /// <summary>
-        ///  Extract filter object type from the filter attributes of a collision pair object
-        ///
-        ///  The type of the collision pair object.
+        ///  Retrieve unique index that does not change over the lifetime of a PxParticleBuffer.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "phys_PxGetFilterObjectType", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxFilterObjectType phys_PxGetFilterObjectType(uint attr);
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_getUniqueId", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxParticleBuffer_getUniqueId(PxParticleBuffer* self_);
 
         /// <summary>
-        ///  Specifies whether the collision object belongs to a kinematic rigid body
+        ///  Sets a name string for the object that can be retrieved with getName().
         ///
-        ///  True if the object belongs to a kinematic rigid body, else false
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "phys_PxFilterObjectIsKinematic", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool phys_PxFilterObjectIsKinematic(uint attr);
-
-        /// <summary>
-        ///  Specifies whether the collision object is a trigger shape
-        ///
-        ///  True if the object is a trigger shape, else false
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "phys_PxFilterObjectIsTrigger", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool phys_PxFilterObjectIsTrigger(uint attr);
-
-        /// <summary>
-        ///  Filter method to specify how a pair of potentially colliding objects should be processed.
-        ///
-        ///  This method gets called when the filter flags returned by the filter shader (see [`PxSimulationFilterShader`])
-        ///  indicate that the filter callback should be invoked ([`PxFilterFlag::eCALLBACK`] or #PxFilterFlag::eNOTIFY set).
-        ///  Return the PxFilterFlag flags and set the PxPairFlag flags to define what the simulation should do with the given
-        ///  collision pair.
-        ///
-        ///  Filter flags defining whether the pair should be discarded, temporarily ignored or processed and whether the pair
-        ///  should be tracked and send a report on pair deletion through the filter callback
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSimulationFilterCallback_pairFound_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxFilterFlags PxSimulationFilterCallback_pairFound_mut(PxSimulationFilterCallback* self_, uint pairID, uint attributes0, PxFilterData filterData0, PxActor* a0, PxShape* s0, uint attributes1, PxFilterData filterData1, PxActor* a1, PxShape* s1, PxPairFlags* pairFlags);
-
-        /// <summary>
-        ///  Callback to inform that a tracked collision pair is gone.
-        ///
-        ///  This method gets called when a collision pair disappears or gets re-filtered. Only applies to
-        ///  collision pairs which have been marked as filter callback pairs ([`PxFilterFlag::eNOTIFY`] set in #pairFound()).
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSimulationFilterCallback_pairLost_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxSimulationFilterCallback_pairLost_mut(PxSimulationFilterCallback* self_, uint pairID, uint attributes0, PxFilterData filterData0, uint attributes1, PxFilterData filterData1, [MarshalAs(UnmanagedType.U1)] bool objectRemoved);
-
-        /// <summary>
-        ///  Callback to give the opportunity to change the filter state of a tracked collision pair.
-        ///
-        ///  This method gets called once per simulation step to let the application change the filter and pair
-        ///  flags of a collision pair that has been reported in [`pairFound`]() and requested callbacks by
-        ///  setting [`PxFilterFlag::eNOTIFY`]. To request a change of filter status, the target pair has to be
-        ///  specified by its ID, the new filter and pair flags have to be provided and the method should return true.
-        ///
-        ///  If this method changes the filter status of a collision pair and the pair should keep being tracked
-        ///  by the filter callbacks then [`PxFilterFlag::eNOTIFY`] has to be set.
-        ///
-        ///  The application is responsible to ensure that this method does not get called for pairs that have been
-        ///  reported as lost, see [`pairLost`]().
-        ///
-        ///  True if the changes should be applied. In this case the method will get called again. False if
-        ///  no more status changes should be done in the current simulation step. In that case the provided flags will be discarded.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSimulationFilterCallback_statusChange_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxSimulationFilterCallback_statusChange_mut(PxSimulationFilterCallback* self_, uint* pairID, PxPairFlags* pairFlags, PxFilterFlags* filterFlags);
-
-        /// <summary>
-        ///  Any combination of PxDataAccessFlag::eREADABLE and PxDataAccessFlag::eWRITABLE
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxLockedData_getDataAccessFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxDataAccessFlags PxLockedData_getDataAccessFlags_mut(PxLockedData* self_);
-
-        /// <summary>
-        ///  Unlocks the bulk data.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxLockedData_unlock_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxLockedData_unlock_mut(PxLockedData* self_);
-
-        /// <summary>
-        ///  virtual destructor
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxLockedData_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxLockedData_delete(PxLockedData* self_);
-
-        /// <summary>
-        ///  Sets the coefficient of dynamic friction.
-        ///
-        ///  The coefficient of dynamic friction should be in [0, PX_MAX_F32). If set to greater than staticFriction, the effective value of staticFriction will be increased to match.
-        ///
-        ///  Sleeping:
-        ///  Does
-        ///  NOT
-        ///  wake any actors which may be affected.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_setDynamicFriction_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxMaterial_setDynamicFriction_mut(PxMaterial* self_, float coef);
-
-        /// <summary>
-        ///  Retrieves the DynamicFriction value.
-        ///
-        ///  The coefficient of dynamic friction.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_getDynamicFriction", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxMaterial_getDynamicFriction(PxMaterial* self_);
-
-        /// <summary>
-        ///  Sets the coefficient of static friction
-        ///
-        ///  The coefficient of static friction should be in the range [0, PX_MAX_F32)
-        ///
-        ///  Sleeping:
-        ///  Does
-        ///  NOT
-        ///  wake any actors which may be affected.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_setStaticFriction_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxMaterial_setStaticFriction_mut(PxMaterial* self_, float coef);
-
-        /// <summary>
-        ///  Retrieves the coefficient of static friction.
-        ///
-        ///  The coefficient of static friction.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_getStaticFriction", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxMaterial_getStaticFriction(PxMaterial* self_);
-
-        /// <summary>
-        ///  Sets the coefficient of restitution
-        ///
-        ///  A coefficient of 0 makes the object bounce as little as possible, higher values up to 1.0 result in more bounce.
-        ///
-        ///  This property is overloaded when PxMaterialFlag::eCOMPLIANT_CONTACT flag is enabled. This permits negative values for restitution to be provided.
-        ///  The negative values are converted into spring stiffness terms for an implicit spring simulated at the contact site, with the spring positional error defined by
-        ///  the contact separation value. Higher stiffness terms produce stiffer springs that behave more like a rigid contact.
-        ///
-        ///  Sleeping:
-        ///  Does
-        ///  NOT
-        ///  wake any actors which may be affected.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_setRestitution_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxMaterial_setRestitution_mut(PxMaterial* self_, float rest);
-
-        /// <summary>
-        ///  Retrieves the coefficient of restitution.
-        ///
-        ///  See [`setRestitution`].
-        ///
-        ///  The coefficient of restitution.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_getRestitution", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxMaterial_getRestitution(PxMaterial* self_);
-
-        /// <summary>
-        ///  Sets the coefficient of damping
-        ///
-        ///  This property only affects the simulation if PxMaterialFlag::eCOMPLIANT_CONTACT is raised.
-        ///  Damping works together with spring stiffness (set through a negative restitution value). Spring stiffness corrects positional error while
-        ///  damping resists relative velocity. Setting a high damping coefficient can produce spongy contacts.
-        ///
-        ///  Sleeping:
-        ///  Does
-        ///  NOT
-        ///  wake any actors which may be affected.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_setDamping_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxMaterial_setDamping_mut(PxMaterial* self_, float damping);
-
-        /// <summary>
-        ///  Retrieves the coefficient of damping.
-        ///
-        ///  See [`setDamping`].
-        ///
-        ///  The coefficient of damping.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_getDamping", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxMaterial_getDamping(PxMaterial* self_);
-
-        /// <summary>
-        ///  Raises or clears a particular material flag.
-        ///
-        ///  See the list of flags [`PxMaterialFlag`]
+        ///  This is for debugging and is not used by the SDK. The string is not copied by the SDK,
+        ///  only the pointer is stored.
         ///
         ///  Default:
-        ///  eIMPROVED_PATCH_FRICTION
-        ///
-        ///  Sleeping:
-        ///  Does
-        ///  NOT
-        ///  wake any actors which may be affected.
+        ///  NULL
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_setFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxMaterial_setFlag_mut(PxMaterial* self_, PxMaterialFlag flag, [MarshalAs(UnmanagedType.U1)] bool b);
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_setName_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxParticleBuffer_setName_mut(PxParticleBuffer* self_, byte* name);
 
         /// <summary>
-        ///  sets all the material flags.
+        ///  Retrieves the name string set with setName().
         ///
-        ///  See the list of flags [`PxMaterialFlag`]
-        ///
-        ///  Default:
-        ///  eIMPROVED_PATCH_FRICTION
-        ///
-        ///  Sleeping:
-        ///  Does
-        ///  NOT
-        ///  wake any actors which may be affected.
+        ///  Name string associated with object.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_setFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxMaterial_setFlags_mut(PxMaterial* self_, PxMaterialFlags flags);
-
-        /// <summary>
-        ///  Retrieves the flags. See [`PxMaterialFlag`].
-        ///
-        ///  The material flags.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_getFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxMaterialFlags PxMaterial_getFlags(PxMaterial* self_);
-
-        /// <summary>
-        ///  Sets the friction combine mode.
-        ///
-        ///  See the enum ::PxCombineMode .
-        ///
-        ///  Default:
-        ///  PxCombineMode::eAVERAGE
-        ///
-        ///  Sleeping:
-        ///  Does
-        ///  NOT
-        ///  wake any actors which may be affected.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_setFrictionCombineMode_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxMaterial_setFrictionCombineMode_mut(PxMaterial* self_, PxCombineMode combMode);
-
-        /// <summary>
-        ///  Retrieves the friction combine mode.
-        ///
-        ///  See [`setFrictionCombineMode`].
-        ///
-        ///  The friction combine mode for this material.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_getFrictionCombineMode", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxCombineMode PxMaterial_getFrictionCombineMode(PxMaterial* self_);
-
-        /// <summary>
-        ///  Sets the restitution combine mode.
-        ///
-        ///  See the enum ::PxCombineMode .
-        ///
-        ///  Default:
-        ///  PxCombineMode::eAVERAGE
-        ///
-        ///  Sleeping:
-        ///  Does
-        ///  NOT
-        ///  wake any actors which may be affected.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_setRestitutionCombineMode_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxMaterial_setRestitutionCombineMode_mut(PxMaterial* self_, PxCombineMode combMode);
-
-        /// <summary>
-        ///  Retrieves the restitution combine mode.
-        ///
-        ///  See [`setRestitutionCombineMode`].
-        ///
-        ///  The coefficient of restitution combine mode for this material.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxMaterial_getRestitutionCombineMode", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxCombineMode PxMaterial_getRestitutionCombineMode(PxMaterial* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxMaterial_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern byte* PxMaterial_getConcreteTypeName(PxMaterial* self_);
+        [DllImport(__DllName, EntryPoint = "PxParticleBuffer_getName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxParticleBuffer_getName(PxParticleBuffer* self_);
 
         /// <summary>
         ///  Construct parameters with default values.
@@ -8354,75 +10484,309 @@ namespace PhysX
         public static extern void PxDiffuseParticleParams_setToDefault_mut(PxDiffuseParticleParams* self_);
 
         /// <summary>
+        ///  Get a device buffer of positions and remaining lifetimes for the diffuse particles.
+        ///
+        ///  A device buffer containing positions and lifetimes of diffuse particles packed as PxVec4(pos.x, pos.y, pos.z, lifetime).
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxParticleAndDiffuseBuffer_getDiffusePositionLifeTime", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4* PxParticleAndDiffuseBuffer_getDiffusePositionLifeTime(PxParticleAndDiffuseBuffer* self_);
+
+        /// <summary>
+        ///  Get a device buffer of velocities for the diffuse particles.
+        ///
+        ///  A device buffer containing velocities of diffuse particles.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxParticleAndDiffuseBuffer_getDiffuseVelocities", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec4* PxParticleAndDiffuseBuffer_getDiffuseVelocities(PxParticleAndDiffuseBuffer* self_);
+
+        /// <summary>
+        ///  Get number of currently active diffuse particles.
+        ///
+        ///  The number of currently active diffuse particles.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxParticleAndDiffuseBuffer_getNbActiveDiffuseParticles", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxParticleAndDiffuseBuffer_getNbActiveDiffuseParticles(PxParticleAndDiffuseBuffer* self_);
+
+        /// <summary>
+        ///  Set the maximum possible number of diffuse particles for this buffer.
+        ///
+        ///  Must be in the range [0, PxParticleAndDiffuseBuffer::getMaxDiffuseParticles()]
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxParticleAndDiffuseBuffer_setMaxActiveDiffuseParticles_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxParticleAndDiffuseBuffer_setMaxActiveDiffuseParticles_mut(PxParticleAndDiffuseBuffer* self_, uint maxActiveDiffuseParticles);
+
+        /// <summary>
+        ///  Get maximum possible number of diffuse particles.
+        ///
+        ///  The maximum possible number diffuse particles.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxParticleAndDiffuseBuffer_getMaxDiffuseParticles", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxParticleAndDiffuseBuffer_getMaxDiffuseParticles(PxParticleAndDiffuseBuffer* self_);
+
+        /// <summary>
+        ///  Set the parameters for diffuse particle simulation.
+        ///
+        ///  See [`PxDiffuseParticleParams`]
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxParticleAndDiffuseBuffer_setDiffuseParticleParams_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxParticleAndDiffuseBuffer_setDiffuseParticleParams_mut(PxParticleAndDiffuseBuffer* self_, PxDiffuseParticleParams* @params);
+
+        /// <summary>
+        ///  Get the parameters currently used for diffuse particle simulation.
+        ///
+        ///  A PxDiffuseParticleParams structure.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxParticleAndDiffuseBuffer_getDiffuseParticleParams", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDiffuseParticleParams PxParticleAndDiffuseBuffer_getDiffuseParticleParams(PxParticleAndDiffuseBuffer* self_);
+
+        /// <summary>
         ///  Sets friction
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxParticleMaterial_setFriction_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxParticleMaterial_setFriction_mut(PxParticleMaterial* self_, float friction);
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setFriction_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setFriction_mut(PxPBDMaterial* self_, float friction);
 
         /// <summary>
         ///  Retrieves the friction value.
         ///
         ///  The friction value.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxParticleMaterial_getFriction", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxParticleMaterial_getFriction(PxParticleMaterial* self_);
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getFriction", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getFriction(PxPBDMaterial* self_);
 
         /// <summary>
         ///  Sets velocity damping term
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxParticleMaterial_setDamping_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxParticleMaterial_setDamping_mut(PxParticleMaterial* self_, float damping);
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setDamping_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setDamping_mut(PxPBDMaterial* self_, float damping);
 
         /// <summary>
         ///  Retrieves the velocity damping term
         ///
         ///  The velocity damping term.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxParticleMaterial_getDamping", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxParticleMaterial_getDamping(PxParticleMaterial* self_);
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getDamping", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getDamping(PxPBDMaterial* self_);
 
         /// <summary>
         ///  Sets adhesion term
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxParticleMaterial_setAdhesion_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxParticleMaterial_setAdhesion_mut(PxParticleMaterial* self_, float adhesion);
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setAdhesion_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setAdhesion_mut(PxPBDMaterial* self_, float adhesion);
 
         /// <summary>
         ///  Retrieves the adhesion term
         ///
         ///  The adhesion term.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxParticleMaterial_getAdhesion", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxParticleMaterial_getAdhesion(PxParticleMaterial* self_);
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getAdhesion", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getAdhesion(PxPBDMaterial* self_);
 
         /// <summary>
         ///  Sets gravity scale term
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxParticleMaterial_setGravityScale_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxParticleMaterial_setGravityScale_mut(PxParticleMaterial* self_, float scale);
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setGravityScale_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setGravityScale_mut(PxPBDMaterial* self_, float scale);
 
         /// <summary>
         ///  Retrieves the gravity scale term
         ///
         ///  The gravity scale term.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxParticleMaterial_getGravityScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxParticleMaterial_getGravityScale(PxParticleMaterial* self_);
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getGravityScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getGravityScale(PxPBDMaterial* self_);
 
         /// <summary>
         ///  Sets material adhesion radius scale. This is multiplied by the particle rest offset to compute the fall-off distance
         ///  at which point adhesion ceases to operate.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxParticleMaterial_setAdhesionRadiusScale_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxParticleMaterial_setAdhesionRadiusScale_mut(PxParticleMaterial* self_, float scale);
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setAdhesionRadiusScale_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setAdhesionRadiusScale_mut(PxPBDMaterial* self_, float scale);
 
         /// <summary>
         ///  Retrieves the adhesion radius scale.
         ///
         ///  The adhesion radius scale.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxParticleMaterial_getAdhesionRadiusScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxParticleMaterial_getAdhesionRadiusScale(PxParticleMaterial* self_);
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getAdhesionRadiusScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getAdhesionRadiusScale(PxPBDMaterial* self_);
+
+        /// <summary>
+        ///  Sets viscosity
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setViscosity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setViscosity_mut(PxPBDMaterial* self_, float viscosity);
+
+        /// <summary>
+        ///  Retrieves the viscosity value.
+        ///
+        ///  The viscosity value.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getViscosity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getViscosity(PxPBDMaterial* self_);
+
+        /// <summary>
+        ///  Sets material vorticity confinement coefficient
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setVorticityConfinement_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setVorticityConfinement_mut(PxPBDMaterial* self_, float vorticityConfinement);
+
+        /// <summary>
+        ///  Retrieves the vorticity confinement coefficient.
+        ///
+        ///  The vorticity confinement coefficient.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getVorticityConfinement", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getVorticityConfinement(PxPBDMaterial* self_);
+
+        /// <summary>
+        ///  Sets material surface tension coefficient
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setSurfaceTension_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setSurfaceTension_mut(PxPBDMaterial* self_, float surfaceTension);
+
+        /// <summary>
+        ///  Retrieves the surface tension coefficient.
+        ///
+        ///  The surface tension coefficient.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getSurfaceTension", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getSurfaceTension(PxPBDMaterial* self_);
+
+        /// <summary>
+        ///  Sets material cohesion coefficient
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setCohesion_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setCohesion_mut(PxPBDMaterial* self_, float cohesion);
+
+        /// <summary>
+        ///  Retrieves the cohesion coefficient.
+        ///
+        ///  The cohesion coefficient.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getCohesion", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getCohesion(PxPBDMaterial* self_);
+
+        /// <summary>
+        ///  Sets material lift coefficient
+        ///
+        ///  Particle-cloth, -rigids, -attachments and -volumes have been deprecated.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setLift_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setLift_mut(PxPBDMaterial* self_, float lift);
+
+        /// <summary>
+        ///  Retrieves the lift coefficient.
+        ///
+        ///  Particle-cloth, -rigids, -attachments and -volumes have been deprecated.
+        ///
+        ///  The lift coefficient.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getLift", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getLift(PxPBDMaterial* self_);
+
+        /// <summary>
+        ///  Sets material drag coefficient
+        ///
+        ///  Particle-cloth, -rigids, -attachments and -volumes have been deprecated.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setDrag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setDrag_mut(PxPBDMaterial* self_, float drag);
+
+        /// <summary>
+        ///  Retrieves the drag coefficient.
+        ///
+        ///  Particle-cloth, -rigids, -attachments and -volumes have been deprecated.
+        ///
+        ///  The drag coefficient.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getDrag", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getDrag(PxPBDMaterial* self_);
+
+        /// <summary>
+        ///  Sets the CFL coefficient. Limits the relative motion between two approaching fluid particles.
+        ///
+        ///  The distance to which the motion is clamped is defined by CFLcoefficient*particleContactOffset*2.
+        ///  A value of 0.5 will thus limit the appoaching motion to a distance of particleContactOffset.
+        ///  A value much larger than one will typically not limit the motion of the particles.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setCFLCoefficient_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setCFLCoefficient_mut(PxPBDMaterial* self_, float coefficient);
+
+        /// <summary>
+        ///  Retrieves the CFL coefficient.
+        ///
+        ///  The CFL coefficient.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getCFLCoefficient", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getCFLCoefficient(PxPBDMaterial* self_);
+
+        /// <summary>
+        ///  Sets material particle friction scale. This allows the application to scale up/down the frictional effect between particles independent of the friction
+        ///  coefficient, which also defines frictional behavior between the particle and rigid bodies/soft bodies/cloth etc.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setParticleFrictionScale_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setParticleFrictionScale_mut(PxPBDMaterial* self_, float scale);
+
+        /// <summary>
+        ///  Retrieves the particle friction scale.
+        ///
+        ///  The particle friction scale.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getParticleFrictionScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getParticleFrictionScale(PxPBDMaterial* self_);
+
+        /// <summary>
+        ///  Sets material particle adhesion scale value. This is the adhesive value between particles defined as a scaled multiple of the adhesion parameter.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_setParticleAdhesionScale_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPBDMaterial_setParticleAdhesionScale_mut(PxPBDMaterial* self_, float adhesion);
+
+        /// <summary>
+        ///  Retrieves the particle adhesion scale value.
+        ///
+        ///  The particle adhesion scale value.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getParticleAdhesionScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxPBDMaterial_getParticleAdhesionScale(PxPBDMaterial* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxPBDMaterial_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxPBDMaterial_getConcreteTypeName(PxPBDMaterial* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxDeformableAttachmentData_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableAttachmentData PxDeformableAttachmentData_new();
+
+        /// <summary>
+        ///  Gets the two actors for this attachment.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableAttachment_getActors", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableAttachment_getActors(PxDeformableAttachment* self_, PxActor** actor0, PxActor** actor1);
+
+        /// <summary>
+        ///  Updates the pose of the attachment.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableAttachment_updatePose_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableAttachment_updatePose_mut(PxDeformableAttachment* self_, PxTransform* pose);
+
+        /// <summary>
+        ///  Returns string name of PxDeformableAttachment, used for serialization
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableAttachment_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxDeformableAttachment_getConcreteTypeName(PxDeformableAttachment* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxDeformableElementFilterData_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableElementFilterData PxDeformableElementFilterData_new();
+
+        /// <summary>
+        ///  Gets the actors for this element filter.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableElementFilter_getActors", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableElementFilter_getActors(PxDeformableElementFilter* self_, PxActor** actor0, PxActor** actor1);
+
+        /// <summary>
+        ///  Returns string name of PxDeformableElementFilter, used for serialization
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableElementFilter_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxDeformableElementFilter_getConcreteTypeName(PxDeformableElementFilter* self_);
 
         /// <summary>
         ///  Destroys the instance it is called on.
@@ -8452,6 +10816,30 @@ namespace PhysX
         public static extern PxFoundation* PxPhysics_getFoundation_mut(PxPhysics* self_);
 
         /// <summary>
+        ///  Gets PxPhysics object insertion interface.
+        ///
+        ///  The insertion interface is needed for PxCreateTriangleMesh, PxCooking::createTriangleMesh etc., this allows runtime mesh creation.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getPhysicsInsertionCallback_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxInsertionCallback* PxPhysics_getPhysicsInsertionCallback_mut(PxPhysics* self_);
+
+        /// <summary>
+        ///  Retrieves the PxOmniPvd instance if there is one registered with PxPhysics.
+        ///
+        ///  A pointer to a PxOmniPvd object.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getOmniPvd_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxOmniPvd* PxPhysics_getOmniPvd_mut(PxPhysics* self_);
+
+        /// <summary>
+        ///  Returns the simulation tolerance parameters.
+        ///
+        ///  The current simulation tolerance parameters.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getTolerancesScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTolerancesScale* PxPhysics_getTolerancesScale(PxPhysics* self_);
+
+        /// <summary>
         ///  Creates an aggregate with the specified maximum size and filtering hint.
         ///
         ///  The previous API used "bool enableSelfCollision" which should now silently evaluates
@@ -8467,12 +10855,12 @@ namespace PhysX
         public static extern PxAggregate* PxPhysics_createAggregate_mut(PxPhysics* self_, uint maxActor, uint maxShape, uint filterHint);
 
         /// <summary>
-        ///  Returns the simulation tolerance parameters.
+        ///  Return the number of aggregates that currently exist.
         ///
-        ///  The current simulation tolerance parameters.
+        ///  Number of aggregates.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxPhysics_getTolerancesScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTolerancesScale* PxPhysics_getTolerancesScale(PxPhysics* self_);
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getNbAggregates", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPhysics_getNbAggregates(PxPhysics* self_);
 
         /// <summary>
         ///  Creates a triangle mesh object.
@@ -8513,14 +10901,6 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxPhysics_createTetrahedronMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxTetrahedronMesh* PxPhysics_createTetrahedronMesh_mut(PxPhysics* self_, PxInputStream* stream);
-
-        /// <summary>
-        ///  Creates a softbody mesh object.
-        ///
-        ///  The new softbody mesh.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxPhysics_createSoftBodyMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxSoftBodyMesh* PxPhysics_createSoftBodyMesh_mut(PxPhysics* self_, PxInputStream* stream);
 
         /// <summary>
         ///  Return the number of tetrahedron meshes that currently exist.
@@ -8601,6 +10981,14 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxPhysics_getConvexMeshes", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint PxPhysics_getConvexMeshes(PxPhysics* self_, PxConvexMesh** userBuffer, uint bufferSize, uint startIndex);
+
+        /// <summary>
+        ///  Creates a deformable volume mesh object.
+        ///
+        ///  The new deformable volume mesh.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createDeformableVolumeMesh_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolumeMesh* PxPhysics_createDeformableVolumeMesh_mut(PxPhysics* self_, PxInputStream* stream);
 
         /// <summary>
         ///  Creates a bounding volume hierarchy.
@@ -8704,6 +11092,30 @@ namespace PhysX
         public static extern PxShape* PxPhysics_createShape_mut(PxPhysics* self_, PxGeometry* geometry, PxMaterial* material, [MarshalAs(UnmanagedType.U1)] bool isExclusive, PxShapeFlags shapeFlags);
 
         /// <summary>
+        ///  Creates a shape which may be attached to exactly one deformable volume actor
+        ///
+        ///  The shape will be created with a reference count of 1.
+        ///
+        ///  The shape
+        ///
+        ///  Shared shapes are not mutable when they are attached to an actor
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createShape_mut_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxShape* PxPhysics_createShape_mut_1(PxPhysics* self_, PxGeometry* geometry, PxDeformableVolumeMaterial* material, [MarshalAs(UnmanagedType.U1)] bool isExclusive, PxShapeFlags shapeFlags);
+
+        /// <summary>
+        ///  Creates a shape which may be attached to exactly one deformable surface actor
+        ///
+        ///  The shape will be created with a reference count of 1.
+        ///
+        ///  The shape
+        ///
+        ///  Shared shapes are not mutable when they are attached to an actor
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createShape_mut_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxShape* PxPhysics_createShape_mut_2(PxPhysics* self_, PxGeometry* geometry, PxDeformableSurfaceMaterial* material, [MarshalAs(UnmanagedType.U1)] bool isExclusive, PxShapeFlags shapeFlags);
+
+        /// <summary>
         ///  Creates a shape which may be attached to multiple actors
         ///
         ///  The shape will be created with a reference count of 1.
@@ -8714,8 +11126,14 @@ namespace PhysX
         ///
         ///  Shapes created from *SDF* triangle-mesh geometries do not support more than one material.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxPhysics_createShape_mut_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxShape* PxPhysics_createShape_mut_1(PxPhysics* self_, PxGeometry* geometry, PxMaterial** materials, ushort materialCount, [MarshalAs(UnmanagedType.U1)] bool isExclusive, PxShapeFlags shapeFlags);
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createShape_mut_3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxShape* PxPhysics_createShape_mut_3(PxPhysics* self_, PxGeometry* geometry, PxMaterial** materials, ushort materialCount, [MarshalAs(UnmanagedType.U1)] bool isExclusive, PxShapeFlags shapeFlags);
+
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createShape_mut_4", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxShape* PxPhysics_createShape_mut_4(PxPhysics* self_, PxGeometry* geometry, PxDeformableSurfaceMaterial** materials, ushort materialCount, [MarshalAs(UnmanagedType.U1)] bool isExclusive, PxShapeFlags shapeFlags);
+
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createShape_mut_5", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxShape* PxPhysics_createShape_mut_5(PxPhysics* self_, PxGeometry* geometry, PxDeformableVolumeMaterial** materials, ushort materialCount, [MarshalAs(UnmanagedType.U1)] bool isExclusive, PxShapeFlags shapeFlags);
 
         /// <summary>
         ///  Return the number of shapes that currently exist.
@@ -8749,12 +11167,107 @@ namespace PhysX
         public static extern PxConstraint* PxPhysics_createConstraint_mut(PxPhysics* self_, PxRigidActor* actor0, PxRigidActor* actor1, PxConstraintConnector* connector, PxConstraintShaderTable* shaders, uint dataSize);
 
         /// <summary>
+        ///  Return the number of constraints that currently exist.
+        ///
+        ///  Number of constraints.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getNbConstraints", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPhysics_getNbConstraints(PxPhysics* self_);
+
+        /// <summary>
         ///  Creates a reduced-coordinate articulation with all fields initialized to their default values.
         ///
         ///  the new articulation
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxPhysics_createArticulationReducedCoordinate_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxArticulationReducedCoordinate* PxPhysics_createArticulationReducedCoordinate_mut(PxPhysics* self_);
+
+        /// <summary>
+        ///  Return the number of articulations that currently exist.
+        ///
+        ///  Number of articulations.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getNbArticulations", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPhysics_getNbArticulations(PxPhysics* self_);
+
+        /// <summary>
+        ///  Creates an attachment between two actors, based on the provided PxDeformableAttachmentData. At least one of the actors must be a deformable.
+        ///
+        ///  An attachment is a collection of one or more positional constraints between a point on one actor and a point on another actor.
+        ///  Attachments between two rigid objects are not permitted, use joints instead.
+        ///
+        ///  The attachment is only active when both actors are added to the same scene or one of the actors is NULL.
+        ///
+        ///  The PxDeformableAttachment created if successful, NULL otherwise.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createDeformableAttachment_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableAttachment* PxPhysics_createDeformableAttachment_mut(PxPhysics* self_, PxDeformableAttachmentData* data);
+
+        /// <summary>
+        ///  Creates an element-level collision filter between two actors, based on the provided PxDeformableElementFilterData. At least one of the actors must be a deformable.
+        ///
+        ///  Element filters define how parts of deformable actors are excluded from collisions.
+        ///  They are usually added to avoid conflicting attachment and contact constraints.
+        ///
+        ///  The element filter is only active when both actors are added to the same scene or one of the actors is NULL.
+        ///
+        ///  The PxDeformableElementFilter created if successful, NULL otherwise.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createDeformableElementFilter_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableElementFilter* PxPhysics_createDeformableElementFilter_mut(PxPhysics* self_, PxDeformableElementFilterData* data);
+
+        /// <summary>
+        ///  Creates a deformable surface with all fields initialized to their default values.
+        ///
+        ///  the new deformable surface
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createDeformableSurface_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableSurface* PxPhysics_createDeformableSurface_mut(PxPhysics* self_, PxCudaContextManager* cudaContextManager);
+
+        /// <summary>
+        ///  Creates a FEM-based deformable volume with all fields initialized to their default values.
+        ///
+        ///  the new deformable volume
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createDeformableVolume_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolume* PxPhysics_createDeformableVolume_mut(PxPhysics* self_, PxCudaContextManager* cudaContextManager);
+
+        /// <summary>
+        ///  Creates a particle system with a position-based dynamics (PBD) solver.
+        ///
+        ///  A PBD particle system can be used to simulate particle systems with fluid and granular particles. It also allows simulating cloth using
+        ///  mass-spring constraints and rigid bodies by shape matching the bodies with particles.
+        ///
+        ///  In order to accelerate neighborhood finding for particle-particle interactions (e.g.: for fluid density constraints) a regular grid is used.
+        ///  This grid is built every time step but may provide inaccurate neighborhood information during the solver iterations. The neighborhood scale
+        ///  parameter can be used to configure the grid such that it provides a more conservative neighborhood at the cost of run-time performance.
+        ///  The grid cell width is defined as 2*particleContactOffset*neighborhoodScale.
+        ///
+        ///  The maxNeighborhood defines how many particles fit into the neighborhood, at the cost of memory.
+        ///
+        ///  Both maxNeighborhood and neighborhoodScale should be set as low as possible for performance, but high enough to not cause any behavioral degredation.
+        ///
+        ///  the new particle system
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createPBDParticleSystem_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxPBDParticleSystem* PxPhysics_createPBDParticleSystem_mut(PxPhysics* self_, PxCudaContextManager* cudaContextManager, uint maxNeighborhood, float neighborhoodScale);
+
+        /// <summary>
+        ///  Create particle buffer to simulate fluid/granular material.
+        ///
+        ///  PxParticleBuffer instance
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createParticleBuffer_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxParticleBuffer* PxPhysics_createParticleBuffer_mut(PxPhysics* self_, uint maxParticles, PxCudaContextManager* cudaContextManager);
+
+        /// <summary>
+        ///  Create a particle buffer for fluid dynamics with diffuse particles. Diffuse particles are used to simulate fluid effects
+        ///  such as foam, spray and bubbles.
+        ///
+        ///  PxParticleAndDiffuseBuffer instance
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createParticleAndDiffuseBuffer_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxParticleAndDiffuseBuffer* PxPhysics_createParticleAndDiffuseBuffer_mut(PxPhysics* self_, uint maxParticles, uint maxDiffuseParticles, PxCudaContextManager* cudaContextManager);
 
         /// <summary>
         ///  Creates a new rigid body material with certain default properties.
@@ -8783,6 +11296,90 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxPhysics_getMaterials", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint PxPhysics_getMaterials(PxPhysics* self_, PxMaterial** userBuffer, uint bufferSize, uint startIndex);
+
+        /// <summary>
+        ///  Creates a new surface deformable material with certain default properties.
+        ///
+        ///  The new surface deformable material.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createDeformableSurfaceMaterial_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableSurfaceMaterial* PxPhysics_createDeformableSurfaceMaterial_mut(PxPhysics* self_, float youngs, float poissons, float dynamicFriction, float thickness, float bendingStiffness, float elasticityDamping, float bendingDamping);
+
+        /// <summary>
+        ///  Return the number of deformable surface materials that currently exist.
+        ///
+        ///  Number of deformable surface materials.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getNbDeformableSurfaceMaterials", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPhysics_getNbDeformableSurfaceMaterials(PxPhysics* self_);
+
+        /// <summary>
+        ///  Writes the array of deformable surface material pointers to a user buffer.
+        ///
+        ///  Returns the number of pointers written.
+        ///
+        ///  The ordering of the materials in the array is not specified.
+        ///
+        ///  The number of material pointers written to userBuffer, this should be less or equal to bufferSize.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getDeformableSurfaceMaterials", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPhysics_getDeformableSurfaceMaterials(PxPhysics* self_, PxDeformableSurfaceMaterial** userBuffer, uint bufferSize, uint startIndex);
+
+        /// <summary>
+        ///  Creates a new deformable volume material with certain default properties.
+        ///
+        ///  The new deformable volume material.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createDeformableVolumeMaterial_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolumeMaterial* PxPhysics_createDeformableVolumeMaterial_mut(PxPhysics* self_, float youngs, float poissons, float dynamicFriction, float elasticityDamping);
+
+        /// <summary>
+        ///  Return the number of deformable volume materials that currently exist.
+        ///
+        ///  Number of materials.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getNbDeformableVolumeMaterials", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPhysics_getNbDeformableVolumeMaterials(PxPhysics* self_);
+
+        /// <summary>
+        ///  Writes the array of deformable volume material pointers to a user buffer.
+        ///
+        ///  Returns the number of pointers written.
+        ///
+        ///  The ordering of the materials in the array is not specified.
+        ///
+        ///  The number of material pointers written to userBuffer, this should be less or equal to bufferSize.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getDeformableVolumeMaterials", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPhysics_getDeformableVolumeMaterials(PxPhysics* self_, PxDeformableVolumeMaterial** userBuffer, uint bufferSize, uint startIndex);
+
+        /// <summary>
+        ///  Creates a new PBD material with certain default properties.
+        ///
+        ///  The new PBD material.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_createPBDMaterial_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxPBDMaterial* PxPhysics_createPBDMaterial_mut(PxPhysics* self_, float friction, float damping, float adhesion, float viscosity, float vorticityConfinement, float surfaceTension, float cohesion, float lift, float drag, float cflCoefficient, float gravityScale);
+
+        /// <summary>
+        ///  Return the number of PBD materials that currently exist.
+        ///
+        ///  Number of PBD materials.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getNbPBDMaterials", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPhysics_getNbPBDMaterials(PxPhysics* self_);
+
+        /// <summary>
+        ///  Writes the array of PBD material pointers to a user buffer.
+        ///
+        ///  Returns the number of pointers written.
+        ///
+        ///  The ordering of the materials in the array is not specified.
+        ///
+        ///  The number of material pointers written to userBuffer, this should be less or equal to bufferSize.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxPhysics_getPBDMaterials", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxPhysics_getPBDMaterials(PxPhysics* self_, PxPBDMaterial** userBuffer, uint bufferSize, uint startIndex);
 
         /// <summary>
         ///  Register a deletion listener. Listeners will be called whenever an object is deleted.
@@ -8829,24 +11426,12 @@ namespace PhysX
         public static extern void PxPhysics_unregisterDeletionListenerObjects_mut(PxPhysics* self_, PxDeletionListener* observer, PxBase** observables, uint observableCount);
 
         /// <summary>
-        ///  Gets PxPhysics object insertion interface.
-        ///
-        ///  The insertion interface is needed for PxCreateTriangleMesh, PxCooking::createTriangleMesh etc., this allows runtime mesh creation.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxPhysics_getPhysicsInsertionCallback_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxInsertionCallback* PxPhysics_getPhysicsInsertionCallback_mut(PxPhysics* self_);
-
-        /// <summary>
         ///  Creates an instance of the physics SDK.
         ///
         ///  Creates an instance of this class. May not be a class member to avoid name mangling.
         ///  Pass the constant [`PX_PHYSICS_VERSION`] as the argument.
         ///  There may be only one instance of this class per process. Calling this method after an instance
         ///  has been created already will result in an error message and NULL will be returned.
-        ///
-        ///  Calling this will register all optional code modules (Articulations and HeightFields), preparing them for use.
-        ///  If you do not need some of these modules, consider calling PxCreateBasePhysics() instead and registering needed
-        ///  modules manually.
         ///
         ///  PxPhysics instance on success, NULL if operation failed
         /// </summary>
@@ -9032,89 +11617,6 @@ namespace PhysX
         public static extern float PxRigidDynamic_getStabilizationThreshold(PxRigidDynamic* self_);
 
         /// <summary>
-        ///  Reads the PxRigidDynamic lock flags.
-        ///
-        ///  See the list of flags [`PxRigidDynamicLockFlag`]
-        ///
-        ///  The values of the PxRigidDynamicLock flags.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_getRigidDynamicLockFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxRigidDynamicLockFlags PxRigidDynamic_getRigidDynamicLockFlags(PxRigidDynamic* self_);
-
-        /// <summary>
-        ///  Raises or clears a particular rigid dynamic lock flag.
-        ///
-        ///  See the list of flags [`PxRigidDynamicLockFlag`]
-        ///
-        ///  Default:
-        ///  no flags are set
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_setRigidDynamicLockFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxRigidDynamic_setRigidDynamicLockFlag_mut(PxRigidDynamic* self_, PxRigidDynamicLockFlag flag, [MarshalAs(UnmanagedType.U1)] bool value);
-
-        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_setRigidDynamicLockFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxRigidDynamic_setRigidDynamicLockFlags_mut(PxRigidDynamic* self_, PxRigidDynamicLockFlags flags);
-
-        /// <summary>
-        ///  Retrieves the linear velocity of an actor.
-        ///
-        ///  It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
-        ///  in PxContactModifyCallback or in contact report callbacks).
-        ///
-        ///  The linear velocity of the actor.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_getLinearVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec3 PxRigidDynamic_getLinearVelocity(PxRigidDynamic* self_);
-
-        /// <summary>
-        ///  Sets the linear velocity of the actor.
-        ///
-        ///  Note that if you continuously set the velocity of an actor yourself,
-        ///  forces such as gravity or friction will not be able to manifest themselves, because forces directly
-        ///  influence only the velocity/momentum of an actor.
-        ///
-        ///  Default:
-        ///  (0.0, 0.0, 0.0)
-        ///
-        ///  Sleeping:
-        ///  This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the
-        ///  new velocity is non-zero.
-        ///
-        ///  It is invalid to use this method if PxActorFlag::eDISABLE_SIMULATION is set.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_setLinearVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxRigidDynamic_setLinearVelocity_mut(PxRigidDynamic* self_, PxVec3* linVel, [MarshalAs(UnmanagedType.U1)] bool autowake);
-
-        /// <summary>
-        ///  Retrieves the angular velocity of the actor.
-        ///
-        ///  It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
-        ///  in PxContactModifyCallback or in contact report callbacks).
-        ///
-        ///  The angular velocity of the actor.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_getAngularVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec3 PxRigidDynamic_getAngularVelocity(PxRigidDynamic* self_);
-
-        /// <summary>
-        ///  Sets the angular velocity of the actor.
-        ///
-        ///  Note that if you continuously set the angular velocity of an actor yourself,
-        ///  forces such as friction will not be able to rotate the actor, because forces directly influence only the velocity/momentum.
-        ///
-        ///  Default:
-        ///  (0.0, 0.0, 0.0)
-        ///
-        ///  Sleeping:
-        ///  This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the
-        ///  new velocity is non-zero.
-        ///
-        ///  It is invalid to use this method if PxActorFlag::eDISABLE_SIMULATION is set.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_setAngularVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxRigidDynamic_setAngularVelocity_mut(PxRigidDynamic* self_, PxVec3* angVel, [MarshalAs(UnmanagedType.U1)] bool autowake);
-
-        /// <summary>
         ///  Sets the wake counter for the actor.
         ///
         ///  The wake counter value determines the minimum amount of time until the body can be put to sleep. Please note
@@ -9175,6 +11677,104 @@ namespace PhysX
         public static extern void PxRigidDynamic_putToSleep_mut(PxRigidDynamic* self_);
 
         /// <summary>
+        ///  Reads the PxRigidDynamic lock flags.
+        ///
+        ///  See the list of flags [`PxRigidDynamicLockFlag`]
+        ///
+        ///  The values of the PxRigidDynamic lock flags.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_getRigidDynamicLockFlags", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxRigidDynamicLockFlags PxRigidDynamic_getRigidDynamicLockFlags(PxRigidDynamic* self_);
+
+        /// <summary>
+        ///  Raises or clears a particular PxRigidDynamic lock flag.
+        ///
+        ///  See the list of flags [`PxRigidDynamicLockFlag`]
+        ///
+        ///  Default:
+        ///  no flags are set
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_setRigidDynamicLockFlag_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxRigidDynamic_setRigidDynamicLockFlag_mut(PxRigidDynamic* self_, PxRigidDynamicLockFlag flag, [MarshalAs(UnmanagedType.U1)] bool value);
+
+        /// <summary>
+        ///  Set all PxRigidDynamic lock flags.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_setRigidDynamicLockFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxRigidDynamic_setRigidDynamicLockFlags_mut(PxRigidDynamic* self_, PxRigidDynamicLockFlags flags);
+
+        /// <summary>
+        ///  Retrieves the actor's center-of-mass linear velocity.
+        ///
+        ///  It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
+        ///  in PxContactModifyCallback or in contact report callbacks).
+        ///
+        ///  The linear velocity is reported with respect to the actor's center of mass and not the actor frame origin.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
+        ///  The actor's center-of-mass linear velocity.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_getLinearVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxRigidDynamic_getLinearVelocity(PxRigidDynamic* self_);
+
+        /// <summary>
+        ///  Sets the actor's center-of-mass linear velocity.
+        ///
+        ///  Note that if you continuously set the velocity of an actor yourself,
+        ///  forces such as gravity or friction will not be able to manifest themselves, because forces directly
+        ///  influence only the velocity/momentum of an actor.
+        ///
+        ///  Default:
+        ///  (0.0, 0.0, 0.0)
+        ///
+        ///  Sleeping:
+        ///  This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the
+        ///  new velocity is non-zero.
+        ///
+        ///  It is invalid to use this method if PxActorFlag::eDISABLE_SIMULATION is set.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
+        ///  The linear velocity is applied with respect to the actor's center of mass and not the actor frame origin.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_setLinearVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxRigidDynamic_setLinearVelocity_mut(PxRigidDynamic* self_, PxVec3* linVel, [MarshalAs(UnmanagedType.U1)] bool autowake);
+
+        /// <summary>
+        ///  Retrieves the angular velocity of the actor.
+        ///
+        ///  It is not allowed to use this method while the simulation is running (except during PxScene::collide(),
+        ///  in PxContactModifyCallback or in contact report callbacks).
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        ///
+        ///  The angular velocity of the actor.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_getAngularVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxRigidDynamic_getAngularVelocity(PxRigidDynamic* self_);
+
+        /// <summary>
+        ///  Sets the angular velocity of the actor.
+        ///
+        ///  Note that if you continuously set the angular velocity of an actor yourself,
+        ///  forces such as friction will not be able to rotate the actor, because forces directly influence only the velocity/momentum.
+        ///
+        ///  Default:
+        ///  (0.0, 0.0, 0.0)
+        ///
+        ///  Sleeping:
+        ///  This call wakes the actor if it is sleeping, and the autowake parameter is true (default) or the
+        ///  new velocity is non-zero.
+        ///
+        ///  It is invalid to use this method if PxActorFlag::eDISABLE_SIMULATION is set.
+        ///
+        ///  This method should not be used after the direct GPU API has been enabled and initialized. See [`PxDirectGPUAPI`] for the details.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_setAngularVelocity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxRigidDynamic_setAngularVelocity_mut(PxRigidDynamic* self_, PxVec3* angVel, [MarshalAs(UnmanagedType.U1)] bool autowake);
+
+        /// <summary>
         ///  Sets the solver iteration counts for the body.
         ///
         ///  The solver iteration count determines how accurately joints and contacts are resolved.
@@ -9226,11 +11826,36 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxRigidDynamic_setContactReportThreshold_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxRigidDynamic_setContactReportThreshold_mut(PxRigidDynamic* self_, float threshold);
 
+        /// <summary>
+        ///  Returns the GPU rigid dynamic index.
+        ///
+        ///  This function only returns valid results if GPU dynamics is enabled.
+        ///
+        ///  The GPU index, or 0xFFFFFFFF if the actor is not inserted into a PxScene.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxRigidDynamic_getGPUIndex", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxRigidDynamic_getGPUIndex(PxRigidDynamic* self_);
+
         [DllImport(__DllName, EntryPoint = "PxRigidDynamic_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern byte* PxRigidDynamic_getConcreteTypeName(PxRigidDynamic* self_);
 
         [DllImport(__DllName, EntryPoint = "PxRigidStatic_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern byte* PxRigidStatic_getConcreteTypeName(PxRigidStatic* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxArticulationGPUAPIMaxCounts_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxArticulationGPUAPIMaxCounts PxArticulationGPUAPIMaxCounts_new();
+
+        /// <summary>
+        ///  Get the maximal articulation index and component counts for a PxScene.
+        ///
+        ///  Get the maximal articulation index and component counts for a PxScene. This is a helper function to ease the derivation of the correct data layout
+        ///  for the articulation functions in PxDirectGPUAPI. Specifically, this function will return maxLinks, maxDofs, maxFixedTendons, maxFixedTendonJoints,
+        ///  maxSpatialTendons and maxSpatialTendonAttachments for a scene. See [`PxArticulationGPUAPIMaxCounts`].
+        ///
+        ///  PxArticulationGPUAPIMaxCounts the max counts across the scene for all articulation indices and components.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDirectGPUAPI_getArticulationGPUAPIMaxCounts", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxArticulationGPUAPIMaxCounts PxDirectGPUAPI_getArticulationGPUAPIMaxCounts(PxDirectGPUAPI* self_);
 
         /// <summary>
         ///  constructor sets to default.
@@ -9446,7 +12071,7 @@ namespace PhysX
 
         /// <summary>
         ///  This method must be called after sceneQueriesUpdate. It will wait for the scene queries update to finish. If the user makes an illegal scene queries update call,
-        ///  the SDK will issue an error message.
+        ///  the SDK will issue an error	message.
         ///
         ///  If a new AABB tree build finished, then during fetchQueries the current tree within the pruning structure is swapped with the new tree.
         /// </summary>
@@ -9546,6 +12171,12 @@ namespace PhysX
         public static extern void PxSceneQuerySystem_shiftOrigin_mut(PxSceneQuerySystem* self_, PxVec3* shift);
 
         /// <summary>
+        ///  Visualizes the system's internal data-structures, for debugging purposes.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxSceneQuerySystem_visualize", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxSceneQuerySystem_visualize(PxSceneQuerySystem* self_, uint prunerIndex, PxRenderOutput* @out);
+
+        /// <summary>
         ///  Merges a pruning structure with the SQ system's internal pruners.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxSceneQuerySystem_merge_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
@@ -9620,6 +12251,13 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxSceneQuerySystem_sceneQueryBuildStep_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxSceneQuerySystem_sceneQueryBuildStep_mut(PxSceneQuerySystem* self_, void* handle);
+
+        [DllImport(__DllName, EntryPoint = "PxGpuBroadPhaseDesc_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxGpuBroadPhaseDesc PxGpuBroadPhaseDesc_new();
+
+        [DllImport(__DllName, EntryPoint = "PxGpuBroadPhaseDesc_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxGpuBroadPhaseDesc_isValid(PxGpuBroadPhaseDesc* self_);
 
         [DllImport(__DllName, EntryPoint = "PxBroadPhaseDesc_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxBroadPhaseDesc PxBroadPhaseDesc_new(PxBroadPhaseType type_);
@@ -9820,6 +12458,14 @@ namespace PhysX
         ///
         ///  This short helper function performs a single-theaded update and reports the results in a single call.
         /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxBroadPhase_updateAndFetchResults_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxBroadPhase_updateAndFetchResults_mut(PxBroadPhase* self_, PxBroadPhaseResults* results, PxBroadPhaseUpdateData* updateData);
+
+        /// <summary>
+        ///  Helper for single-threaded updates.
+        ///
+        ///  This short helper function performs a single-theaded update and reports the results in a single call.
+        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxBroadPhase_update_mut_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxBroadPhase_update_mut_1(PxBroadPhase* self_, PxBroadPhaseResults* results, PxBroadPhaseUpdateData* updateData);
 
@@ -9933,6 +12579,14 @@ namespace PhysX
         ///
         ///  This short helper function performs a single-theaded update and reports the results in a single call.
         /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxAABBManager_updateAndFetchResults_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxAABBManager_updateAndFetchResults_mut(PxAABBManager* self_, PxBroadPhaseResults* results);
+
+        /// <summary>
+        ///  Helper for single-threaded updates.
+        ///
+        ///  This short helper function performs a single-theaded update and reports the results in a single call.
+        /// </summary>
         [DllImport(__DllName, EntryPoint = "PxAABBManager_update_mut_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxAABBManager_update_mut_1(PxAABBManager* self_, PxBroadPhaseResults* results);
 
@@ -9967,12 +12621,12 @@ namespace PhysX
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxSceneLimits_isValid(PxSceneLimits* self_);
 
-        [DllImport(__DllName, EntryPoint = "PxgDynamicsMemoryConfig_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxgDynamicsMemoryConfig PxgDynamicsMemoryConfig_new();
+        [DllImport(__DllName, EntryPoint = "PxGpuDynamicsMemoryConfig_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxGpuDynamicsMemoryConfig PxGpuDynamicsMemoryConfig_new();
 
-        [DllImport(__DllName, EntryPoint = "PxgDynamicsMemoryConfig_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [DllImport(__DllName, EntryPoint = "PxGpuDynamicsMemoryConfig_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxgDynamicsMemoryConfig_isValid(PxgDynamicsMemoryConfig* self_);
+        public static extern bool PxGpuDynamicsMemoryConfig_isValid(PxGpuDynamicsMemoryConfig* self_);
 
         /// <summary>
         ///  constructor sets to default.
@@ -9997,6 +12651,9 @@ namespace PhysX
 
         [DllImport(__DllName, EntryPoint = "PxSceneDesc_getTolerancesScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxTolerancesScale* PxSceneDesc_getTolerancesScale(PxSceneDesc* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxGpuDynamicsMemoryConfigStatistics_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxGpuDynamicsMemoryConfigStatistics PxGpuDynamicsMemoryConfigStatistics_new();
 
         /// <summary>
         ///  Get number of broadphase volumes added for the current simulation step.
@@ -10100,13 +12757,16 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxBroadPhaseCallback_onObjectOutOfBounds_mut_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxBroadPhaseCallback_onObjectOutOfBounds_mut_1(PxBroadPhaseCallback* self_, PxAggregate* aggregate);
 
+        [DllImport(__DllName, EntryPoint = "PxPostSolveCallback_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxPostSolveCallback_delete(PxPostSolveCallback* self_);
+
         /// <summary>
         ///  Deletes the scene.
         ///
         ///  Removes any actors and constraint shaders from this scene
         ///  (if the user hasn't already done so).
         ///
-        ///  Be sure to not keep a reference to this object after calling release.
+        ///  Be sure	to not keep a reference to this object after calling release.
         ///  Avoid release calls while the scene is simulating (in between simulate() and fetchResults() calls).
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxScene_release_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
@@ -10161,6 +12821,26 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxScene_getTimestamp", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint PxScene_getTimestamp(PxScene* self_);
+
+        /// <summary>
+        ///  Sets a name string for the Scene that can be retrieved with getName().
+        ///
+        ///  This is for debugging and is not used by the SDK. The string is not copied by the SDK,
+        ///  only the pointer is stored.
+        ///
+        ///  Default:
+        ///  NULL
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_setName_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxScene_setName_mut(PxScene* self_, byte* name);
+
+        /// <summary>
+        ///  Retrieves the name string set with setName().
+        ///
+        ///  Name string associated with the Scene.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_getName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte* PxScene_getName(PxScene* self_);
 
         /// <summary>
         ///  Adds an articulation to this scene.
@@ -10343,10 +13023,63 @@ namespace PhysX
         ///
         ///  Do not use this method while the simulation is running. Calls to this method while the simulation is running will be ignored and NULL will be returned.
         ///
+        ///  This list may contain actors that have been released after fetchResults() of the previous simulation step. It is the user's
+        ///  responsibility to track such actors and avoid dereferencing the corresponding pointers.
+        ///
         ///  A pointer to the list of active PxActors generated during the last call to fetchResults().
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxScene_getActiveActors_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxActor** PxScene_getActiveActors_mut(PxScene* self_, uint* nbActorsOut);
+
+        /// <summary>
+        ///  Retrieve the number of deformable surfaces in the scene.
+        ///
+        ///  the number of deformable surfaces.
+        ///
+        ///  See getDeformableSurfaces()
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_getNbDeformableSurfaces", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxScene_getNbDeformableSurfaces(PxScene* self_);
+
+        /// <summary>
+        ///  Retrieve an array of all the deformable surfaces in the scene.
+        ///
+        ///  Number of deformable surfaces written to the buffer
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_getDeformableSurfaces", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxScene_getDeformableSurfaces(PxScene* self_, PxDeformableSurface** userBuffer, uint bufferSize, uint startIndex);
+
+        /// <summary>
+        ///  Retrieve the number of deformable volumes in the scene.
+        ///
+        ///  the number of deformable volumes.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_getNbDeformableVolumes", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxScene_getNbDeformableVolumes(PxScene* self_);
+
+        /// <summary>
+        ///  Retrieve an array of all the deformable volumes in the scene.
+        ///
+        ///  Number of actors written to the buffer.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_getDeformableVolumes", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxScene_getDeformableVolumes(PxScene* self_, PxDeformableVolume** userBuffer, uint bufferSize, uint startIndex);
+
+        /// <summary>
+        ///  Retrieve the number of particle systems of the requested type in the scene.
+        ///
+        ///  the number particle systems.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_getNbPBDParticleSystems", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxScene_getNbPBDParticleSystems(PxScene* self_);
+
+        /// <summary>
+        ///  Retrieve an array of all the particle systems of the requested type in the scene.
+        ///
+        ///  Number of particle systems written to the buffer.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_getPBDParticleSystems", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxScene_getPBDParticleSystems(PxScene* self_, PxPBDParticleSystem** userBuffer, uint bufferSize, uint startIndex);
 
         /// <summary>
         ///  Returns the number of articulations in the scene.
@@ -10464,6 +13197,15 @@ namespace PhysX
         public static extern PxCpuDispatcher* PxScene_getCpuDispatcher(PxScene* self_);
 
         /// <summary>
+        ///  Return the CUDA context manager that was set in PxSceneDesc::cudaContextManager when creating the scene with PxPhysics::createScene
+        ///
+        ///  Platform specific:
+        ///  Applies to PC GPU only.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_getCudaContextManager", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxCudaContextManager* PxScene_getCudaContextManager(PxScene* self_);
+
+        /// <summary>
         ///  Reserves a new client ID.
         ///
         ///  PX_DEFAULT_CLIENT is always available as the default clientID.
@@ -10568,6 +13310,14 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxScene_getFilterShaderDataSize", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint PxScene_getFilterShaderDataSize(PxScene* self_);
+
+        /// <summary>
+        ///  Gets the custom collision filter callback in use for this scene.
+        ///
+        ///  Filter callback class that defines the collision pair filtering.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_getFilterCallback", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxSimulationFilterCallback* PxScene_getFilterCallback(PxScene* self_);
 
         /// <summary>
         ///  Marks the object to reset interactions and re-run collision filters in the next simulation step.
@@ -10889,6 +13639,8 @@ namespace PhysX
 
         /// <summary>
         ///  Return the friction model.
+        ///
+        ///  Since only the patch friction model is supported now, the friction type option is obsolete.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxScene_getFrictionType", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxFrictionType PxScene_getFrictionType(PxScene* self_);
@@ -11207,115 +13959,35 @@ namespace PhysX
         public static extern PxPvdSceneClient* PxScene_getScenePvdClient_mut(PxScene* self_);
 
         /// <summary>
-        ///  Copy GPU articulation data from the internal GPU buffer to a user-provided device buffer.
+        ///  Get the PxGpuDynamicsMemoryConfig that was passed into PxPhysics::createScene() as part of PxSceneDesc.
+        ///
+        ///  This will return the values passed as initial configuration, for the actual minimal configuration that would be needed
+        ///  for a specific simulation of a scene, see PxSimulationStatistics::gpuDynamicsMemoryConfigStatistics.
+        ///
+        ///  The PxGpuDynamicsMemoryConfig used during scene creation.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_copyArticulationData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_copyArticulationData_mut(PxScene* self_, void* data, void* index, PxArticulationGpuDataType dataType, uint nbCopyArticulations, void* copyEvent);
-
-        /// <summary>
-        ///  Apply GPU articulation data from a user-provided device buffer to the internal GPU buffer.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_applyArticulationData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_applyArticulationData_mut(PxScene* self_, void* data, void* index, PxArticulationGpuDataType dataType, uint nbUpdatedArticulations, void* waitEvent, void* signalEvent);
-
-        /// <summary>
-        ///  Copy GPU softbody data from the internal GPU buffer to a user-provided device buffer.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_copySoftBodyData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_copySoftBodyData_mut(PxScene* self_, void** data, void* dataSizes, void* softBodyIndices, PxSoftBodyDataFlag flag, uint nbCopySoftBodies, uint maxSize, void* copyEvent);
-
-        /// <summary>
-        ///  Apply user-provided data to the internal softbody system.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_applySoftBodyData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_applySoftBodyData_mut(PxScene* self_, void** data, void* dataSizes, void* softBodyIndices, PxSoftBodyDataFlag flag, uint nbUpdatedSoftBodies, uint maxSize, void* applyEvent);
-
-        /// <summary>
-        ///  Copy contact data from the internal GPU buffer to a user-provided device buffer.
-        ///
-        ///  The contact data contains pointers to internal state and is only valid until the next call to simulate().
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_copyContactData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_copyContactData_mut(PxScene* self_, void* data, uint maxContactPairs, void* numContactPairs, void* copyEvent);
-
-        /// <summary>
-        ///  Copy GPU rigid body data from the internal GPU buffer to a user-provided device buffer.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_copyBodyData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_copyBodyData_mut(PxScene* self_, PxGpuBodyData* data, PxGpuActorPair* index, uint nbCopyActors, void* copyEvent);
-
-        /// <summary>
-        ///  Apply user-provided data to rigid body.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_applyActorData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_applyActorData_mut(PxScene* self_, void* data, PxGpuActorPair* index, PxActorCacheFlag flag, uint nbUpdatedActors, void* waitEvent, void* signalEvent);
-
-        /// <summary>
-        ///  Compute dense Jacobian matrices for specified articulations on the GPU.
-        ///
-        ///  The size of Jacobians can vary by articulation, since it depends on the number of links, degrees-of-freedom, and whether the base is fixed.
-        ///
-        ///  The size is determined using these formulas:
-        ///  nCols = (fixedBase ? 0 : 6) + dofCount
-        ///  nRows = (fixedBase ? 0 : 6) + (linkCount - 1) * 6;
-        ///
-        ///  The user must ensure that adequate space is provided for each Jacobian matrix.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_computeDenseJacobians_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_computeDenseJacobians_mut(PxScene* self_, PxIndexDataPair* indices, uint nbIndices, void* computeEvent);
-
-        /// <summary>
-        ///  Compute the joint-space inertia matrices that maps joint accelerations to joint forces: forces = M * accelerations on the GPU.
-        ///
-        ///  The size of matrices can vary by articulation, since it depends on the number of links and degrees-of-freedom.
-        ///
-        ///  The size is determined using this formula:
-        ///  sizeof(float) * dofCount * dofCount
-        ///
-        ///  The user must ensure that adequate space is provided for each mass matrix.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_computeGeneralizedMassMatrices_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_computeGeneralizedMassMatrices_mut(PxScene* self_, PxIndexDataPair* indices, uint nbIndices, void* computeEvent);
-
-        /// <summary>
-        ///  Computes the joint DOF forces required to counteract gravitational forces for the given articulation pose.
-        ///
-        ///  The size of the result can vary by articulation, since it depends on the number of links and degrees-of-freedom.
-        ///
-        ///  The size is determined using this formula:
-        ///  sizeof(float) * dofCount
-        ///
-        ///  The user must ensure that adequate space is provided for each articulation.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_computeGeneralizedGravityForces_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_computeGeneralizedGravityForces_mut(PxScene* self_, PxIndexDataPair* indices, uint nbIndices, void* computeEvent);
-
-        /// <summary>
-        ///  Computes the joint DOF forces required to counteract coriolis and centrifugal forces for the given articulation pose.
-        ///
-        ///  The size of the result can vary by articulation, since it depends on the number of links and degrees-of-freedom.
-        ///
-        ///  The size is determined using this formula:
-        ///  sizeof(float) * dofCount
-        ///
-        ///  The user must ensure that adequate space is provided for each articulation.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_computeCoriolisAndCentrifugalForces_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_computeCoriolisAndCentrifugalForces_mut(PxScene* self_, PxIndexDataPair* indices, uint nbIndices, void* computeEvent);
-
         [DllImport(__DllName, EntryPoint = "PxScene_getGpuDynamicsConfig", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxgDynamicsMemoryConfig PxScene_getGpuDynamicsConfig(PxScene* self_);
+        public static extern PxGpuDynamicsMemoryConfig PxScene_getGpuDynamicsConfig(PxScene* self_);
 
         /// <summary>
-        ///  Apply user-provided data to particle buffers.
+        ///  Get the direct-GPU API instance for this scene.
         ///
-        ///  This function should be used if the particle buffer flags are already on the device. Otherwise, use PxParticleBuffer::raiseFlags()
-        ///  from the CPU.
-        ///
-        ///  This assumes the data has been changed directly in the PxParticleBuffer.
+        ///  Each object of PxDirectGPUAPI is directly associated with a PxScene, and there is only one PxDirectGPUAPI object per scene.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxScene_applyParticleBufferData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxScene_applyParticleBufferData_mut(PxScene* self_, uint* indices, PxGpuParticleBufferIndexPair* bufferIndexPair, PxParticleBufferFlags* flags, uint nbUpdatedBuffers, void* waitEvent, void* signalEvent);
+        [DllImport(__DllName, EntryPoint = "PxScene_getDirectGPUAPI_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDirectGPUAPI* PxScene_getDirectGPUAPI_mut(PxScene* self_);
+
+        /// <summary>
+        ///  Sets the post-solve callback for deformable surface GPU computations. Allows to schedule custom work to be done by the GPU as soon as possible after the deformable surface solver finishes.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_setDeformableSurfaceGpuPostSolveCallback_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxScene_setDeformableSurfaceGpuPostSolveCallback_mut(PxScene* self_, PxPostSolveCallback* postSolveCallback);
+
+        /// <summary>
+        ///  Sets the post-solve callback for deformable volume GPU computations. Allows to schedule custom work to be done by the GPU as soon as possible after the deformable volume solver finishes.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxScene_setDeformableVolumeGpuPostSolveCallback_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxScene_setDeformableVolumeGpuPostSolveCallback_mut(PxScene* self_, PxPostSolveCallback* postSolveCallback);
 
         /// <summary>
         ///  Constructor
@@ -11386,6 +14058,14 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxContactPair_extractContacts", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern uint PxContactPair_extractContacts(PxContactPair* self_, PxContactPairPoint* userBuffer, uint bufferSize);
+
+        /// <summary>
+        ///  Extracts the friction anchors from the stream and stores them in a convenient format.
+        ///
+        ///  Number of friction anchors written to the buffer.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxContactPair_extractFrictionAnchors", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxContactPair_extractFrictionAnchors(PxContactPair* self_, PxContactPairFrictionAnchor* userBuffer, uint bufferSize);
 
         /// <summary>
         ///  Helper method to clone the contact pair and copy the contact data stream into a user buffer.
@@ -11498,9 +14178,6 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxSimulationEventCallback_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxSimulationEventCallback_delete(PxSimulationEventCallback* self_);
 
-        [DllImport(__DllName, EntryPoint = "PxFEMParameters_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxFEMParameters PxFEMParameters_new();
-
         /// <summary>
         ///  Release this object.
         /// </summary>
@@ -11552,64 +14229,11 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxPruningStructure_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern byte* PxPruningStructure_getConcreteTypeName(PxPruningStructure* self_);
 
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxExtendedVec3 PxExtendedVec3_new();
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxExtendedVec3 PxExtendedVec3_new_1(double _x, double _y, double _z);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_isZero", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxExtendedVec3_isZero(PxExtendedVec3* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_dot", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern double PxExtendedVec3_dot(PxExtendedVec3* self_, PxVec3* v);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_distanceSquared", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern double PxExtendedVec3_distanceSquared(PxExtendedVec3* self_, PxExtendedVec3* v);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_magnitudeSquared", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern double PxExtendedVec3_magnitudeSquared(PxExtendedVec3* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_magnitude", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern double PxExtendedVec3_magnitude(PxExtendedVec3* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_normalize_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern double PxExtendedVec3_normalize_mut(PxExtendedVec3* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_isFinite", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxExtendedVec3_isFinite(PxExtendedVec3* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_maximum_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxExtendedVec3_maximum_mut(PxExtendedVec3* self_, PxExtendedVec3* v);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_minimum_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxExtendedVec3_minimum_mut(PxExtendedVec3* self_, PxExtendedVec3* v);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_set_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxExtendedVec3_set_mut(PxExtendedVec3* self_, double x_, double y_, double z_);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_setPlusInfinity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxExtendedVec3_setPlusInfinity_mut(PxExtendedVec3* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_setMinusInfinity_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxExtendedVec3_setMinusInfinity_mut(PxExtendedVec3* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_cross_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxExtendedVec3_cross_mut(PxExtendedVec3* self_, PxExtendedVec3* left, PxVec3* right);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_cross_mut_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxExtendedVec3_cross_mut_1(PxExtendedVec3* self_, PxExtendedVec3* left, PxExtendedVec3* right);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_cross", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxExtendedVec3 PxExtendedVec3_cross(PxExtendedVec3* self_, PxExtendedVec3* v);
-
-        [DllImport(__DllName, EntryPoint = "PxExtendedVec3_cross_mut_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxExtendedVec3_cross_mut_2(PxExtendedVec3* self_, PxVec3* left, PxExtendedVec3* right);
-
         [DllImport(__DllName, EntryPoint = "phys_toVec3", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 phys_toVec3(PxExtendedVec3* v);
+
+        [DllImport(__DllName, EntryPoint = "phys_diff", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 phys_diff(PxExtendedVec3* p1, PxExtendedVec3* p0);
 
         [DllImport(__DllName, EntryPoint = "PxObstacle_getType", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxGeometryType PxObstacle_getType(PxObstacle* self_);
@@ -12123,8 +14747,6 @@ namespace PhysX
         ///  When the CCT touches a shape, the CCT's behavior w.r.t. this shape can be customized by users.
         ///  This function retrieves the desired PxControllerBehaviorFlag flags capturing the desired behavior.
         ///
-        ///  See comments about deprecated functions at the start of this class
-        ///
         ///  Desired behavior flags for the given shape
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxControllerBehaviorCallback_getBehaviorFlags_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
@@ -12138,8 +14760,6 @@ namespace PhysX
         ///
         ///  The flag PxControllerBehaviorFlag::eCCT_CAN_RIDE_ON_OBJECT is not supported.
         ///
-        ///  See comments about deprecated functions at the start of this class
-        ///
         ///  Desired behavior flags for the given controller
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxControllerBehaviorCallback_getBehaviorFlags_mut_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
@@ -12150,8 +14770,6 @@ namespace PhysX
         ///
         ///  When the CCT touches an obstacle, the CCT's behavior w.r.t. this obstacle can be customized by users.
         ///  This function retrieves the desired PxControllerBehaviorFlag flags capturing the desired behavior.
-        ///
-        ///  See comments about deprecated functions at the start of this class
         ///
         ///  Desired behavior flags for the given obstacle
         /// </summary>
@@ -12328,13 +14946,15 @@ namespace PhysX
         ///
         ///  It is the user's responsibility to keep track of the summed total origin shift and adjust all input/output to/from PhysXCharacterKinematic accordingly.
         ///
-        ///  This call will not automatically shift the PhysX scene and its objects. You need to call PxScene::shiftOrigin() seperately to keep the systems in sync.
+        ///  This call will not automatically shift the PhysX scene and its objects. You need to call PxScene::shiftOrigin() separately to keep the systems in sync.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxControllerManager_shiftOrigin_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxControllerManager_shiftOrigin_mut(PxControllerManager* self_, PxVec3* shift);
 
         /// <summary>
         ///  Creates the controller manager.
+        ///
+        ///  New controller manager, or NULL in case of failure (e.g. when a manager has already been created for that scene)
         ///
         ///  The character controller is informed by [`PxDeletionListener::onRelease`]() when actors or shapes are released, and updates its internal
         ///  caches accordingly. If character controller movement or a call to [`PxControllerManager::shiftOrigin`]() may overlap with actor/shape releases,
@@ -12422,12 +15042,27 @@ namespace PhysX
         /// <summary>
         ///  Constructor to build an empty simulation description
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSoftBodySimulationDataDesc_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxSoftBodySimulationDataDesc PxSoftBodySimulationDataDesc_new();
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeSimulationDataDesc_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolumeSimulationDataDesc PxDeformableVolumeSimulationDataDesc_new();
 
-        [DllImport(__DllName, EntryPoint = "PxSoftBodySimulationDataDesc_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [DllImport(__DllName, EntryPoint = "PxDeformableVolumeSimulationDataDesc_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxSoftBodySimulationDataDesc_isValid(PxSoftBodySimulationDataDesc* self_);
+        public static extern bool PxDeformableVolumeSimulationDataDesc_isValid(PxDeformableVolumeSimulationDataDesc* self_);
+
+        /// <summary>
+        ///  Desc initialization to default value.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxBVH33MidphaseDesc_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxBVH33MidphaseDesc_setToDefault_mut(PxBVH33MidphaseDesc* self_);
+
+        /// <summary>
+        ///  Returns true if the descriptor is valid.
+        ///
+        ///  true if the current settings are valid.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxBVH33MidphaseDesc_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxBVH33MidphaseDesc_isValid(PxBVH33MidphaseDesc* self_);
 
         /// <summary>
         ///  Desc initialization to default value.
@@ -12491,6 +15126,11 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxCookingParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxCookingParams PxCookingParams_new(PxTolerancesScale* sc);
 
+        /// <summary>
+        ///  Gets standalone object insertion interface.
+        ///
+        ///  This interface allows the creation of standalone objects that can exist without a PxPhysics or PxScene object.
+        /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxGetStandaloneInsertionCallback", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxInsertionCallback* phys_PxGetStandaloneInsertionCallback();
 
@@ -12509,12 +15149,12 @@ namespace PhysX
         /// <summary>
         ///  Cooks and creates a bounding volume hierarchy without going through a stream.
         ///
-        ///  This method does the same as cookBVH, but the produced BVH is not stored
+        ///  This method does the same as PxCookBVH, but the produced BVH is not stored
         ///  into a stream but is either directly inserted in PxPhysics, or created as a standalone
         ///  object. Use this method if you are unable to cook offline.
         ///
         ///  PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
-        ///  or PxCooking::getStandaloneInsertionCallback().
+        ///  or PxGetStandaloneInsertionCallback().
         ///
         ///  PxBVH pointer on success
         /// </summary>
@@ -12526,7 +15166,7 @@ namespace PhysX
         ///
         ///  To create a heightfield object there is an option to precompute some of calculations done while loading the heightfield data.
         ///
-        ///  cookHeightField() allows a heightfield description to be cooked into a binary stream
+        ///  PxCookHeightField() allows a heightfield description to be cooked into a binary stream
         ///  suitable for loading and performing collision detection at runtime.
         ///
         ///  true on success
@@ -12549,7 +15189,7 @@ namespace PhysX
         ///  To create a triangle mesh object it is necessary to first 'cook' the mesh data into
         ///  a form which allows the SDK to perform efficient collision detection.
         ///
-        ///  cookConvexMesh() allows a mesh description to be cooked into a binary stream
+        ///  PxCookConvexMesh() allows a mesh description to be cooked into a binary stream
         ///  suitable for loading and performing collision detection at runtime.
         ///
         ///  The number of vertices and the number of convex polygons in a cooked convex mesh is limited to 255.
@@ -12565,12 +15205,12 @@ namespace PhysX
         /// <summary>
         ///  Cooks and creates a convex mesh without going through a stream.
         ///
-        ///  This method does the same as cookConvexMesh, but the produced mesh is not stored
+        ///  This method does the same as PxCookConvexMesh, but the produced mesh is not stored
         ///  into a stream but is either directly inserted in PxPhysics, or created as a standalone
         ///  object. Use this method if you are unable to cook offline.
         ///
         ///  PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
-        ///  or PxCooking::getStandaloneInsertionCallback().
+        ///  or PxGetStandaloneInsertionCallback().
         ///
         ///  PxConvexMesh pointer on success
         /// </summary>
@@ -12591,13 +15231,12 @@ namespace PhysX
         public static extern bool phys_PxValidateConvexMesh(PxCookingParams* @params, PxConvexMeshDesc* desc);
 
         /// <summary>
-        ///  Computed hull polygons from given vertices and triangles. Polygons are needed for PxConvexMeshDesc rather than triangles.
+        ///  Compute hull polygons from given vertices and triangles. Polygons are needed for PxConvexMeshDesc rather than triangles.
         ///
         ///  Please note that the resulting polygons may have different number of vertices. Some vertices may be removed.
         ///  The output vertices, indices and polygons must be used to construct a hull.
         ///
-        ///  The provided PxAllocatorCallback does allocate the out array's. It is the user responsibility to deallocated those
-        ///  array's.
+        ///  The provided PxAllocatorCallback does allocate the out arrays. It is the user responsibility to deallocated those arrays.
         ///
         ///  true on success
         /// </summary>
@@ -12619,21 +15258,6 @@ namespace PhysX
         public static extern bool phys_PxValidateTriangleMesh(PxCookingParams* @params, PxTriangleMeshDesc* desc);
 
         /// <summary>
-        ///  Cooks and creates a triangle mesh without going through a stream.
-        ///
-        ///  This method does the same as cookTriangleMesh, but the produced mesh is not stored
-        ///  into a stream but is either directly inserted in PxPhysics, or created as a standalone
-        ///  object. Use this method if you are unable to cook offline.
-        ///
-        ///  PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
-        ///  or PxCooking::getStandaloneInsertionCallback().
-        ///
-        ///  PxTriangleMesh pointer on success.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "phys_PxCreateTriangleMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxTriangleMesh* phys_PxCreateTriangleMesh(PxCookingParams* @params, PxTriangleMeshDesc* desc, PxInsertionCallback* insertionCallback, PxTriangleMeshCookingResult* condition);
-
-        /// <summary>
         ///  Cooks a triangle mesh. The results are written to the stream.
         ///
         ///  To create a triangle mesh object it is necessary to first 'cook' the mesh data into
@@ -12648,6 +15272,124 @@ namespace PhysX
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool phys_PxCookTriangleMesh(PxCookingParams* @params, PxTriangleMeshDesc* desc, PxOutputStream* stream, PxTriangleMeshCookingResult* condition);
 
+        /// <summary>
+        ///  Cooks and creates a triangle mesh without going through a stream.
+        ///
+        ///  This method does the same as PxCookTriangleMesh, but the produced mesh is not stored
+        ///  into a stream but is either directly inserted in PxPhysics, or created as a standalone
+        ///  object. Use this method if you are unable to cook offline.
+        ///
+        ///  PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
+        ///  or PxGetStandaloneInsertionCallback().
+        ///
+        ///  PxTriangleMesh pointer on success.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxCreateTriangleMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTriangleMesh* phys_PxCreateTriangleMesh(PxCookingParams* @params, PxTriangleMeshDesc* desc, PxInsertionCallback* insertionCallback, PxTriangleMeshCookingResult* condition);
+
+        /// <summary>
+        ///  Cooks a tetrahedron mesh. The results are written to the stream.
+        ///
+        ///  To create a tetrahedron mesh object it is necessary to first 'cook' the mesh data into
+        ///  a form which allows the SDK to perform efficient collision detection.
+        ///
+        ///  PxCookTetrahedronMesh() allows a mesh description to be cooked into a binary stream
+        ///  suitable for loading and performing collision detection at runtime.
+        ///
+        ///  true on success
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxCookTetrahedronMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool phys_PxCookTetrahedronMesh(PxCookingParams* @params, PxTetrahedronMeshDesc* meshDesc, PxOutputStream* stream);
+
+        /// <summary>
+        ///  Cooks and creates a tetrahedron mesh without going through a stream.
+        ///
+        ///  This method does the same as PxCookTetrahedronMesh, but the produced mesh is not stored
+        ///  into a stream but is either directly inserted in PxPhysics, or created as a standalone
+        ///  object. Use this method if you are unable to cook offline.
+        ///
+        ///  PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
+        ///  or PxGetStandaloneInsertionCallback().
+        ///
+        ///  PxTetrahedronMesh pointer on success.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxCreateTetrahedronMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTetrahedronMesh* phys_PxCreateTetrahedronMesh(PxCookingParams* @params, PxTetrahedronMeshDesc* meshDesc, PxInsertionCallback* insertionCallback);
+
+        /// <summary>
+        ///  Cooks a deformable volume mesh. The results are written to the stream.
+        ///
+        ///  To create a deformable volume mesh object it is necessary to first 'cook' the mesh data into
+        ///  a form which allows the SDK to perform efficient collision detection and to store data
+        ///  used during the FEM calculations.
+        ///
+        ///  PxCookDeformableVolumeMesh() allows a mesh description to be cooked into a binary stream
+        ///  suitable for loading and performing collision detection at runtime.
+        ///
+        ///  true on success
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxCookDeformableVolumeMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool phys_PxCookDeformableVolumeMesh(PxCookingParams* @params, PxTetrahedronMeshDesc* simulationMeshDesc, PxTetrahedronMeshDesc* collisionMeshDesc, PxDeformableVolumeSimulationDataDesc* simulationDataDesc, PxOutputStream* stream);
+
+        /// <summary>
+        ///  Cooks and creates a deformable volume mesh without going through a stream.
+        ///
+        ///  This method does the same as PxCookDeformableVolumeMesh, but the produced mesh is not stored
+        ///  into a stream but is either directly inserted in PxPhysics, or created as a standalone
+        ///  object. Use this method if you are unable to cook offline.
+        ///
+        ///  PxInsertionCallback can be obtained through PxPhysics::getPhysicsInsertionCallback()
+        ///  or PxGetStandaloneInsertionCallback().
+        ///
+        ///  PxDeformableVolumeMesh pointer on success.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxCreateDeformableVolumeMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolumeMesh* phys_PxCreateDeformableVolumeMesh(PxCookingParams* @params, PxTetrahedronMeshDesc* simulationMeshDesc, PxTetrahedronMeshDesc* collisionMeshDesc, PxDeformableVolumeSimulationDataDesc* simulationDataDesc, PxInsertionCallback* insertionCallback);
+
+        /// <summary>
+        ///  Computes the mapping between collision and simulation mesh
+        ///
+        ///  The deformable volume deformation is computed on the simulation mesh. To deform the collision mesh accordingly
+        ///  it needs to be specified how its vertices need to be placed and updated inside the deformation mesh.
+        ///  This method computes that embedding information.
+        ///
+        ///  PxCollisionMeshMappingData pointer that describes how the collision mesh is embedded into the simulation mesh
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxComputeModelsMapping", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxCollisionMeshMappingData* phys_PxComputeModelsMapping(PxCookingParams* @params, PxTetrahedronMeshData* simulationMesh, PxTetrahedronMeshData* collisionMesh, PxDeformableVolumeCollisionData* collisionData, PxBoundedData* vertexToTet);
+
+        /// <summary>
+        ///  Computes data to accelerate collision detection of tetrahedral meshes
+        ///
+        ///  Computes data structures to speed up collision detection with tetrahedral meshes.
+        ///
+        ///  PxCollisionTetrahedronMeshData pointer that describes the collision mesh
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxComputeCollisionData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxCollisionTetrahedronMeshData* phys_PxComputeCollisionData(PxCookingParams* @params, PxTetrahedronMeshDesc* collisionMeshDesc);
+
+        /// <summary>
+        ///  Computes data to accelerate collision detection of tetrahedral meshes
+        ///
+        ///  Computes data to compute and store a deformable volume's deformation using FEM.
+        ///
+        ///  PxSimulationTetrahedronMeshData pointer that describes the simulation mesh
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxComputeSimulationData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxSimulationTetrahedronMeshData* phys_PxComputeSimulationData(PxCookingParams* @params, PxTetrahedronMeshDesc* simulationMeshDesc);
+
+        /// <summary>
+        ///  Bundles all data required for deformable volume simulation
+        ///
+        ///  Creates a container that provides everything to create a PxDeformableVolume
+        ///
+        ///  PxDeformableVolumeMesh pointer that represents a deformable volume mesh bundling all data (simulation mesh, collision mesh etc.)
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxAssembleDeformableVolumeMesh", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxDeformableVolumeMesh* phys_PxAssembleDeformableVolumeMesh(PxTetrahedronMeshData* simulationMesh, PxDeformableVolumeSimulationData* simulationData, PxTetrahedronMeshData* collisionMesh, PxDeformableVolumeCollisionData* collisionData, PxCollisionMeshMappingData* mappingData, PxInsertionCallback* insertionCallback);
+
         [DllImport(__DllName, EntryPoint = "PxDefaultMemoryOutputStream_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxDefaultMemoryOutputStream* PxDefaultMemoryOutputStream_new_alloc(PxAllocatorCallback* allocator);
 
@@ -12655,28 +15397,28 @@ namespace PhysX
         public static extern void PxDefaultMemoryOutputStream_delete(PxDefaultMemoryOutputStream* self_);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultMemoryOutputStream_write_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxDefaultMemoryOutputStream_write_mut(PxDefaultMemoryOutputStream* self_, void* src, uint count);
+        public static extern ulong PxDefaultMemoryOutputStream_write_mut(PxDefaultMemoryOutputStream* self_, void* src, ulong count);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultMemoryOutputStream_getSize", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxDefaultMemoryOutputStream_getSize(PxDefaultMemoryOutputStream* self_);
+        public static extern ulong PxDefaultMemoryOutputStream_getSize(PxDefaultMemoryOutputStream* self_);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultMemoryOutputStream_getData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern byte* PxDefaultMemoryOutputStream_getData(PxDefaultMemoryOutputStream* self_);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultMemoryInputData_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxDefaultMemoryInputData* PxDefaultMemoryInputData_new_alloc(byte* data, uint length);
+        public static extern PxDefaultMemoryInputData* PxDefaultMemoryInputData_new_alloc(byte* data, ulong length);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultMemoryInputData_read_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxDefaultMemoryInputData_read_mut(PxDefaultMemoryInputData* self_, void* dest, uint count);
+        public static extern ulong PxDefaultMemoryInputData_read_mut(PxDefaultMemoryInputData* self_, void* dest, ulong count);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultMemoryInputData_getLength", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxDefaultMemoryInputData_getLength(PxDefaultMemoryInputData* self_);
+        public static extern ulong PxDefaultMemoryInputData_getLength(PxDefaultMemoryInputData* self_);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultMemoryInputData_seek_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxDefaultMemoryInputData_seek_mut(PxDefaultMemoryInputData* self_, uint pos);
+        public static extern void PxDefaultMemoryInputData_seek_mut(PxDefaultMemoryInputData* self_, ulong pos);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultMemoryInputData_tell", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxDefaultMemoryInputData_tell(PxDefaultMemoryInputData* self_);
+        public static extern ulong PxDefaultMemoryInputData_tell(PxDefaultMemoryInputData* self_);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultFileOutputStream_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxDefaultFileOutputStream* PxDefaultFileOutputStream_new_alloc(byte* name);
@@ -12685,7 +15427,7 @@ namespace PhysX
         public static extern void PxDefaultFileOutputStream_delete(PxDefaultFileOutputStream* self_);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultFileOutputStream_write_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxDefaultFileOutputStream_write_mut(PxDefaultFileOutputStream* self_, void* src, uint count);
+        public static extern ulong PxDefaultFileOutputStream_write_mut(PxDefaultFileOutputStream* self_, void* src, ulong count);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultFileOutputStream_isValid_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -12698,16 +15440,16 @@ namespace PhysX
         public static extern void PxDefaultFileInputData_delete(PxDefaultFileInputData* self_);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultFileInputData_read_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxDefaultFileInputData_read_mut(PxDefaultFileInputData* self_, void* dest, uint count);
+        public static extern ulong PxDefaultFileInputData_read_mut(PxDefaultFileInputData* self_, void* dest, ulong count);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultFileInputData_seek_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxDefaultFileInputData_seek_mut(PxDefaultFileInputData* self_, uint pos);
+        public static extern void PxDefaultFileInputData_seek_mut(PxDefaultFileInputData* self_, ulong pos);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultFileInputData_tell", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxDefaultFileInputData_tell(PxDefaultFileInputData* self_);
+        public static extern ulong PxDefaultFileInputData_tell(PxDefaultFileInputData* self_);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultFileInputData_getLength", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxDefaultFileInputData_getLength(PxDefaultFileInputData* self_);
+        public static extern ulong PxDefaultFileInputData_getLength(PxDefaultFileInputData* self_);
 
         [DllImport(__DllName, EntryPoint = "PxDefaultFileInputData_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -12778,7 +15520,7 @@ namespace PhysX
         /// <summary>
         ///  get the relative angular velocity of the joint
         ///
-        ///  This function returns the angular velocity of  actor1 relative to actor0. The value is returned in the constraint frame of actor0
+        ///  This function returns the angular velocity of actor1 relative to actor0. The value is returned in the constraint frame of actor0
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxJoint_getRelativeAngularVelocity", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxVec3 PxJoint_getRelativeAngularVelocity(PxJoint* self_);
@@ -12918,12 +15660,6 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxJoint_getScene", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxScene* PxJoint_getScene(PxJoint* self_);
 
-        /// <summary>
-        ///  Put class meta data in stream, used for serialization
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxJoint_getBinaryMetaData", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxJoint_getBinaryMetaData(PxOutputStream* stream);
-
         [DllImport(__DllName, EntryPoint = "PxSpring_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxSpring PxSpring_new(float stiffness_, float damping_);
 
@@ -12959,7 +15695,7 @@ namespace PhysX
         /// <summary>
         ///  Set the allowed minimum distance for the joint.
         ///
-        ///  The minimum distance must be no more than the maximum distance
+        ///  The minimum	distance must be no more than the maximum distance
         ///
         ///  Default
         ///  0.0f
@@ -12980,7 +15716,7 @@ namespace PhysX
         /// <summary>
         ///  Set the allowed maximum distance for the joint.
         ///
-        ///  The maximum distance must be no less than the minimum distance.
+        ///  The maximum	distance must be no less than the minimum distance.
         ///
         ///  Default
         ///  0.0f
@@ -13063,34 +15799,6 @@ namespace PhysX
         public static extern float PxDistanceJoint_getDamping(PxDistanceJoint* self_);
 
         /// <summary>
-        ///  Set the contact distance for the min
-        ///  &amp;
-        ///  max distance limits.
-        ///
-        ///  This is similar to the PxJointLimitParameters::contactDistance parameter for regular limits.
-        ///
-        ///  The two most common values are 0 and infinite. Infinite means the internal constraints are
-        ///  always created, resulting in the best simulation quality but slower performance. Zero means
-        ///  the internal constraints are only created when the limits are violated, resulting in best
-        ///  performance but worse simulation quality.
-        ///
-        ///  Default
-        ///  0.0f
-        ///  Range
-        ///  [0, PX_MAX_F32)
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxDistanceJoint_setContactDistance_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxDistanceJoint_setContactDistance_mut(PxDistanceJoint* self_, float contactDistance);
-
-        /// <summary>
-        ///  Get the contact distance.
-        ///
-        ///  the contact distance
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxDistanceJoint_getContactDistance", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxDistanceJoint_getContactDistance(PxDistanceJoint* self_);
-
-        /// <summary>
         ///  Set the flags specific to the Distance Joint.
         ///
         ///  Default
@@ -13118,78 +15826,6 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxDistanceJoint_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern byte* PxDistanceJoint_getConcreteTypeName(PxDistanceJoint* self_);
-
-        /// <summary>
-        ///  Create a distance Joint.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "phys_PxContactJointCreate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxContactJoint* phys_PxContactJointCreate(PxPhysics* physics, PxRigidActor* actor0, PxTransform* localFrame0, PxRigidActor* actor1, PxTransform* localFrame1);
-
-        [DllImport(__DllName, EntryPoint = "PxJacobianRow_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxJacobianRow PxJacobianRow_new();
-
-        [DllImport(__DllName, EntryPoint = "PxJacobianRow_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxJacobianRow PxJacobianRow_new_1(PxVec3* lin0, PxVec3* lin1, PxVec3* ang0, PxVec3* ang1);
-
-        /// <summary>
-        ///  Set the current contact of the joint
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_setContact_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxContactJoint_setContact_mut(PxContactJoint* self_, PxVec3* contact);
-
-        /// <summary>
-        ///  Set the current contact normal of the joint
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_setContactNormal_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxContactJoint_setContactNormal_mut(PxContactJoint* self_, PxVec3* contactNormal);
-
-        /// <summary>
-        ///  Set the current penetration of the joint
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_setPenetration_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxContactJoint_setPenetration_mut(PxContactJoint* self_, float penetration);
-
-        /// <summary>
-        ///  Return the current contact of the joint
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_getContact", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec3 PxContactJoint_getContact(PxContactJoint* self_);
-
-        /// <summary>
-        ///  Return the current contact normal of the joint
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_getContactNormal", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxVec3 PxContactJoint_getContactNormal(PxContactJoint* self_);
-
-        /// <summary>
-        ///  Return the current penetration value of the joint
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_getPenetration", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxContactJoint_getPenetration(PxContactJoint* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_getRestitution", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxContactJoint_getRestitution(PxContactJoint* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_setRestitution_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxContactJoint_setRestitution_mut(PxContactJoint* self_, float restitution);
-
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_getBounceThreshold", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxContactJoint_getBounceThreshold(PxContactJoint* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_setBounceThreshold_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxContactJoint_setBounceThreshold_mut(PxContactJoint* self_, float bounceThreshold);
-
-        /// <summary>
-        ///  Returns string name of PxContactJoint, used for serialization
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_getConcreteTypeName", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern byte* PxContactJoint_getConcreteTypeName(PxContactJoint* self_);
-
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_computeJacobians", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxContactJoint_computeJacobians(PxContactJoint* self_, PxJacobianRow* jacobian);
-
-        [DllImport(__DllName, EntryPoint = "PxContactJoint_getNbJacobianRows", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern uint PxContactJoint_getNbJacobianRows(PxContactJoint* self_);
 
         /// <summary>
         ///  Create a fixed joint.
@@ -13223,7 +15859,7 @@ namespace PhysX
         ///  construct a linear hard limit
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxJointLinearLimit_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxJointLinearLimit PxJointLinearLimit_new(PxTolerancesScale* scale, float extent, float contactDist_deprecated);
+        public static extern PxJointLinearLimit PxJointLinearLimit_new(float extent);
 
         /// <summary>
         ///  construct a linear soft limit
@@ -13247,7 +15883,7 @@ namespace PhysX
         ///  Construct a linear hard limit pair. The lower distance value must be less than the upper distance value.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxJointLinearLimitPair_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxJointLinearLimitPair PxJointLinearLimitPair_new(PxTolerancesScale* scale, float lowerLimit, float upperLimit, float contactDist_deprecated);
+        public static extern PxJointLinearLimitPair PxJointLinearLimitPair_new(PxTolerancesScale* scale, float lowerLimit, float upperLimit);
 
         /// <summary>
         ///  construct a linear soft limit pair
@@ -13273,7 +15909,7 @@ namespace PhysX
         ///  The lower value must be less than the upper value.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxJointAngularLimitPair_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxJointAngularLimitPair PxJointAngularLimitPair_new(float lowerLimit, float upperLimit, float contactDist_deprecated);
+        public static extern PxJointAngularLimitPair PxJointAngularLimitPair_new(float lowerLimit, float upperLimit);
 
         /// <summary>
         ///  construct an angular soft limit pair.
@@ -13299,7 +15935,7 @@ namespace PhysX
         ///  Construct a cone hard limit.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxJointLimitCone_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxJointLimitCone PxJointLimitCone_new(float yLimitAngle, float zLimitAngle, float contactDist_deprecated);
+        public static extern PxJointLimitCone PxJointLimitCone_new(float yLimitAngle, float zLimitAngle);
 
         /// <summary>
         ///  Construct a cone soft limit.
@@ -13323,7 +15959,7 @@ namespace PhysX
         ///  Construct a pyramid hard limit.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxJointLimitPyramid_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxJointLimitPyramid PxJointLimitPyramid_new(float yLimitAngleMin, float yLimitAngleMax, float zLimitAngleMin, float zLimitAngleMax, float contactDist_deprecated);
+        public static extern PxJointLimitPyramid PxJointLimitPyramid_new(float yLimitAngleMin, float yLimitAngleMax, float zLimitAngleMin, float zLimitAngleMax);
 
         /// <summary>
         ///  Construct a pyramid soft limit.
@@ -13763,16 +16399,45 @@ namespace PhysX
         public static extern PxJointLimitPyramid PxD6Joint_getPyramidSwingLimit(PxD6Joint* self_);
 
         /// <summary>
-        ///  Set the drive parameters for the specified drive type.
+        ///  Set the angular drive model to apply.
+        ///
+        ///  The configuration will limit the allowed set of angular drive types (see [`PxD6Drive`]) to use
+        ///  when calling [`PxD6Joint::setDrive`]().
+        ///
+        ///  Changing the angular drive model, will reset all the parameters for the angular drives to
+        ///  their default values (see [`PxD6Joint::setDrive`]() for information on the default values).
         ///
         ///  Default
-        ///  The default drive spring and damping values are zero, the force limit is zero, and no flags are set.
+        ///  PxD6AngularDriveConfig::eSWING_TWIST
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxD6Joint_setAngularDriveConfig_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxD6Joint_setAngularDriveConfig_mut(PxD6Joint* self_, PxD6AngularDriveConfig config);
+
+        /// <summary>
+        ///  Get the angular drive model to apply.
+        ///
+        ///  The angular drive model to apply.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxD6Joint_getAngularDriveConfig", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxD6AngularDriveConfig PxD6Joint_getAngularDriveConfig(PxD6Joint* self_);
+
+        /// <summary>
+        ///  Set the drive parameters for the specified drive type.
+        ///
+        ///  The angular drive configuration (see [`PxD6AngularDriveConfig`]) defines what type of
+        ///  angular drives will be accepted.
+        ///
+        ///  Default
+        ///  The default drive spring and damping values are zero, the force limit is PX_MAX_F32, and no flags are set.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxD6Joint_setDrive_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void PxD6Joint_setDrive_mut(PxD6Joint* self_, PxD6Drive index, PxD6JointDrive* drive);
 
         /// <summary>
         ///  Get the drive parameters for the specified drive type.
+        ///
+        ///  The angular drive configuration (see [`PxD6AngularDriveConfig`]) defines what type of
+        ///  angular drives will be accepted.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxD6Joint_getDrive", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxD6JointDrive PxD6Joint_getDrive(PxD6Joint* self_, PxD6Drive index);
@@ -13809,60 +16474,16 @@ namespace PhysX
         public static extern void PxD6Joint_getDriveVelocity(PxD6Joint* self_, PxVec3* linear, PxVec3* angular);
 
         /// <summary>
-        ///  Set the linear tolerance threshold for projection. Projection is enabled if PxConstraintFlag::ePROJECTION
-        ///  is set for the joint.
+        ///  Returns the GPU D6 joint index.
         ///
-        ///  If the joint separates by more than this distance along its locked degrees of freedom, the solver
-        ///  will move the bodies to close the distance.
+        ///  Only use in combination with enabled GPU dynamics and enabled direct GPU API
+        ///  (see [`PxSceneFlag::eENABLE_GPU_DYNAMICS`], #PxSceneFlag::eENABLE_DIRECT_GPU_API,
+        ///  [`PxBroadPhaseType::eGPU`])
         ///
-        ///  Setting a very small tolerance may result in simulation jitter or other artifacts.
-        ///
-        ///  Sometimes it is not possible to project (for example when the joints form a cycle).
-        ///
-        ///  Range:
-        ///  [0, PX_MAX_F32)
-        ///  Default:
-        ///  1e10f
+        ///  The GPU index, or PX_INVALID_D6_JOINT_GPU_INDEX if the joint is not part of a PxScene.
         /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxD6Joint_setProjectionLinearTolerance_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxD6Joint_setProjectionLinearTolerance_mut(PxD6Joint* self_, float tolerance);
-
-        /// <summary>
-        ///  Get the linear tolerance threshold for projection.
-        ///
-        ///  the linear tolerance threshold
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxD6Joint_getProjectionLinearTolerance", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxD6Joint_getProjectionLinearTolerance(PxD6Joint* self_);
-
-        /// <summary>
-        ///  Set the angular tolerance threshold for projection. Projection is enabled if
-        ///  PxConstraintFlag::ePROJECTION is set for the joint.
-        ///
-        ///  If the joint deviates by more than this angle around its locked angular degrees of freedom,
-        ///  the solver will move the bodies to close the angle.
-        ///
-        ///  Setting a very small tolerance may result in simulation jitter or other artifacts.
-        ///
-        ///  Sometimes it is not possible to project (for example when the joints form a cycle).
-        ///
-        ///  Range:
-        ///  [0,Pi]
-        ///  Default:
-        ///  Pi
-        ///
-        ///  Angular projection is implemented only for the case of two or three locked angular degrees of freedom.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxD6Joint_setProjectionAngularTolerance_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern void PxD6Joint_setProjectionAngularTolerance_mut(PxD6Joint* self_, float tolerance);
-
-        /// <summary>
-        ///  Get the angular tolerance threshold for projection.
-        ///
-        ///  tolerance the angular tolerance threshold in radians
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxD6Joint_getProjectionAngularTolerance", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern float PxD6Joint_getProjectionAngularTolerance(PxD6Joint* self_);
+        [DllImport(__DllName, EntryPoint = "PxD6Joint_getGPUIndex", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxD6Joint_getGPUIndex(PxD6Joint* self_);
 
         /// <summary>
         ///  Returns string name of PxD6Joint, used for serialization
@@ -13880,7 +16501,7 @@ namespace PhysX
         ///  Set the hinge/revolute joints connected by the gear joint.
         ///
         ///  The passed joints can be either PxRevoluteJoint, PxD6Joint or PxArticulationJointReducedCoordinate.
-        ///  The joints must define degrees of freedom around the twist axis. They cannot be null.
+        ///  The joints must define degrees of freedom around the twist axis.
         ///
         ///  Note that these joints are only used to compute the positional error correction term,
         ///  used to adjust potential drift between jointed actors. The gear joint can run without
@@ -13894,6 +16515,12 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxGearJoint_setHinges_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxGearJoint_setHinges_mut(PxGearJoint* self_, PxBase* hinge0, PxBase* hinge1);
+
+        /// <summary>
+        ///  Get the hinge/revolute joints connected by the gear joint.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxGearJoint_getHinges", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxGearJoint_getHinges(PxGearJoint* self_, PxBase** hinge0, PxBase** hinge1);
 
         /// <summary>
         ///  Set the desired gear ratio.
@@ -13933,8 +16560,8 @@ namespace PhysX
         ///  &amp;
         ///  pinion joint.
         ///
-        ///  The passed hinge joint can be either PxRevoluteJoint, PxD6Joint or PxArticulationJointReducedCoordinate. It cannot be null.
-        ///  The passed prismatic joint can be either PxPrismaticJoint or PxD6Joint. It cannot be null.
+        ///  The passed hinge joint can be either PxRevoluteJoint, PxD6Joint or PxArticulationJointReducedCoordinate.
+        ///  The passed prismatic joint can be either PxPrismaticJoint or PxD6Joint.
         ///
         ///  Note that these joints are only used to compute the positional error correction term,
         ///  used to adjust potential drift between jointed actors. The rack
@@ -13952,6 +16579,16 @@ namespace PhysX
         [DllImport(__DllName, EntryPoint = "PxRackAndPinionJoint_setJoints_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool PxRackAndPinionJoint_setJoints_mut(PxRackAndPinionJoint* self_, PxBase* hinge, PxBase* prismatic);
+
+        /// <summary>
+        ///  Get the hinge
+        ///  &amp;
+        ///  prismatic joints connected by the rack
+        ///  &amp;
+        ///  pinion joint.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxRackAndPinionJoint_getJoints", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxRackAndPinionJoint_getJoints(PxRackAndPinionJoint* self_, PxBase** hinge, PxBase** prismatic);
 
         /// <summary>
         ///  Set the desired ratio directly.
@@ -14012,6 +16649,16 @@ namespace PhysX
         ///
         ///  1) Collision groups of the pair are enabled
         ///  2) Collision filtering equation is satisfied
+        ///
+        ///  Each actor can belong to a single collision group. Use PxSetGroup to set the group of an actor and PxGetGroup to retrieve the group of an actor.
+        ///  A collision group is an integer value between 0 and 31 defining which group the actor belongs to. Because that value is written to an actor's
+        ///  shapes internally (it is stored in the shapes' PxFilterData), this feature does not work with shared shapes, unless they all belong to actors
+        ///  whose groups are similar. For example it would not work to share a shape between actors A and B, and then assign A to group 0 and B to group 1,
+        ///  as they would both internally try to write different group values to the same shape.
+        ///
+        ///  Once actors are assigned to groups, it is possible to define how groups collide with each-other using the PxSetGroupCollisionFlag function.
+        ///  Use this function to set a simple boolean value per group pairs, defining if the corresponding groups should collide. If not, collisions between
+        ///  actors of these non-colliding groups will be automatically disabled by the PxDefaultSimulationFilterShader.
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxDefaultSimulationFilterShader", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxFilterFlags phys_PxDefaultSimulationFilterShader(uint attributes0, PxFilterData filterData0, uint attributes1, PxFilterData filterData1, PxPairFlags* pairFlags, void* constantBlock, uint constantBlockSize);
@@ -14021,7 +16668,9 @@ namespace PhysX
         ///
         ///  Collision group is an integer between 0 and 31.
         ///
-        ///  True if the groups could collide
+        ///  PxGetGroupCollisionFlag(a, b) is the same as PxGetGroupCollisionFlag(b, a)
+        ///
+        ///  True if the groups should collide
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxGetGroupCollisionFlag", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         [return: MarshalAs(UnmanagedType.U1)]
@@ -14031,6 +16680,8 @@ namespace PhysX
         ///  Specifies if collision should be performed by a pair of groups
         ///
         ///  Collision group is an integer between 0 and 31.
+        ///
+        ///  PxSetGroupCollisionFlag(a, b) is the same as PxSetGroupCollisionFlag(b, a)
         /// </summary>
         [DllImport(__DllName, EntryPoint = "phys_PxSetGroupCollisionFlag", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern void phys_PxSetGroupCollisionFlag(ushort group1, ushort group2, [MarshalAs(UnmanagedType.U1)] bool enable);
@@ -14120,14 +16771,9 @@ namespace PhysX
         ///
         ///  This is equivalent to the following
         ///
-        ///  ```cpp
-        ///  // reference count is 1
-        ///  PxShape* shape(...) = PxGetPhysics().createShape(...);
-        ///  // increments reference count
-        ///  actor-&gt;attachShape(shape);
-        ///  // releases user reference, leaving reference count at 1
-        ///  shape-&gt;release();
-        ///  ```
+        ///  PxShape* shape(...) = PxGetPhysics().createShape(...);	// reference count is 1
+        ///  actor-&gt;attachShape(shape);								// increments reference count
+        ///  shape-&gt;release();										// releases user reference, leaving reference count at 1
         ///
         ///  As a consequence, detachShape() will result in the release of the last reference, and the shape will be deleted.
         ///
@@ -14152,14 +16798,9 @@ namespace PhysX
         ///
         ///  This is equivalent to the following
         ///
-        ///  ```cpp
-        ///  // reference count is 1
-        ///  PxShape* shape(...) = PxGetPhysics().createShape(...);
-        ///  // increments reference count
-        ///  actor-&gt;attachShape(shape);
-        ///  // releases user reference, leaving reference count at 1
-        ///  shape-&gt;release();
-        ///  ```
+        ///  PxShape* shape(...) = PxGetPhysics().createShape(...);	// reference count is 1
+        ///  actor-&gt;attachShape(shape);								// increments reference count
+        ///  shape-&gt;release();										// releases user reference, leaving reference count at 1
         ///
         ///  As a consequence, detachShape() will result in the release of the last reference, and the shape will be deleted.
         ///
@@ -14198,6 +16839,18 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRigidActorExt_createBVHFromActor", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxBVH* PxRigidActorExt_createBVHFromActor(PxPhysics* physics, PxRigidActor* actor);
+
+        /// <summary>
+        ///  Compute mass properties of the convex core geometry.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxConvexCoreExt_computeMassInfo", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxConvexCoreExt_computeMassInfo(PxConvexCoreGeometry* convex, float* density1Mass, PxMat33* inertiaTensor, PxVec3* centerOfMass);
+
+        /// <summary>
+        ///  Visualize the convex core geometry
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxConvexCoreExt_visualize", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxConvexCoreExt_visualize(PxConvexCoreGeometry* convex, PxTransform* pose, [MarshalAs(UnmanagedType.U1)] bool drawCore, PxBounds3* cullbox, PxRenderOutput* @out);
 
         /// <summary>
         ///  Default constructor.
@@ -14634,12 +17287,6 @@ namespace PhysX
         [return: MarshalAs(UnmanagedType.U1)]
         public static extern bool phys_PxComputeHeightFieldPenetration(PxVec3* direction, float* depth, PxGeometry* geom, PxTransform* geomPose, PxHeightFieldGeometry* heightFieldGeom, PxTransform* heightFieldPose, uint maxIter, uint* usedIter);
 
-        [DllImport(__DllName, EntryPoint = "PxXmlMiscParameter_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxXmlMiscParameter PxXmlMiscParameter_new();
-
-        [DllImport(__DllName, EntryPoint = "PxXmlMiscParameter_new_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxXmlMiscParameter PxXmlMiscParameter_new_1(PxVec3* inUpVector, PxTolerancesScale inScale);
-
         /// <summary>
         ///  Returns whether the collection is serializable with the externalReferences collection.
         ///
@@ -14704,14 +17351,6 @@ namespace PhysX
         public static extern void PxSerialization_createSerialObjectIds(PxCollection* collection, ulong @base);
 
         /// <summary>
-        ///  Creates a PxCollection from XML data.
-        ///
-        ///  a pointer to a PxCollection if successful or NULL if it failed.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSerialization_createCollectionFromXml", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxCollection* PxSerialization_createCollectionFromXml(PxInputData* inputData, PxCooking* cooking, PxSerializationRegistry* sr, PxCollection* externalRefs, PxStringTable* stringTable, PxXmlMiscParameter* outArgs);
-
-        /// <summary>
         ///  Deserializes a PxCollection from memory.
         ///
         ///  Creates a collection from memory. If the collection has external dependencies another collection
@@ -14724,19 +17363,6 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxSerialization_createCollectionFromBinary", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxCollection* PxSerialization_createCollectionFromBinary(void* memBlock, PxSerializationRegistry* sr, PxCollection* externalRefs);
-
-        /// <summary>
-        ///  Serializes a physics collection to an XML output stream.
-        ///
-        ///  The collection to be serialized needs to be complete
-        ///
-        ///  Serialization of objects in a scene that is simultaneously being simulated is not supported and leads to undefined behavior.
-        ///
-        ///  true if the collection is successfully serialized.
-        /// </summary>
-        [DllImport(__DllName, EntryPoint = "PxSerialization_serializeCollectionToXml", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        [return: MarshalAs(UnmanagedType.U1)]
-        public static extern bool PxSerialization_serializeCollectionToXml(PxOutputStream* outputStream, PxCollection* collection, PxSerializationRegistry* sr, PxCooking* cooking, PxCollection* externalRefs, PxXmlMiscParameter* inArgs);
 
         /// <summary>
         ///  Serializes a collection to a binary stream.
@@ -15354,7 +17980,7 @@ namespace PhysX
         /// <summary>
         ///  Returns the index of the tetrahedron that contains a point
         ///
-        ///  The index of the tetrahedon containing the point, -1 if not tetrahedron contains the opoint
+        ///  The index of the tetrahedron containing the point, -1 if not tetrahedron contains the opoint
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxTetrahedronMeshExt_findTetrahedronContainingPoint", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern int PxTetrahedronMeshExt_findTetrahedronContainingPoint(PxTetrahedronMesh* mesh, PxVec3* point, PxVec4* bary, float tolerance);
@@ -15362,10 +17988,64 @@ namespace PhysX
         /// <summary>
         ///  Returns the index of the tetrahedron closest to a point
         ///
-        ///  The index of the tetrahedon closest to the point
+        ///  The index of the tetrahedron closest to the point
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxTetrahedronMeshExt_findTetrahedronClosestToPoint", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern int PxTetrahedronMeshExt_findTetrahedronClosestToPoint(PxTetrahedronMesh* mesh, PxVec3* point, PxVec4* bary);
+
+        /// <summary>
+        ///  Distributes a list of triangles masses to vertices.
+        ///
+        ///  The mass for each triangle will be distributed in equal parts to the vertices of said triangle.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceExt_distributeTriangleMassToVertices", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableSurfaceExt_distributeTriangleMassToVertices(PxDeformableSurface* deformableSurface, float* triangleMasses, PxVec4* positionInvMassPinned);
+
+        /// <summary>
+        ///  Distributes a uniform density to the vertices of a deformable surface.
+        ///
+        ///  This method distributes mass based on a specified mass per unit area. The mass for each vertex is calculated
+        ///  according to the area of the triangles connected to it, and the resulting mass is assigned to the vertex.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceExt_distributeDensityToVertices", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableSurfaceExt_distributeDensityToVertices(PxDeformableSurface* deformableSurface, float massPerVolume, float clothThickness, PxVec4* positionInvMassPinned);
+
+        /// <summary>
+        ///  Distributes a total mass uniformly to the vertices of a deformable surface.
+        ///
+        ///  This method calculates the total mass to be distributed across all vertices, and assigns a proportional mass to each
+        ///  vertex based on the geometry of the surface. The mass is distributed equally to ensure the total mass of the surface
+        ///  matches the specified value.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceExt_distributeMassToVertices", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxDeformableSurfaceExt_distributeMassToVertices(PxDeformableSurface* deformableSurface, float totalMass, PxVec4* positionInvMassPinned);
+
+        /// <summary>
+        ///  Allocates and initializes a pinned host memory from a PxTriangleMesh attached to a PxDeformableSurface using a PxShape.
+        ///
+        ///  The user is responsible for deallocation and lifetime management of the positionInvMassPinned, velocityPinned
+        ///  and restPositionsPinned buffers.
+        ///
+        ///  This method fails if the deformable surface does not have a shape attached to it.
+        ///
+        ///  The number of vertices in the surface deformable mesh.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceExt_allocateAndInitializeHostMirror", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxDeformableSurfaceExt_allocateAndInitializeHostMirror(PxDeformableSurface* deformableSurface, PxVec3* positions, PxVec3* velocities, PxVec3* restPositions, float mass, PxTransform* transform, PxCudaContextManager* cudaContextManager, PxVec4** positionInvMassPinned, PxVec4** velocityPinned, PxVec4** restPositionPinned);
+
+        /// <summary>
+        ///  Allocates and initializes a pinned host memory from given positions, velocities, and rest positions.
+        ///
+        ///  The user is responsible for deallocation and lifetime management of the positionInvMassPinned, velocityPinned
+        ///  and restPositionsPinned buffers.
+        ///
+        ///  If the input 'restPositions' is a null pointer, positions are used in place of restPositions.
+        ///  If the input 'velocities' is a null pointer, zero velocities are assigned to velocityPinned.
+        ///
+        ///  The number of vertices in the surface deformable mesh.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxDeformableSurfaceExt_allocateAndInitializeHostMirror_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxDeformableSurfaceExt_allocateAndInitializeHostMirror_1(PxVec3* positions, PxVec3* velocities, PxVec3* restPositions, uint nbVertices, float mass, PxTransform* transform, PxCudaContextManager* cudaContextManager, PxVec4** positionInvMassPinned, PxVec4** velocityPinned, PxVec4** restPositionPinned);
 
         /// <summary>
         ///  Initialize the PhysXExtensions library.
@@ -15396,7 +18076,7 @@ namespace PhysX
         public static extern bool PxRepXObject_isValid(PxRepXObject* self_);
 
         [DllImport(__DllName, EntryPoint = "PxRepXInstantiationArgs_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
-        public static extern PxRepXInstantiationArgs PxRepXInstantiationArgs_new(PxPhysics* inPhysics, PxCooking* inCooking, PxStringTable* inStringTable);
+        public static extern PxRepXInstantiationArgs PxRepXInstantiationArgs_new(PxPhysics* inPhysics, PxCookingParams* inCooking, PxStringTable* inStringTable);
 
         /// <summary>
         ///  The type this Serializer is meant to operate on.
@@ -15417,6 +18097,1578 @@ namespace PhysX
         /// </summary>
         [DllImport(__DllName, EntryPoint = "PxRepXSerializer_fileToObject_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
         public static extern PxRepXObject PxRepXSerializer_fileToObject_mut(PxRepXSerializer* self_, XmlReader* inReader, XmlMemoryAllocator* inAllocator, PxRepXInstantiationArgs* inArgs, PxCollection* inCollection);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleComponent_delete(PxVehicleComponent* self_);
+
+        /// <summary>
+        ///  Update function for a vehicle component.
+        ///
+        ///  True if subsequent components in a sequence should get updated, false if the sequence should
+        ///  be aborted.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleComponent_update_mut(PxVehicleComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleComponentSequence_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleComponentSequence PxVehicleComponentSequence_new();
+
+        /// <summary>
+        ///  Add a component to the sequence.
+        ///
+        ///  True on success, else false (for example due to component count limit being reached).
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleComponentSequence_add_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleComponentSequence_add_mut(PxVehicleComponentSequence* self_, PxVehicleComponent* component);
+
+        /// <summary>
+        ///  Start a substepping group.
+        ///
+        ///  All components added using [`add`]() will be added to the new substepping group until either the group
+        ///  is marked as complete with a call to [`endSubstepGroup`]() or a subsequent substepping group is started with
+        ///  a call to [`beginSubstepGroup`]().
+        ///
+        ///  Groups can be nested with stacked calls to [`beginSubstepGroup`]().
+        ///
+        ///  Each group opened by [`beginSubstepGroup`]() must be closed with a complementary #endSubstepGroup() prior to calling #update().
+        ///
+        ///  Handle for the substepping group on success, else eINVALID_SUBSTEP_GROUP
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleComponentSequence_beginSubstepGroup_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern byte PxVehicleComponentSequence_beginSubstepGroup_mut(PxVehicleComponentSequence* self_, byte nbSubSteps);
+
+        /// <summary>
+        ///  End a substepping group
+        ///
+        ///  The group most recently opened with [`beginSubstepGroup`]() will be closed by this call.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleComponentSequence_endSubstepGroup_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleComponentSequence_endSubstepGroup_mut(PxVehicleComponentSequence* self_);
+
+        /// <summary>
+        ///  Set the number of substeps to perform  for a specific substepping group.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleComponentSequence_setSubsteps_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleComponentSequence_setSubsteps_mut(PxVehicleComponentSequence* self_, byte subGroupHandle, byte nbSteps);
+
+        /// <summary>
+        ///  Update each component in the sequence.
+        ///
+        ///  If the update method of a component in the sequence returns false, the update process gets aborted.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleComponentSequence_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleComponentSequence_update_mut(PxVehicleComponentSequence* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAxleDescription_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleAxleDescription_setToDefault_mut(PxVehicleAxleDescription* self_);
+
+        /// <summary>
+        ///  Add an axle to the vehicle by specifying the number of wheels on the axle and an array of wheel ids specifying each wheel on the axle.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleAxleDescription_addAxle_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleAxleDescription_addAxle_mut(PxVehicleAxleDescription* self_, uint nbWheelsOnAxle, uint* wheelIdsOnAxle);
+
+        /// <summary>
+        ///  Return the number of axles on the vehicle.
+        ///
+        ///  The number of axles.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleAxleDescription_getNbAxles", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleAxleDescription_getNbAxles(PxVehicleAxleDescription* self_);
+
+        /// <summary>
+        ///  Return the number of wheels on the ith axle.
+        ///
+        ///  The number of wheels on the specified axle.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleAxleDescription_getNbWheelsOnAxle", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleAxleDescription_getNbWheelsOnAxle(PxVehicleAxleDescription* self_, uint i);
+
+        /// <summary>
+        ///  Return the wheel id of the jth wheel on the ith axle.
+        ///
+        ///  The wheel id of the jth wheel on the ith axle.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleAxleDescription_getWheelOnAxle", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleAxleDescription_getWheelOnAxle(PxVehicleAxleDescription* self_, uint j, uint i);
+
+        /// <summary>
+        ///  Return the number of wheels on the vehicle.
+        ///
+        ///  The number of wheels.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleAxleDescription_getNbWheels", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleAxleDescription_getNbWheels(PxVehicleAxleDescription* self_);
+
+        /// <summary>
+        ///  Return the axle of a specified wheel.
+        ///
+        ///  The axle of the specified wheel.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleAxleDescription_getAxle", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleAxleDescription_getAxle(PxVehicleAxleDescription* self_, uint wheelId);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAxleDescription_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleAxleDescription_isValid(PxVehicleAxleDescription* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAxleDescription_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleAxleDescription PxVehicleAxleDescription_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFrame_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleFrame_setToDefault_mut(PxVehicleFrame* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFrame_getFrame", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxMat33 PxVehicleFrame_getFrame(PxVehicleFrame* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFrame_getLngAxis", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxVehicleFrame_getLngAxis(PxVehicleFrame* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFrame_getLatAxis", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxVehicleFrame_getLatAxis(PxVehicleFrame* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFrame_getVrtAxis", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 PxVehicleFrame_getVrtAxis(PxVehicleFrame* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFrame_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleFrame_isValid(PxVehicleFrame* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFrame_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleFrame PxVehicleFrame_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleScale_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleScale_setToDefault_mut(PxVehicleScale* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleScale_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleScale_isValid(PxVehicleScale* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleScale_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleScale PxVehicleScale_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireSlipParams_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTireSlipParams_setToDefault_mut(PxVehicleTireSlipParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireSlipParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleTireSlipParams PxVehicleTireSlipParams_transformAndScale(PxVehicleTireSlipParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireSlipParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleTireSlipParams_isValid(PxVehicleTireSlipParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireSlipParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleTireSlipParams PxVehicleTireSlipParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireAxisStickyParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleTireAxisStickyParams PxVehicleTireAxisStickyParams_transformAndScale(PxVehicleTireAxisStickyParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireAxisStickyParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleTireAxisStickyParams_isValid(PxVehicleTireAxisStickyParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireAxisStickyParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleTireAxisStickyParams PxVehicleTireAxisStickyParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireStickyParams_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTireStickyParams_setToDefault_mut(PxVehicleTireStickyParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireStickyParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleTireStickyParams PxVehicleTireStickyParams_transformAndScale(PxVehicleTireStickyParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireStickyParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleTireStickyParams_isValid(PxVehicleTireStickyParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireStickyParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleTireStickyParams PxVehicleTireStickyParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePvdContext_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePvdContext_setToDefault_mut(PxVehiclePvdContext* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePvdContext_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePvdContext PxVehiclePvdContext_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSimulationContext_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSimulationContext PxVehicleSimulationContext_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSimulationContext_getType", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSimulationContextType PxVehicleSimulationContext_getType(PxVehicleSimulationContext* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSimulationContext_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleSimulationContext_setToDefault_mut(PxVehicleSimulationContext* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSimulationContext_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSimulationContext PxVehicleSimulationContext_transformAndScale(PxVehicleSimulationContext* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXSimulationContext_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePhysXSimulationContext PxVehiclePhysXSimulationContext_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXSimulationContext_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePhysXSimulationContext_setToDefault_mut(PxVehiclePhysXSimulationContext* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXSimulationContext_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePhysXSimulationContext PxVehiclePhysXSimulationContext_transformAndScale(PxVehiclePhysXSimulationContext* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleRoadGeometryState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleRoadGeometryState_setToDefault_mut(PxVehicleRoadGeometryState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleRigidBodyState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleRigidBodyState_setToDefault_mut(PxVehicleRigidBodyState* self_);
+
+        /// <summary>
+        ///  Compute the vertical speed of the rigid body transformed to the world frame.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleRigidBodyState_getVerticalSpeed", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxVehicleRigidBodyState_getVerticalSpeed(PxVehicleRigidBodyState* self_, PxVehicleFrame* frame);
+
+        /// <summary>
+        ///  Compute the lateral speed of the rigid body transformed to the world frame.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleRigidBodyState_getLateralSpeed", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxVehicleRigidBodyState_getLateralSpeed(PxVehicleRigidBodyState* self_, PxVehicleFrame* frame);
+
+        /// <summary>
+        ///  Compute the longitudinal speed of the rigid body transformed to the world frame.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleRigidBodyState_getLongitudinalSpeed", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxVehicleRigidBodyState_getLongitudinalSpeed(PxVehicleRigidBodyState* self_, PxVehicleFrame* frame);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXRoadGeometryQueryState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePhysXRoadGeometryQueryState_setToDefault_mut(PxVehiclePhysXRoadGeometryQueryState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXActor_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePhysXActor_setToDefault_mut(PxVehiclePhysXActor* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXSteerState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePhysXSteerState_setToDefault_mut(PxVehiclePhysXSteerState* self_);
+
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTransformFrameToFrame", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 phys_PxVehicleTransformFrameToFrame(PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVec3* v);
+
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTransformFrameToFrame_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 phys_PxVehicleTransformFrameToFrame_1(PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale, PxVec3* v);
+
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTransformFrameToFrame_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransform phys_PxVehicleTransformFrameToFrame_2(PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale, PxTransform* v);
+
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeTranslation", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 phys_PxVehicleComputeTranslation(PxVehicleFrame* frame, float lng, float lat, float vrt);
+
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeRotation", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxQuat phys_PxVehicleComputeRotation(PxVehicleFrame* frame, float roll, float pitch, float yaw);
+
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeSign", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float phys_PxVehicleComputeSign(float f);
+
+        /// <summary>
+        ///  Shift the origin of a vehicle by the specified vector.
+        ///
+        ///  Call this method to adjust the internal data structures of vehicles to reflect the shifted origin location
+        ///  (the shift vector will get subtracted from all world space spatial data).
+        ///
+        ///  It is the user's responsibility to keep track of the summed total origin shift and adjust all input/output to/from the vehicle accordingly.
+        ///
+        ///  This call will not automatically shift the PhysX scene and its objects. PxScene::shiftOrigin() must be called separately to keep the systems in sync.
+        ///
+        ///  If there is no associated PxRigidActor then set physxActor to NULL.
+        ///
+        ///  If there is an associated PxRigidActor and it is already in a PxScene then the complementary call to PxScene::shiftOrigin() will take care of
+        ///  shifting the associated PxRigidActor.  This being the case, set physxActor to NULL.  physxActor should be a non-NULL pointer only when there is an
+        ///  associated PxRigidActor and it is not part of a PxScene.  This can occur if the associated PxRigidActor is updated using PhysX immediate mode.
+        ///
+        ///  If scene queries are independent of PhysX geometry then set queryStates to NULL.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleShiftOrigin", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleShiftOrigin(PxVehicleAxleDescription* axleDesc, PxVec3* shift, PxVehicleRigidBodyState* rigidBodyState, PxVehicleRoadGeometryState* roadGeometryStates, PxVehiclePhysXActor* physxActor, PxVehiclePhysXRoadGeometryQueryState* physxQueryStates);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleVectorN_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleVectorN* PxVehicleVectorN_new_alloc(uint size);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleVectorN_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleVectorN_delete(PxVehicleVectorN* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleVectorN_getSize", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleVectorN_getSize(PxVehicleVectorN* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNN_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleMatrixNN* PxVehicleMatrixNN_new_alloc();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNN_new_alloc_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleMatrixNN* PxVehicleMatrixNN_new_alloc_1(uint size);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNN_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleMatrixNN_delete(PxVehicleMatrixNN* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNN_get", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxVehicleMatrixNN_get(PxVehicleMatrixNN* self_, uint i, uint j);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNN_set_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleMatrixNN_set_mut(PxVehicleMatrixNN* self_, uint i, uint j, float val);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNN_getSize", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleMatrixNN_getSize(PxVehicleMatrixNN* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNN_setSize_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleMatrixNN_setSize_mut(PxVehicleMatrixNN* self_, uint size);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNNLUSolver_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleMatrixNNLUSolver* PxVehicleMatrixNNLUSolver_new_alloc();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNNLUSolver_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleMatrixNNLUSolver_delete(PxVehicleMatrixNNLUSolver* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNNLUSolver_getDet", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxVehicleMatrixNNLUSolver_getDet(PxVehicleMatrixNNLUSolver* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNNLUSolver_decomposeLU_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleMatrixNNLUSolver_decomposeLU_mut(PxVehicleMatrixNNLUSolver* self_, PxVehicleMatrixNN* A);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNNLUSolver_solve", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleMatrixNNLUSolver_solve(PxVehicleMatrixNNLUSolver* self_, PxVehicleVectorN* b, PxVehicleVectorN* x);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrixNGaussSeidelSolver_solve", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleMatrixNGaussSeidelSolver_solve(PxVehicleMatrixNGaussSeidelSolver* self_, uint maxIterations, float tolerance, PxVehicleMatrixNN* A, PxVehicleVectorN* b, PxVehicleVectorN* result);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMatrix33Solver_solve", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleMatrix33Solver_solve(PxVehicleMatrix33Solver* self_, PxVehicleMatrixNN* A_, PxVehicleVectorN* b_, PxVehicleVectorN* result);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleCommandValueResponseTable_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleCommandValueResponseTable_delete(PxVehicleCommandValueResponseTable* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleCommandNonLinearResponseParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleCommandNonLinearResponseParams PxVehicleCommandNonLinearResponseParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleCommandNonLinearResponseParams_clear_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleCommandNonLinearResponseParams_clear_mut(PxVehicleCommandNonLinearResponseParams* self_);
+
+        /// <summary>
+        ///  Add a table of normalised response vs speed and associated it with a specified command value.
+        ///
+        ///  commandValueSpeedResponses must be authored as a series of strictly increasing speeds with form {speed, normalizedResponse}
+        ///
+        ///  The responses added must form a series of strictly increasing command values.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleCommandNonLinearResponseParams_addResponse_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleCommandNonLinearResponseParams_addResponse_mut(PxVehicleCommandNonLinearResponseParams* self_, PxVehicleCommandValueResponseTable* commandValueSpeedResponses);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleCommandResponseParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleCommandResponseParams PxVehicleCommandResponseParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleBrakeCommandResponseParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleBrakeCommandResponseParams PxVehicleBrakeCommandResponseParams_transformAndScale(PxVehicleBrakeCommandResponseParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleBrakeCommandResponseParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleBrakeCommandResponseParams_isValid(PxVehicleBrakeCommandResponseParams* self_, PxVehicleAxleDescription* axleDesc);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleBrakeCommandResponseParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleBrakeCommandResponseParams PxVehicleBrakeCommandResponseParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleCommandState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleCommandState_setToDefault_mut(PxVehicleCommandState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleCommandState_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleCommandState PxVehicleCommandState_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleDirectDriveTransmissionCommandState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleDirectDriveTransmissionCommandState_setToDefault_mut(PxVehicleDirectDriveTransmissionCommandState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineDriveTransmissionCommandState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleEngineDriveTransmissionCommandState_setToDefault_mut(PxVehicleEngineDriveTransmissionCommandState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineDriveTransmissionCommandState_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleEngineDriveTransmissionCommandState PxVehicleEngineDriveTransmissionCommandState_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveTransmissionCommandState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTankDriveTransmissionCommandState_setToDefault_mut(PxVehicleTankDriveTransmissionCommandState* self_);
+
+        /// <summary>
+        ///  Compute the linear response to a command.
+        ///
+        ///  The linear response of the specified  wheel to the command.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleLinearResponseCompute", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float phys_PxVehicleLinearResponseCompute(float command, uint wheelId, PxVehicleCommandResponseParams* responseParams);
+
+        /// <summary>
+        ///  Compute the non-linear response to a command.
+        ///
+        ///  responseParams is used to compute an interpolated normalized response to the combination of command and longitudinalSpeed.
+        ///  The interpolated normalized response is then used in place of the command as input to PxVehicleComputeLinearResponse().
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleNonLinearResponseCompute", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float phys_PxVehicleNonLinearResponseCompute(float command, float longitudinalSpeed, uint wheelId, PxVehicleCommandResponseParams* responseParams);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleDirectDriveThrottleCommandResponseParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleDirectDriveThrottleCommandResponseParams PxVehicleDirectDriveThrottleCommandResponseParams_transformAndScale(PxVehicleDirectDriveThrottleCommandResponseParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleDirectDriveThrottleCommandResponseParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleDirectDriveThrottleCommandResponseParams_isValid(PxVehicleDirectDriveThrottleCommandResponseParams* self_, PxVehicleAxleDescription* axleDesc);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleDirectDriveThrottleCommandResponseParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleDirectDriveThrottleCommandResponseParams PxVehicleDirectDriveThrottleCommandResponseParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleClutchCommandResponseParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleClutchCommandResponseParams PxVehicleClutchCommandResponseParams_transformAndScale(PxVehicleClutchCommandResponseParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleClutchCommandResponseParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleClutchCommandResponseParams_isValid(PxVehicleClutchCommandResponseParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleClutchCommandResponseParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleClutchCommandResponseParams PxVehicleClutchCommandResponseParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleClutchParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleClutchParams PxVehicleClutchParams_transformAndScale(PxVehicleClutchParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleClutchParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleClutchParams_isValid(PxVehicleClutchParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleClutchParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleClutchParams PxVehicleClutchParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleEngineParams PxVehicleEngineParams_transformAndScale(PxVehicleEngineParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleEngineParams_isValid(PxVehicleEngineParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineParams_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleEngineParams_delete(PxVehicleEngineParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleEngineParams PxVehicleEngineParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleGearboxParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleGearboxParams PxVehicleGearboxParams_transformAndScale(PxVehicleGearboxParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleGearboxParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleGearboxParams_isValid(PxVehicleGearboxParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleGearboxParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleGearboxParams PxVehicleGearboxParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAutoboxParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleAutoboxParams PxVehicleAutoboxParams_transformAndScale(PxVehicleAutoboxParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAutoboxParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleAutoboxParams_isValid(PxVehicleAutoboxParams* self_, PxVehicleGearboxParams* gearboxParams);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAutoboxParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleAutoboxParams PxVehicleAutoboxParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFourWheelDriveDifferentialLegacyParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleFourWheelDriveDifferentialLegacyParams PxVehicleFourWheelDriveDifferentialLegacyParams_transformAndScale(PxVehicleFourWheelDriveDifferentialLegacyParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFourWheelDriveDifferentialLegacyParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleFourWheelDriveDifferentialLegacyParams_isValid(PxVehicleFourWheelDriveDifferentialLegacyParams* self_, PxVehicleAxleDescription* axleDesc);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFourWheelDriveDifferentialLegacyParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleFourWheelDriveDifferentialLegacyParams PxVehicleFourWheelDriveDifferentialLegacyParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMultiWheelDriveDifferentialParams_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleMultiWheelDriveDifferentialParams_setToDefault_mut(PxVehicleMultiWheelDriveDifferentialParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMultiWheelDriveDifferentialParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleMultiWheelDriveDifferentialParams PxVehicleMultiWheelDriveDifferentialParams_transformAndScale(PxVehicleMultiWheelDriveDifferentialParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMultiWheelDriveDifferentialParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleMultiWheelDriveDifferentialParams_isValid(PxVehicleMultiWheelDriveDifferentialParams* self_, PxVehicleAxleDescription* axleDesc);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMultiWheelDriveDifferentialParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleMultiWheelDriveDifferentialParams PxVehicleMultiWheelDriveDifferentialParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFourWheelDriveDifferentialParams_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleFourWheelDriveDifferentialParams_setToDefault_mut(PxVehicleFourWheelDriveDifferentialParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFourWheelDriveDifferentialParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleFourWheelDriveDifferentialParams_isValid(PxVehicleFourWheelDriveDifferentialParams* self_, PxVehicleAxleDescription* axleDesc);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFourWheelDriveDifferentialParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleFourWheelDriveDifferentialParams PxVehicleFourWheelDriveDifferentialParams_transformAndScale(PxVehicleFourWheelDriveDifferentialParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFourWheelDriveDifferentialParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleFourWheelDriveDifferentialParams PxVehicleFourWheelDriveDifferentialParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialParams_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTankDriveDifferentialParams_setToDefault_mut(PxVehicleTankDriveDifferentialParams* self_);
+
+        /// <summary>
+        ///  Add a tank track by specifying the number of wheels along the track and an array of wheel ids specifying each wheel in the tank track.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialParams_addTankTrack_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTankDriveDifferentialParams_addTankTrack_mut(PxVehicleTankDriveDifferentialParams* self_, uint nbWheelsInTrackToAdd, uint* wheelIdsInTrackToAdd, uint thrustControllerIndex);
+
+        /// <summary>
+        ///  Return the number of tracks.
+        ///
+        ///  The number of tracks.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialParams_getNbTracks", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleTankDriveDifferentialParams_getNbTracks(PxVehicleTankDriveDifferentialParams* self_);
+
+        /// <summary>
+        ///  Return the number of wheels in the ith track.
+        ///
+        ///  The number of wheels in the specified track.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialParams_getNbWheelsInTrack", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleTankDriveDifferentialParams_getNbWheelsInTrack(PxVehicleTankDriveDifferentialParams* self_, uint i);
+
+        /// <summary>
+        ///  Return the array of all wheels in the ith track.
+        ///
+        ///  The array of wheels in the specified track.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialParams_getWheelsInTrack", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint* PxVehicleTankDriveDifferentialParams_getWheelsInTrack(PxVehicleTankDriveDifferentialParams* self_, uint i);
+
+        /// <summary>
+        ///  Return the wheel id of the jth wheel in the ith track.
+        ///
+        ///  The wheel id of the jth wheel in the ith track.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialParams_getWheelInTrack", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleTankDriveDifferentialParams_getWheelInTrack(PxVehicleTankDriveDifferentialParams* self_, uint j, uint i);
+
+        /// <summary>
+        ///  Return the index of the thrust controller that will control a specified track.
+        ///
+        ///  The index of the thrust controller that will control the ith track.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialParams_getThrustControllerIndex", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleTankDriveDifferentialParams_getThrustControllerIndex(PxVehicleTankDriveDifferentialParams* self_, uint i);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleTankDriveDifferentialParams PxVehicleTankDriveDifferentialParams_transformAndScale(PxVehicleTankDriveDifferentialParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleTankDriveDifferentialParams_isValid(PxVehicleTankDriveDifferentialParams* self_, PxVehicleAxleDescription* axleDesc);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleTankDriveDifferentialParams PxVehicleTankDriveDifferentialParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleClutchCommandResponseState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleClutchCommandResponseState_setToDefault_mut(PxVehicleClutchCommandResponseState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineDriveThrottleCommandResponseState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleEngineDriveThrottleCommandResponseState_setToDefault_mut(PxVehicleEngineDriveThrottleCommandResponseState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleEngineState_setToDefault_mut(PxVehicleEngineState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleGearboxState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleGearboxState_setToDefault_mut(PxVehicleGearboxState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAutoboxState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleAutoboxState_setToDefault_mut(PxVehicleAutoboxState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleDifferentialState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleDifferentialState_setToDefault_mut(PxVehicleDifferentialState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelConstraintGroupState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleWheelConstraintGroupState_setToDefault_mut(PxVehicleWheelConstraintGroupState* self_);
+
+        /// <summary>
+        ///  Add a wheel constraint group by specifying the number of wheels in the group, an array of wheel ids specifying each wheel in the group
+        ///  and a desired rotational speed relationship.
+        ///
+        ///  constraintMultipliers[j] specifies the target rotational speed of the jth wheel in the constraint group as a multiplier of the rotational
+        ///  speed of the zeroth wheel in the group.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelConstraintGroupState_addConstraintGroup_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleWheelConstraintGroupState_addConstraintGroup_mut(PxVehicleWheelConstraintGroupState* self_, uint nbWheelsInGroupToAdd, uint* wheelIdsInGroupToAdd, float* constraintMultipliers);
+
+        /// <summary>
+        ///  Return the number of wheel constraint groups in the vehicle.
+        ///
+        ///  The number of wheel constraint groups.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelConstraintGroupState_getNbConstraintGroups", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleWheelConstraintGroupState_getNbConstraintGroups(PxVehicleWheelConstraintGroupState* self_);
+
+        /// <summary>
+        ///  Return the number of wheels in the ith constraint group.
+        ///
+        ///  The number of wheels in the specified constraint group.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelConstraintGroupState_getNbWheelsInConstraintGroup", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleWheelConstraintGroupState_getNbWheelsInConstraintGroup(PxVehicleWheelConstraintGroupState* self_, uint i);
+
+        /// <summary>
+        ///  Return the wheel id of the jth wheel in the ith constraint group.
+        ///
+        ///  The wheel id of the jth wheel in the ith constraint group.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelConstraintGroupState_getWheelInConstraintGroup", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint PxVehicleWheelConstraintGroupState_getWheelInConstraintGroup(PxVehicleWheelConstraintGroupState* self_, uint j, uint i);
+
+        /// <summary>
+        ///  Return the constraint multiplier of the jth wheel in the ith constraint group
+        ///
+        ///  The constraint multiplier of the jth wheel in the ith constraint group.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelConstraintGroupState_getMultiplierInConstraintGroup", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float PxVehicleWheelConstraintGroupState_getMultiplierInConstraintGroup(PxVehicleWheelConstraintGroupState* self_, uint j, uint i);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleClutchSlipState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleClutchSlipState_setToDefault_mut(PxVehicleClutchSlipState* self_);
+
+        /// <summary>
+        ///  Compute the coupling strength of the clutch.
+        ///
+        ///  If the gear is in neutral the clutch is fully disengaged and the clutch strength is 0.
+        ///
+        ///  A clutch response state of 0.0 denotes a fully engaged clutch with maximum strength.
+        ///
+        ///  A clutch response state of 1.0 denotes a fully disengaged clutch with a strength of 0.0.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleClutchStrengthCompute", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float phys_PxVehicleClutchStrengthCompute(PxVehicleClutchCommandResponseState* clutchResponseState, PxVehicleGearboxParams* gearboxParams, PxVehicleGearboxState* gearboxState);
+
+        /// <summary>
+        ///  Compute the damping rate of the engine.
+        ///
+        ///  Engines typically have different damping rates with clutch engaged and disengaged.
+        ///
+        ///  Engines typically have different damping rates at different throttle pedal values.
+        ///
+        ///  In neutral gear the clutch is considered to be fully disengaged.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleEngineDampingRateCompute", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float phys_PxVehicleEngineDampingRateCompute(PxVehicleEngineParams* engineParams, PxVehicleGearboxParams* gearboxParams, PxVehicleGearboxState* gearboxState, PxVehicleClutchCommandResponseState* clutchResponseState, PxVehicleEngineDriveThrottleCommandResponseState* throttleResponseState);
+
+        /// <summary>
+        ///  Compute the gear ratio delivered by the gearbox in the current gear.
+        ///
+        ///  The gear ratio is the product of the gear ratio of the current gear and the final gear ratio of the gearbox.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleGearRatioCompute", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float phys_PxVehicleGearRatioCompute(PxVehicleGearboxParams* gearboxParams, PxVehicleGearboxState* gearboxState);
+
+        /// <summary>
+        ///  Compute the drive torque to deliver to the engine.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleEngineDriveTorqueCompute", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern float phys_PxVehicleEngineDriveTorqueCompute(PxVehicleEngineParams* engineParams, PxVehicleEngineState* engineState, PxVehicleEngineDriveThrottleCommandResponseState* throttleCommandResponseState);
+
+        /// <summary>
+        ///  This API was introduced with the new Vehicle API for transition purposes but will be removed in a future version.
+        ///
+        ///  Compute the contribution that each wheel makes to the averaged wheel speed at the clutch plate connected to the wheels driven by
+        ///  the differential.
+        ///
+        ///  Any wheel on an axle connected to the differential could have a non-zero value, depending on the way the differential couples to the wheels.
+        ///
+        ///  Any wheel on an axle not connected to the differential will have a zero contribution to the averaged wheel speed.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleLegacyDifferentialWheelSpeedContributionsCompute", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleLegacyDifferentialWheelSpeedContributionsCompute(PxVehicleFourWheelDriveDifferentialLegacyParams* diffParams, uint nbWheels, float* diffAveWheelSpeedContributions);
+
+        /// <summary>
+        ///  Compute the drive torque response to a throttle command.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleDirectDriveThrottleCommandResponseUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleDirectDriveThrottleCommandResponseUpdate(float throttle, PxVehicleDirectDriveTransmissionCommandState* transmissionCommands, float longitudinalSpeed, uint wheelId, PxVehicleDirectDriveThrottleCommandResponseParams* throttleResponseParams, float* throttleResponseState);
+
+        /// <summary>
+        ///  Determine the actuation state of a wheel given the brake torque, handbrake torque and drive torque applied to it.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleDirectDriveActuationStateUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleDirectDriveActuationStateUpdate(float brakeTorque, float driveTorque, PxVehicleWheelActuationState* actuationState);
+
+        /// <summary>
+        ///  Forward integrate the angular speed of a wheel given the brake and drive torque applied to it
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleDirectDriveUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleDirectDriveUpdate(PxVehicleWheelParams* wheelParams, PxVehicleWheelActuationState* actuationState, float brakeTorque, float driveTorque, PxVehicleTireForce* tireForce, float dt, PxVehicleWheelRigidBody1dState* wheelRigidBody1dState);
+
+        /// <summary>
+        ///  The autobox will not begin a gear change if a gear change is already ongoing.
+        ///
+        ///  The autobox will not begin a gear change until a threshold time has lapsed since the last automated gear change.
+        ///
+        ///  A gear change is considered as ongoing for as long as PxVehicleGearboxState::currentGear is different from
+        ///  PxVehicleGearboxState::targetGear.
+        ///
+        ///  The autobox will not shift down from 1st gear or up from reverse gear.
+        ///
+        ///  The autobox shifts in single gear increments or decrements.
+        ///
+        ///  The autobox instantiates a gear change by setting PxVehicleCommandState::targetGear to be different from
+        ///  from PxVehicleGearboxState::currentGear
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleAutoBoxUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleAutoBoxUpdate(PxVehicleEngineParams* engineParams, PxVehicleGearboxParams* gearboxParams, PxVehicleAutoboxParams* autoboxParams, PxVehicleEngineState* engineState, PxVehicleGearboxState* gearboxState, float dt, uint* targetGearCommand, PxVehicleAutoboxState* autoboxState, float* throttle);
+
+        /// <summary>
+        ///  Propagate input gear commands to the gearbox state.
+        ///
+        ///  Any ongoing gear change must complete before starting another.
+        ///
+        ///  A gear change is considered as ongoing for as long as PxVehicleGearboxState::currentGear is different from
+        ///  PxVehicleGearboxState::targetGear.
+        ///
+        ///  The gearbox remains in neutral for the duration of the gear change.
+        ///
+        ///  A gear change begins if PxVehicleCommandState::targetGear is different from PxVehicleGearboxState::currentGear.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleGearCommandResponseUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleGearCommandResponseUpdate(uint targetGearCommand, PxVehicleGearboxParams* gearboxParams, PxVehicleGearboxState* gearboxState);
+
+        /// <summary>
+        ///  Propagate the input clutch command to the clutch response state.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleClutchCommandResponseLinearUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleClutchCommandResponseLinearUpdate(float clutchCommand, PxVehicleClutchCommandResponseParams* clutchResponseParams, PxVehicleClutchCommandResponseState* clutchResponse);
+
+        /// <summary>
+        ///  Propagate the input throttle command to the throttle response state.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleEngineDriveThrottleCommandResponseLinearUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleEngineDriveThrottleCommandResponseLinearUpdate(PxVehicleCommandState* commands, PxVehicleEngineDriveThrottleCommandResponseState* throttleResponse);
+
+        /// <summary>
+        ///  Compute the fraction of available torque to be delivered to each wheel and gather a list of all
+        ///  wheels connected to the differential.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleDifferentialStateUpdate_2", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleDifferentialStateUpdate_2(PxVehicleAxleDescription* axleDescription, PxVehicleMultiWheelDriveDifferentialParams* diffParams, PxVehicleDifferentialState* diffState);
+
+        /// <summary>
+        ///  Update the current gear of the gearbox. If a gear change is ongoing then complete the gear change if a threshold
+        ///  time has passed since the beginning of the gear change.
+        ///
+        ///  A gear change is considered as ongoing for as long as PxVehicleGearboxState::currentGear is different from
+        ///  PxVehicleGearboxState::targetGear.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleGearboxUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleGearboxUpdate(PxVehicleGearboxParams* gearboxParams, float dt, PxVehicleGearboxState* gearboxState);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSteerCommandResponseParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSteerCommandResponseParams PxVehicleSteerCommandResponseParams_transformAndScale(PxVehicleSteerCommandResponseParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSteerCommandResponseParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleSteerCommandResponseParams_isValid(PxVehicleSteerCommandResponseParams* self_, PxVehicleAxleDescription* axleDesc);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSteerCommandResponseParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSteerCommandResponseParams PxVehicleSteerCommandResponseParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAckermannParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleAckermannParams_isValid(PxVehicleAckermannParams* self_, PxVehicleAxleDescription* axleDesc);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAckermannParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleAckermannParams PxVehicleAckermannParams_transformAndScale(PxVehicleAckermannParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAckermannParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleAckermannParams PxVehicleAckermannParams_new();
+
+        /// <summary>
+        ///  Compute the yaw angle response to a steer command.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleSteerCommandResponseUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleSteerCommandResponseUpdate(float steer, float longitudinalSpeed, uint wheelId, PxVehicleSteerCommandResponseParams* steerResponseParams, float* steerResponseState);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelActuationState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleWheelActuationState_setToDefault_mut(PxVehicleWheelActuationState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelRigidBody1dState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleWheelRigidBody1dState_setToDefault_mut(PxVehicleWheelRigidBody1dState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelLocalPose_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleWheelLocalPose_setToDefault_mut(PxVehicleWheelLocalPose* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleWheelParams PxVehicleWheelParams_transformAndScale(PxVehicleWheelParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleWheelParams_isValid(PxVehicleWheelParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleWheelParams PxVehicleWheelParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireDirectionState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTireDirectionState_setToDefault_mut(PxVehicleTireDirectionState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireSpeedState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTireSpeedState_setToDefault_mut(PxVehicleTireSpeedState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireSlipState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTireSlipState_setToDefault_mut(PxVehicleTireSlipState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireGripState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTireGripState_setToDefault_mut(PxVehicleTireGripState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireCamberAngleState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTireCamberAngleState_setToDefault_mut(PxVehicleTireCamberAngleState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireStickyState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTireStickyState_setToDefault_mut(PxVehicleTireStickyState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireForce_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTireForce_setToDefault_mut(PxVehicleTireForce* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleDirectDriveCommandResponseComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleDirectDriveCommandResponseComponent_delete(PxVehicleDirectDriveCommandResponseComponent* self_);
+
+        /// <summary>
+        ///  Compute a per wheel response to the input brake/handbrake/throttle/steer commands
+        ///  and determine if there is an intention to accelerate the vehicle.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleDirectDriveCommandResponseComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleDirectDriveCommandResponseComponent_update_mut(PxVehicleDirectDriveCommandResponseComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleDirectDriveActuationStateComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleDirectDriveActuationStateComponent_delete(PxVehicleDirectDriveActuationStateComponent* self_);
+
+        /// <summary>
+        ///  Compute the actuation state for each wheel given the brake, handbrake and throttle states.
+        ///  \
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleDirectDriveActuationStateComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleDirectDriveActuationStateComponent_update_mut(PxVehicleDirectDriveActuationStateComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleDirectDrivetrainComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleDirectDrivetrainComponent_delete(PxVehicleDirectDrivetrainComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleDirectDrivetrainComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleDirectDrivetrainComponent_update_mut(PxVehicleDirectDrivetrainComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineDriveCommandResponseComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleEngineDriveCommandResponseComponent_delete(PxVehicleEngineDriveCommandResponseComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineDriveCommandResponseComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleEngineDriveCommandResponseComponent_update_mut(PxVehicleEngineDriveCommandResponseComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMultiWheelDriveDifferentialStateComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleMultiWheelDriveDifferentialStateComponent_delete(PxVehicleMultiWheelDriveDifferentialStateComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMultiWheelDriveDifferentialStateComponent_getDataForMultiWheelDriveDifferentialStateComponent_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleMultiWheelDriveDifferentialStateComponent_getDataForMultiWheelDriveDifferentialStateComponent_mut(PxVehicleMultiWheelDriveDifferentialStateComponent* self_, PxVehicleAxleDescription** axleDescription, PxVehicleMultiWheelDriveDifferentialParams** differentialParams, PxVehicleDifferentialState** differentialState);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleMultiWheelDriveDifferentialStateComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleMultiWheelDriveDifferentialStateComponent_update_mut(PxVehicleMultiWheelDriveDifferentialStateComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFourWheelDriveDifferentialStateComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleFourWheelDriveDifferentialStateComponent_delete(PxVehicleFourWheelDriveDifferentialStateComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleFourWheelDriveDifferentialStateComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleFourWheelDriveDifferentialStateComponent_update_mut(PxVehicleFourWheelDriveDifferentialStateComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialStateComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTankDriveDifferentialStateComponent_delete(PxVehicleTankDriveDifferentialStateComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTankDriveDifferentialStateComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleTankDriveDifferentialStateComponent_update_mut(PxVehicleTankDriveDifferentialStateComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleLegacyFourWheelDriveDifferentialStateComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleLegacyFourWheelDriveDifferentialStateComponent_delete(PxVehicleLegacyFourWheelDriveDifferentialStateComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleLegacyFourWheelDriveDifferentialStateComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleLegacyFourWheelDriveDifferentialStateComponent_update_mut(PxVehicleLegacyFourWheelDriveDifferentialStateComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineDriveActuationStateComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleEngineDriveActuationStateComponent_delete(PxVehicleEngineDriveActuationStateComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineDriveActuationStateComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleEngineDriveActuationStateComponent_update_mut(PxVehicleEngineDriveActuationStateComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineDrivetrainComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleEngineDrivetrainComponent_delete(PxVehicleEngineDrivetrainComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleEngineDrivetrainComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleEngineDrivetrainComponent_update_mut(PxVehicleEngineDrivetrainComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXRigidActorParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePhysXRigidActorParams PxVehiclePhysXRigidActorParams_new(PxVehicleRigidBodyParams* _physxActorRigidBodyParams, byte* _physxActorName);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXRigidActorShapeParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePhysXRigidActorShapeParams PxVehiclePhysXRigidActorShapeParams_new(PxGeometry* _geometry, PxTransform* _localPose, PxMaterial* _material, PxShapeFlags _flags, PxFilterData* _simulationFilterData, PxFilterData* _queryFilterData);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXWheelParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePhysXWheelParams PxVehiclePhysXWheelParams_new(PxVehicleAxleDescription* _axleDescription, PxVehicleWheelParams* _wheelParams);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXWheelShapeParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePhysXWheelShapeParams PxVehiclePhysXWheelShapeParams_new(PxMaterial* _material, PxShapeFlags _flags, PxFilterData _simulationFilterData, PxFilterData _queryFilterData);
+
+        /// <summary>
+        ///  Create a PxRigidDynamic instance, instantiate it with desired properties and populate it with PxShape instances.
+        ///
+        ///  This is an alternative to PxVehiclePhysXArticulationLinkCreate.
+        ///
+        ///  PxVehiclePhysXActorCreate primarily serves as an illustration of the instantiation of the PhysX class instances
+        ///  required to simulate a vehicle with a PxRigidDynamic.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehiclePhysXActorCreate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehiclePhysXActorCreate(PxVehicleFrame* vehicleFrame, PxVehiclePhysXRigidActorParams* rigidActorParams, PxTransform* rigidActorCmassLocalPose, PxVehiclePhysXRigidActorShapeParams* rigidActorShapeParams, PxVehiclePhysXWheelParams* wheelParams, PxVehiclePhysXWheelShapeParams* wheelShapeParams, PxPhysics* physics, PxCookingParams* @params, PxVehiclePhysXActor* vehiclePhysXActor);
+
+        /// <summary>
+        ///  Configure an actor so that it is ready for vehicle simulation.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehiclePhysXActorConfigure", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehiclePhysXActorConfigure(PxVehiclePhysXRigidActorParams* rigidActorParams, PxTransform* rigidActorCmassLocalPose, PxRigidBody* rigidBody);
+
+        /// <summary>
+        ///  Create a PxArticulationReducedCoordinate and a single PxArticulationLink,
+        ///  instantiate the PxArticulationLink with desired properties and populate it with PxShape instances.
+        ///
+        ///  This is an alternative to PxVehiclePhysXActorCreate.
+        ///
+        ///  PxVehiclePhysXArticulationLinkCreate primarily serves as an illustration of the instantiation of the PhysX class instances
+        ///  required to simulate a vehicle as part of an articulated ensemble.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehiclePhysXArticulationLinkCreate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehiclePhysXArticulationLinkCreate(PxVehicleFrame* vehicleFrame, PxVehiclePhysXRigidActorParams* rigidActorParams, PxTransform* rigidActorCmassLocalPose, PxVehiclePhysXRigidActorShapeParams* rigidActorShapeParams, PxVehiclePhysXWheelParams* wheelParams, PxVehiclePhysXWheelShapeParams* wheelShapeParams, PxPhysics* physics, PxCookingParams* @params, PxVehiclePhysXActor* vehiclePhysXActor);
+
+        /// <summary>
+        ///  Release the PxRigidDynamic, PxArticulationReducedCoordinate, PxArticulationLink and PxShape instances
+        ///  instantiated by PxVehiclePhysXActorCreate or PxVehiclePhysXArticulationLinkCreate.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehiclePhysXActorDestroy", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehiclePhysXActorDestroy(PxVehiclePhysXActor* vehiclePhysXActor);
+
+        /// <summary>
+        ///  Wake up the physx actor if the actor is asleep and the commands signal an intent to
+        ///  change the state of the vehicle.
+        ///
+        ///  If the steering has changed, the actor will be woken up.
+        ///
+        ///  On exit from PxVehiclePhysxActorWakeup, physxSteerState.previousSteerCommand is assigned to the value
+        ///  of commands.steer so that the steer state may be propagated to the subsequent call to PxVehiclePhysxActorWakeup().
+        ///
+        ///  If physxSteerState.previousSteerCommand has value PX_VEHICLE_UNSPECIFIED_STEER_STATE, the steering state
+        ///  is treated as though it has not changed.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehiclePhysxActorWakeup", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehiclePhysxActorWakeup(PxVehicleCommandState* commands, PxVehicleEngineDriveTransmissionCommandState* transmissionCommands, PxVehicleGearboxParams* gearParams, PxVehicleGearboxState* gearState, PxRigidBody* physxActor, PxVehiclePhysXSteerState* physxSteerState);
+
+        /// <summary>
+        ///  Read the rigid body state from a PhysX actor.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleReadRigidBodyStateFromPhysXActor", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleReadRigidBodyStateFromPhysXActor(PxRigidBody* physxActor, PxVehicleRigidBodyState* rigidBodyState);
+
+        /// <summary>
+        ///  Update the local pose of a PxShape that is associated with a wheel.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleWriteWheelLocalPoseToPhysXWheelShape", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleWriteWheelLocalPoseToPhysXWheelShape(PxTransform* wheelLocalPose, PxTransform* wheelShapeLocalPose, PxShape* shape);
+
+        /// <summary>
+        ///  Write the rigid body state to a PhysX actor.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleWriteRigidBodyStateToPhysXActor", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleWriteRigidBodyStateToPhysXActor(PxVehiclePhysXActorUpdateMode physxActorUpdateMode, PxVehicleRigidBodyState* rigidBodyState, float dt, PxRigidBody* physXActor);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXActorBeginComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePhysXActorBeginComponent_delete(PxVehiclePhysXActorBeginComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXActorBeginComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehiclePhysXActorBeginComponent_update_mut(PxVehiclePhysXActorBeginComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXActorEndComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePhysXActorEndComponent_delete(PxVehiclePhysXActorEndComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXActorEndComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehiclePhysXActorEndComponent_update_mut(PxVehiclePhysXActorEndComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXSuspensionLimitConstraintParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePhysXSuspensionLimitConstraintParams PxVehiclePhysXSuspensionLimitConstraintParams_transformAndScale(PxVehiclePhysXSuspensionLimitConstraintParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXSuspensionLimitConstraintParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehiclePhysXSuspensionLimitConstraintParams_isValid(PxVehiclePhysXSuspensionLimitConstraintParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXSuspensionLimitConstraintParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePhysXSuspensionLimitConstraintParams PxVehiclePhysXSuspensionLimitConstraintParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXConstraintState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePhysXConstraintState_setToDefault_mut(PxVehiclePhysXConstraintState* self_);
+
+        [DllImport(__DllName, EntryPoint = "phys_vehicleConstraintSolverPrep", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern uint phys_vehicleConstraintSolverPrep(Px1DConstraint* constraints, PxVec3Padded* body0WorldOffset, uint maxConstraints, PxConstraintInvMassScale* anon_param3, void* constantBlock, PxTransform* bodyAToWorld, PxTransform* bodyBToWorld, [MarshalAs(UnmanagedType.U1)] bool anon_param7, PxVec3Padded* cA2w, PxVec3Padded* cB2w);
+
+        [DllImport(__DllName, EntryPoint = "phys_visualiseVehicleConstraint", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_visualiseVehicleConstraint(PxConstraintVisualizer* viz, void* constantBlock, PxTransform* body0Transform, PxTransform* body1Transform, uint flags);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_new_alloc", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleConstraintConnector* PxVehicleConstraintConnector_new_alloc();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_new_alloc_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleConstraintConnector* PxVehicleConstraintConnector_new_alloc_1(PxVehiclePhysXConstraintState* vehicleConstraintState);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleConstraintConnector_delete(PxVehicleConstraintConnector* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_setConstraintState_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleConstraintConnector_setConstraintState_mut(PxVehicleConstraintConnector* self_, PxVehiclePhysXConstraintState* constraintState);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_prepareData_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void* PxVehicleConstraintConnector_prepareData_mut(PxVehicleConstraintConnector* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_getConstantBlock", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void* PxVehicleConstraintConnector_getConstantBlock(PxVehicleConstraintConnector* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_onConstraintRelease_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleConstraintConnector_onConstraintRelease_mut(PxVehicleConstraintConnector* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_updateOmniPvdProperties", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleConstraintConnector_updateOmniPvdProperties(PxVehicleConstraintConnector* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_onComShift_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleConstraintConnector_onComShift_mut(PxVehicleConstraintConnector* self_, uint actor);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_onOriginShift_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleConstraintConnector_onOriginShift_mut(PxVehicleConstraintConnector* self_, PxVec3* shift);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_getExternalReference_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void* PxVehicleConstraintConnector_getExternalReference_mut(PxVehicleConstraintConnector* self_, uint* typeID);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleConstraintConnector_getSerializable_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxBase* PxVehicleConstraintConnector_getSerializable_mut(PxVehicleConstraintConnector* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXConstraints_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePhysXConstraints_setToDefault_mut(PxVehiclePhysXConstraints* self_);
+
+        /// <summary>
+        ///  Instantiate the PhysX custom constraints.
+        ///
+        ///  Custom constraints will resolve excess suspension compression and velocity constraints that serve as
+        ///  a replacement low speed tire model.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleConstraintsCreate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleConstraintsCreate(PxVehicleAxleDescription* axleDescription, PxPhysics* physics, PxRigidBody* physxActor, PxVehiclePhysXConstraints* vehicleConstraints);
+
+        /// <summary>
+        ///  To ensure the constraints are processed by the PhysX scene they are marked as dirty prior to each simulate step.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleConstraintsDirtyStateUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleConstraintsDirtyStateUpdate(PxVehiclePhysXConstraints* vehicleConstraints);
+
+        /// <summary>
+        ///  Destroy the PhysX custom constraints.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleConstraintsDestroy", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleConstraintsDestroy(PxVehiclePhysXConstraints* vehicleConstraints);
+
+        /// <summary>
+        ///  Read constraint data from the vehicle's internal state for a single wheel and write it to a
+        ///  structure that will be read by the associated PxScene and used to impose the constraints during the next
+        ///  PxScene::simulate() step.
+        ///
+        ///  Constraints include suspension constraints to account for suspension travel limit and sticky
+        ///  tire constraints that bring the vehicle to rest at low longitudinal and lateral speed.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehiclePhysXConstraintStatesUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehiclePhysXConstraintStatesUpdate(PxVehicleSuspensionParams* suspensionParams, PxVehiclePhysXSuspensionLimitConstraintParams* suspensionLimitParams, PxVehicleSuspensionState* suspensionState, PxVehicleSuspensionComplianceState* suspensionComplianceState, PxVec3* groundPlaneNormal, float tireStickyDampingLong, float tireStickyDampingLat, PxVehicleTireDirectionState* tireDirectionState, PxVehicleTireStickyState* tireStickyState, PxVehicleRigidBodyState* rigidBodyState, PxVehiclePhysXConstraintState* constraintState);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSuspensionParams PxVehicleSuspensionParams_transformAndScale(PxVehicleSuspensionParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleSuspensionParams_isValid(PxVehicleSuspensionParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSuspensionParams PxVehicleSuspensionParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionStateCalculationParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSuspensionStateCalculationParams PxVehicleSuspensionStateCalculationParams_transformAndScale(PxVehicleSuspensionStateCalculationParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionStateCalculationParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleSuspensionStateCalculationParams_isValid(PxVehicleSuspensionStateCalculationParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionStateCalculationParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSuspensionStateCalculationParams PxVehicleSuspensionStateCalculationParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionComplianceParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSuspensionComplianceParams PxVehicleSuspensionComplianceParams_transformAndScale(PxVehicleSuspensionComplianceParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionComplianceParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleSuspensionComplianceParams_isValid(PxVehicleSuspensionComplianceParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionComplianceParams_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleSuspensionComplianceParams_delete(PxVehicleSuspensionComplianceParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionComplianceParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSuspensionComplianceParams PxVehicleSuspensionComplianceParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionForceParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSuspensionForceParams PxVehicleSuspensionForceParams_transformAndScale(PxVehicleSuspensionForceParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionForceParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleSuspensionForceParams_isValid(PxVehicleSuspensionForceParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionForceParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSuspensionForceParams PxVehicleSuspensionForceParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionForceLegacyParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSuspensionForceLegacyParams PxVehicleSuspensionForceLegacyParams_transformAndScale(PxVehicleSuspensionForceLegacyParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionForceLegacyParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleSuspensionForceLegacyParams_isValid(PxVehicleSuspensionForceLegacyParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionForceLegacyParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSuspensionForceLegacyParams PxVehicleSuspensionForceLegacyParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAntiRollForceParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleAntiRollForceParams PxVehicleAntiRollForceParams_transformAndScale(PxVehicleAntiRollForceParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAntiRollForceParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleAntiRollForceParams_isValid(PxVehicleAntiRollForceParams* self_, PxVehicleAxleDescription* axleDesc);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAntiRollForceParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleAntiRollForceParams PxVehicleAntiRollForceParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleSuspensionState_setToDefault_mut(PxVehicleSuspensionState* self_, float _jounce, float _separation);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionState_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleSuspensionState PxVehicleSuspensionState_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionComplianceState_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleSuspensionComplianceState_setToDefault_mut(PxVehicleSuspensionComplianceState* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionForce_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleSuspensionForce_setToDefault_mut(PxVehicleSuspensionForce* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleAntiRollTorque_setToDefault_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleAntiRollTorque_setToDefault_mut(PxVehicleAntiRollTorque* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXConstraintComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePhysXConstraintComponent_delete(PxVehiclePhysXConstraintComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXConstraintComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehiclePhysXConstraintComponent_update_mut(PxVehiclePhysXConstraintComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXRoadGeometryQueryParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePhysXRoadGeometryQueryParams PxVehiclePhysXRoadGeometryQueryParams_transformAndScale(PxVehiclePhysXRoadGeometryQueryParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXRoadGeometryQueryParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehiclePhysXRoadGeometryQueryParams_isValid(PxVehiclePhysXRoadGeometryQueryParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXRoadGeometryQueryParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePhysXRoadGeometryQueryParams PxVehiclePhysXRoadGeometryQueryParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXMaterialFriction_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehiclePhysXMaterialFriction_isValid(PxVehiclePhysXMaterialFriction* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXMaterialFrictionParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehiclePhysXMaterialFrictionParams_isValid(PxVehiclePhysXMaterialFrictionParams* self_);
+
+        /// <summary>
+        ///  Create a cylindrical mesh with unit radius and half-width.
+        ///
+        ///  Return a PxConvexMesh instance that represents a convex hull with unit radius and half-width.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleUnitCylinderSweepMeshCreate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxConvexMesh* phys_PxVehicleUnitCylinderSweepMeshCreate(PxVehicleFrame* vehicleFrame, PxPhysics* physics, PxCookingParams* @params);
+
+        /// <summary>
+        ///  Release the mesh created with PxVehicleUnitCylinderSweepMeshCreate.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleUnitCylinderSweepMeshDestroy", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleUnitCylinderSweepMeshDestroy(PxConvexMesh* mesh);
+
+        /// <summary>
+        ///  Compute the plane of the road geometry under a wheel and the tire friction of the contact.
+        ///
+        ///  PxVehicleRoadGeometryState::hitState will have value false in the event that the there is no reachable road geometry under the wheel and
+        ///  true if there is reachable road geometry under the wheel. Road geometry is considered reachable if the suspension can elongate from its
+        ///  reference pose far enough to place wheel on the ground.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehiclePhysXRoadGeometryQueryUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehiclePhysXRoadGeometryQueryUpdate(PxVehicleWheelParams* wheelParams, PxVehicleSuspensionParams* suspParams, PxVehiclePhysXRoadGeometryQueryType queryType, PxQueryFilterCallback* filterCallback, PxQueryFilterData* filterData, PxVehiclePhysXMaterialFrictionParams* materialFrictionParams, float wheelYawAngle, PxVehicleRigidBodyState* rigidBodyState, PxScene* scene, PxConvexMesh* unitCylinderSweepMesh, PxVehicleFrame* frame, PxVehicleRoadGeometryState* roadGeomState, PxVehiclePhysXRoadGeometryQueryState* physxRoadGeometryState);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXRoadGeometrySceneQueryComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePhysXRoadGeometrySceneQueryComponent_delete(PxVehiclePhysXRoadGeometrySceneQueryComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePhysXRoadGeometrySceneQueryComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehiclePhysXRoadGeometrySceneQueryComponent_update_mut(PxVehiclePhysXRoadGeometrySceneQueryComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        /// <summary>
+        ///  Destory the attribute handles created by PxVehiclePvdAttributesCreate().
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehiclePvdAttributesRelease", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehiclePvdAttributesRelease(PxAllocatorCallback* allocator, PxVehiclePvdAttributeHandles* attributeHandles);
+
+        /// <summary>
+        ///  Create omnipvd objects that will be used to reflect an individual veicle in omnipvd.
+        ///
+        ///  PxVehiclePvdObjectCreate() must be called after PxVehiclePvdAttributesCreate().
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehiclePvdObjectCreate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehiclePvdObjectHandles* phys_PxVehiclePvdObjectCreate(uint nbWheels, uint nbAntirolls, uint maxNbPhysxMaterialFrictions, ulong contextHandle, PxAllocatorCallback* allocator);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireForceParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleTireForceParams PxVehicleTireForceParams_transformAndScale(PxVehicleTireForceParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireForceParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleTireForceParams_isValid(PxVehicleTireForceParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireForceParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleTireForceParams PxVehicleTireForceParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePVDComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehiclePVDComponent_delete(PxVehiclePVDComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehiclePVDComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehiclePVDComponent_update_mut(PxVehiclePVDComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleRigidBodyParams_transformAndScale", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleRigidBodyParams PxVehicleRigidBodyParams_transformAndScale(PxVehicleRigidBodyParams* self_, PxVehicleFrame* srcFrame, PxVehicleFrame* trgFrame, PxVehicleScale* srcScale, PxVehicleScale* trgScale);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleRigidBodyParams_isValid", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleRigidBodyParams_isValid(PxVehicleRigidBodyParams* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleRigidBodyParams_new", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVehicleRigidBodyParams PxVehicleRigidBodyParams_new();
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleRigidBodyComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleRigidBodyComponent_delete(PxVehicleRigidBodyComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleRigidBodyComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleRigidBodyComponent_update_mut(PxVehicleRigidBodyComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        /// <summary>
+        ///  Compute the quaternion of a wheel in the rigid body frame.
+        ///
+        ///  The quaterion of the wheel in the rigid body frame.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeWheelLocalOrientation", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxQuat phys_PxVehicleComputeWheelLocalOrientation(PxVehicleFrame* frame, PxVehicleSuspensionParams* suspensionParams, float camberAngle, float toeAngle, float steerAngle, float rotationAngle);
+
+        /// <summary>
+        ///  Compute the quaternion of a wheel in the world frame.
+        ///
+        ///  The quaterion of the wheel in the world frame.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeWheelOrientation", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxQuat phys_PxVehicleComputeWheelOrientation(PxVehicleFrame* frame, PxVehicleSuspensionParams* suspensionParams, float camberAngle, float toeAngle, float steerAngle, PxQuat* rigidBodyOrientation, float rotationAngle);
+
+        /// <summary>
+        ///  Compute the pose of the wheel in the rigid body frame.
+        ///
+        ///  The pose of the wheel in the rigid body frame.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeWheelLocalPose", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransform phys_PxVehicleComputeWheelLocalPose(PxVehicleFrame* frame, PxVehicleSuspensionParams* suspensionParams, PxVehicleSuspensionState* suspensionState, float camberAngle, float toeAngle, float steerAngle, float rotationAngle);
+
+        /// <summary>
+        ///  Compute the pose of the wheel in the rigid body frame.
+        ///
+        ///  The pose of the wheel in the rigid body frame.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeWheelLocalPose_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransform phys_PxVehicleComputeWheelLocalPose_1(PxVehicleFrame* frame, PxVehicleSuspensionParams* suspensionParams, PxVehicleSuspensionState* suspensionState, PxVehicleSuspensionComplianceState* suspensionComplianceState, float steerAngle, PxVehicleWheelRigidBody1dState* wheelState);
+
+        /// <summary>
+        ///  Compute the pose of the wheel in the world frame.
+        ///
+        ///  The pose of the wheel in the world frame.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeWheelPose", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransform phys_PxVehicleComputeWheelPose(PxVehicleFrame* frame, PxVehicleSuspensionParams* suspensionParams, PxVehicleSuspensionState* suspensionState, float camberAngle, float toeAngle, float steerAngle, PxTransform* rigidBodyPose, float rotationAngle);
+
+        /// <summary>
+        ///  Compute the pose of the wheel in the world frame.
+        ///
+        ///  The pose of the wheel in the world frame.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeWheelPose_1", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransform phys_PxVehicleComputeWheelPose_1(PxVehicleFrame* frame, PxVehicleSuspensionParams* suspensionParams, PxVehicleSuspensionState* suspensionState, PxVehicleSuspensionComplianceState* suspensionComplianceState, float steerAngle, PxTransform* rigidBodyPose, PxVehicleWheelRigidBody1dState* wheelState);
+
+        /// <summary>
+        ///  Check if the suspension could place the wheel on the ground or not.
+        ///
+        ///  True if the wheel connects to the ground, else false.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleIsWheelOnGround", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool phys_PxVehicleIsWheelOnGround(PxVehicleSuspensionState* suspState);
+
+        /// <summary>
+        ///  Compute suspension travel direction in the world frame.
+        ///
+        ///  The return value is the suspension travel direction in the world frame.
+        ///
+        ///  The suspension travel direction is used to perform queries against the road geometry.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeSuspensionDirection", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxVec3 phys_PxVehicleComputeSuspensionDirection(PxVehicleSuspensionParams* suspensionParams, PxTransform* rigidBodyPose);
+
+        /// <summary>
+        ///  Compute the start pose of a suspension query.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeWheelPoseForSuspensionQuery", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern PxTransform phys_PxVehicleComputeWheelPoseForSuspensionQuery(PxVehicleFrame* frame, PxVehicleSuspensionParams* suspensionParams, float steerAngle, PxTransform* rigidBodyPose);
+
+        /// <summary>
+        ///  Compute the start point, direction and length of a suspension scene raycast.
+        ///
+        ///  start, dir and dist together describe a raycast that begins at the top of wheel at maximum compression
+        ///  and ends at the bottom of wheel at maximum droop.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeSuspensionRaycast", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleComputeSuspensionRaycast(PxVehicleFrame* frame, PxVehicleWheelParams* wheelParams, PxVehicleSuspensionParams* suspensionParams, float steerAngle, PxTransform* rigidBodyPose, PxVec3* start, PxVec3* dir, float* dist);
+
+        /// <summary>
+        ///  Compute the start pose, direction and length of a suspension scene sweep.
+        ///
+        ///  start, dir and dist together describe a sweep that begins with the wheel placed at maximum
+        ///  compression and ends at the maximum droop pose.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeSuspensionSweep", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleComputeSuspensionSweep(PxVehicleFrame* frame, PxVehicleSuspensionParams* suspensionParams, float steerAngle, PxTransform* rigidBodyPose, PxTransform* start, PxVec3* dir, float* dist);
+
+        /// <summary>
+        ///  Compute the sprung masses of the suspension springs given (i) the number of sprung masses,
+        ///  (ii) coordinates of the sprung masses in the rigid body frame, (iii) the center of mass offset of the rigid body, (iv) the
+        ///  total mass of the rigid body, and (v) the direction of gravity
+        ///
+        ///  True if the sprung masses were successfully computed, false if the sprung masses were not successfully computed.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleComputeSprungMasses", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool phys_PxVehicleComputeSprungMasses(uint nbSprungMasses, PxVec3* sprungMassCoordinates, float totalMass, PxVehicleAxes gravityDirection, float* sprungMasses);
+
+        /// <summary>
+        ///  Compute the suspension compression and compression speed for a single suspension.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleSuspensionStateUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleSuspensionStateUpdate(PxVehicleWheelParams* wheelParams, PxVehicleSuspensionParams* suspensionParams, PxVehicleSuspensionStateCalculationParams* suspensionStateCalcParams, float suspensionStiffness, float suspensionDamping, float steerAngle, PxVehicleRoadGeometryState* roadGeometryState, PxVehicleRigidBodyState* rigidBodyState, float dt, PxVehicleFrame* frame, PxVec3* gravity, PxVehicleSuspensionState* suspState);
+
+        /// <summary>
+        ///  Compute the toe, camber and force application points that are affected by suspension compression.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleSuspensionComplianceUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleSuspensionComplianceUpdate(PxVehicleSuspensionParams* suspensionParams, PxVehicleSuspensionComplianceParams* complianceParams, PxVehicleSuspensionState* suspensionState, PxVehicleSuspensionComplianceState* complianceState);
+
+        /// <summary>
+        ///  Compute the suspension force and torque arising from suspension compression and speed.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleSuspensionForceUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleSuspensionForceUpdate(PxVehicleSuspensionParams* suspensionParams, PxVehicleSuspensionForceParams* suspensionForceParams, PxVehicleRoadGeometryState* roadGeometryState, PxVehicleSuspensionState* suspensionState, PxVehicleSuspensionComplianceState* complianceState, PxVehicleRigidBodyState* rigidBodyState, PxVec3* gravity, float vehicleMass, PxVehicleSuspensionForce* suspensionForce);
+
+        /// <summary>
+        ///  This API was introduced with the new Vehicle API for transition purposes but will be removed in a future version.
+        ///
+        ///  Compute the suspension force and torque arising from suspension compression and speed.
+        ///
+        ///  PxVehicleSuspensionLegacyForceUpdate implements the legacy force computation of PhysX 5.0 and earlier.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleSuspensionLegacyForceUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleSuspensionLegacyForceUpdate(PxVehicleSuspensionParams* suspensionParams, PxVehicleSuspensionForceLegacyParams* suspensionForceParams, PxVehicleRoadGeometryState* roadGeometryState, PxVehicleSuspensionState* suspensionState, PxVehicleSuspensionComplianceState* complianceState, PxVehicleRigidBodyState* rigidBodyState, PxVec3* gravity, PxVehicleSuspensionForce* suspensionForce);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleSuspensionComponent_delete(PxVehicleSuspensionComponent* self_);
+
+        /// <summary>
+        ///  Update the suspension state and suspension compliance state and use those updated states to compute suspension and anti-roll forces/torques
+        ///  to apply to the vehicle's rigid body.
+        ///
+        ///  The suspension and anti-roll forces/torques are computed in the world frame.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleSuspensionComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleSuspensionComponent_update_mut(PxVehicleSuspensionComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleLegacySuspensionComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleLegacySuspensionComponent_delete(PxVehicleLegacySuspensionComponent* self_);
+
+        /// <summary>
+        ///  Update the suspension state and suspension compliance state and use those updated states to compute suspension and anti-roll forces/torques
+        ///  to apply to the vehicle's rigid body.
+        ///
+        ///  The suspension and anti-roll forces are computed in the world frame.
+        ///
+        ///  PxVehicleLegacySuspensionComponent::update() implements legacy suspension behaviour.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "PxVehicleLegacySuspensionComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleLegacySuspensionComponent_update_mut(PxVehicleLegacySuspensionComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        /// <summary>
+        ///  This API was introduced with the new Vehicle API for transition purposes but will be removed in a future version.
+        ///
+        ///  Compute the longitudinal and lateral tire directions in the ground plane.
+        ///
+        ///  PxVehicleTireDirsLegacyUpdate replicates the tire direction calculation of PhysX 5.0 and earlier.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTireDirsLegacyUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleTireDirsLegacyUpdate(PxVehicleSuspensionParams* suspensionParams, float steerAngle, PxVehicleRoadGeometryState* roadGeometryState, PxVehicleRigidBodyState* rigidBodyState, PxVehicleFrame* frame, PxVehicleTireDirectionState* tireDirectionState);
+
+        /// <summary>
+        ///  Compute the longitudinal and lateral tire directions in the ground plane.
+        ///
+        ///  The difference between PxVehicleTireDirsUpdate and PxVehicleTireDirsLegacyUpdate is that
+        ///  PxVehicleTireDirsUpdate accounts for suspension compliance while PxVehicleTireDirsLegacyUpdate does not.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTireDirsUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleTireDirsUpdate(PxVehicleSuspensionParams* suspensionParams, float steerAngle, PxVec3* groundNormal, [MarshalAs(UnmanagedType.U1)] bool isWheelOnGround, PxVehicleSuspensionComplianceState* complianceState, PxVehicleRigidBodyState* rigidBodyState, PxVehicleFrame* frame, PxVehicleTireDirectionState* tireDirectionState);
+
+        /// <summary>
+        ///  Project the rigid body velocity at the tire  contact point along the tire longitudinal directions.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTireSlipSpeedsUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleTireSlipSpeedsUpdate(PxVehicleWheelParams* wheelParams, PxVehicleSuspensionParams* suspensionParams, float steerAngle, PxVehicleSuspensionState* suspensionStates, PxVehicleTireDirectionState* tireDirectionState, PxVehicleRigidBodyState* rigidBodyState, PxVehicleRoadGeometryState* roadGeometryState, PxVehicleFrame* frame, PxVehicleTireSpeedState* tireSpeedState);
+
+        /// <summary>
+        ///  Compute a tire's longitudinal and lateral slip angles.
+        ///
+        ///  Longitudinal slip angle has the following theoretical form: (wheelRotationSpeed*wheelRadius - longitudinalSpeed)/|longitudinalSpeed|
+        ///
+        ///  Lateral slip angle has the following theoretical form: atan(lateralSpeed/|longitudinalSpeed|)
+        ///
+        ///  The calculation of both longitudinal and lateral slip angles avoid a zero denominator using minimum values for the denominator set in
+        ///  tireSlipParams.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTireSlipsUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleTireSlipsUpdate(PxVehicleWheelParams* wheelParams, PxVehicleTireSlipParams* tireSlipParams, PxVehicleWheelActuationState* actuationState, PxVehicleTireSpeedState* tireSpeedState, PxVehicleWheelRigidBody1dState* wheelRigidBody1dState, PxVehicleTireSlipState* tireSlipState);
+
+        /// <summary>
+        ///  This API was introduced with the new Vehicle API for transition purposes but will be removed in a future version.
+        ///
+        ///  Compute a tire's longitudinal and lateral slip angles.
+        ///
+        ///  Longitudinal slip angle has the following theoretical form: (wheelRotationSpeed*wheelRadius - longitudinalSpeed)/|longitudinalSpeed|
+        ///
+        ///  Lateral slip angle has the following theoretical form: atan(lateralSpeed/|longitudinalSpeed|)
+        ///
+        ///  The calculation of both longitudinal and lateral slip angles avoid a zero denominator using minimum values for the denominator set in
+        ///  tireSlipParams.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTireSlipsLegacyUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleTireSlipsLegacyUpdate(PxVehicleWheelParams* wheelParams, PxVehicleTireSlipParams* tireSlipParams, PxVehicleWheelActuationState* actuationState, PxVehicleTireSpeedState* tireSpeedState, PxVehicleWheelRigidBody1dState* wheelRigidBody1dState, PxVehicleTireSlipState* tireSlipState);
+
+        /// <summary>
+        ///  Compute the camber angle of  the wheel
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTireCamberAnglesUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleTireCamberAnglesUpdate(PxVehicleSuspensionParams* suspensionParams, float steerAngle, PxVec3* groundNormal, [MarshalAs(UnmanagedType.U1)] bool isWheelOnGround, PxVehicleSuspensionComplianceState* complianceState, PxVehicleRigidBodyState* rigidBodyState, PxVehicleFrame* frame, PxVehicleTireCamberAngleState* tireCamberAngleState);
+
+        /// <summary>
+        ///  Compute the load and friction experienced by the tire.
+        ///
+        ///  If the suspension cannot place the wheel on the ground the tire load and friction will be 0.0.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTireGripUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleTireGripUpdate(PxVehicleTireForceParams* tireForceParams, float frictionCoefficient, [MarshalAs(UnmanagedType.U1)] bool isWheelOnGround, PxVehicleSuspensionForce* suspensionForce, PxVehicleTireSlipState* tireSlipState, PxVehicleTireGripState* tireGripState);
+
+        /// <summary>
+        ///  Set the tire longitudinal and lateral slip values to 0.0 in the event that the tire has entred tire sticky state. This is
+        ///  necessary to avoid both tire models being simultaneously active and interfering with each other.
+        ///
+        ///  This function should not be invoked if there is no subsequent component to implement the sticky tire model.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTireSlipsAccountingForStickyStatesUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleTireSlipsAccountingForStickyStatesUpdate(PxVehicleTireStickyState* tireStickyState, PxVehicleTireSlipState* tireSlipState);
+
+        /// <summary>
+        ///  Compute the longitudinal and lateral forces in the world frame that develop on the tire as a consequence of
+        ///  the tire's slip angles, friction and load.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleTireForcesUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleTireForcesUpdate(PxVehicleWheelParams* wheelParams, PxVehicleSuspensionParams* suspensionParams, PxVehicleTireForceParams* tireForceParams, PxVehicleSuspensionComplianceState* complianceState, PxVehicleTireGripState* tireGripState, PxVehicleTireDirectionState* tireDirectionState, PxVehicleTireSlipState* tireSlipState, PxVehicleTireCamberAngleState* tireCamberAngleState, PxVehicleRigidBodyState* rigidBodyState, PxVehicleTireForce* tireForce);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleTireComponent_delete(PxVehicleTireComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleTireComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleTireComponent_update_mut(PxVehicleTireComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleLegacyTireComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleLegacyTireComponent_delete(PxVehicleLegacyTireComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleLegacyTireComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleLegacyTireComponent_update_mut(PxVehicleLegacyTireComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        /// <summary>
+        ///  Forward integrate the rotation angle of a wheel
+        ///
+        ///  The rotation angle of the wheel plays no role in simulation but is important to compute the pose of the wheel for rendering.
+        ///
+        ///  At low speeds and large  timesteps, wheel rotation speed can become noisy due to singularities in the tire slip computations.
+        ///  At low speeds, therefore, the wheel speed used for integrating the angle is a blend of current angular speed and rolling angular speed if the
+        ///  wheel experiences neither brake nor drive torque and can be placed on the ground. The blended rotation speed gets stored in
+        ///  PxVehicleWheelRigidBody1dState::correctedRotationSpeed.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxVehicleWheelRotationAngleUpdate", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxVehicleWheelRotationAngleUpdate(PxVehicleWheelParams* wheelParams, PxVehicleWheelActuationState* actuationState, PxVehicleSuspensionState* suspensionState, PxVehicleTireSpeedState* tireSpeedState, float thresholdForwardSpeedForWheelAngleIntegration, float dt, PxVehicleWheelRigidBody1dState* wheelRigidBody1dState);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelComponent_delete", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void PxVehicleWheelComponent_delete(PxVehicleWheelComponent* self_);
+
+        [DllImport(__DllName, EntryPoint = "PxVehicleWheelComponent_update_mut", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool PxVehicleWheelComponent_update_mut(PxVehicleWheelComponent* self_, float dt, PxVehicleSimulationContext* context);
+
+        /// <summary>
+        ///  Initialize the PhysX Vehicle library.
+        ///
+        ///  This should be called before calling any functions or methods in extensions which may require allocation.
+        ///
+        ///  This function does not need to be called before creating a PxDefaultAllocator object.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxInitVehicleExtension", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.U1)]
+        public static extern bool phys_PxInitVehicleExtension(PxFoundation* foundation);
+
+        /// <summary>
+        ///  Shut down the PhysX Vehicle library.
+        ///
+        ///  This function should be called to cleanly shut down the PhysX Vehicle library before application exit.
+        ///
+        ///  This function is required to be called to release foundation usage.
+        /// </summary>
+        [DllImport(__DllName, EntryPoint = "phys_PxCloseVehicleExtension", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
+        public static extern void phys_PxCloseVehicleExtension();
 
         /// <summary>
         ///  Connects the SDK to the PhysX Visual Debugger application.
@@ -15557,6 +19809,15 @@ namespace PhysX
         public uint constantBlockSize;
     }
 
+    /// <summary>
+    ///  Opaque handle retained for compatibility with the removed PhysX assert-handler type.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxAssertHandler
+    {
+        public fixed byte _unused[1];
+    }
+
     [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxAllocatorCallback
     {
@@ -15564,42 +19825,7 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxAssertHandler
-    {
-        public void* vtable_;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxFoundation
-    {
-        public void* vtable_;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxVirtualAllocatorCallback
-    {
-        public void* vtable_;
-    }
-
-    [StructLayout(LayoutKind.Explicit)]
-    public unsafe partial struct PxTempAllocatorChunk
-    {
-        [FieldOffset(0)]
-        public PxTempAllocatorChunk* mNext;
-        [FieldOffset(0)]
-        public uint mIndex;
-        [FieldOffset(0)]
-        public fixed byte mPad[16];
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxErrorCallback
-    {
-        public void* vtable_;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxAllocationListener
     {
         public void* vtable_;
     }
@@ -15618,6 +19844,18 @@ namespace PhysX
 
     [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxOutputStream
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxErrorCallback
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxAllocationListener
     {
         public void* vtable_;
     }
@@ -15695,36 +19933,39 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxBVHRaycastCallback
+    public unsafe partial struct PxSimulationFilterCallback
     {
         public void* vtable_;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxBVHOverlapCallback
+    public unsafe partial struct PxCudaContextManager
+    {
+        public fixed byte _unused[1];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxParticleSystemCallback
     {
         public void* vtable_;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxBVHTraversalCallback
+    public unsafe partial struct PxMultiCallback
     {
         public void* vtable_;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxCustomGeometryCallbacks
+    public unsafe partial struct PxContactBuffer
     {
-        public void* vtable_;
+        public fixed byte _unused[1];
     }
 
-    [StructLayout(LayoutKind.Explicit)]
-    public unsafe partial struct Px1DConstraintMods
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxRenderOutput
     {
-        [FieldOffset(0)]
-        public PxSpringModifiers spring;
-        [FieldOffset(0)]
-        public PxRestitutionModifiers bounce;
+        public fixed byte _unused[1];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -15764,18 +20005,6 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxSimulationFilterCallback
-    {
-        public void* vtable_;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxLockedData
-    {
-        public void* vtable_;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxOmniPvd
     {
         public fixed byte _unused[1];
@@ -15789,6 +20018,12 @@ namespace PhysX
 
     [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxQueryFilterCallback
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxDirectGPUAPI
     {
         public void* vtable_;
     }
@@ -15837,6 +20072,12 @@ namespace PhysX
 
     [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxBroadPhaseCallback
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxPostSolveCallback
     {
         public void* vtable_;
     }
@@ -15896,6 +20137,12 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxSDFBuilder
+    {
+        public fixed byte _unused[1];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxDefaultAllocator
     {
         public void* vtable_;
@@ -15932,12 +20179,6 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxCooking
-    {
-        public fixed byte _unused[1];
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct XmlMemoryAllocator
     {
         public fixed byte _unused[1];
@@ -15968,6 +20209,144 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePvdAttributeHandles
+    {
+        public fixed byte _unused[1];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleDirectDriveCommandResponseComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleDirectDriveActuationStateComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleDirectDrivetrainComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleEngineDriveCommandResponseComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleMultiWheelDriveDifferentialStateComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleFourWheelDriveDifferentialStateComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTankDriveDifferentialStateComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleLegacyFourWheelDriveDifferentialStateComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleEngineDriveActuationStateComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleEngineDrivetrainComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXActorBeginComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXActorEndComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXConstraintComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXRoadGeometrySceneQueryComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePvdObjectHandles
+    {
+        public fixed byte _unused[1];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleRigidBodyComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleSuspensionComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleLegacySuspensionComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleLegacyTireComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleWheelComponent
+    {
+        public void* vtable_;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxPvd
     {
         public void* vtable_;
@@ -15980,6 +20359,64 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVec3
+    {
+        public float x;
+        public float y;
+        public float z;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxExtendedVec3
+    {
+        public double x;
+        public double y;
+        public double z;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVec4
+    {
+        public float x;
+        public float y;
+        public float z;
+        public float w;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxQuat
+    {
+        public float x;
+        public float y;
+        public float z;
+        public float w;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxMat33
+    {
+        public PxVec3 column0;
+        public PxVec3 column1;
+        public PxVec3 column2;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxMat44
+    {
+        public PxVec4 column0;
+        public PxVec4 column1;
+        public PxVec4 column2;
+        public PxVec4 column3;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxTransform
+    {
+        public PxQuat q;
+        public PxVec3 p;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxAllocator
     {
         public fixed byte structgen_pad0[1];
@@ -15989,12 +20426,6 @@ namespace PhysX
     public unsafe partial struct PxRawAllocator
     {
         public fixed byte structgen_pad0[1];
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxVirtualAllocator
-    {
-        public fixed byte structgen_pad0[16];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16016,51 +20447,18 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxVec3
-    {
-        public float x;
-        public float y;
-        public float z;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxVec3Padded
     {
-        public float x;
-        public float y;
-        public float z;
+        public fixed byte structgen_pad0[12];
         public uint padding;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxQuat
-    {
-        public float x;
-        public float y;
-        public float z;
-        public float w;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxTransform
-    {
-        public PxQuat q;
-        public PxVec3 p;
     }
 
     [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxTransformPadded
     {
-        public PxTransform transform;
+        public PxQuat q;
+        public PxVec3 p;
         public uint padding;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxMat33
-    {
-        public PxVec3 column0;
-        public PxVec3 column1;
-        public PxVec3 column2;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16083,21 +20481,19 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxVec4
+    public unsafe partial struct PxFPUGuard
     {
-        public float x;
-        public float y;
-        public float z;
-        public float w;
+        public fixed byte structgen_pad0[32];
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxMat44
+    public unsafe partial struct PxSIMDGuard
     {
-        public PxVec4 column0;
-        public PxVec4 column1;
-        public PxVec4 column2;
-        public PxVec4 column3;
+#if ANDROID
+        public fixed byte structgen_pad0[1];
+#else
+        public fixed byte structgen_pad0[8];
+#endif
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16143,7 +20539,19 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxSocket
+    {
+        public fixed byte structgen_pad0[16];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxSyncImpl
+    {
+        public fixed byte structgen_pad0[1];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxThreadImpl
     {
         public fixed byte structgen_pad0[1];
     }
@@ -16162,28 +20570,11 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxVec2
-    {
-        public float x;
-        public float y;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxStridedData
-    {
-        public uint stride;
-        public fixed byte structgen_pad0[4];
-        public void* data;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxBoundedData
     {
-        public uint stride;
-        public fixed byte structgen_pad0[4];
         public void* data;
+        public uint stride;
         public uint count;
-        public fixed byte structgen_pad1[4];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16282,6 +20673,14 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxReportCallbackBase
+    {
+        public fixed byte structgen_pad0[8];
+        public uint mCapacity;
+        public uint mSize;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxBVH
     {
         public fixed byte structgen_pad0[16];
@@ -16369,15 +20768,30 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxParticleSystemGeometry
+    public unsafe partial struct PxFilterData
     {
-        public fixed byte structgen_pad0[4];
-        public float mTypePadding;
-        public PxParticleSolverType mSolverType;
+        public uint word0;
+        public uint word1;
+        public uint word2;
+        public uint word3;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxHairSystemGeometry
+    public unsafe partial struct PxActor
+    {
+        public fixed byte structgen_pad0[16];
+        public void* userData;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxPBDParticleSystem
+    {
+        public fixed byte structgen_pad0[16];
+        public void* userData;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxParticleSystemGeometry
     {
         public fixed byte structgen_pad0[4];
         public float mTypePadding;
@@ -16446,15 +20860,17 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxQueryThreadContext
+    public unsafe partial struct PxGeomIndexClosePair
     {
-        public fixed byte structgen_pad0[1];
+        public uint id0;
+        public uint id1;
+        public float distance;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxCustomGeometryType
+    public unsafe partial struct PxQueryThreadContext
     {
-        public fixed byte structgen_pad0[4];
+        public fixed byte structgen_pad0[1];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16462,7 +20878,15 @@ namespace PhysX
     {
         public fixed byte structgen_pad0[4];
         public float mTypePadding;
-        public PxCustomGeometryCallbacks* callbacks;
+        public fixed byte structgen_pad1[8];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxConvexCoreGeometry
+    {
+        public fixed byte structgen_pad0[4];
+        public float mTypePadding;
+        public fixed byte structgen_pad1[32];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16492,7 +20916,7 @@ namespace PhysX
         public uint nbColumns;
         public PxHeightFieldFormat format;
         public fixed byte structgen_pad0[4];
-        public PxStridedData samples;
+        public PxBoundedData samples;
         public float convexEdgeThreshold;
         public PxHeightFieldFlags flags;
         public fixed byte structgen_pad1[2];
@@ -16533,7 +20957,7 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxSoftBodyAuxData
+    public unsafe partial struct PxDeformableVolumeAuxData
     {
         public fixed byte structgen_pad0[16];
     }
@@ -16545,7 +20969,7 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxSoftBodyMesh
+    public unsafe partial struct PxDeformableVolumeMesh
     {
         public fixed byte structgen_pad0[16];
     }
@@ -16557,7 +20981,7 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxSoftBodyCollisionData
+    public unsafe partial struct PxDeformableVolumeCollisionData
     {
         public fixed byte structgen_pad0[1];
     }
@@ -16569,7 +20993,7 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxSoftBodySimulationData
+    public unsafe partial struct PxDeformableVolumeSimulationData
     {
         public fixed byte structgen_pad0[1];
     }
@@ -16587,33 +21011,10 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxActor
-    {
-        public fixed byte structgen_pad0[16];
-        public void* userData;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxAggregate
     {
         public fixed byte structgen_pad0[16];
         public void* userData;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxSpringModifiers
-    {
-        public float stiffness;
-        public float damping;
-        public fixed byte structgen_pad0[8];
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxRestitutionModifiers
-    {
-        public float restitution;
-        public float velocityThreshold;
-        public fixed byte structgen_pad0[8];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16627,11 +21028,10 @@ namespace PhysX
         public float minImpulse;
         public PxVec3 angular1;
         public float maxImpulse;
-        public Px1DConstraintMods mods;
-        public float forInternalUse;
+        public fixed byte structgen_pad0[8];
         public ushort flags;
         public ushort solveHint;
-        public fixed byte structgen_pad0[8];
+        public uint pad;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16665,8 +21065,7 @@ namespace PhysX
         public uint nodeIndex;
         public float maxContactImpulse;
         public PxTransform body2World;
-        public ushort pad;
-        public fixed byte structgen_pad0[2];
+        public uint pad;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16679,10 +21078,10 @@ namespace PhysX
         public uint linkIndexB;
         public byte* constraint;
         public void* writeBack;
+        public void* writeBackFriction;
         public ushort progressA;
         public ushort progressB;
-        public ushort constraintLengthOver16;
-        public fixed byte padding[10];
+        public fixed byte structgen_pad1[4];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16704,7 +21103,6 @@ namespace PhysX
         public float linBreakForce;
         public float angBreakForce;
         public float minResponseThreshold;
-        public void* writeback;
         [MarshalAs(UnmanagedType.U1)] public bool disablePreprocessing;
         [MarshalAs(UnmanagedType.U1)] public bool improvedSlerp;
         [MarshalAs(UnmanagedType.U1)] public bool driveLimitsAreForces;
@@ -16712,7 +21110,6 @@ namespace PhysX
         [MarshalAs(UnmanagedType.U1)] public bool disableConstraint;
         public fixed byte structgen_pad1[3];
         public PxVec3Padded body0WorldOffset;
-        public fixed byte structgen_pad2[8];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16723,11 +21120,29 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxPerformanceEnvelope
+    {
+        public float maxEffort;
+        public float maxActuatorVelocity;
+        public float velocityDependentResistance;
+        public float speedEffortGradient;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxJointFrictionParams
+    {
+        public float staticFrictionEffort;
+        public float dynamicFrictionEffort;
+        public float viscousFrictionCoefficient;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxArticulationDrive
     {
         public float stiffness;
         public float damping;
         public float maxForce;
+        public PxPerformanceEnvelope envelope;
         public PxArticulationDriveType driveType;
     }
 
@@ -16735,8 +21150,8 @@ namespace PhysX
     public unsafe partial struct PxTGSSolverBodyVel
     {
         public PxVec3 linearVelocity;
-        public ushort nbStaticInteractions;
         public ushort maxDynamicPartition;
+        public ushort nbStaticInteractions;
         public PxVec3 angularVelocity;
         public uint partitionMask;
         public PxVec3 deltaAngDt;
@@ -16750,7 +21165,8 @@ namespace PhysX
     [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxTGSSolverBodyTxInertia
     {
-        public PxTransform deltaBody2World;
+        public PxQuat deltaBody2WorldQ;
+        public PxVec3 body2WorldP;
         public PxMat33 sqrtInvInertia;
     }
 
@@ -16780,15 +21196,12 @@ namespace PhysX
         public PxTGSSolverBodyData* bodyData1;
         public PxTransform bodyFrame0;
         public PxTransform bodyFrame1;
-        public BodyState bodyState0;
-        public BodyState bodyState1;
-        public fixed byte structgen_pad0[8];
+        public fixed byte structgen_pad0[16];
         public Px1DConstraint* rows;
         public uint numRows;
         public float linBreakForce;
         public float angBreakForce;
         public float minResponseThreshold;
-        public void* writeback;
         [MarshalAs(UnmanagedType.U1)] public bool disablePreprocessing;
         [MarshalAs(UnmanagedType.U1)] public bool improvedSlerp;
         [MarshalAs(UnmanagedType.U1)] public bool driveLimitsAreForces;
@@ -16798,7 +21211,6 @@ namespace PhysX
         public PxVec3Padded body0WorldOffset;
         public PxVec3Padded cA2w;
         public PxVec3Padded cB2w;
-        public fixed byte structgen_pad2[8];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16844,6 +21256,13 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxArticulationMimicJoint
+    {
+        public fixed byte structgen_pad0[16];
+        public void* userData;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxSpatialForce
     {
         public PxVec3 force;
@@ -16877,28 +21296,28 @@ namespace PhysX
         public PxSpatialForce* externalForces;
         public float* denseJacobian;
         public float* massMatrix;
+        public float* coriolisForce;
+        public float* gravityCompensationForce;
+        public float* centroidalMomentumMatrix;
+        public float* centroidalMomentumBias;
         public float* jointVelocity;
         public float* jointAcceleration;
         public float* jointPosition;
         public float* jointForce;
-        public float* jointSolverForces;
+        public float* jointTargetPositions;
+        public float* jointTargetVelocities;
         public PxSpatialVelocity* linkVelocity;
         public PxSpatialVelocity* linkAcceleration;
+        public PxSpatialForce* linkIncomingJointForce;
+        public PxVec3* linkForce;
+        public PxVec3* linkTorque;
         public PxArticulationRootLinkData* rootLinkData;
-        public PxSpatialForce* sensorForces;
         public float* coefficientMatrix;
         public float* lambda;
         public void* scratchMemory;
         public void* scratchAllocator;
         public uint version;
         public fixed byte structgen_pad0[4];
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxArticulationSensor
-    {
-        public fixed byte structgen_pad0[16];
-        public void* userData;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16950,22 +21369,12 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxConeLimitedConstraint
-    {
-        public PxVec3 mAxis;
-        public float mAngle;
-        public float mLowLimit;
-        public float mHighLimit;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxConstraintShaderTable
     {
         public void* solverPrep;
-        public fixed byte structgen_pad0[8];
         public void* visualize;
         public PxConstraintFlag flag;
-        public fixed byte structgen_pad1[4];
+        public fixed byte structgen_pad0[4];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -16976,18 +21385,23 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxMassModificationProps
+    public unsafe partial struct PxBaseMaterial
     {
-        public float mInvMassScale0;
-        public float mInvInertiaScale0;
-        public float mInvMassScale1;
-        public float mInvInertiaScale1;
+        public fixed byte structgen_pad0[16];
+        public void* userData;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxMaterial
+    {
+        public fixed byte structgen_pad0[16];
+        public void* userData;
     }
 
     [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxContactPatch
     {
-        public PxMassModificationProps mMassModification;
+        public PxConstraintInvMassScale mMassModification;
         public PxVec3 normal;
         public float restitution;
         public float dynamicFriction;
@@ -17031,6 +21445,12 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxFrictionAnchorStreamIterator
+    {
+        public fixed byte structgen_pad0[32];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxContactSet
     {
         public fixed byte structgen_pad0[16];
@@ -17046,40 +21466,52 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxBaseMaterial
+    public unsafe partial struct PxDeformableBody
     {
         public fixed byte structgen_pad0[16];
         public void* userData;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxFEMMaterial
+    public unsafe partial struct PxDeformableSurface
     {
         public fixed byte structgen_pad0[16];
         public void* userData;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxFilterData
-    {
-        public uint word0;
-        public uint word1;
-        public uint word2;
-        public uint word3;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxMaterial
+    public unsafe partial struct PxDeformableMaterial
     {
         public fixed byte structgen_pad0[16];
         public void* userData;
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxGpuParticleBufferIndexPair
+    public unsafe partial struct PxDeformableSurfaceMaterial
     {
-        public uint systemIndex;
-        public uint bufferIndex;
+        public fixed byte structgen_pad0[16];
+        public void* userData;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxDeformableVolume
+    {
+        public fixed byte structgen_pad0[16];
+        public void* userData;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxDeformableVolumeMaterial
+    {
+        public fixed byte structgen_pad0[16];
+        public void* userData;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxParticleBuffer
+    {
+        public fixed byte structgen_pad0[16];
+        public void* userData;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -17099,7 +21531,44 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxParticleMaterial
+    public unsafe partial struct PxParticleAndDiffuseBuffer
+    {
+        public fixed byte structgen_pad0[16];
+        public void* userData;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxPBDMaterial
+    {
+        public fixed byte structgen_pad0[16];
+        public void* userData;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxDeformableAttachmentData
+    {
+        public fixed byte/* PxActor, this length is invalid so must keep pointer and can't edit from C# */ actor[2];
+        public fixed byte/* PxDeformableAttachmentTargetType, this length is invalid so must keep pointer and can't edit from C# */ type_[2];
+        public fixed byte structgen_pad0[64];
+        public fixed byte/* PxTransform, this length is invalid so must keep pointer and can't edit from C# */ pose[2];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxDeformableAttachment
+    {
+        public fixed byte structgen_pad0[16];
+        public void* userData;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxDeformableElementFilterData
+    {
+        public fixed byte/* PxActor, this length is invalid so must keep pointer and can't edit from C# */ actor[2];
+        public fixed byte structgen_pad0[64];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxDeformableElementFilter
     {
         public fixed byte structgen_pad0[16];
         public void* userData;
@@ -17255,6 +21724,17 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxArticulationGPUAPIMaxCounts
+    {
+        public uint maxDofs;
+        public uint maxLinks;
+        public uint maxFixedTendons;
+        public uint maxFixedTendonJoints;
+        public uint maxSpatialTendons;
+        public uint maxSpatialTendonAttachments;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxSceneQueryDesc
     {
         public PxPruningStructureType staticStructure;
@@ -17293,16 +21773,27 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxGpuBroadPhaseDesc
+    {
+        public byte gpuBroadPhaseNbBitsShiftX;
+        public byte gpuBroadPhaseNbBitsShiftY;
+        public byte gpuBroadPhaseNbBitsShiftZ;
+        public byte gpuBroadPhaseNbBitsEnvIDX;
+        public byte gpuBroadPhaseNbBitsEnvIDY;
+        public byte gpuBroadPhaseNbBitsEnvIDZ;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxBroadPhaseDesc
     {
         public PxBroadPhaseType mType;
         public fixed byte structgen_pad0[4];
         public ulong mContextID;
-        public fixed byte structgen_pad1[8];
+        public PxCudaContextManager* mContextManager;
         public uint mFoundLostPairsCapacity;
         [MarshalAs(UnmanagedType.U1)] public bool mDiscardStaticVsKinematic;
         [MarshalAs(UnmanagedType.U1)] public bool mDiscardKinematicVsKinematic;
-        public fixed byte structgen_pad2[2];
+        public fixed byte structgen_pad1[2];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -17356,20 +21847,19 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxgDynamicsMemoryConfig
+    public unsafe partial struct PxGpuDynamicsMemoryConfig
     {
-        public uint tempBufferCapacity;
+        public ulong tempBufferCapacity;
         public uint maxRigidContactCount;
         public uint maxRigidPatchCount;
         public uint heapCapacity;
         public uint foundLostPairsCapacity;
         public uint foundLostAggregatePairsCapacity;
         public uint totalAggregatePairsCapacity;
-        public uint maxSoftBodyContacts;
-        public uint maxFemClothContacts;
+        public uint maxDeformableSurfaceContacts;
+        public uint maxDeformableVolumeContacts;
         public uint maxParticleContacts;
         public uint collisionStackSize;
-        public uint maxHairContacts;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -17388,6 +21878,8 @@ namespace PhysX
         public PxSimulationEventCallback* simulationEventCallback;
         public PxContactModifyCallback* contactModifyCallback;
         public PxCCDContactModifyCallback* ccdContactModifyCallback;
+        public PxPostSolveCallback* deformableSurfacePostSolveCallback;
+        public PxPostSolveCallback* deformableVolumePostSolveCallback;
         public void* filterShaderData;
         public uint filterShaderDataSize;
         public fixed byte structgen_pad0[4];
@@ -17398,6 +21890,7 @@ namespace PhysX
         public PxBroadPhaseType broadPhaseType;
         public fixed byte structgen_pad1[4];
         public PxBroadPhaseCallback* broadPhaseCallback;
+        public PxGpuBroadPhaseDesc* gpuBroadPhaseDesc;
         public PxSceneLimits limits;
         public PxFrictionType frictionType;
         public PxSolverType solverType;
@@ -17406,7 +21899,7 @@ namespace PhysX
         public float frictionCorrelationDistance;
         public PxSceneFlags flags;
         public PxCpuDispatcher* cpuDispatcher;
-        public fixed byte structgen_pad2[8];
+        public PxCudaContextManager* cudaContextManager;
         public void* userData;
         public uint solverBatchSize;
         public uint solverArticulationBatchSize;
@@ -17419,13 +21912,29 @@ namespace PhysX
         public float ccdMaxSeparation;
         public float wakeCounterResetValue;
         public PxBounds3 sanityBounds;
-        public PxgDynamicsMemoryConfig gpuDynamicsConfig;
+        public PxGpuDynamicsMemoryConfig gpuDynamicsConfig;
         public uint gpuMaxNumPartitions;
         public uint gpuMaxNumStaticPartitions;
         public uint gpuComputeVersion;
         public uint contactPairSlabSize;
         public PxSceneQuerySystem* sceneQuerySystem;
-        public fixed byte structgen_pad3[8];
+        public fixed byte structgen_pad2[8];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxGpuDynamicsMemoryConfigStatistics
+    {
+        public ulong tempBufferCapacity;
+        public uint rigidContactCount;
+        public uint rigidPatchCount;
+        public uint foundLostPairs;
+        public uint foundLostAggregatePairs;
+        public uint totalAggregatePairs;
+        public uint deformableSurfaceContacts;
+        public uint deformableVolumeContacts;
+        public uint softbodyContacts;
+        public uint particleContacts;
+        public uint collisionStackSize;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -17454,9 +21963,8 @@ namespace PhysX
         public uint nbPartitions;
         public fixed byte structgen_pad0[4];
         public ulong gpuMemParticles;
-        public ulong gpuMemSoftBodies;
-        public ulong gpuMemFEMCloths;
-        public ulong gpuMemHairSystems;
+        public ulong gpuMemDeformableSurfaces;
+        public ulong gpuMemDeformableVolumes;
         public ulong gpuMemHeap;
         public ulong gpuMemHeapBroadPhase;
         public ulong gpuMemHeapNarrowPhase;
@@ -17465,45 +21973,19 @@ namespace PhysX
         public ulong gpuMemHeapSimulation;
         public ulong gpuMemHeapSimulationArticulation;
         public ulong gpuMemHeapSimulationParticles;
-        public ulong gpuMemHeapSimulationSoftBody;
-        public ulong gpuMemHeapSimulationFEMCloth;
-        public ulong gpuMemHeapSimulationHairSystem;
+        public ulong gpuMemHeapSimulationDeformableSurface;
+        public ulong gpuMemHeapSimulationDeformableVolume;
         public ulong gpuMemHeapParticles;
-        public ulong gpuMemHeapSoftBodies;
-        public ulong gpuMemHeapFEMCloths;
-        public ulong gpuMemHeapHairSystems;
+        public ulong gpuMemHeapDeformableSurfaces;
+        public ulong gpuMemHeapDeformableVolumes;
         public ulong gpuMemHeapOther;
+        public PxGpuDynamicsMemoryConfigStatistics gpuDynamicsMemoryConfigStatistics;
         public uint nbBroadPhaseAdds;
         public uint nbBroadPhaseRemoves;
         public fixed uint nbDiscreteContactPairs[11];
         public fixed uint nbCCDPairs[11];
         public fixed uint nbModifiedContactPairs[11];
         public fixed uint nbTriggerPairs[11];
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxGpuBodyData
-    {
-        public PxQuat quat;
-        public PxVec4 pos;
-        public PxVec4 linVel;
-        public PxVec4 angVel;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxGpuActorPair
-    {
-        public uint srcIndex;
-        public fixed byte structgen_pad0[4];
-        public PxNodeIndex nodeIndex;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxIndexDataPair
-    {
-        public uint index;
-        public fixed byte structgen_pad0[4];
-        public void* data;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -17600,12 +22082,20 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxContactPairFrictionAnchor
+    {
+        public PxVec3 position;
+        public PxVec3 impulse;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxContactPair
     {
         public fixed byte/* PxShape, this length is invalid so must keep pointer and can't edit from C# */ shapes[2];
         public byte* contactPatches;
         public byte* contactPoints;
         public float* contactImpulses;
+        public byte* frictionPatches;
         public uint requiredBufferSize;
         public byte contactCount;
         public byte patchCount;
@@ -17638,28 +22128,9 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxFEMParameters
-    {
-        public float velocityDamping;
-        public float settlingThreshold;
-        public float sleepThreshold;
-        public float sleepDamping;
-        public float selfCollisionFilterDistance;
-        public float selfCollisionStressTolerance;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxPruningStructure
     {
         public fixed byte structgen_pad0[16];
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxExtendedVec3
-    {
-        public double x;
-        public double y;
-        public double z;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -17817,11 +22288,17 @@ namespace PhysX
         public byte clientID;
         public fixed byte structgen_pad3[6];
         public void* userData;
+#if ANDROID
+        public fixed byte structgen_pad4[4];
+#else
         public fixed byte structgen_pad4[8];
+#endif
         public float halfHeight;
         public float halfSideExtent;
         public float halfForwardExtent;
+#if !ANDROID
         public fixed byte structgen_pad5[4];
+#endif
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -17848,11 +22325,17 @@ namespace PhysX
         public byte clientID;
         public fixed byte structgen_pad3[6];
         public void* userData;
+#if ANDROID
+        public fixed byte structgen_pad4[4];
+#else
         public fixed byte structgen_pad4[8];
+#endif
         public float radius;
         public float height;
         public PxCapsuleClimbingMode climbingMode;
+#if !ANDROID
         public fixed byte structgen_pad5[4];
+#endif
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -17880,6 +22363,8 @@ namespace PhysX
         public PxBounds3 sdfBounds;
         public float narrowBandThicknessRelativeToSdfBoundsDiagonal;
         public uint numThreadsForSdfConstruction;
+        public PxSimpleTriangleMesh baseMesh;
+        public PxSDFBuilder* sdfBuilder;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -17903,6 +22388,8 @@ namespace PhysX
         public PxMeshFlags flags;
         public fixed byte structgen_pad0[22];
         public PxSDFDesc* sdfDesc;
+        public float geomEpsilon;
+        public fixed byte structgen_pad1[4];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -17917,9 +22404,16 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxSoftBodySimulationDataDesc
+    public unsafe partial struct PxDeformableVolumeSimulationDataDesc
     {
         public PxBoundedData vertexToTet;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxBVH33MidphaseDesc
+    {
+        public float meshSizePerformanceTradeOff;
+        public PxMeshCookingHint meshCookingHint;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -17960,6 +22454,8 @@ namespace PhysX
         public PxTolerancesScale scale;
         public PxMeshPreprocessingFlags meshPreprocessParams;
         public float meshWeldTolerance;
+        public float meshAreaMinLimit;
+        public float meshEdgeLengthMaxLimit;
         public PxMidphaseDesc midphaseDesc;
         public uint gaussMapLimit;
         public float maxWeightRatioInTet;
@@ -17968,7 +22464,7 @@ namespace PhysX
     [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxDefaultMemoryOutputStream
     {
-        public fixed byte structgen_pad0[32];
+        public fixed byte structgen_pad0[40];
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -18011,22 +22507,6 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxJacobianRow
-    {
-        public PxVec3 linear0;
-        public PxVec3 linear1;
-        public PxVec3 angular0;
-        public PxVec3 angular1;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxContactJoint
-    {
-        public fixed byte structgen_pad0[16];
-        public void* userData;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxFixedJoint
     {
         public fixed byte structgen_pad0[16];
@@ -18040,7 +22520,6 @@ namespace PhysX
         public float bounceThreshold;
         public float stiffness;
         public float damping;
-        public float contactDistance_deprecated;
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -18050,7 +22529,6 @@ namespace PhysX
         public float bounceThreshold;
         public float stiffness;
         public float damping;
-        public float contactDistance_deprecated;
         public float value;
     }
 
@@ -18061,7 +22539,6 @@ namespace PhysX
         public float bounceThreshold;
         public float stiffness;
         public float damping;
-        public float contactDistance_deprecated;
         public float upper;
         public float lower;
     }
@@ -18073,7 +22550,6 @@ namespace PhysX
         public float bounceThreshold;
         public float stiffness;
         public float damping;
-        public float contactDistance_deprecated;
         public float upper;
         public float lower;
     }
@@ -18085,7 +22561,6 @@ namespace PhysX
         public float bounceThreshold;
         public float stiffness;
         public float damping;
-        public float contactDistance_deprecated;
         public float yAngle;
         public float zAngle;
     }
@@ -18097,7 +22572,6 @@ namespace PhysX
         public float bounceThreshold;
         public float stiffness;
         public float damping;
-        public float contactDistance_deprecated;
         public float yAngleMin;
         public float yAngleMax;
         public float zAngleMin;
@@ -18179,13 +22653,6 @@ namespace PhysX
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe partial struct PxXmlMiscParameter
-    {
-        public PxVec3 upVector;
-        public PxTolerancesScale scale;
-    }
-
-    [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxPoissonSampler
     {
         public fixed byte structgen_pad0[8];
@@ -18194,7 +22661,11 @@ namespace PhysX
     [StructLayout(LayoutKind.Sequential)]
     public unsafe partial struct PxTriangleMeshPoissonSampler
     {
+#if ANDROID
+        public fixed byte structgen_pad0[8];
+#else
         public fixed byte structgen_pad0[24];
+#endif
     }
 
     [StructLayout(LayoutKind.Sequential)]
@@ -18209,34 +22680,707 @@ namespace PhysX
     public unsafe partial struct PxRepXInstantiationArgs
     {
         public fixed byte structgen_pad0[8];
-        public PxCooking* cooker;
+        public PxCookingParams* cooker;
         public PxStringTable* stringTable;
     }
 
-
-    /// <summary>
-    ///  enum for empty constructor tag
-    /// </summary>
-    public enum PxEMPTY : int
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleComponentSequence
     {
-        PxEmpty = 0,
+        public fixed byte structgen_pad0[808];
     }
 
-    /// <summary>
-    ///  enum for zero constructor tag for vectors and matrices
-    /// </summary>
-    public enum PxZERO : int
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleAxleDescription
     {
-        PxZero = 0,
+        public uint nbAxles;
+        public fixed uint nbWheelsPerAxle[20];
+        public fixed uint axleToWheelIds[20];
+        public fixed uint wheelIdsInAxleOrder[20];
+        public uint nbWheels;
     }
 
-    /// <summary>
-    ///  enum for identity constructor flag for quaternions, transforms, and matrices
-    /// </summary>
-    public enum PxIDENTITY : int
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleFrame
     {
-        PxIdentity = 0,
+        public PxVehicleAxes lngAxis;
+        public PxVehicleAxes latAxis;
+        public PxVehicleAxes vrtAxis;
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleScale
+    {
+        public float scale;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireSlipParams
+    {
+        public float minLatSlipDenominator;
+        public float minPassiveLongSlipDenominator;
+        public float minActiveLongSlipDenominator;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireAxisStickyParams
+    {
+        public float thresholdSpeed;
+        public float thresholdTime;
+        public float damping;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireStickyParams
+    {
+        public fixed byte/* PxVehicleTireAxisStickyParams, this length is invalid so must keep pointer and can't edit from C# */ stickyParams[2];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePvdContext
+    {
+        public PxVehiclePvdAttributeHandles* attributeHandles;
+        public fixed byte structgen_pad0[8];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleSimulationContext
+    {
+        public PxVec3 gravity;
+        public PxVehicleFrame frame;
+        public PxVehicleScale scale;
+        public PxVehicleTireSlipParams tireSlipParams;
+        public PxVehicleTireStickyParams tireStickyParams;
+        public float thresholdForwardSpeedForWheelAngleIntegration;
+        public fixed byte structgen_pad0[4];
+        public PxVehiclePvdContext pvdContext;
+        public fixed byte structgen_pad1[8];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXSimulationContext
+    {
+        public PxVec3 gravity;
+        public PxVehicleFrame frame;
+        public PxVehicleScale scale;
+        public PxVehicleTireSlipParams tireSlipParams;
+        public PxVehicleTireStickyParams tireStickyParams;
+        public float thresholdForwardSpeedForWheelAngleIntegration;
+        public fixed byte structgen_pad0[4];
+        public PxVehiclePvdContext pvdContext;
+        public fixed byte structgen_pad1[8];
+        public PxConvexMesh* physxUnitCylinderSweepMesh;
+        public PxScene* physxScene;
+        public PxVehiclePhysXActorUpdateMode physxActorUpdateMode;
+        public float physxActorWakeCounterResetValue;
+        public float physxActorWakeCounterThreshold;
+        public fixed byte structgen_pad2[4];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleRoadGeometryState
+    {
+        public PxPlane plane;
+        public float friction;
+        public PxVec3 velocity;
+        [MarshalAs(UnmanagedType.U1)] public bool hitState;
+        public fixed byte structgen_pad0[3];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleRigidBodyState
+    {
+        public PxTransform pose;
+        public PxVec3 linearVelocity;
+        public PxVec3 angularVelocity;
+        public PxVec3 previousLinearVelocity;
+        public PxVec3 previousAngularVelocity;
+        public PxVec3 externalForce;
+        public PxVec3 externalTorque;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXRoadGeometryQueryState
+    {
+        public PxRigidActor* actor;
+        public PxShape* shape;
+        public PxMaterial* material;
+        public PxVec3 hitPosition;
+        public fixed byte structgen_pad0[4];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXActor
+    {
+        public PxRigidBody* rigidBody;
+        public fixed byte/* PxShape, this length is invalid so must keep pointer and can't edit from C# */ wheelShapes[20];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXSteerState
+    {
+        public float previousSteerCommand;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleVectorN
+    {
+        public fixed byte structgen_pad0[96];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleMatrixNN
+    {
+        public fixed float mValues[23];
+        public uint mSize;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleMatrixNNLUSolver
+    {
+        public fixed byte structgen_pad0[2300];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleMatrixNGaussSeidelSolver
+    {
+        public fixed byte structgen_pad0[1];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleMatrix33Solver
+    {
+        public fixed byte structgen_pad0[1];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleCommandValueResponseTable
+    {
+        public float commandValue;
+        public fixed byte structgen_pad0[516];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleCommandNonLinearResponseParams
+    {
+        public fixed float speedResponses[128];
+        public ushort nbSpeedResponses;
+        public fixed ushort speedResponsesPerCommandValue[8];
+        public fixed ushort nbSpeedResponsesPerCommandValue[8];
+        public fixed byte structgen_pad0[2];
+        public fixed float commandValues[8];
+        public ushort nbCommandValues;
+        public fixed byte structgen_pad1[2];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleCommandResponseParams
+    {
+        public PxVehicleCommandNonLinearResponseParams nonlinearResponse;
+        public fixed float wheelResponseMultipliers[20];
+        public float maxResponse;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleBrakeCommandResponseParams
+    {
+        public PxVehicleCommandNonLinearResponseParams nonlinearResponse;
+        public fixed float wheelResponseMultipliers[20];
+        public float maxResponse;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleCommandState
+    {
+        public fixed float brakes[2];
+        public uint nbBrakes;
+        public float throttle;
+        public float steer;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleDirectDriveTransmissionCommandState
+    {
+        public fixed byte structgen_pad0[4];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleEngineDriveTransmissionCommandState
+    {
+        public float clutch;
+        public uint targetGear;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTankDriveTransmissionCommandState
+    {
+        public float clutch;
+        public uint targetGear;
+        public fixed float thrusts[2];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleDirectDriveThrottleCommandResponseParams
+    {
+        public PxVehicleCommandNonLinearResponseParams nonlinearResponse;
+        public fixed float wheelResponseMultipliers[20];
+        public float maxResponse;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleClutchCommandResponseParams
+    {
+        public float maxResponse;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleClutchParams
+    {
+        public PxVehicleClutchAccuracyMode accuracyMode;
+        public uint estimateIterations;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleEngineParams
+    {
+        public fixed byte structgen_pad0[68];
+        public float moi;
+        public float peakTorque;
+        public float idleOmega;
+        public float maxOmega;
+        public float dampingRateFullThrottle;
+        public float dampingRateZeroThrottleClutchEngaged;
+        public float dampingRateZeroThrottleClutchDisengaged;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleGearboxParams
+    {
+        public uint neutralGear;
+        public fixed float ratios[32];
+        public float finalRatio;
+        public uint nbRatios;
+        public float switchTime;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleAutoboxParams
+    {
+        public fixed float upRatios[32];
+        public fixed float downRatios[32];
+        public float latency;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleFourWheelDriveDifferentialLegacyParams
+    {
+        public fixed uint frontWheelIds[2];
+        public fixed uint rearWheelIds[2];
+        public float frontRearSplit;
+        public float frontNegPosSplit;
+        public float rearNegPosSplit;
+        public float centerBias;
+        public float frontBias;
+        public float rearBias;
+        public fixed byte structgen_pad0[4];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleMultiWheelDriveDifferentialParams
+    {
+        public fixed float torqueRatios[20];
+        public fixed float aveWheelSpeedRatios[20];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleFourWheelDriveDifferentialParams
+    {
+        public fixed float torqueRatios[20];
+        public fixed float aveWheelSpeedRatios[20];
+        public fixed uint frontWheelIds[2];
+        public fixed uint rearWheelIds[2];
+        public float frontBias;
+        public float frontTarget;
+        public float rearBias;
+        public float rearTarget;
+        public float centerBias;
+        public float centerTarget;
+        public float rate;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTankDriveDifferentialParams
+    {
+        public fixed float torqueRatios[20];
+        public fixed float aveWheelSpeedRatios[20];
+        public uint nbTracks;
+        public fixed uint thrustIdPerTrack[20];
+        public fixed uint nbWheelsPerTrack[20];
+        public fixed uint trackToWheelIds[20];
+        public fixed uint wheelIdsInTrackOrder[20];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleClutchCommandResponseState
+    {
+        public float normalisedCommandResponse;
+        public float commandResponse;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleEngineDriveThrottleCommandResponseState
+    {
+        public float commandResponse;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleEngineState
+    {
+        public float rotationSpeed;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleGearboxState
+    {
+        public uint currentGear;
+        public uint targetGear;
+        public float gearSwitchTime;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleAutoboxState
+    {
+        public float timeSinceLastShift;
+        [MarshalAs(UnmanagedType.U1)] public bool activeAutoboxGearShift;
+        public fixed byte structgen_pad0[3];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleDifferentialState
+    {
+        public fixed uint connectedWheels[20];
+        public uint nbConnectedWheels;
+        public fixed float torqueRatiosAllWheels[20];
+        public fixed float aveWheelSpeedContributionAllWheels[20];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleWheelConstraintGroupState
+    {
+        public uint nbGroups;
+        public fixed uint nbWheelsPerGroup[20];
+        public fixed uint groupToWheelIds[20];
+        public fixed uint wheelIdsInGroupOrder[20];
+        public fixed float wheelMultipliersInGroupOrder[20];
+        public uint nbWheelsInGroups;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleClutchSlipState
+    {
+        public float clutchSlip;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleSteerCommandResponseParams
+    {
+        public PxVehicleCommandNonLinearResponseParams nonlinearResponse;
+        public fixed float wheelResponseMultipliers[20];
+        public float maxResponse;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleAckermannParams
+    {
+        public fixed uint wheelIds[2];
+        public float wheelBase;
+        public float trackWidth;
+        public float strength;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleWheelActuationState
+    {
+        [MarshalAs(UnmanagedType.U1)] public bool isBrakeApplied;
+        [MarshalAs(UnmanagedType.U1)] public bool isDriveApplied;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleWheelRigidBody1dState
+    {
+        public float rotationSpeed;
+        public float correctedRotationSpeed;
+        public float rotationAngle;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleWheelLocalPose
+    {
+        public PxTransform localPose;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleWheelParams
+    {
+        public float radius;
+        public float halfWidth;
+        public float mass;
+        public float moi;
+        public float dampingRate;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireDirectionState
+    {
+        public fixed byte/* PxVec3, this length is invalid so must keep pointer and can't edit from C# */ directions[2];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireSpeedState
+    {
+        public fixed float speedStates[2];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireSlipState
+    {
+        public fixed float slips[2];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireGripState
+    {
+        public float load;
+        public float friction;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireCamberAngleState
+    {
+        public float camberAngle;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireStickyState
+    {
+        public fixed float lowSpeedTime[2];
+        public fixed bool activeStatus[2];
+        public fixed byte structgen_pad0[2];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireForce
+    {
+        public fixed byte/* PxVec3, this length is invalid so must keep pointer and can't edit from C# */ forces[2];
+        public fixed byte/* PxVec3, this length is invalid so must keep pointer and can't edit from C# */ torques[2];
+        public float aligningMoment;
+        public float wheelTorque;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXRigidActorParams
+    {
+        public fixed byte structgen_pad0[8];
+        public byte* physxActorName;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXRigidActorShapeParams
+    {
+        public fixed byte structgen_pad0[24];
+        public PxShapeFlags flags;
+        public fixed byte structgen_pad1[3];
+        public PxFilterData simulationFilterData;
+        public PxFilterData queryFilterData;
+        public fixed byte structgen_pad2[4];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXWheelParams
+    {
+        public fixed byte structgen_pad0[8];
+        public PxVehicleWheelParams* wheelParams;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXWheelShapeParams
+    {
+        public fixed byte structgen_pad0[8];
+        public PxShapeFlags flags;
+        public fixed byte structgen_pad1[3];
+        public PxFilterData simulationFilterData;
+        public PxFilterData queryFilterData;
+        public fixed byte structgen_pad2[4];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXSuspensionLimitConstraintParams
+    {
+        public float restitution;
+        public DirectionSpecifier directionForSuspensionLimitConstraint;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXConstraintState
+    {
+        public fixed bool tireActiveStatus[2];
+        public fixed byte structgen_pad0[2];
+        public fixed byte/* PxVec3, this length is invalid so must keep pointer and can't edit from C# */ tireLinears[2];
+        public fixed byte/* PxVec3, this length is invalid so must keep pointer and can't edit from C# */ tireAngulars[2];
+        public fixed float tireDamping[2];
+        [MarshalAs(UnmanagedType.U1)] public bool suspActiveStatus;
+        public fixed byte structgen_pad1[3];
+        public PxVec3 suspLinear;
+        public PxVec3 suspAngular;
+        public float suspGeometricError;
+        public float restitution;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleConstraintConnector
+    {
+        public fixed byte structgen_pad0[16];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXConstraints
+    {
+        public fixed byte/* PxVehiclePhysXConstraintState, this length is invalid so must keep pointer and can't edit from C# */ constraintStates[20];
+        public fixed byte/* PxConstraint, this length is invalid so must keep pointer and can't edit from C# */ constraints[5];
+        public fixed byte/* PxVehicleConstraintConnector, this length is invalid so must keep pointer and can't edit from C# */ constraintConnectors[5];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleSuspensionParams
+    {
+        public PxTransform suspensionAttachment;
+        public PxVec3 suspensionTravelDir;
+        public float suspensionTravelDist;
+        public PxTransform wheelAttachment;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleSuspensionStateCalculationParams
+    {
+        public PxVehicleSuspensionJounceCalculationType suspensionJounceCalculationType;
+        [MarshalAs(UnmanagedType.U1)] public bool limitSuspensionExpansionVelocity;
+        public fixed byte structgen_pad0[3];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleSuspensionComplianceParams
+    {
+        public fixed byte structgen_pad0[160];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleSuspensionForceParams
+    {
+        public float stiffness;
+        public float damping;
+        public float sprungMass;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleSuspensionForceLegacyParams
+    {
+        public float stiffness;
+        public float damping;
+        public float restDistance;
+        public float sprungMass;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleAntiRollForceParams
+    {
+        public uint wheel0;
+        public uint wheel1;
+        public float stiffness;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleSuspensionState
+    {
+        public float jounce;
+        public float jounceSpeed;
+        public float separation;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleSuspensionComplianceState
+    {
+        public float toe;
+        public float camber;
+        public PxVec3 tireForceAppPoint;
+        public PxVec3 suspForceAppPoint;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleSuspensionForce
+    {
+        public PxVec3 force;
+        public PxVec3 torque;
+        public float normalForce;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleAntiRollTorque
+    {
+        public PxVec3 antiRollTorque;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXRoadGeometryQueryParams
+    {
+        public PxQueryFilterData defaultFilterData;
+        public fixed byte structgen_pad0[4];
+        public PxQueryFilterData* filterDataEntries;
+        public PxQueryFilterCallback* filterCallback;
+        public PxVehiclePhysXRoadGeometryQueryType roadGeometryQueryType;
+        public fixed byte structgen_pad1[4];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXMaterialFriction
+    {
+        public PxMaterial* material;
+        public float friction;
+        public fixed byte structgen_pad0[4];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePhysXMaterialFrictionParams
+    {
+        public PxVehiclePhysXMaterialFriction* materialFrictions;
+        public uint nbMaterialFrictions;
+        public float defaultFriction;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleTireForceParams
+    {
+        public float latStiffX;
+        public float latStiffY;
+        public float longStiff;
+        public float camberStiff;
+        public fixed float frictionVsSlip[2];
+        public float restLoad;
+        public fixed float loadFilter[2];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehiclePVDComponent
+    {
+        public fixed byte structgen_pad0[16];
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public unsafe partial struct PxVehicleRigidBodyParams
+    {
+        public float mass;
+        public PxVec3 moi;
+    }
+
 
     /// <summary>
     ///  Error codes
@@ -18286,6 +23430,55 @@ namespace PhysX
     }
 
     /// <summary>
+    ///  enum for empty constructor tag
+    /// </summary>
+    public enum PxEMPTY : int
+    {
+        PxEmpty = 0,
+    }
+
+    /// <summary>
+    ///  enum for zero constructor tag for vectors and matrices
+    /// </summary>
+    public enum PxZERO : int
+    {
+        PxZero = 0,
+    }
+
+    /// <summary>
+    ///  enum for identity constructor flag for quaternions, transforms, and matrices
+    /// </summary>
+    public enum PxIDENTITY : int
+    {
+        PxIdentity = 0,
+    }
+
+    public enum PxThreadPriority : uint
+    {
+        /// <summary>
+        ///  High priority
+        /// </summary>
+        High = 0,
+        /// <summary>
+        ///  Above Normal priority
+        /// </summary>
+        AboveNormal = 1,
+        /// <summary>
+        ///  Normal/default priority
+        /// </summary>
+        Normal = 2,
+        /// <summary>
+        ///  Below Normal priority
+        /// </summary>
+        BelowNormal = 3,
+        /// <summary>
+        ///  Low priority.
+        /// </summary>
+        Low = 4,
+        ForceDword = 4294967295,
+    }
+
+    /// <summary>
     ///  an enumeration of concrete classes inheriting from PxBase
     ///
     ///  Enumeration space is reserved for future PhysX core types, PhysXExtensions,
@@ -18296,45 +23489,41 @@ namespace PhysX
         Undefined = 0,
         Heightfield = 1,
         ConvexMesh = 2,
+        /// <summary>
+        ///  Will be removed together with deprecated BVH33.
+        /// </summary>
         TriangleMeshBvh33 = 3,
         TriangleMeshBvh34 = 4,
         TetrahedronMesh = 5,
-        SoftbodyMesh = 6,
+        DeformableVolumeMesh = 6,
         RigidDynamic = 7,
         RigidStatic = 8,
         Shape = 9,
         Material = 10,
-        SoftbodyMaterial = 11,
-        ClothMaterial = 12,
+        DeformableSurfaceMaterial = 11,
+        DeformableVolumeMaterial = 12,
         PbdMaterial = 13,
-        FlipMaterial = 14,
-        MpmMaterial = 15,
-        CustomMaterial = 16,
-        Constraint = 17,
-        Aggregate = 18,
-        ArticulationReducedCoordinate = 19,
-        ArticulationLink = 20,
-        ArticulationJointReducedCoordinate = 21,
-        ArticulationSensor = 22,
-        ArticulationSpatialTendon = 23,
-        ArticulationFixedTendon = 24,
-        ArticulationAttachment = 25,
-        ArticulationTendonJoint = 26,
-        PruningStructure = 27,
-        Bvh = 28,
-        SoftBody = 29,
-        SoftBodyState = 30,
-        PbdParticlesystem = 31,
-        FlipParticlesystem = 32,
-        MpmParticlesystem = 33,
-        CustomParticlesystem = 34,
-        FemCloth = 35,
-        HairSystem = 36,
-        ParticleBuffer = 37,
-        ParticleDiffuseBuffer = 38,
-        ParticleClothBuffer = 39,
-        ParticleRigidBuffer = 40,
-        PhysxCoreCount = 41,
+        Constraint = 14,
+        Aggregate = 15,
+        ArticulationReducedCoordinate = 16,
+        ArticulationLink = 17,
+        ArticulationJointReducedCoordinate = 18,
+        ArticulationSpatialTendon = 19,
+        ArticulationFixedTendon = 20,
+        ArticulationAttachment = 21,
+        ArticulationTendonJoint = 22,
+        ArticulationMimicJoint = 23,
+        PruningStructure = 24,
+        Bvh = 25,
+        DeformableVolume = 26,
+        DeformableVolumeState = 27,
+        PbdParticlesystem = 28,
+        DeformableSurface = 29,
+        DeformableAttachment = 30,
+        DeformableElementFilter = 31,
+        ParticleBuffer = 32,
+        ParticleDiffuseBuffer = 33,
+        PhysxCoreCount = 34,
         FirstPhysxExtension = 256,
         FirstVehicleExtension = 512,
         FirstUserExtension = 1024,
@@ -18386,12 +23575,12 @@ namespace PhysX
         Plane = 1,
         Capsule = 2,
         Box = 3,
-        Convexmesh = 4,
-        Particlesystem = 5,
-        Tetrahedronmesh = 6,
-        Trianglemesh = 7,
-        Heightfield = 8,
-        Hairsystem = 9,
+        Convexcore = 4,
+        Convexmesh = 5,
+        Particlesystem = 6,
+        Tetrahedronmesh = 7,
+        Trianglemesh = 8,
+        Heightfield = 9,
         Custom = 10,
         /// <summary>
         ///  internal use only!
@@ -18407,6 +23596,7 @@ namespace PhysX
     public enum PxGeometryQueryFlags : uint
     {
         SimdGuard = 1 << 0,
+        Default = 1 << 0,
     }
 
     /// <summary>
@@ -18443,760 +23633,47 @@ namespace PhysX
     }
 
     /// <summary>
-    ///  Identifies the solver to use for a particle system.
-    /// </summary>
-    public enum PxParticleSolverType : int
-    {
-        /// <summary>
-        ///  The position based dynamics solver that can handle fluid, granular material, cloth, inflatables etc. See [`PxPBDParticleSystem`].
-        /// </summary>
-        Pbd = 1,
-        /// <summary>
-        ///  The FLIP fluid solver. See [`PxFLIPParticleSystem`].
-        /// </summary>
-        Flip = 2,
-        /// <summary>
-        ///  The MPM (material point method) solver that can handle a variety of materials. See [`PxMPMParticleSystem`].
-        /// </summary>
-        Mpm = 4,
-        /// <summary>
-        ///  Custom solver. The user needs to specify the interaction of the particle by providing appropriate functions. Can be used e.g. for molecular dynamics simulations. See [`PxCustomParticleSystem`].
-        /// </summary>
-        Custom = 8,
-    }
-
-    [Flags]
-    public enum PxHitFlags : ushort
-    {
-        Position = 1 << 0,
-        Normal = 1 << 1,
-        Uv = 1 << 3,
-        AssumeNoInitialOverlap = 1 << 4,
-        AnyHit = 1 << 5,
-        MeshMultiple = 1 << 6,
-        MeshBothSides = 1 << 7,
-        PreciseSweep = 1 << 8,
-        Mtd = 1 << 9,
-        FaceIndex = 1 << 10,
-        Default = Position | Normal | FaceIndex,
-        ModifiableFlags = AssumeNoInitialOverlap | MeshMultiple | MeshBothSides | PreciseSweep,
-    }
-
-    /// <summary>
-    ///  Describes the format of height field samples.
-    /// </summary>
-    public enum PxHeightFieldFormat : int
-    {
-        /// <summary>
-        ///  Height field height data is 16 bit signed integers, followed by triangle materials.
-        ///
-        ///  Each sample is 32 bits wide arranged as follows:
-        ///
-        ///  1) First there is a 16 bit height value.
-        ///  2) Next, two one byte material indices, with the high bit of each byte reserved for special use.
-        ///  (so the material index is only 7 bits).
-        ///  The high bit of material0 is the tess-flag.
-        ///  The high bit of material1 is reserved for future use.
-        ///
-        ///  There are zero or more unused bytes before the next sample depending on PxHeightFieldDesc.sampleStride,
-        ///  where the application may eventually keep its own data.
-        ///
-        ///  This is the only format supported at the moment.
-        /// </summary>
-        S16Tm = 1,
-    }
-
-    [Flags]
-    public enum PxHeightFieldFlags : ushort
-    {
-        NoBoundaryEdges = 1 << 0,
-    }
-
-    [Flags]
-    public enum PxMeshFlags : ushort
-    {
-        Flipnormals = 1 << 0,
-        E16BitIndices = 1 << 1,
-    }
-
-    /// <summary>
-    ///  Mesh midphase structure. This enum is used to select the desired acceleration structure for midphase queries
-    ///  (i.e. raycasts, overlaps, sweeps vs triangle meshes).
+    ///  Identifies dirty particle buffers that need to be updated in the particle system.
     ///
-    ///  The PxMeshMidPhase::eBVH33 structure is the one used in recent PhysX versions (up to PhysX 3.3). It has great performance and is
-    ///  supported on all platforms. It is deprecated since PhysX 5.x.
-    ///
-    ///  The PxMeshMidPhase::eBVH34 structure is a revisited implementation introduced in PhysX 3.4. It can be significantly faster both
-    ///  in terms of cooking performance and runtime performance.
+    ///  This flag can be used mark the device user buffers that are dirty and need to be written to the particle system.
     /// </summary>
-    public enum PxMeshMidPhase : int
+    public enum PxParticleBufferFlag : int
     {
         /// <summary>
-        ///  Default midphase mesh structure, as used up to PhysX 3.3 (deprecated)
+        ///  No data specified
         /// </summary>
-        Bvh33 = 0,
+        None = 0,
         /// <summary>
-        ///  New midphase mesh structure, introduced in PhysX 3.4
+        ///  Specifies the position (first 3 floats) and inverse mass (last float) data (array of PxVec4 * number of particles)
         /// </summary>
-        Bvh34 = 1,
-        Last = 2,
+        UpdatePosition = 1,
+        /// <summary>
+        ///  Specifies the velocity (first 3 floats) data (array of PxVec4 * number of particles)
+        /// </summary>
+        UpdateVelocity = 2,
+        /// <summary>
+        ///  Specifies the per-particle phase flag data (array of PxU32 * number of particles)
+        /// </summary>
+        UpdatePhase = 4,
+        /// <summary>
+        ///  Specifies the rest position (first 3 floats) data
+        /// </summary>
+        UpdateRestposition = 8,
+        /// <summary>
+        ///  Specifies the diffuse particle parameter buffer (see PxDiffuseParticleParams)
+        /// </summary>
+        UpdateDiffuseParam = 16,
+        All = 31,
     }
 
     [Flags]
-    public enum PxTriangleMeshFlags : byte
+    public enum PxParticlePhaseFlags : uint
     {
-        E16BitIndices = 1 << 1,
-        AdjacencyInfo = 1 << 2,
-        PreferNoSdfProj = 1 << 3,
-    }
-
-    [Flags]
-    public enum PxTetrahedronMeshFlags : byte
-    {
-        E16BitIndices = 1 << 1,
-    }
-
-    /// <summary>
-    ///  Flags which control the behavior of an actor.
-    /// </summary>
-    public enum PxActorFlag : int
-    {
-        /// <summary>
-        ///  Enable debug renderer for this actor
-        /// </summary>
-        Visualization = 1,
-        /// <summary>
-        ///  Disables scene gravity for this actor
-        /// </summary>
-        DisableGravity = 2,
-        /// <summary>
-        ///  Enables the sending of PxSimulationEventCallback::onWake() and PxSimulationEventCallback::onSleep() notify events
-        /// </summary>
-        SendSleepNotifies = 4,
-        /// <summary>
-        ///  Disables simulation for the actor.
-        ///
-        ///  This is only supported by PxRigidStatic and PxRigidDynamic actors and can be used to reduce the memory footprint when rigid actors are
-        ///  used for scene queries only.
-        ///
-        ///  Setting this flag will remove all constraints attached to the actor from the scene.
-        ///
-        ///  If this flag is set, the following calls are forbidden:
-        ///
-        ///  PxRigidBody: setLinearVelocity(), setAngularVelocity(), addForce(), addTorque(), clearForce(), clearTorque(), setForceAndTorque()
-        ///
-        ///  PxRigidDynamic: setKinematicTarget(), setWakeCounter(), wakeUp(), putToSleep()
-        ///
-        ///  Sleeping:
-        ///  Raising this flag will set all velocities and the wake counter to 0, clear all forces, clear the kinematic target, put the actor
-        ///  to sleep and wake up all touching actors from the previous frame.
-        /// </summary>
-        DisableSimulation = 8,
-    }
-
-    [Flags]
-    public enum PxActorFlags : byte
-    {
-        Visualization = 1 << 0,
-        DisableGravity = 1 << 1,
-        SendSleepNotifies = 1 << 2,
-        DisableSimulation = 1 << 3,
-    }
-
-    /// <summary>
-    ///  Identifies each type of actor.
-    /// </summary>
-    public enum PxActorType : int
-    {
-        /// <summary>
-        ///  A static rigid body
-        /// </summary>
-        RigidStatic = 0,
-        /// <summary>
-        ///  A dynamic rigid body
-        /// </summary>
-        RigidDynamic = 1,
-        /// <summary>
-        ///  An articulation link
-        /// </summary>
-        ArticulationLink = 2,
-    }
-
-    public enum PxAggregateType : int
-    {
-        /// <summary>
-        ///  Aggregate will contain various actors of unspecified types
-        /// </summary>
-        Generic = 0,
-        /// <summary>
-        ///  Aggregate will only contain static actors
-        /// </summary>
-        Static = 1,
-        /// <summary>
-        ///  Aggregate will only contain kinematic actors
-        /// </summary>
-        Kinematic = 2,
-    }
-
-    /// <summary>
-    ///  Data structure used for preparing constraints before solving them
-    /// </summary>
-    public enum BodyState : int
-    {
-        DynamicBody = 1,
-        StaticBody = 2,
-        KinematicBody = 4,
-        Articulation = 8,
-    }
-
-    /// <summary>
-    ///  @
-    ///  {
-    /// </summary>
-    public enum PxArticulationAxis : int
-    {
-        /// <summary>
-        ///  Rotational about eX
-        /// </summary>
-        Twist = 0,
-        /// <summary>
-        ///  Rotational about eY
-        /// </summary>
-        Swing1 = 1,
-        /// <summary>
-        ///  Rotational about eZ
-        /// </summary>
-        Swing2 = 2,
-        /// <summary>
-        ///  Linear in eX
-        /// </summary>
-        X = 3,
-        /// <summary>
-        ///  Linear in eY
-        /// </summary>
-        Y = 4,
-        /// <summary>
-        ///  Linear in eZ
-        /// </summary>
-        Z = 5,
-        Count = 6,
-    }
-
-    public enum PxArticulationMotion : int
-    {
-        /// <summary>
-        ///  Locked axis, i.e. degree of freedom (DOF)
-        /// </summary>
-        Locked = 0,
-        /// <summary>
-        ///  Limited DOF - set limits of joint DOF together with this flag, see PxArticulationJointReducedCoordinate::setLimitParams
-        /// </summary>
-        Limited = 1,
-        /// <summary>
-        ///  Free DOF
-        /// </summary>
-        Free = 2,
-    }
-
-    public enum PxArticulationJointType : int
-    {
-        /// <summary>
-        ///  All joint axes, i.e. degrees of freedom (DOFs) locked
-        /// </summary>
-        Fix = 0,
-        /// <summary>
-        ///  Single linear DOF, e.g. cart on a rail
-        /// </summary>
-        Prismatic = 1,
-        /// <summary>
-        ///  Single rotational DOF, e.g. an elbow joint or a rotational motor, position wrapped at 2pi radians
-        /// </summary>
-        Revolute = 2,
-        /// <summary>
-        ///  Single rotational DOF, e.g. an elbow joint or a rotational motor, position not wrapped
-        /// </summary>
-        RevoluteUnwrapped = 3,
-        /// <summary>
-        ///  Ball and socket joint with two or three DOFs
-        /// </summary>
-        Spherical = 4,
-        Undefined = 5,
-    }
-
-    public enum PxArticulationFlag : int
-    {
-        /// <summary>
-        ///  Set articulation base to be fixed.
-        /// </summary>
-        FixBase = 1,
-        /// <summary>
-        ///  Limits for drive effort are forces and torques rather than impulses, see PxArticulationDrive::maxForce.
-        /// </summary>
-        DriveLimitsAreForces = 2,
-        /// <summary>
-        ///  Disable collisions between the articulation's links (note that parent/child collisions are disabled internally in either case).
-        /// </summary>
-        DisableSelfCollision = 4,
-        /// <summary>
-        ///  Enable in order to be able to query joint solver (i.e. constraint) forces using PxArticulationCache::jointSolverForces.
-        /// </summary>
-        ComputeJointForces = 8,
-    }
-
-    [Flags]
-    public enum PxArticulationFlags : byte
-    {
-        FixBase = 1 << 0,
-        DriveLimitsAreForces = 1 << 1,
-        DisableSelfCollision = 1 << 2,
-        ComputeJointForces = 1 << 3,
-    }
-
-    public enum PxArticulationDriveType : int
-    {
-        /// <summary>
-        ///  The output of the implicit spring drive controller is a force/torque.
-        /// </summary>
-        Force = 0,
-        /// <summary>
-        ///  The output of the implicit spring drive controller is a joint acceleration (use this to get (spatial)-inertia-invariant behavior of the drive).
-        /// </summary>
-        Acceleration = 1,
-        /// <summary>
-        ///  Sets the drive gains internally to track a target position almost kinematically (i.e. with very high drive gains).
-        /// </summary>
-        Target = 2,
-        /// <summary>
-        ///  Sets the drive gains internally to track a target velocity almost kinematically (i.e. with very high drive gains).
-        /// </summary>
-        Velocity = 3,
-        None = 4,
-    }
-
-    /// <summary>
-    ///  A description of the types of articulation data that may be directly written to and read from the GPU using the functions
-    ///  PxScene::copyArticulationData() and PxScene::applyArticulationData(). Types that are read-only may only be used in conjunction with
-    ///  PxScene::copyArticulationData(). Types that are write-only may only be used in conjunction with PxScene::applyArticulationData().
-    ///  A subset of data types may be used in conjunction with both PxScene::applyArticulationData() and PxScene::applyArticulationData().
-    /// </summary>
-    public enum PxArticulationGpuDataType : int
-    {
-        /// <summary>
-        ///  The joint positions, read and write, see PxScene::copyArticulationData(), PxScene::applyArticulationData()
-        /// </summary>
-        JointPosition = 0,
-        /// <summary>
-        ///  The joint velocities, read and write,  see PxScene::copyArticulationData(), PxScene::applyArticulationData()
-        /// </summary>
-        JointVelocity = 1,
-        /// <summary>
-        ///  The joint accelerations, read only, see PxScene::copyArticulationData()
-        /// </summary>
-        JointAcceleration = 2,
-        /// <summary>
-        ///  The applied joint forces, write only, see PxScene::applyArticulationData()
-        /// </summary>
-        JointForce = 3,
-        /// <summary>
-        ///  The computed joint constraint solver forces, read only, see PxScene::copyArticulationData()()
-        /// </summary>
-        JointSolverForce = 4,
-        /// <summary>
-        ///  The velocity targets for the joint drives, write only, see PxScene::applyArticulationData()
-        /// </summary>
-        JointTargetVelocity = 5,
-        /// <summary>
-        ///  The position targets for the joint drives, write only, see PxScene::applyArticulationData()
-        /// </summary>
-        JointTargetPosition = 6,
-        /// <summary>
-        ///  The spatial sensor forces, read only, see PxScene::copyArticulationData()
-        /// </summary>
-        SensorForce = 7,
-        /// <summary>
-        ///  The root link transform, read and write, see PxScene::copyArticulationData(), PxScene::applyArticulationData()
-        /// </summary>
-        RootTransform = 8,
-        /// <summary>
-        ///  The root link velocity, read and write, see PxScene::copyArticulationData(), PxScene::applyArticulationData()
-        /// </summary>
-        RootVelocity = 9,
-        /// <summary>
-        ///  The link transforms including root link, read only, see PxScene::copyArticulationData()
-        /// </summary>
-        LinkTransform = 10,
-        /// <summary>
-        ///  The link velocities including root link, read only, see PxScene::copyArticulationData()
-        /// </summary>
-        LinkVelocity = 11,
-        /// <summary>
-        ///  The forces to apply to links, write only, see PxScene::applyArticulationData()
-        /// </summary>
-        LinkForce = 12,
-        /// <summary>
-        ///  The torques to apply to links, write only, see PxScene::applyArticulationData()
-        /// </summary>
-        LinkTorque = 13,
-        /// <summary>
-        ///  Fixed tendon data, write only, see PxScene::applyArticulationData()
-        /// </summary>
-        FixedTendon = 14,
-        /// <summary>
-        ///  Fixed tendon joint data, write only, see PxScene::applyArticulationData()
-        /// </summary>
-        FixedTendonJoint = 15,
-        /// <summary>
-        ///  Spatial tendon data, write only, see PxScene::applyArticulationData()
-        /// </summary>
-        SpatialTendon = 16,
-        /// <summary>
-        ///  Spatial tendon attachment data, write only, see PxScene::applyArticulationData()
-        /// </summary>
-        SpatialTendonAttachment = 17,
-    }
-
-    [Flags]
-    public enum PxArticulationCacheFlags : uint
-    {
-        Velocity = 1 << 0,
-        Acceleration = 1 << 1,
-        Position = 1 << 2,
-        Force = 1 << 3,
-        LinkVelocity = 1 << 4,
-        LinkAcceleration = 1 << 5,
-        RootTransform = 1 << 6,
-        RootVelocities = 1 << 7,
-        SensorForces = 1 << 8,
-        JointSolverForces = 1 << 9,
-        All = Velocity | Acceleration | Position | LinkVelocity | LinkAcceleration | RootTransform | RootVelocities,
-    }
-
-    /// <summary>
-    ///  Flags to configure the forces reported by articulation link sensors.
-    /// </summary>
-    public enum PxArticulationSensorFlag : int
-    {
-        /// <summary>
-        ///  Raise to receive forces from forward dynamics.
-        /// </summary>
-        ForwardDynamicsForces = 1,
-        /// <summary>
-        ///  Raise to receive forces from constraint solver.
-        /// </summary>
-        ConstraintSolverForces = 2,
-        /// <summary>
-        ///  Raise to receive forces in the world rotation frame, otherwise they will be reported in the sensor's local frame.
-        /// </summary>
-        WorldFrame = 4,
-    }
-
-    [Flags]
-    public enum PxArticulationSensorFlags : byte
-    {
-        ForwardDynamicsForces = 1 << 0,
-        ConstraintSolverForces = 1 << 1,
-        WorldFrame = 1 << 2,
-    }
-
-    [Flags]
-    public enum PxArticulationKinematicFlags : byte
-    {
-        Position = 1 << 0,
-        Velocity = 1 << 1,
-    }
-
-    /// <summary>
-    ///  Flags which affect the behavior of PxShapes.
-    /// </summary>
-    public enum PxShapeFlag : int
-    {
-        /// <summary>
-        ///  The shape will partake in collision in the physical simulation.
-        ///
-        ///  It is illegal to raise the eSIMULATION_SHAPE and eTRIGGER_SHAPE flags.
-        ///  In the event that one of these flags is already raised the sdk will reject any
-        ///  attempt to raise the other.  To raise the eSIMULATION_SHAPE first ensure that
-        ///  eTRIGGER_SHAPE is already lowered.
-        ///
-        ///  This flag has no effect if simulation is disabled for the corresponding actor (see [`PxActorFlag::eDISABLE_SIMULATION`]).
-        /// </summary>
-        SimulationShape = 1,
-        /// <summary>
-        ///  The shape will partake in scene queries (ray casts, overlap tests, sweeps, ...).
-        /// </summary>
-        SceneQueryShape = 2,
-        /// <summary>
-        ///  The shape is a trigger which can send reports whenever other shapes enter/leave its volume.
-        ///
-        ///  Triangle meshes and heightfields can not be triggers. Shape creation will fail in these cases.
-        ///
-        ///  Shapes marked as triggers do not collide with other objects. If an object should act both
-        ///  as a trigger shape and a collision shape then create a rigid body with two shapes, one being a
-        ///  trigger shape and the other a collision shape. It is illegal to raise the eTRIGGER_SHAPE and
-        ///  eSIMULATION_SHAPE flags on a single PxShape instance.  In the event that one of these flags is already
-        ///  raised the sdk will reject any attempt to raise the other.  To raise the eTRIGGER_SHAPE flag first
-        ///  ensure that eSIMULATION_SHAPE flag is already lowered.
-        ///
-        ///  Trigger shapes will no longer send notification events for interactions with other trigger shapes.
-        ///
-        ///  Shapes marked as triggers are allowed to participate in scene queries, provided the eSCENE_QUERY_SHAPE flag is set.
-        ///
-        ///  This flag has no effect if simulation is disabled for the corresponding actor (see [`PxActorFlag::eDISABLE_SIMULATION`]).
-        /// </summary>
-        TriggerShape = 4,
-        /// <summary>
-        ///  Enable debug renderer for this shape
-        /// </summary>
-        Visualization = 8,
-    }
-
-    [Flags]
-    public enum PxShapeFlags : byte
-    {
-        SimulationShape = 1 << 0,
-        SceneQueryShape = 1 << 1,
-        TriggerShape = 1 << 2,
-        Visualization = 1 << 3,
-    }
-
-    /// <summary>
-    ///  Parameter to addForce() and addTorque() calls, determines the exact operation that is carried out.
-    /// </summary>
-    public enum PxForceMode : int
-    {
-        /// <summary>
-        ///  parameter has unit of mass * length / time^2, i.e., a force
-        /// </summary>
-        Force = 0,
-        /// <summary>
-        ///  parameter has unit of mass * length / time, i.e., force * time
-        /// </summary>
-        Impulse = 1,
-        /// <summary>
-        ///  parameter has unit of length / time, i.e., the effect is mass independent: a velocity change.
-        /// </summary>
-        VelocityChange = 2,
-        /// <summary>
-        ///  parameter has unit of length/ time^2, i.e., an acceleration. It gets treated just like a force except the mass is not divided out before integration.
-        /// </summary>
-        Acceleration = 3,
-    }
-
-    /// <summary>
-    ///  Collection of flags describing the behavior of a rigid body.
-    /// </summary>
-    public enum PxRigidBodyFlag : int
-    {
-        /// <summary>
-        ///  Enable kinematic mode for the body.
-        /// </summary>
-        Kinematic = 1,
-        /// <summary>
-        ///  Use the kinematic target transform for scene queries.
-        ///
-        ///  If this flag is raised, then scene queries will treat the kinematic target transform as the current pose
-        ///  of the body (instead of using the actual pose). Without this flag, the kinematic target will only take
-        ///  effect with respect to scene queries after a simulation step.
-        /// </summary>
-        UseKinematicTargetForSceneQueries = 2,
-        /// <summary>
-        ///  Enable CCD for the body.
-        /// </summary>
-        EnableCcd = 4,
-        /// <summary>
-        ///  Enabled CCD in swept integration for the actor.
-        ///
-        ///  If this flag is raised and CCD is enabled, CCD interactions will simulate friction. By default, friction is disabled in CCD interactions because
-        ///  CCD friction has been observed to introduce some simulation artifacts. CCD friction was enabled in previous versions of the SDK. Raising this flag will result in behavior
-        ///  that is a closer match for previous versions of the SDK.
-        ///
-        ///  This flag requires PxRigidBodyFlag::eENABLE_CCD to be raised to have any effect.
-        /// </summary>
-        EnableCcdFriction = 8,
-        /// <summary>
-        ///  Register a rigid body to dynamically adjust contact offset based on velocity. This can be used to achieve a CCD effect.
-        ///
-        ///  If both eENABLE_CCD and eENABLE_SPECULATIVE_CCD are set on the same body, then angular motions are handled by speculative
-        ///  contacts (eENABLE_SPECULATIVE_CCD) while linear motions are handled by sweeps (eENABLE_CCD).
-        /// </summary>
-        EnableSpeculativeCcd = 16,
-        /// <summary>
-        ///  Register a rigid body for reporting pose changes by the simulation at an early stage.
-        ///
-        ///  Sometimes it might be advantageous to get access to the new pose of a rigid body as early as possible and
-        ///  not wait until the call to fetchResults() returns. Setting this flag will schedule the rigid body to get reported
-        ///  in [`PxSimulationEventCallback::onAdvance`](). Please refer to the documentation of that callback to understand
-        ///  the behavior and limitations of this functionality.
-        /// </summary>
-        EnablePoseIntegrationPreview = 32,
-        /// <summary>
-        ///  Permit CCD to limit maxContactImpulse. This is useful for use-cases like a destruction system but can cause visual artefacts so is not enabled by default.
-        /// </summary>
-        EnableCcdMaxContactImpulse = 64,
-        /// <summary>
-        ///  Carries over forces/accelerations between frames, rather than clearing them
-        /// </summary>
-        RetainAccelerations = 128,
-        /// <summary>
-        ///  Forces kinematic-kinematic pairs notifications for this actor.
-        ///
-        ///  This flag overrides the global scene-level PxPairFilteringMode setting for kinematic actors.
-        ///  This is equivalent to having PxPairFilteringMode::eKEEP for pairs involving this actor.
-        ///
-        ///  A particular use case is when you have a large amount of kinematic actors, but you are only
-        ///  interested in interactions between a few of them. In this case it is best to use
-        ///  PxSceneDesc.kineKineFilteringMode = PxPairFilteringMode::eKILL, and then raise the
-        ///  eFORCE_KINE_KINE_NOTIFICATIONS flag on the small set of kinematic actors that need
-        ///  notifications.
-        ///
-        ///  This has no effect if PxRigidBodyFlag::eKINEMATIC is not set.
-        ///
-        ///  Changing this flag at runtime will not have an effect until you remove and re-add the actor to the scene.
-        /// </summary>
-        ForceKineKineNotifications = 256,
-        /// <summary>
-        ///  Forces static-kinematic pairs notifications for this actor.
-        ///
-        ///  Similar to eFORCE_KINE_KINE_NOTIFICATIONS, but for static-kinematic interactions.
-        ///
-        ///  This has no effect if PxRigidBodyFlag::eKINEMATIC is not set.
-        ///
-        ///  Changing this flag at runtime will not have an effect until you remove and re-add the actor to the scene.
-        /// </summary>
-        ForceStaticKineNotifications = 512,
-        /// <summary>
-        ///  Enables computation of gyroscopic forces on the rigid body.
-        /// </summary>
-        EnableGyroscopicForces = 1024,
-    }
-
-    [Flags]
-    public enum PxRigidBodyFlags : ushort
-    {
-        Kinematic = 1 << 0,
-        UseKinematicTargetForSceneQueries = 1 << 1,
-        EnableCcd = 1 << 2,
-        EnableCcdFriction = 1 << 3,
-        EnableSpeculativeCcd = 1 << 4,
-        EnablePoseIntegrationPreview = 1 << 5,
-        EnableCcdMaxContactImpulse = 1 << 6,
-        RetainAccelerations = 1 << 7,
-        ForceKineKineNotifications = 1 << 8,
-        ForceStaticKineNotifications = 1 << 9,
-        EnableGyroscopicForces = 1 << 10,
-    }
-
-    /// <summary>
-    ///  constraint flags
-    ///
-    ///  eBROKEN is a read only flag
-    /// </summary>
-    public enum PxConstraintFlag : int
-    {
-        /// <summary>
-        ///  whether the constraint is broken
-        /// </summary>
-        Broken = 1,
-        /// <summary>
-        ///  whether actor1 should get projected to actor0 for this constraint (note: projection of a static/kinematic actor to a dynamic actor will be ignored)
-        /// </summary>
-        ProjectToActor0 = 2,
-        /// <summary>
-        ///  whether actor0 should get projected to actor1 for this constraint (note: projection of a static/kinematic actor to a dynamic actor will be ignored)
-        /// </summary>
-        ProjectToActor1 = 4,
-        /// <summary>
-        ///  whether the actors should get projected for this constraint (the direction will be chosen by PhysX)
-        /// </summary>
-        Projection = 6,
-        /// <summary>
-        ///  whether contacts should be generated between the objects this constraint constrains
-        /// </summary>
-        CollisionEnabled = 8,
-        /// <summary>
-        ///  whether this constraint should be visualized, if constraint visualization is turned on
-        /// </summary>
-        Visualization = 16,
-        /// <summary>
-        ///  limits for drive strength are forces rather than impulses
-        /// </summary>
-        DriveLimitsAreForces = 32,
-        /// <summary>
-        ///  perform preprocessing for improved accuracy on D6 Slerp Drive (this flag will be removed in a future release when preprocessing is no longer required)
-        /// </summary>
-        ImprovedSlerp = 128,
-        /// <summary>
-        ///  suppress constraint preprocessing, intended for use with rowResponseThreshold. May result in worse solver accuracy for ill-conditioned constraints.
-        /// </summary>
-        DisablePreprocessing = 256,
-        /// <summary>
-        ///  enables extended limit ranges for angular limits (e.g., limit values &gt; PxPi or
-        ///  &lt;
-        ///  -PxPi)
-        /// </summary>
-        EnableExtendedLimits = 512,
-        /// <summary>
-        ///  the constraint type is supported by gpu dynamics
-        /// </summary>
-        GpuCompatible = 1024,
-        /// <summary>
-        ///  updates the constraint each frame
-        /// </summary>
-        AlwaysUpdate = 2048,
-        /// <summary>
-        ///  disables the constraint. SolverPrep functions won't be called for this constraint.
-        /// </summary>
-        DisableConstraint = 4096,
-    }
-
-    [Flags]
-    public enum PxConstraintFlags : ushort
-    {
-        Broken = 1 << 0,
-        ProjectToActor0 = 1 << 1,
-        ProjectToActor1 = 1 << 2,
-        Projection = ProjectToActor0 | ProjectToActor1,
-        CollisionEnabled = 1 << 3,
-        Visualization = 1 << 4,
-        DriveLimitsAreForces = 1 << 5,
-        ImprovedSlerp = 1 << 7,
-        DisablePreprocessing = 1 << 8,
-        EnableExtendedLimits = 1 << 9,
-        GpuCompatible = 1 << 10,
-        AlwaysUpdate = 1 << 11,
-        DisableConstraint = 1 << 12,
-    }
-
-    /// <summary>
-    ///  A class to iterate over a compressed contact stream. This supports read-only access to the various contact formats.
-    /// </summary>
-    public enum StreamFormat : int
-    {
-        SimpleStream = 0,
-        ModifiableStream = 1,
-        CompressedModifiableStream = 2,
-    }
-
-    /// <summary>
-    ///  Flags specifying deletion event types.
-    /// </summary>
-    public enum PxDeletionEventFlag : int
-    {
-        /// <summary>
-        ///  The user has called release on an object.
-        /// </summary>
-        UserRelease = 1,
-        /// <summary>
-        ///  The destructor of an object has been called and the memory has been released.
-        /// </summary>
-        MemoryRelease = 2,
-    }
-
-    [Flags]
-    public enum PxDeletionEventFlags : byte
-    {
-        UserRelease = 1 << 0,
-        MemoryRelease = 1 << 1,
+        ParticlePhaseGroupMask = 0x000fffff,
+        ParticlePhaseFlagsMask = ParticlePhaseSelfCollide | ParticlePhaseSelfCollideFilter | ParticlePhaseFluid,
+        ParticlePhaseSelfCollide = 1 << 20,
+        ParticlePhaseSelfCollideFilter = 1 << 21,
+        ParticlePhaseFluid = 1 << 22,
     }
 
     /// <summary>
@@ -19284,6 +23761,8 @@ namespace PhysX
         ///  Only takes effect if the colliding actors are rigid bodies.
         ///
         ///  Only takes effect if eDETECT_DISCRETE_CONTACT or eDETECT_CCD_CONTACT is raised
+        ///
+        ///  Only works with PGS solver, and only on CPU.
         /// </summary>
         NotifyThresholdForceFound = 64,
         /// <summary>
@@ -19295,6 +23774,8 @@ namespace PhysX
         ///  previous one (unless [`eNOTIFY_THRESHOLD_FORCE_FOUND`] has been set in the previous frame).
         ///
         ///  Only takes effect if eDETECT_DISCRETE_CONTACT or eDETECT_CCD_CONTACT is raised
+        ///
+        ///  Only works with PGS solver, and only on CPU.
         /// </summary>
         NotifyThresholdForcePersists = 128,
         /// <summary>
@@ -19306,6 +23787,8 @@ namespace PhysX
         ///  previous one (unless [`eNOTIFY_THRESHOLD_FORCE_FOUND`] or #eNOTIFY_THRESHOLD_FORCE_PERSISTS has been set in the previous frame).
         ///
         ///  Only takes effect if eDETECT_DISCRETE_CONTACT or eDETECT_CCD_CONTACT is raised
+        ///
+        ///  Only works with PGS solver, and only on CPU.
         /// </summary>
         NotifyThresholdForceLost = 256,
         /// <summary>
@@ -19430,25 +23913,17 @@ namespace PhysX
         /// </summary>
         Articulation = 2,
         /// <summary>
+        ///  A deformable surface
+        /// </summary>
+        DeformableSurface = 3,
+        /// <summary>
+        ///  A deformable volume
+        /// </summary>
+        DeformableVolume = 4,
+        /// <summary>
         ///  A particle system
         /// </summary>
-        Particlesystem = 3,
-        /// <summary>
-        ///  A FEM-based soft body
-        /// </summary>
-        Softbody = 4,
-        /// <summary>
-        ///  A FEM-based cloth
-        ///
-        ///  In development
-        /// </summary>
-        Femcloth = 5,
-        /// <summary>
-        ///  A hair system
-        ///
-        ///  In development
-        /// </summary>
-        Hairsystem = 6,
+        Particlesystem = 5,
         /// <summary>
         ///  internal use only!
         /// </summary>
@@ -19482,12 +23957,669 @@ namespace PhysX
         Kill = 2,
     }
 
-    [Flags]
-    public enum PxDataAccessFlags : byte
+    /// <summary>
+    ///  Flags which control the behavior of an actor.
+    /// </summary>
+    public enum PxActorFlag : int
     {
-        Readable = 1 << 0,
-        Writable = 1 << 1,
-        Device = 1 << 2,
+        /// <summary>
+        ///  Enable debug renderer for this actor
+        /// </summary>
+        Visualization = 1,
+        /// <summary>
+        ///  Disables scene gravity for this actor
+        /// </summary>
+        DisableGravity = 2,
+        /// <summary>
+        ///  Enables the sending of PxSimulationEventCallback::onWake() and PxSimulationEventCallback::onSleep() notify events
+        /// </summary>
+        SendSleepNotifies = 4,
+        /// <summary>
+        ///  Disables simulation for the actor.
+        ///
+        ///  This is only supported by PxRigidStatic and PxRigidDynamic actors and can be used to reduce the memory footprint when rigid actors are
+        ///  used for scene queries only.
+        ///
+        ///  Setting this flag will remove all constraints attached to the actor from the scene.
+        ///
+        ///  If this flag is set, the following calls are forbidden:
+        ///
+        ///  PxRigidBody: setLinearVelocity(), setAngularVelocity(), addForce(), addTorque(), clearForce(), clearTorque(), setForceAndTorque()
+        ///
+        ///  PxRigidDynamic: setKinematicTarget(), setWakeCounter(), wakeUp(), putToSleep()
+        ///
+        ///  Sleeping:
+        ///  Raising this flag will set all velocities and the wake counter to 0, clear all forces, clear the kinematic target, put the actor
+        ///  to sleep and wake up all touching actors from the previous frame.
+        /// </summary>
+        DisableSimulation = 8,
+    }
+
+    [Flags]
+    public enum PxActorFlags : byte
+    {
+        Visualization = 1 << 0,
+        DisableGravity = 1 << 1,
+        SendSleepNotifies = 1 << 2,
+        DisableSimulation = 1 << 3,
+    }
+
+    /// <summary>
+    ///  Identifies each type of actor.
+    /// </summary>
+    public enum PxActorType : int
+    {
+        /// <summary>
+        ///  A static rigid body
+        /// </summary>
+        RigidStatic = 0,
+        /// <summary>
+        ///  A dynamic rigid body
+        /// </summary>
+        RigidDynamic = 1,
+        /// <summary>
+        ///  An articulation link
+        /// </summary>
+        ArticulationLink = 2,
+        /// <summary>
+        ///  A deformable surface
+        /// </summary>
+        DeformableSurface = 3,
+        /// <summary>
+        ///  A deformable volume
+        /// </summary>
+        DeformableVolume = 4,
+        /// <summary>
+        ///  A PBD ParticleSystem
+        /// </summary>
+        PbdParticlesystem = 5,
+        /// <summary>
+        ///  internal use only!
+        /// </summary>
+        ActorCount = 6,
+        /// <summary>
+        ///  internal use only!
+        /// </summary>
+        ActorForceDword = 2147483647,
+    }
+
+    /// <summary>
+    ///  Flags which control the behaviour of a particle system.
+    ///
+    ///  See [`PxPBDParticleSystem::setParticleFlag`](), #PxPBDParticleSystem::setParticleFlags(), #PxPBDParticleSystem::getParticleFlags()
+    /// </summary>
+    public enum PxParticleFlag : int
+    {
+        /// <summary>
+        ///  Disables particle self-collision
+        /// </summary>
+        DisableSelfCollision = 1,
+        /// <summary>
+        ///  Disables particle-rigid body collision
+        /// </summary>
+        DisableRigidCollision = 2,
+        /// <summary>
+        ///  Enables full advection of diffuse particles. By default, diffuse particles are advected only by particles in the cell they are contained. This flag enables full neighbourhood generation (more expensive).
+        /// </summary>
+        FullDiffuseAdvection = 4,
+        /// <summary>
+        ///  Enables speculative CCD for particle-rigid body collision.
+        /// </summary>
+        EnableSpeculativeCcd = 8,
+    }
+
+    [Flags]
+    public enum PxParticleFlags : uint
+    {
+        DisableSelfCollision = 1 << 0,
+        DisableRigidCollision = 1 << 1,
+        FullDiffuseAdvection = 1 << 2,
+        EnableSpeculativeCcd = 1 << 3,
+    }
+
+    /// <summary>
+    ///  Collection of flags providing a mechanism to lock motion along a specific axis.
+    /// </summary>
+    public enum PxParticleLockFlag : int
+    {
+        LockX = 1,
+        LockY = 2,
+        LockZ = 4,
+    }
+
+    [Flags]
+    public enum PxParticleLockFlags : byte
+    {
+        LockX = 1 << 0,
+        LockY = 1 << 1,
+        LockZ = 1 << 2,
+    }
+
+    [Flags]
+    public enum PxHitFlags : ushort
+    {
+        Position = 1 << 0,
+        Normal = 1 << 1,
+        Uv = 1 << 3,
+        AssumeNoInitialOverlap = 1 << 4,
+        AnyHit = 1 << 5,
+        MeshMultiple = 1 << 6,
+        MeshBothSides = 1 << 7,
+        PreciseSweep = 1 << 8,
+        Mtd = 1 << 9,
+        FaceIndex = 1 << 10,
+        Default = Position | Normal | FaceIndex,
+        ModifiableFlags = AssumeNoInitialOverlap | MeshMultiple | MeshBothSides | PreciseSweep,
+    }
+
+    /// <summary>
+    ///  Enumeration of core types for convex core geometries.
+    ///
+    ///  This enum defines the various cores that can be used as the basis
+    ///  for creating convex core geometries. Each type represents a different
+    ///  fundamental shape that can be extended with a margin to create more
+    ///  complex convex shapes.
+    /// </summary>
+    public enum PxConvexCore : int
+    {
+        Point = 0,
+        Segment = 1,
+        Box = 2,
+        Ellipsoid = 3,
+        Cylinder = 4,
+        Cone = 5,
+        Count = 6,
+    }
+
+    /// <summary>
+    ///  Describes the format of height field samples.
+    /// </summary>
+    public enum PxHeightFieldFormat : int
+    {
+        /// <summary>
+        ///  Height field height data is 16 bit signed integers, followed by triangle materials.
+        ///
+        ///  Each sample is 32 bits wide arranged as follows:
+        ///
+        ///  1) First there is a 16 bit height value.
+        ///  2) Next, two one byte material indices, with the high bit of each byte reserved for special use.
+        ///  (so the material index is only 7 bits).
+        ///  The high bit of material0 is the tess-flag.
+        ///  The high bit of material1 is reserved for future use.
+        ///
+        ///  There are zero or more unused bytes before the next sample depending on PxHeightFieldDesc.sampleStride,
+        ///  where the application may eventually keep its own data.
+        ///
+        ///  This is the only format supported at the moment.
+        /// </summary>
+        S16Tm = 1,
+    }
+
+    [Flags]
+    public enum PxHeightFieldFlags : ushort
+    {
+        NoBoundaryEdges = 1 << 0,
+    }
+
+    [Flags]
+    public enum PxMeshFlags : ushort
+    {
+        Flipnormals = 1 << 0,
+        E16BitIndices = 1 << 1,
+    }
+
+    /// <summary>
+    ///  Mesh midphase structure. This enum is used to select the desired acceleration structure for midphase queries
+    ///  (i.e. raycasts, overlaps, sweeps vs triangle meshes).
+    ///
+    ///  The PxMeshMidPhase::eBVH33 structure is the one used in recent PhysX versions (up to PhysX 3.3). It has great performance and is
+    ///  supported on all platforms. It is deprecated since PhysX 5.x.
+    ///
+    ///  The PxMeshMidPhase::eBVH34 structure is a revisited implementation introduced in PhysX 3.4. It can be significantly faster both
+    ///  in terms of cooking performance and runtime performance.
+    /// </summary>
+    public enum PxMeshMidPhase : int
+    {
+        /// <summary>
+        ///  Use eBVH34 instead. Used to be default midphase mesh structure up to PhysX 3.3
+        /// </summary>
+        Bvh33 = 0,
+        /// <summary>
+        ///  New midphase mesh structure, introduced in PhysX 3.4
+        /// </summary>
+        Bvh34 = 1,
+        Last = 2,
+    }
+
+    [Flags]
+    public enum PxTriangleMeshFlags : byte
+    {
+        E16BitIndices = 1 << 1,
+        AdjacencyInfo = 1 << 2,
+        PreferNoSdfProj = 1 << 3,
+    }
+
+    [Flags]
+    public enum PxTetrahedronMeshFlags : byte
+    {
+        E16BitIndices = 1 << 1,
+    }
+
+    public enum PxAggregateType : int
+    {
+        /// <summary>
+        ///  Aggregate will contain various actors of unspecified types
+        /// </summary>
+        Generic = 0,
+        /// <summary>
+        ///  Aggregate will only contain static actors
+        /// </summary>
+        Static = 1,
+        /// <summary>
+        ///  Aggregate will only contain kinematic actors
+        /// </summary>
+        Kinematic = 2,
+    }
+
+    /// <summary>
+    ///  Data structure used for preparing constraints before solving them
+    /// </summary>
+    public enum BodyState : int
+    {
+        DynamicBody = 1,
+        StaticBody = 2,
+        KinematicBody = 4,
+        Articulation = 8,
+    }
+
+    public enum PxArticulationAxis : int
+    {
+        /// <summary>
+        ///  Rotational about eX
+        /// </summary>
+        Twist = 0,
+        /// <summary>
+        ///  Rotational about eY
+        /// </summary>
+        Swing1 = 1,
+        /// <summary>
+        ///  Rotational about eZ
+        /// </summary>
+        Swing2 = 2,
+        /// <summary>
+        ///  Linear in eX
+        /// </summary>
+        X = 3,
+        /// <summary>
+        ///  Linear in eY
+        /// </summary>
+        Y = 4,
+        /// <summary>
+        ///  Linear in eZ
+        /// </summary>
+        Z = 5,
+        Count = 6,
+    }
+
+    public enum PxArticulationMotion : int
+    {
+        /// <summary>
+        ///  Locked axis, i.e. degree of freedom (DOF)
+        /// </summary>
+        Locked = 0,
+        /// <summary>
+        ///  Limited DOF - set limits of joint DOF together with this flag, see PxArticulationJointReducedCoordinate::setLimitParams
+        /// </summary>
+        Limited = 1,
+        /// <summary>
+        ///  Free DOF
+        /// </summary>
+        Free = 2,
+    }
+
+    public enum PxArticulationJointType : int
+    {
+        /// <summary>
+        ///  All joint axes, i.e. degrees of freedom (DOFs) locked
+        /// </summary>
+        Fix = 0,
+        /// <summary>
+        ///  Single linear DOF, e.g. cart on a rail
+        /// </summary>
+        Prismatic = 1,
+        /// <summary>
+        ///  Single rotational DOF, e.g. an elbow joint or a rotational motor, position wrapped at 2pi radians
+        /// </summary>
+        Revolute = 2,
+        /// <summary>
+        ///  Single rotational DOF, e.g. an elbow joint or a rotational motor, position not wrapped
+        /// </summary>
+        RevoluteUnwrapped = 3,
+        /// <summary>
+        ///  Ball and socket joint with two or three DOFs
+        /// </summary>
+        Spherical = 4,
+        Undefined = 5,
+    }
+
+    public enum PxArticulationFlag : int
+    {
+        /// <summary>
+        ///  Set articulation base to be fixed.
+        /// </summary>
+        FixBase = 1,
+        /// <summary>
+        ///  Limits for drive effort are forces and torques rather than impulses, see PxArticulationDrive::maxForce.
+        /// </summary>
+        DriveLimitsAreForces = 2,
+        /// <summary>
+        ///  Disable collisions between the articulation's links (note that parent/child collisions are disabled internally in either case).
+        /// </summary>
+        DisableSelfCollision = 4,
+    }
+
+    [Flags]
+    public enum PxArticulationFlags : byte
+    {
+        FixBase = 1 << 0,
+        DriveLimitsAreForces = 1 << 1,
+        DisableSelfCollision = 1 << 2,
+    }
+
+    public enum PxArticulationDriveType : int
+    {
+        /// <summary>
+        ///  The output of the implicit spring drive controller is a force/torque.
+        /// </summary>
+        Force = 0,
+        /// <summary>
+        ///  The output of the implicit spring drive controller is a joint acceleration (use this to get (spatial)-inertia-invariant behavior of the drive).
+        /// </summary>
+        Acceleration = 1,
+        None = 2,
+    }
+
+    [Flags]
+    public enum PxArticulationCacheFlags : uint
+    {
+        Velocity = 1 << 0,
+        Acceleration = 1 << 1,
+        Position = 1 << 2,
+        Force = 1 << 3,
+        LinkVelocity = 1 << 4,
+        LinkAcceleration = 1 << 5,
+        RootTransform = 1 << 6,
+        RootVelocities = 1 << 7,
+        LinkIncomingJointForce = 1 << 10,
+        JointTargetPositions = 1 << 11,
+        JointTargetVelocities = 1 << 12,
+        LinkForce = 1 << 13,
+        LinkTorque = 1 << 14,
+        All = Velocity | Acceleration | Position | LinkVelocity | LinkAcceleration | RootTransform | RootVelocities,
+    }
+
+    [Flags]
+    public enum PxArticulationKinematicFlags : byte
+    {
+        Position = 1 << 0,
+        Velocity = 1 << 1,
+    }
+
+    /// <summary>
+    ///  Flags which affect the behavior of PxShapes.
+    /// </summary>
+    public enum PxShapeFlag : int
+    {
+        /// <summary>
+        ///  The shape will partake in collision in the physical simulation.
+        ///
+        ///  It is illegal to raise the eSIMULATION_SHAPE and eTRIGGER_SHAPE flags.
+        ///  In the event that one of these flags is already raised the sdk will reject any
+        ///  attempt to raise the other.  To raise the eSIMULATION_SHAPE first ensure that
+        ///  eTRIGGER_SHAPE is already lowered.
+        ///
+        ///  This flag has no effect if simulation is disabled for the corresponding actor (see [`PxActorFlag::eDISABLE_SIMULATION`]).
+        /// </summary>
+        SimulationShape = 1,
+        /// <summary>
+        ///  The shape will partake in scene queries (ray casts, overlap tests, sweeps, ...).
+        /// </summary>
+        SceneQueryShape = 2,
+        /// <summary>
+        ///  The shape is a trigger which can send reports whenever other shapes enter/leave its volume.
+        ///
+        ///  Triangle meshes and heightfields can not be triggers. Shape creation will fail in these cases.
+        ///
+        ///  Shapes marked as triggers do not collide with other objects. If an object should act both
+        ///  as a trigger shape and a collision shape then create a rigid body with two shapes, one being a
+        ///  trigger shape and the other a collision shape. 	It is illegal to raise the eTRIGGER_SHAPE and
+        ///  eSIMULATION_SHAPE flags on a single PxShape instance.  In the event that one of these flags is already
+        ///  raised the sdk will reject any attempt to raise the other.  To raise the eTRIGGER_SHAPE flag first
+        ///  ensure that eSIMULATION_SHAPE flag is already lowered.
+        ///
+        ///  Trigger shapes will no longer send notification events for interactions with other trigger shapes.
+        ///
+        ///  Shapes marked as triggers are allowed to participate in scene queries, provided the eSCENE_QUERY_SHAPE flag is set.
+        ///
+        ///  This flag has no effect if simulation is disabled for the corresponding actor (see [`PxActorFlag::eDISABLE_SIMULATION`]).
+        /// </summary>
+        TriggerShape = 4,
+        /// <summary>
+        ///  Enable debug renderer for this shape
+        /// </summary>
+        Visualization = 8,
+    }
+
+    [Flags]
+    public enum PxShapeFlags : byte
+    {
+        SimulationShape = 1 << 0,
+        SceneQueryShape = 1 << 1,
+        TriggerShape = 1 << 2,
+        Visualization = 1 << 3,
+    }
+
+    /// <summary>
+    ///  Parameter to addForce() and addTorque() calls, determines the exact operation that is carried out.
+    /// </summary>
+    public enum PxForceMode : int
+    {
+        /// <summary>
+        ///  parameter has unit of mass * length / time^2, i.e., a force
+        /// </summary>
+        Force = 0,
+        /// <summary>
+        ///  parameter has unit of mass * length / time, i.e., force * time
+        /// </summary>
+        Impulse = 1,
+        /// <summary>
+        ///  parameter has unit of length / time, i.e., the effect is mass independent: a velocity change.
+        /// </summary>
+        VelocityChange = 2,
+        /// <summary>
+        ///  parameter has unit of length/ time^2, i.e., an acceleration. It gets treated just like a force except the mass is not divided out before integration.
+        /// </summary>
+        Acceleration = 3,
+    }
+
+    /// <summary>
+    ///  Collection of flags describing the behavior of a rigid body.
+    /// </summary>
+    public enum PxRigidBodyFlag : int
+    {
+        /// <summary>
+        ///  Enable kinematic mode for the body.
+        /// </summary>
+        Kinematic = 1,
+        /// <summary>
+        ///  Use the kinematic target transform for scene queries.
+        ///
+        ///  If this flag is raised, then scene queries will treat the kinematic target transform as the current pose
+        ///  of the body (instead of using the actual pose). Without this flag, the kinematic target will only take
+        ///  effect with respect to scene queries after a simulation step.
+        /// </summary>
+        UseKinematicTargetForSceneQueries = 2,
+        /// <summary>
+        ///  Enable CCD for the body.
+        /// </summary>
+        EnableCcd = 4,
+        /// <summary>
+        ///  Enabled CCD in swept integration for the actor.
+        ///
+        ///  If this flag is raised and CCD is enabled, CCD interactions will simulate friction. By default, friction is disabled in CCD interactions because
+        ///  CCD friction has been observed to introduce some simulation artifacts. CCD friction was enabled in previous versions of the SDK. Raising this flag will result in behavior
+        ///  that is a closer match for previous versions of the SDK.
+        ///
+        ///  This flag requires PxRigidBodyFlag::eENABLE_CCD to be raised to have any effect.
+        /// </summary>
+        EnableCcdFriction = 8,
+        /// <summary>
+        ///  Register a rigid body to dynamically adjust contact offset based on velocity. This can be used to achieve a CCD effect.
+        ///
+        ///  If both eENABLE_CCD and eENABLE_SPECULATIVE_CCD are set on the same body, then angular motions are handled by speculative
+        ///  contacts (eENABLE_SPECULATIVE_CCD) while linear motions are handled by sweeps (eENABLE_CCD).
+        /// </summary>
+        EnableSpeculativeCcd = 16,
+        /// <summary>
+        ///  Register a rigid body for reporting pose changes by the simulation at an early stage.
+        ///
+        ///  Sometimes it might be advantageous to get access to the new pose of a rigid body as early as possible and
+        ///  not wait until the call to fetchResults() returns. Setting this flag will schedule the rigid body to get reported
+        ///  in [`PxSimulationEventCallback::onAdvance`](). Please refer to the documentation of that callback to understand
+        ///  the behavior and limitations of this functionality.
+        /// </summary>
+        EnablePoseIntegrationPreview = 32,
+        /// <summary>
+        ///  Permit CCD to limit maxContactImpulse. This is useful for use-cases like a destruction system but can cause visual artefacts so is not enabled by default.
+        /// </summary>
+        EnableCcdMaxContactImpulse = 64,
+        /// <summary>
+        ///  Carries over forces/torques between frames, rather than clearing them
+        ///
+        ///  If this flag is raised, forces and torques will carry over between frames. Impulses applied with PxForceMode::eIMPULSE will not be retained.
+        ///
+        ///  Clearing this flag will retain the accelerations for an additional frame before clearing them. To reset the forces immediately for the next frame,
+        ///  a call to PxRigidBody::clearForce() / PxRigidBody::clearTorque() is needed.
+        /// </summary>
+        RetainAccelerations = 128,
+        /// <summary>
+        ///  Forces kinematic-kinematic pairs notifications for this actor.
+        ///
+        ///  This flag overrides the global scene-level PxPairFilteringMode setting for kinematic actors.
+        ///  This is equivalent to having PxPairFilteringMode::eKEEP for pairs involving this actor.
+        ///
+        ///  A particular use case is when you have a large amount of kinematic actors, but you are only
+        ///  interested in interactions between a few of them. In this case it is best to use
+        ///  PxSceneDesc.kineKineFilteringMode = PxPairFilteringMode::eKILL, and then raise the
+        ///  eFORCE_KINE_KINE_NOTIFICATIONS flag on the small set of kinematic actors that need
+        ///  notifications.
+        ///
+        ///  This has no effect if PxRigidBodyFlag::eKINEMATIC is not set.
+        ///
+        ///  Changing this flag at runtime will not have an effect until you remove and re-add the actor to the scene.
+        /// </summary>
+        ForceKineKineNotifications = 256,
+        /// <summary>
+        ///  Forces static-kinematic pairs notifications for this actor.
+        ///
+        ///  Similar to eFORCE_KINE_KINE_NOTIFICATIONS, but for static-kinematic interactions.
+        ///
+        ///  This has no effect if PxRigidBodyFlag::eKINEMATIC is not set.
+        ///
+        ///  Changing this flag at runtime will not have an effect until you remove and re-add the actor to the scene.
+        /// </summary>
+        ForceStaticKineNotifications = 512,
+        /// <summary>
+        ///  Enables computation of gyroscopic forces on the rigid body.
+        /// </summary>
+        EnableGyroscopicForces = 1024,
+        /// <summary>
+        ///  Reserved for internal usage
+        /// </summary>
+        Reserved = 32768,
+    }
+
+    [Flags]
+    public enum PxRigidBodyFlags : ushort
+    {
+        Kinematic = 1 << 0,
+        UseKinematicTargetForSceneQueries = 1 << 1,
+        EnableCcd = 1 << 2,
+        EnableCcdFriction = 1 << 3,
+        EnableSpeculativeCcd = 1 << 4,
+        EnablePoseIntegrationPreview = 1 << 5,
+        EnableCcdMaxContactImpulse = 1 << 6,
+        RetainAccelerations = 1 << 7,
+        ForceKineKineNotifications = 1 << 8,
+        ForceStaticKineNotifications = 1 << 9,
+        EnableGyroscopicForces = 1 << 10,
+        Reserved = 1 << 15,
+    }
+
+    /// <summary>
+    ///  constraint flags
+    ///
+    ///  eBROKEN is a read only flag
+    /// </summary>
+    public enum PxConstraintFlag : int
+    {
+        /// <summary>
+        ///  whether the constraint is broken
+        /// </summary>
+        Broken = 1,
+        /// <summary>
+        ///  whether contacts should be generated between the objects this constraint constrains
+        /// </summary>
+        CollisionEnabled = 8,
+        /// <summary>
+        ///  whether this constraint should be visualized, if constraint visualization is turned on
+        /// </summary>
+        Visualization = 16,
+        /// <summary>
+        ///  Will be removed in a future version and the limits will always be forces. limits for drive strength are forces rather than impulses
+        /// </summary>
+        DriveLimitsAreForces = 32,
+        /// <summary>
+        ///  perform preprocessing for improved accuracy on D6 Slerp Drive (this flag will be removed in a future release when preprocessing is no longer required)
+        /// </summary>
+        ImprovedSlerp = 128,
+        /// <summary>
+        ///  suppress constraint preprocessing, intended for use with rowResponseThreshold. May result in worse solver accuracy for ill-conditioned constraints.
+        /// </summary>
+        DisablePreprocessing = 256,
+        /// <summary>
+        ///  enables extended limit ranges for angular limits (e.g., limit values &gt; PxPi or
+        ///  &lt;
+        ///  -PxPi)
+        /// </summary>
+        EnableExtendedLimits = 512,
+        /// <summary>
+        ///  please do not raise this flag as it is for internal use only
+        /// </summary>
+        GpuCompatible = 1024,
+        /// <summary>
+        ///  updates the constraint each frame
+        /// </summary>
+        AlwaysUpdate = 2048,
+        /// <summary>
+        ///  disables the constraint. SolverPrep functions won't be called for this constraint.
+        /// </summary>
+        DisableConstraint = 4096,
+    }
+
+    [Flags]
+    public enum PxConstraintFlags : ushort
+    {
+        Broken = 1 << 0,
+        CollisionEnabled = 1 << 3,
+        Visualization = 1 << 4,
+        DriveLimitsAreForces = 1 << 5,
+        ImprovedSlerp = 1 << 7,
+        DisablePreprocessing = 1 << 8,
+        EnableExtendedLimits = 1 << 9,
+        GpuCompatible = 1 << 10,
+        AlwaysUpdate = 1 << 11,
+        DisableConstraint = 1 << 12,
     }
 
     /// <summary>
@@ -19520,22 +24652,12 @@ namespace PhysX
         /// </summary>
         DisableStrongFriction = 2,
         /// <summary>
-        ///  Whether to use the patch friction model.
-        ///  This flag only has an effect if PxFrictionType::ePATCH friction model is used.
-        ///
-        ///  When using the patch friction model, up to 2 friction anchors are generated per patch. As the number of friction anchors
-        ///  can be smaller than the number of contacts, the normal force is accumulated over all contacts and used to compute friction
-        ///  for all anchors. Where there are more than 2 anchors, this can produce frictional behavior that is too strong (approximately 2x as strong
-        ///  as analytical models suggest).
-        ///
-        ///  This flag causes the normal force to be distributed between the friction anchors such that the total amount of friction applied does not
-        ///  exceed the analytical results.
+        ///  If this flag is raised in combination with negative restitution, the computed spring-damper output will be interpreted as
+        ///  acceleration instead of force targets, analog to acceleration spring constraints.
+        ///  The flag has no effect for non-compliant contacts (i.e., if restitution is nonnegative).
+        ///  In an interaction between a compliant-force and a compliant-acceleration body the latter will dominate.
         /// </summary>
-        ImprovedPatchFriction = 4,
-        /// <summary>
-        ///  This flag has the effect of enabling an implicit spring model for the normal force computation.
-        /// </summary>
-        CompliantContact = 8,
+        CompliantAccelerationSpring = 16,
     }
 
     [Flags]
@@ -19543,8 +24665,7 @@ namespace PhysX
     {
         DisableFriction = 1 << 0,
         DisableStrongFriction = 1 << 1,
-        ImprovedPatchFriction = 1 << 2,
-        CompliantContact = 1 << 3,
+        CompliantAccelerationSpring = 1 << 4,
     }
 
     /// <summary>
@@ -19563,6 +24684,15 @@ namespace PhysX
     ///  eMAX
     ///
     ///  The effective combine mode for the pair is maximum(material0.combineMode, material1.combineMode).
+    ///
+    ///  Notes that the restitution coefficient is overloaded if it is negative and represents a spring stiffness for compliant contacts. In the compliant contact case, the following rules apply:
+    ///  If a compliant (restitution
+    ///  &lt;
+    ///  0) material interacts with a rigid (restitution &gt;= 0) material, the compliant behavior will be chosen independent
+    ///  of combine mode. In all other cases (i.e., also for compliant-compliant interactions) the combine mode is used.
+    ///  For a compliant-compliant interaction with eMULTIPLY combine mode, we multiply the values but keep the sign negative.
+    ///  The material damping follows the same logic, i.e., for the compliant vs non-compliant case, we take the damping value of the compliant material. Otherwise the combine mode is respected.
+    ///  In an interaction between a compliant-force and a compliant-acceleration body the latter will dominate and exclusively determine the collision behavior with its parameters.
     /// </summary>
     public enum PxCombineMode : int
     {
@@ -19592,18 +24722,162 @@ namespace PhysX
         Pad32 = 2147483647,
     }
 
-    [Flags]
-    public enum PxParticleBufferFlags : uint
+    /// <summary>
+    ///  A class to iterate over a compressed contact stream. This supports read-only access to the various contact formats.
+    /// </summary>
+    public enum StreamFormat : int
     {
-        UpdatePosition = 1 << 0,
-        UpdateVelocity = 1 << 1,
-        UpdatePhase = 1 << 2,
-        UpdateRestposition = 1 << 3,
-        UpdateCloth = 1 << 5,
-        UpdateRigid = 1 << 6,
-        UpdateDiffuseParam = 1 << 7,
-        UpdateAttachments = 1 << 8,
-        All = UpdatePosition | UpdateVelocity | UpdatePhase | UpdateRestposition | UpdateCloth | UpdateRigid | UpdateDiffuseParam | UpdateAttachments,
+        SimpleStream = 0,
+        ModifiableStream = 1,
+        CompressedModifiableStream = 2,
+    }
+
+    /// <summary>
+    ///  Flags to enable or disable special modes of a PxDeformableBody instance
+    /// </summary>
+    public enum PxDeformableBodyFlag : int
+    {
+        /// <summary>
+        ///  Determines if self collision will be detected and resolved
+        /// </summary>
+        DisableSelfCollision = 1,
+        /// <summary>
+        ///  Enables support for speculative contact generation, see [`PxRigidBodyFlag::eENABLE_SPECULATIVE_CCD`]
+        /// </summary>
+        EnableSpeculativeCcd = 2,
+        /// <summary>
+        ///  Enables support for kinematic motion of the simulation mesh, see [`PxRigidBodyFlag::eKINEMATIC`]
+        /// </summary>
+        Kinematic = 4,
+    }
+
+    [Flags]
+    public enum PxDeformableBodyFlags : byte
+    {
+        DisableSelfCollision = 1 << 0,
+        EnableSpeculativeCcd = 1 << 1,
+        Kinematic = 1 << 2,
+    }
+
+    public enum PxDeformableSurfaceFlag : int
+    {
+        UseAnisotropicModel = 1,
+        EnableFlattening = 2,
+    }
+
+    [Flags]
+    public enum PxDeformableSurfaceFlags : ushort
+    {
+        UseAnisotropicModel = 1 << 0,
+        EnableFlattening = 1 << 1,
+    }
+
+    [Flags]
+    public enum PxDeformableSurfaceDataFlags : uint
+    {
+        PositionInvmass = 1 << 0,
+        Velocity = 1 << 1,
+        RestPosition = 1 << 2,
+        All = PositionInvmass | Velocity | RestPosition,
+    }
+
+    /// <summary>
+    ///  Flags to enable or disable special modes of a PxDeformableVolume instance
+    /// </summary>
+    public enum PxDeformableVolumeFlag : int
+    {
+        /// <summary>
+        ///  Enables computation of a Cauchy stress tensor for every tetrahedron in the simulation mesh. The tensors can be accessed through the deformable volume direct API
+        /// </summary>
+        ComputeStressTensor = 1,
+        /// <summary>
+        ///  Enables partially kinematic motion of the collision and simulation mesh.
+        /// </summary>
+        PartiallyKinematic = 2,
+    }
+
+    [Flags]
+    public enum PxDeformableVolumeFlags : ushort
+    {
+        ComputeStressTensor = 1 << 0,
+        PartiallyKinematic = 1 << 1,
+    }
+
+    [Flags]
+    public enum PxDeformableVolumeDataFlags : uint
+    {
+        PositionInvmass = 1 << 0,
+        SimPositionInvmass = 1 << 1,
+        SimVelocity = 1 << 2,
+        RestPositionInvmass = 1 << 3,
+        All = PositionInvmass | SimPositionInvmass | SimVelocity | RestPositionInvmass,
+    }
+
+    public enum PxDeformableVolumeMaterialModel : int
+    {
+        /// <summary>
+        ///  Default model. Well suited for high stiffness. Does need tetrahedra with good shapes (no extreme slivers) in the rest pose.
+        /// </summary>
+        CoRotational = 0,
+        /// <summary>
+        ///  Well suited for lower stiffness. Robust to any tetrahedron shape.
+        /// </summary>
+        NeoHookean = 1,
+    }
+
+    /// <summary>
+    ///  Flags specifying deletion event types.
+    /// </summary>
+    public enum PxDeletionEventFlag : int
+    {
+        /// <summary>
+        ///  The user has called release on an object.
+        /// </summary>
+        UserRelease = 1,
+        /// <summary>
+        ///  The destructor of an object has been called and the memory has been released.
+        /// </summary>
+        MemoryRelease = 2,
+    }
+
+    [Flags]
+    public enum PxDeletionEventFlags : byte
+    {
+        UserRelease = 1 << 0,
+        MemoryRelease = 1 << 1,
+    }
+
+    /// <summary>
+    ///  Identifies the attachment target type for an actor involved in an attachment.
+    ///
+    ///  The target type provides actor related information about what kind of attachment should be created.
+    /// </summary>
+    public enum PxDeformableAttachmentTargetType : int
+    {
+        /// <summary>
+        ///  Attachment to vertex points of deformable mesh.
+        /// </summary>
+        Vertex = 0,
+        /// <summary>
+        ///  Attachment to points on triangles of deformable mesh.
+        /// </summary>
+        Triangle = 1,
+        /// <summary>
+        ///  Attachment to points in tetrahedrons of deformable mesh.
+        /// </summary>
+        Tetrahedron = 2,
+        /// <summary>
+        ///  Attachment to points in rigid actor local frame.
+        /// </summary>
+        Rigid = 3,
+        /// <summary>
+        ///  Attachment to points in global frame.
+        /// </summary>
+        World = 4,
+        /// <summary>
+        ///  Internal use only.
+        /// </summary>
+        Undefined = 5,
     }
 
     [Flags]
@@ -19615,6 +24889,7 @@ namespace PhysX
         Postfilter = 1 << 3,
         AnyHit = 1 << 4,
         NoBlock = 1 << 5,
+        BatchQueryLegacyBehaviour = 1 << 6,
         DisableHardcodedFilter = 1 << 6,
         Reserved = 1 << 15,
     }
@@ -19854,17 +25129,20 @@ namespace PhysX
     /// <summary>
     ///  Enum for selecting the friction algorithm used for simulation.
     ///
-    ///  [`PxFrictionType::ePATCH`] selects the patch friction model which typically leads to the most stable results at low solver iteration counts and is also quite inexpensive, as it uses only
-    ///  up to four scalar solver constraints per pair of touching objects.  The patch friction model is the same basic strong friction algorithm as PhysX 3.2 and before.
+    ///  Since only the patch friction model is supported now, the friction type option is obsolete.
     ///
-    ///  [`PxFrictionType::eONE_DIRECTIONAL`] is a simplification of the Coulomb friction model, in which the friction for a given point of contact is applied in the alternating tangent directions of
-    ///  the contact's normal.  This simplification allows us to reduce the number of iterations required for convergence but is not as accurate as the two directional model.
+    ///  [`PxFrictionType::ePATCH`] is the default friction logic (Couloumb type friction model). Friction gets computed per contact patch.
+    ///  Up to two contact points lying in the contact patch area are selected as friction anchors to which friction impulses are applied. If there
+    ///  are more than two contact points, to select anchors from, the anchors are selected using a heuristic that tries to maximize the distance
+    ///  between the anchors within the contact patch area. For each contact patch, two perpendicular axes of the contact patch plane are selected.
+    ///  A 1D-constraint along each of the two axes is used to implement friction at a friction anchor point. Note that the two axes are processed
+    ///  separately when the PGS solver type is selected. This can lead to asymmetries when transitioning from dynamic to static friction and vice
+    ///  versa in certain edge cases. The TGS solver type, on the other hand, works with the combined impulse along the two axes and as such avoids
+    ///  this potential problem, but this is slightly more computationally expensive. Another difference between TGS and PGS is that TGS applies
+    ///  friction throughout all position and all velocity iterations, while PGS by default applies friction throughout the last 3 position iterations
+    ///  and all velocity iterations (unless [`PxSceneFlag::eENABLE_FRICTION_EVERY_ITERATION`] is used).
     ///
-    ///  [`PxFrictionType::eTWO_DIRECTIONAL`] is identical to the one directional model, but it applies friction in both tangent directions simultaneously.  This hurts convergence a bit so it
-    ///  requires more solver iterations, but is more accurate.  Like the one directional model, it is applied at every contact point, which makes it potentially more expensive
-    ///  than patch friction for scenarios with many contact points.
-    ///
-    ///  [`PxFrictionType::eFRICTION_COUNT`] is the total numer of friction models supported by the SDK.
+    ///  [`PxFrictionType::eFRICTION_COUNT`] is the total number of friction models supported by the SDK.
     /// </summary>
     public enum PxFrictionType : int
     {
@@ -19873,17 +25151,9 @@ namespace PhysX
         /// </summary>
         Patch = 0,
         /// <summary>
-        ///  Select one directional per-contact friction model.
-        /// </summary>
-        OneDirectional = 1,
-        /// <summary>
-        ///  Select two directional per-contact friction model.
-        /// </summary>
-        TwoDirectional = 2,
-        /// <summary>
         ///  The total number of friction models supported by the SDK.
         /// </summary>
-        FrictionCount = 3,
+        FrictionCount = 1,
     }
 
     /// <summary>
@@ -19900,7 +25170,7 @@ namespace PhysX
         /// </summary>
         Pgs = 0,
         /// <summary>
-        ///  Default Temporal Gauss-Seidel solver
+        ///  Temporal Gauss-Seidel solver
         /// </summary>
         Tgs = 1,
     }
@@ -20081,50 +25351,115 @@ namespace PhysX
         /// </summary>
         EnableFrictionEveryIteration = 32768,
         /// <summary>
-        ///  Controls processing friction in all solver iterations
+        ///  Controls application of gravity and other external forces per TGS solver position iterations
         ///
-        ///  By default, PhysX processes friction only in the final 3 position iterations, and all velocity
-        ///  iterations. This flag enables friction processing in all position and velocity iterations.
+        ///  By default, external forces such as gravity are applied just once at the beginning of each simulate() call. With this
+        ///  flag enabled the same forces are applied in each sub time step (position iteration) of the TGS solver, leading to greater stability and better solver convergence.
+        ///  One consequence is that a body in freefall will move a shorter distance over the entire simulation step if the flag is raised.
         ///
-        ///  The default behaviour provides a good trade-off between performance and stability and is aimed
-        ///  primarily at game development.
+        ///  Note that raising this flag makes the distance traveled under freefall dependent on the number of solver iterations.
+        ///  Since solver iterations are determined per-island, bodies assigned to an island with fewer solver iterations will travel a larger distance than bodies assigned to an island with more iterations.
         ///
-        ///  When simulating more complex frictional behaviour, such as grasping of complex geometries with
-        ///  a robotic manipulator, better results can be achieved by enabling friction in all solver iterations.
+        ///  This feature is only supported for the TGS solver.
         ///
-        ///  This flag only has effect with the default solver. The TGS solver always performs friction per-iteration.
+        ///  Default
+        ///  false
         /// </summary>
-        SuppressReadback = 65536,
+        EnableExternalForcesEveryIterationTgs = 65536,
         /// <summary>
-        ///  Controls processing friction in all solver iterations
+        ///  Enables the direct-GPU API. Raising this flag is only allowed if eENABLE_GPU_DYNAMICS is raised and
+        ///  PxBroadphaseType::eGPU is used.
         ///
-        ///  By default, PhysX processes friction only in the final 3 position iterations, and all velocity
-        ///  iterations. This flag enables friction processing in all position and velocity iterations.
+        ///  This is useful if your application only needs to communicate to the GPU via GPU buffers. Can be significantly
+        ///  faster.
         ///
-        ///  The default behaviour provides a good trade-off between performance and stability and is aimed
-        ///  primarily at game development.
+        ///  Enabling the direct-GPU API will disable the readback of simulation state from GPU to CPU. Simulation outputs
+        ///  can only be accessed using the direct-GPU API functions in PxDirectGPUAPI (PxDirectGPUAPI::getRigidDynamicData(),
+        ///  PxDirectGPUAPI::getArticulationData(), PxDirectGPUAPI::copyContactData()), and reading state directly from the actor
+        ///  is not allowed.
         ///
-        ///  When simulating more complex frictional behaviour, such as grasping of complex geometries with
-        ///  a robotic manipulator, better results can be achieved by enabling friction in all solver iterations.
+        ///  This flag requires PxSceneFlag::eDISABLE_SLEEPING to be raised.
         ///
-        ///  This flag only has effect with the default solver. The TGS solver always performs friction per-iteration.
+        ///  This flag is not mutable and must be set in PxSceneDesc at scene creation.
+        ///
+        ///  Default
+        ///  false
         /// </summary>
-        ForceReadback = 131072,
+        EnableDirectGpuApi = 131072,
         /// <summary>
-        ///  Controls processing friction in all solver iterations
+        ///  Enables the computation of body accelerations for PxRigidDynamic actors.
         ///
-        ///  By default, PhysX processes friction only in the final 3 position iterations, and all velocity
-        ///  iterations. This flag enables friction processing in all position and velocity iterations.
+        ///  By default PhysX does not compute per-body accelerations for PxRigidDynamic actors (only for articulation links).
+        ///  This flag tells the system to compute them.
         ///
-        ///  The default behaviour provides a good trade-off between performance and stability and is aimed
-        ///  primarily at game development.
+        ///  Retrieve the accelerations using PxRigidBody::getLinearAcceleration() and PxRigidBody::getAngularAcceleration().
         ///
-        ///  When simulating more complex frictional behaviour, such as grasping of complex geometries with
-        ///  a robotic manipulator, better results can be achieved by enabling friction in all solver iterations.
+        ///  If the flag is not enabled these functions will return valid accelerations for PxArticulationLink objects, but
+        ///  it will return zero for PxRigidDynamic actors.
         ///
-        ///  This flag only has effect with the default solver. The TGS solver always performs friction per-iteration.
+        ///  If the flag is enabled, these functions will return valid accelerations for both PxArticulationLink and
+        ///  PxRigidDynamic objects.
+        ///
+        ///  This flag also enables PxRigidDynamicGPUAPIReadType::eLINEAR_ACCELERATION and PxRigidDynamicGPUAPIReadType::eANGULAR_ACCELERATION
+        ///  in the direct GPU API.
+        ///
+        ///  This flag is not mutable and must be set in PxSceneDesc at scene creation.
+        ///
+        ///  Default
+        ///  false
         /// </summary>
-        MutableFlags = 69633,
+        EnableBodyAccelerations = 262144,
+        /// <summary>
+        ///  Reorders articulation contact constraints and articulation joint maximum velocity constraints in the solver.
+        ///
+        ///  When this flag is raised, the solver will observe the following order:
+        ///  - joint friction, joint drive, joint position limit
+        ///  - link dynamic contact
+        ///  - link static contact
+        ///  - joint max velocity
+        ///
+        ///  When the flag is lowered, the solver will observe a modified order:
+        ///  - link dynamic contact
+        ///  - joint friction, joint drive, joint position limit
+        ///  - joint max velocity
+        ///  - link static contact
+        ///
+        ///  Raising the flag can be useful for certain simulation scenarios such as gripping, where it is desirable for dynamic contact
+        ///  to be resolved after joint drive but before max joint velocity.
+        ///
+        ///  Raising this flag may have a negative effect on simulation performance.
+        ///
+        ///  A goal of raising this flag is shallower contact penetration. This will in turn result in a reduced force
+        ///  reported by PxArticulationCache::linkIncomingJointForce.
+        ///
+        ///  Default
+        ///  false
+        /// </summary>
+        SolveArticulationContactLast = 524288,
+        /// <summary>
+        ///  Disables all sleeping logic in the scene.
+        ///
+        ///  When this flag is raised, no objects will be put to sleep. They will all be treated by the solver as awake.
+        ///  This is a performance optimization for use cases where sleeping is not desired.
+        ///
+        ///  This flag is automatically enabled when PxSceneFlag::eENABLE_DIRECT_GPU_API is set.
+        ///
+        ///  Default
+        ///  false
+        /// </summary>
+        DisableSleeping = 1048576,
+        /// <summary>
+        ///  Disables all sleeping logic in the scene.
+        ///
+        ///  When this flag is raised, no objects will be put to sleep. They will all be treated by the solver as awake.
+        ///  This is a performance optimization for use cases where sleeping is not desired.
+        ///
+        ///  This flag is automatically enabled when PxSceneFlag::eENABLE_DIRECT_GPU_API is set.
+        ///
+        ///  Default
+        ///  false
+        /// </summary>
+        MutableFlags = 4097,
     }
 
     [Flags]
@@ -20143,9 +25478,12 @@ namespace PhysX
         EnableGpuDynamics = 1 << 13,
         EnableEnhancedDeterminism = 1 << 14,
         EnableFrictionEveryIteration = 1 << 15,
-        SuppressReadback = 1 << 16,
-        ForceReadback = 1 << 17,
-        MutableFlags = EnableActiveActors | ExcludeKinematicsFromActiveActors | SuppressReadback,
+        EnableExternalForcesEveryIterationTgs = 1 << 16,
+        EnableDirectGpuApi = 1 << 17,
+        EnableBodyAccelerations = 1 << 18,
+        SolveArticulationContactLast = 1 << 19,
+        DisableSleeping = 1 << 20,
+        MutableFlags = EnableActiveActors | ExcludeKinematicsFromActiveActors,
     }
 
     /// <summary>
@@ -20164,7 +25502,6 @@ namespace PhysX
         ///  that determines the size of the visualization widgets.
         ///
         ///  Only objects for which visualization is turned on using setFlag(eVISUALIZATION) are visualized (see [`PxActorFlag::eVISUALIZATION`], #PxShapeFlag::eVISUALIZATION, ...).
-        ///  Contacts are visualized if they involve a body which is being visualized.
         ///  Default is 0.
         ///
         ///  Notes:
@@ -20223,75 +25560,89 @@ namespace PhysX
         /// </summary>
         ContactError = 8,
         /// <summary>
-        ///  Visualize Contact forces. Will enable contact information.
+        ///  Visualize Contact impulses. Will enable contact information.
         /// </summary>
-        ContactForce = 9,
+        ContactImpulse = 9,
+        /// <summary>
+        ///  Visualize friction points. Will enable contact information.
+        /// </summary>
+        FrictionPoint = 10,
+        /// <summary>
+        ///  Visualize friction normals. Will enable contact information.
+        /// </summary>
+        FrictionNormal = 11,
+        /// <summary>
+        ///  Visualize friction impulses. Will enable contact information.
+        /// </summary>
+        FrictionImpulse = 12,
         /// <summary>
         ///  Visualize actor axes.
         /// </summary>
-        ActorAxes = 10,
+        ActorAxes = 13,
         /// <summary>
         ///  Visualize bounds (AABBs in world space)
         /// </summary>
-        CollisionAabbs = 11,
+        CollisionAabbs = 14,
         /// <summary>
         ///  Shape visualization
         /// </summary>
-        CollisionShapes = 12,
+        CollisionShapes = 15,
         /// <summary>
         ///  Shape axis visualization
         /// </summary>
-        CollisionAxes = 13,
+        CollisionAxes = 16,
         /// <summary>
         ///  Compound visualization (compound AABBs in world space)
         /// </summary>
-        CollisionCompounds = 14,
+        CollisionCompounds = 17,
         /// <summary>
         ///  Mesh
         ///  &amp;
         ///  convex face normals
         /// </summary>
-        CollisionFnormals = 15,
+        CollisionFnormals = 18,
         /// <summary>
         ///  Active edges for meshes
         /// </summary>
-        CollisionEdges = 16,
+        CollisionEdges = 19,
         /// <summary>
         ///  Static pruning structures
         /// </summary>
-        CollisionStatic = 17,
+        CollisionStatic = 20,
         /// <summary>
         ///  Dynamic pruning structures
         /// </summary>
-        CollisionDynamic = 18,
+        CollisionDynamic = 21,
         /// <summary>
         ///  Joint local axes
         /// </summary>
-        JointLocalFrames = 19,
+        JointLocalFrames = 22,
         /// <summary>
         ///  Joint limits
         /// </summary>
-        JointLimits = 20,
+        JointLimits = 23,
         /// <summary>
         ///  Visualize culling box
         /// </summary>
-        CullBox = 21,
+        CullBox = 24,
         /// <summary>
         ///  MBP regions
         /// </summary>
-        MbpRegions = 22,
+        MbpRegions = 25,
         /// <summary>
         ///  Renders the simulation mesh instead of the collision mesh (only available for tetmeshes)
+        ///
+        ///  Deformable visualization is currently not supported.
         /// </summary>
-        SimulationMesh = 23,
+        SimulationMesh = 26,
         /// <summary>
         ///  Renders the SDF of a mesh instead of the collision mesh (only available for triangle meshes with SDFs)
         /// </summary>
-        Sdf = 24,
+        Sdf = 27,
         /// <summary>
         ///  This is not a parameter, it just records the current number of parameters (as maximum(PxVisualizationParameter)+1) for use in loops.
         /// </summary>
-        NumValues = 25,
+        NumValues = 28,
         /// <summary>
         ///  This is not a parameter, it just records the current number of parameters (as maximum(PxVisualizationParameter)+1) for use in loops.
         /// </summary>
@@ -20322,63 +25673,6 @@ namespace PhysX
         ///  Trigger shape pairs processed for the current simulation step.
         /// </summary>
         TriggerPairs = 3,
-    }
-
-    /// <summary>
-    ///  These flags determine what data is read or written to the gpu softbody.
-    /// </summary>
-    public enum PxSoftBodyDataFlag : int
-    {
-        /// <summary>
-        ///  The collision mesh tetrahedron indices (quadruples of int32)
-        /// </summary>
-        TetIndices = 0,
-        /// <summary>
-        ///  The collision mesh cauchy stress tensors (float 3x3 matrices)
-        /// </summary>
-        TetStress = 1,
-        /// <summary>
-        ///  The collision mesh tetrahedron von Mises stress (float scalar)
-        /// </summary>
-        TetStresscoeff = 2,
-        /// <summary>
-        ///  The collision mesh tetrahedron rest poses (float 3x3 matrices)
-        /// </summary>
-        TetRestPoses = 3,
-        /// <summary>
-        ///  The collision mesh tetrahedron orientations (quaternions, quadruples of float)
-        /// </summary>
-        TetRotations = 4,
-        /// <summary>
-        ///  The collision mesh vertex positions and their inverted mass in the 4th component (quadruples of float)
-        /// </summary>
-        TetPositionInvMass = 5,
-        /// <summary>
-        ///  The simulation mesh tetrahedron indices (quadruples of int32)
-        /// </summary>
-        SimTetIndices = 6,
-        /// <summary>
-        ///  The simulation mesh vertex velocities and their inverted mass in the 4th component (quadruples of float)
-        /// </summary>
-        SimVelocityInvMass = 7,
-        /// <summary>
-        ///  The simulation mesh vertex positions and their inverted mass in the 4th component (quadruples of float)
-        /// </summary>
-        SimPositionInvMass = 8,
-        /// <summary>
-        ///  The simulation mesh kinematic target positions
-        /// </summary>
-        SimKinematicTarget = 9,
-    }
-
-    /// <summary>
-    ///  Identifies each type of information for retrieving from actor.
-    /// </summary>
-    public enum PxActorCacheFlag : int
-    {
-        ActorData = 1,
-        Force = 4,
-        Torque = 8,
     }
 
     /// <summary>
@@ -20541,8 +25835,24 @@ namespace PhysX
         DisableMeshValidation = 1 << 4,
         PlaneShifting = 1 << 5,
         FastInertiaComputation = 1 << 6,
-        GpuCompatible = 1 << 7,
         ShiftVertices = 1 << 8,
+    }
+
+    /// <summary>
+    ///  This is only used for BVH33 which is deprecated and will be removed in a future version. Use BVH34 instead.
+    ///
+    ///  Enumeration for mesh cooking hints.
+    /// </summary>
+    public enum PxMeshCookingHint : int
+    {
+        /// <summary>
+        ///  Default value. Favors higher quality hierarchy with higher runtime performance over cooking speed.
+        /// </summary>
+        SimPerformance = 0,
+        /// <summary>
+        ///  Enables fast cooking path at the expense of somewhat lower quality hierarchy construction.
+        /// </summary>
+        CookingPerformance = 1,
     }
 
     /// <summary>
@@ -20588,6 +25898,12 @@ namespace PhysX
         ///  Something unrecoverable happened. Check the error stream to find out what.
         /// </summary>
         Failure = 3,
+        /// <summary>
+        ///  Convex mesh cooking succeeded, but the algorithm could not make the mesh GPU compatible because the
+        ///  in-sphere radius is more than 100x smaller than the largest extent. Collision detection for any pair involving
+        ///  this convex mesh will fall back to CPU.
+        /// </summary>
+        NonGpuCompatible = 4,
     }
 
     /// <summary>
@@ -20612,13 +25928,17 @@ namespace PhysX
         /// </summary>
         Success = 0,
         /// <summary>
-        ///  a triangle is too large for well-conditioned results. Tessellate the mesh for better behavior, see the user guide section on cooking for more details.
+        ///  A triangle is too large for well-conditioned results. Tessellate the mesh for better behavior, see the user guide section on cooking for more details.
         /// </summary>
         LargeTriangle = 1,
         /// <summary>
+        ///  The mesh cleaning operation removed all triangles, resulting in an empty mesh.
+        /// </summary>
+        EmptyMesh = 2,
+        /// <summary>
         ///  Something unrecoverable happened. Check the error stream to find out what.
         /// </summary>
-        Failure = 2,
+        Failure = 3,
     }
 
     [Flags]
@@ -20770,6 +26090,28 @@ namespace PhysX
     }
 
     /// <summary>
+    ///  The configuration to use for driving to the angular component of a target pose or velocity.
+    /// </summary>
+    public enum PxD6AngularDriveConfig : int
+    {
+        /// <summary>
+        ///  The joint tries to reach the angular drive target by separately driving along each angular degree of freedom.
+        ///
+        ///  Each angular degree of freedom can have its own set of drive parameters. The degrees of freedom are covered by a twist and two swing axes.
+        ///  As a consequence, only the following options are available when setting the drive parameters: PxD6Drive::eSWING1, PxD6Drive::eSWING2,
+        ///  PxD6Drive::eTWIST (see [`PxD6Joint::setDrive`]()).
+        /// </summary>
+        SwingTwist = 0,
+        /// <summary>
+        ///  The joint tries to reach the angular drive target by following a spherical linear interpolation (SLERP) based path.
+        ///
+        ///  A single set of drive parameters will be used for all angular degrees of freedom and PxD6Drive::eSLERP is the only valid option to set
+        ///  those parameters (see [`PxD6Joint::setDrive`]()).
+        /// </summary>
+        Slerp = 1,
+    }
+
+    /// <summary>
     ///  Used to specify which axes of a D6 joint are driven.
     ///
     ///  Each drive is an implicit force-limited damped spring:
@@ -20780,7 +26122,8 @@ namespace PhysX
     ///
     ///  A linear axis is affected by drive only if the corresponding drive flag is set. There are two possible models
     ///  for angular drive: swing/twist, which may be used to drive one or more angular degrees of freedom, or slerp,
-    ///  which may only be used to drive all three angular degrees simultaneously.
+    ///  which may only be used to drive all three angular degrees simultaneously. Please use [`PxD6AngularDriveConfig`]
+    ///  to configure the angular drive model.
     /// </summary>
     public enum PxD6Drive : int
     {
@@ -20797,24 +26140,42 @@ namespace PhysX
         /// </summary>
         Z = 2,
         /// <summary>
-        ///  drive of displacement from the X-axis
+        ///  rotational drive around the X-axis
+        ///
+        ///  Only allowed if the angular drive configuration is set to PxD6AngularDriveConfig::eSWING_TWIST.
         /// </summary>
-        Swing = 3,
+        Twist = 3,
         /// <summary>
-        ///  drive of the displacement around the X-axis
+        ///  rotational drive around the Y-axis
+        ///
+        ///  Only allowed if the angular drive configuration is set to PxD6AngularDriveConfig::eSWING_TWIST.
         /// </summary>
-        Twist = 4,
+        Swing1 = 4,
+        /// <summary>
+        ///  rotational drive around the Z-axis
+        ///
+        ///  Only allowed if the angular drive configuration is set to PxD6AngularDriveConfig::eSWING_TWIST.
+        /// </summary>
+        Swing2 = 5,
         /// <summary>
         ///  drive of all three angular degrees along a SLERP-path
+        ///
+        ///  Only allowed if the angular drive configuration is set to PxD6AngularDriveConfig::eSLERP.
         /// </summary>
-        Slerp = 5,
-        Count = 6,
+        Slerp = 6,
+        /// <summary>
+        ///  drive of all three angular degrees along a SLERP-path
+        ///
+        ///  Only allowed if the angular drive configuration is set to PxD6AngularDriveConfig::eSLERP.
+        /// </summary>
+        Count = 7,
     }
 
     [Flags]
     public enum PxD6JointDriveFlags : uint
     {
         Acceleration = 1 << 0,
+        OutputForce = 1 << 1,
     }
 
     /// <summary>
@@ -20844,6 +26205,123 @@ namespace PhysX
         WaitForWork = 0,
         YieldThread = 1,
         YieldProcessor = 2,
+    }
+
+    public enum PxVehicleAxes : int
+    {
+        /// <summary>
+        ///  The +x axis
+        /// </summary>
+        PosX = 0,
+        /// <summary>
+        ///  The -x axis
+        /// </summary>
+        NegX = 1,
+        /// <summary>
+        ///  The +y axis
+        /// </summary>
+        PosY = 2,
+        /// <summary>
+        ///  The -y axis
+        /// </summary>
+        NegY = 3,
+        /// <summary>
+        ///  The +z axis
+        /// </summary>
+        PosZ = 4,
+        /// <summary>
+        ///  The -z axis
+        /// </summary>
+        NegZ = 5,
+        MaxNbAxes = 6,
+    }
+
+    /// <summary>
+    ///  Determine whether the PhysX actor associated with a vehicle is to be updated with a velocity change or an acceleration change.
+    ///  A velocity change will be immediately reflected in linear and angular velocity queries against the vehicle.  An acceleration change, on the other hand,
+    ///  will leave the linear and angular velocities unchanged until the next PhysX scene update has applied the acceleration update to the actor's linear and
+    ///  angular velocities.
+    /// </summary>
+    public enum PxVehiclePhysXActorUpdateMode : int
+    {
+        ApplyVelocity = 0,
+        ApplyAcceleration = 1,
+    }
+
+    public enum PxVehicleSimulationContextType : int
+    {
+        /// <summary>
+        ///  The simulation context inherits from PxVehicleSimulationContext
+        /// </summary>
+        Default = 0,
+        /// <summary>
+        ///  The simulation context inherits from PxVehiclePhysXSimulationContext
+        /// </summary>
+        Physx = 1,
+    }
+
+    /// <summary>
+    ///  Choose between a potentially more expensive but more accurate solution to the clutch model or a potentially cheaper but less accurate solution.
+    /// </summary>
+    public enum PxVehicleClutchAccuracyMode : int
+    {
+        Estimate = 0,
+        BestPossible = 1,
+    }
+
+    /// <summary>
+    ///  Set the direction to apply a constraint impulse when the suspension cannot place the wheel on the ground
+    ///  and simultaneously respect the limits of suspension travel. The choices are to push along the ground normal to resolve the
+    ///  geometric error or to push along the suspension direction. The former choice can be thought of as mimicing a force applied
+    ///  by the tire's contact with the ground, while the latter can be thought of as mimicing a force arising from a suspension limit spring.
+    ///  When the ground normal and the suspension direction are approximately aligned, both do an equivalent job of maintaining the wheel above
+    ///  the ground. When the vehicle is on its side, eSUSPENSION does a better job of keeping the wheels above
+    ///  the ground but comes at the cost of an unnaturally strong torque that can lead to unwanted self-righting behaviour.
+    ///  eROAD_GEOMETRY_NORMAL is a good choice to avoid self-righting behaviour and still do a reasonable job at maintaining
+    ///  the wheel above the ground in the event that the vehicle is tending towards a roll onto its side.
+    ///  eNONE should be chosen if it is desired that no extra impulse is applied when the suspension alone cannot keep the wheels above
+    ///  the ground plane.
+    /// </summary>
+    public enum DirectionSpecifier : int
+    {
+        Suspension = 0,
+        RoadGeometryNormal = 1,
+        None = 2,
+    }
+
+    public enum PxVehicleSuspensionJounceCalculationType : int
+    {
+        /// <summary>
+        ///  The jounce is calculated using a raycast against the plane of the road geometry state
+        /// </summary>
+        Raycast = 0,
+        /// <summary>
+        ///  The jounce is calculated by sweeping a cylinder against the plane of the road geometry state
+        /// </summary>
+        Sweep = 1,
+        MaxNb = 2,
+    }
+
+    /// <summary>
+    ///  PhysX scene queries may be raycasts or sweeps.
+    ///
+    ///  eNONE will result in no PhysX scene query. This option will not overwrite the associated PxVehicleRoadGeometryState.
+    /// </summary>
+    public enum PxVehiclePhysXRoadGeometryQueryType : int
+    {
+        /// <summary>
+        ///  Info about the road geometry below the wheel is provided by the user
+        /// </summary>
+        None = 0,
+        /// <summary>
+        ///  The road geometry below the wheel is analyzed using a raycast query
+        /// </summary>
+        Raycast = 1,
+        /// <summary>
+        ///  The road geometry below the wheel is analyzed using a sweep query
+        /// </summary>
+        Sweep = 2,
+        MaxNb = 3,
     }
 
     [Flags]
